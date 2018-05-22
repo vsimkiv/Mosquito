@@ -12,6 +12,7 @@
         <module>EntityModule</module>
         <module>WebModule</module>
         <module>RepoModule</module>
+        <module>DTOModule</module>
     </modules>
 
     <properties>
