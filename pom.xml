@@ -11,6 +11,7 @@
     <modules>
         <module>EntityModule</module>
         <module>WebModule</module>
+        <module>RepoModule</module>
     </modules>
 
     <properties>

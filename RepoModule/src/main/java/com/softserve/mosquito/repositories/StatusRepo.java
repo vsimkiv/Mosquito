@@ -4,7 +4,6 @@ package com.softserve.mosquito.repositories;
 import com.softserve.mosquito.enitities.Status;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
