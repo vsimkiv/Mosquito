@@ -1,4 +1,4 @@
-package com.softserve.mosquito.enitities;
+package com.softserve.mosquito.entities;
 
 public final class Status {
     private Byte id;

@@ -1,21 +1,17 @@
-package com.softserve.mosquito.enitities;
+package com.softserve.mosquito.entities;
 
-public final class Priority {
+public final class Specialization {
     private Byte id;
     private String title;
 
-    public Priority() {
+    public Specialization() {
     }
 
-    public Priority(Byte id) {
-        this.id = id;
-    }
-
-    public Priority(String title) {
+    public Specialization(String title) {
         this.title = title;
     }
 
-    public Priority(Byte id, String title) {
+    public Specialization(Byte id, String title) {
         this.id = id;
         this.title = title;
     }
@@ -38,11 +34,9 @@ public final class Priority {
 
     @Override
     public String toString() {
-        return "Priority{" +
+        return "Specialization{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 '}';
     }
 }
-
-

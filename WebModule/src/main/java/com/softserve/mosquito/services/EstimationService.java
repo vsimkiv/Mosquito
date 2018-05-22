@@ -1,6 +1,6 @@
 package com.softserve.mosquito.services;
 
-import com.softserve.mosquito.enitities.Estimation;
+import com.softserve.mosquito.entities.Estimation;
 import com.softserve.mosquito.repositories.EstimationRepo;
 
 import java.util.List;

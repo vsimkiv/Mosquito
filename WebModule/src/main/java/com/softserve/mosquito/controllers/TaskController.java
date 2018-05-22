@@ -1,6 +1,6 @@
 package com.softserve.mosquito.controllers;
 
-import com.softserve.mosquito.enitities.Task;
+import com.softserve.mosquito.entities.Task;
 import com.softserve.mosquito.repositories.TaskRepo;
 
 import javax.ws.rs.*;

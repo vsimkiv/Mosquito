@@ -1,9 +1,9 @@
 package com.softserve.mosquito.repositories;
 
-import com.softserve.mosquito.enitities.Estimation;
-import com.softserve.mosquito.enitities.Priority;
-import com.softserve.mosquito.enitities.Status;
-import com.softserve.mosquito.enitities.Task;
+import com.softserve.mosquito.entities.Estimation;
+import com.softserve.mosquito.entities.Priority;
+import com.softserve.mosquito.entities.Status;
+import com.softserve.mosquito.entities.Task;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

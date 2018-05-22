@@ -1,7 +1,7 @@
 package com.softserve.mosquito.repositories;
 
-import com.softserve.mosquito.enitities.Estimation;
-import com.softserve.mosquito.enitities.LogWork;
+import com.softserve.mosquito.entities.Estimation;
+import com.softserve.mosquito.entities.LogWork;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

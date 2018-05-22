@@ -1,6 +1,6 @@
 package com.softserve.mosquito.repositories;
 
-import com.softserve.mosquito.enitities.User;
+import com.softserve.mosquito.entities.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

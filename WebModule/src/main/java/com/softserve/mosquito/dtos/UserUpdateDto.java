@@ -2,7 +2,7 @@ package com.softserve.mosquito.dtos;
 
 import java.util.Set;
 
-import com.softserve.mosquito.enitities.Specialization;
+import com.softserve.mosquito.entities.Specialization;
 
 public class UserUpdateDto extends UserRegistrationDto {
 	private Set<Specialization> specializations;
