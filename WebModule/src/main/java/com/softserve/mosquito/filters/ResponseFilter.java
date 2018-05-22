@@ -9,16 +9,16 @@ import javax.ws.rs.ext.Provider;
 
 @Provider
 public class ResponseFilter implements ContainerResponseFilter {
-	@Override
-	public void filter(final ContainerRequestContext requestContext, final ContainerResponseContext responseContext)
-			throws IOException {
-		//Post-handle method...
-		//Allow all origins (has been changed to Front-end origin):
-		responseContext.getHeaders().add("Access-Control-Allow-Origin", requestContext.getHeaderString("Origin"));	
-		responseContext.getHeaders().add("Access-Control-Allow-Headers", "origin, content-type, accept, authorization");
-		responseContext.getHeaders().add("Access-Control-Allow-Credentials", "true");
-		responseContext.getHeaders().add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
-		responseContext.getHeaders().add("Access-Control-Max-Age", "1209600");
-	}
-	
+    @Override
+    public void filter(final ContainerRequestContext requestContext, final ContainerResponseContext responseContext)
+            throws IOException {
+        //Post-handle method...
+        //Allow all origins (has been changed to Front-end origin):
+        responseContext.getHeaders().add("Access-Control-Allow-Origin", requestContext.getHeaderString("Origin"));
+        responseContext.getHeaders().add("Access-Control-Allow-Headers", "origin, content-type, accept, authorization");
+        responseContext.getHeaders().add("Access-Control-Allow-Credentials", "true");
+        responseContext.getHeaders().add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
+        responseContext.getHeaders().add("Access-Control-Max-Age", "1209600");
+    }
+
 }

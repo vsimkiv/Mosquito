@@ -13,6 +13,7 @@
         <module>WebModule</module>
         <module>RepoModule</module>
         <module>DTOModule</module>
+        <module>ServiceModule</module>
     </modules>
 
     <properties>
