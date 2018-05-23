@@ -5,6 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,14 +19,14 @@ public class LogWorkRepo implements GenericCRUD<LogWork> {
     private DataSource dataSource = MySqlDataSource.getDataSource();
 
     private static final String CREATE_LOG_WORK =
-            "INSERT INTO log_works (description, logged, user_id, log_work_id) VALUE (?,?,?,?);";
+            "INSERT INTO log_works (description, logged, user_id, estimation_id) VALUE (?,?,?,?);";
     private static final String UPDATE_LOG_WORK =
-            "UPDATE log_works SET description=?, logged=? WHERE log_work_id=?;";
+            "UPDATE log_works SET description=?, logged=? WHERE id=?;";
     private static final String DELETE_LOG_WORK =
-            "DELETE FROM log_works WHERE log_work_id=?;";
+            "DELETE FROM log_works WHERE id=?;";
 
     private static final String READ_LOG_WORK =
-            "SELECT * FROM log_works WHERE log_work_id=?;";
+            "SELECT * FROM log_works WHERE id=?;";
     private static final String READ_ALL_LOG_WORKS =
             "SELECT * FROM log_works;";
 
@@ -33,7 +34,7 @@ public class LogWorkRepo implements GenericCRUD<LogWork> {
         ArrayList<LogWork> logWorks = new ArrayList<>();
         try {
             while (resultSet.next()) {
-                LogWork logWork = new LogWork(resultSet.getLong("log_work_id"),
+                LogWork logWork = new LogWork(resultSet.getLong("id"),
                         resultSet.getString("description"), resultSet.getInt("logged"),
                         resultSet.getLong("user_id"), resultSet.getLong("estimation_id"),
                         resultSet.getTimestamp("last_update").toLocalDateTime());
@@ -47,8 +48,8 @@ public class LogWorkRepo implements GenericCRUD<LogWork> {
 
     @Override
     public LogWork create(LogWork logWork) {
-        try (PreparedStatement preparedStatement =
-                     dataSource.getConnection().prepareStatement(CREATE_LOG_WORK)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_LOG_WORK)) {
             preparedStatement.setString(1, logWork.getDescription());
             preparedStatement.setInt(2, logWork.getLogged());
             preparedStatement.setLong(3, logWork.getUserId());
@@ -69,8 +70,8 @@ public class LogWorkRepo implements GenericCRUD<LogWork> {
 
     @Override
     public LogWork read(Long id) {
-        try (PreparedStatement preparedStatement = dataSource.getConnection()
-                .prepareStatement(READ_LOG_WORK)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(READ_LOG_WORK)) {
             preparedStatement.setLong(1, id);
             List<LogWork> result = parsData(preparedStatement.executeQuery());
             if (result.size() != 1) {
@@ -85,8 +86,8 @@ public class LogWorkRepo implements GenericCRUD<LogWork> {
 
     @Override
     public LogWork update(LogWork logWork) {
-        try (PreparedStatement preparedStatement = dataSource.getConnection()
-                .prepareStatement(UPDATE_LOG_WORK)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_LOG_WORK)) {
             preparedStatement.setString(1, logWork.getDescription());
             preparedStatement.setInt(2, logWork.getLogged());
             preparedStatement.setLong(3, logWork.getId());
@@ -101,8 +102,8 @@ public class LogWorkRepo implements GenericCRUD<LogWork> {
 
     @Override
     public void delete(LogWork logWork) {
-        try (PreparedStatement preparedStatement = dataSource.getConnection()
-                .prepareStatement(DELETE_LOG_WORK)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_LOG_WORK)) {
             preparedStatement.setLong(1, logWork.getId());
             if (preparedStatement.executeUpdate() != 1) {
                 throw new SQLException("LogWork have not being deleted");
@@ -114,8 +115,8 @@ public class LogWorkRepo implements GenericCRUD<LogWork> {
 
     @Override
     public List<LogWork> readAll() {
-        try (PreparedStatement preparedStatement = dataSource.getConnection()
-                .prepareStatement(READ_ALL_LOG_WORKS)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(READ_ALL_LOG_WORKS)) {
             return parsData(preparedStatement.executeQuery());
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());

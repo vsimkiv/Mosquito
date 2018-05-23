@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,27 +23,27 @@ public class EstimationRepo implements GenericCRUD<Estimation> {
     private static final String CREATE_ESTIMATION =
             "INSERT INTO estimations (estimation,remaining) VALUE (?,?);";
     private static final String UPDATE_ESTIMATION =
-            "UPDATE estimations SET estimation=?, remaining=? WHERE estimation_id=?;";
+            "UPDATE estimations SET estimation=?, remaining=? WHERE id=?;";
     private static final String DELETE_ESTIMATION =
-            "DELETE FROM estimations WHERE estimation_id=?;";
+            "DELETE FROM estimations WHERE id=?;";
 
     private static final String READ_ESTIMATION =
-            "SELECT * FROM estimations LEFT JOIN log_works USING(estimation_id) WHERE estimation_id=?;";
+            "SELECT * FROM estimations e LEFT JOIN log_works l ON e.id=l.estimation_id  WHERE id=?;";
     private static final String READ_ALL_ESTIMATIONS = "SELECT * FROM estimations " +
-            "LEFT JOIN log_works USING(estimation_id);";
+            "LEFT JOIN log_works USING(id);";
 
     private List<Estimation> parsData(ResultSet resultSet) {
         HashSet<Estimation> estimations = new HashSet<>();
         try {
             while (resultSet.next()) {
                 Estimation estimation = new Estimation(
-                        resultSet.getLong("estimation_id"),
+                        resultSet.getLong("e.id"),
                         resultSet.getInt("estimation"),
                         resultSet.getInt("remaining"));
 
-                if (resultSet.getLong("log_work_id") != 0) {
+                if (resultSet.getLong("l.id") != 0) {
                     LogWork logWork = new LogWork(
-                            resultSet.getLong("log_work_id"),
+                            resultSet.getLong("l.id"),
                             resultSet.getString("description"),
                             resultSet.getInt("logged"),
                             resultSet.getLong("user_id"),
@@ -66,8 +67,8 @@ public class EstimationRepo implements GenericCRUD<Estimation> {
 
     @Override
     public Estimation create(Estimation estimation) {
-        try (PreparedStatement preparedStatement =
-                     dataSource.getConnection().prepareStatement(CREATE_ESTIMATION)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_ESTIMATION)) {
             preparedStatement.setInt(1, estimation.getEstimation());
             preparedStatement.setInt(2, estimation.getRemaining());
             preparedStatement.execute();
@@ -85,8 +86,8 @@ public class EstimationRepo implements GenericCRUD<Estimation> {
 
     @Override
     public Estimation read(Long id) {
-        try (PreparedStatement preparedStatement =
-                     dataSource.getConnection().prepareStatement(READ_ESTIMATION)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(READ_ESTIMATION)) {
             preparedStatement.setLong(1, id);
             List<Estimation> result = parsData(preparedStatement.executeQuery());
             if (result.size() != 1){
@@ -101,8 +102,8 @@ public class EstimationRepo implements GenericCRUD<Estimation> {
 
     @Override
     public Estimation update(Estimation estimation) {
-        try (PreparedStatement preparedStatement = dataSource.getConnection()
-                .prepareStatement(UPDATE_ESTIMATION)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_ESTIMATION)) {
             preparedStatement.setInt(2, estimation.getEstimation());
             preparedStatement.setInt(3, estimation.getRemaining());
             preparedStatement.setLong(3, estimation.getId());
@@ -116,8 +117,8 @@ public class EstimationRepo implements GenericCRUD<Estimation> {
 
     @Override
     public void delete(Estimation estimation) {
-        try (PreparedStatement preparedStatement = dataSource.getConnection()
-                .prepareStatement(DELETE_ESTIMATION)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_ESTIMATION)) {
             preparedStatement.setLong(1, estimation.getId());
             if (preparedStatement.executeUpdate() != 1){
                 throw new SQLException("Estimation have not being deleted");
@@ -129,8 +130,8 @@ public class EstimationRepo implements GenericCRUD<Estimation> {
 
     @Override
     public List<Estimation> readAll() {
-        try (PreparedStatement preparedStatement = dataSource.getConnection()
-                .prepareStatement(READ_ALL_ESTIMATIONS)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(READ_ALL_ESTIMATIONS)) {
             return parsData(preparedStatement.executeQuery());
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());

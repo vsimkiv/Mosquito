@@ -18,21 +18,18 @@ public class CommentRepo implements GenericCRUD<Comment> {
     private static final String CREATE_COMMENT =
             "INSERT INTO comments (text, task_id, author_id) VALUES(?,?,?);";
     private static final String UPDATE_COMMENT =
-            "UPDATE comments SET text=? WHERE comment_id =?;";
+            "UPDATE comments SET text=? WHERE id=?;";
     private static final String DELETE_COMMENT =
-            "DELETE FROM comments WHERE comment_id=?";
-
-    private static final String READ_COMMENT =
-            "SELECT * FROM comments WHERE comment_id=?;";
-    private static final String READ_ALL_COMMENTS =
-            "SELECT * FROM comments;";
+            "DELETE FROM comments WHERE id=?";
+    private static final String READ_COMMENT = "SELECT * FROM comments WHERE id=?;";
+    private static final String READ_ALL_COMMENTS = "SELECT * FROM comments;";
 
     private List<Comment> parsData(ResultSet resultSet) {
         List<Comment> comments = new ArrayList<>();
 
         try {
             while (resultSet.next()) {
-                Comment comment = new Comment(resultSet.getLong("comment_id"),
+                Comment comment = new Comment(resultSet.getLong("id"),
                         resultSet.getString("text"),
                         resultSet.getLong("task_id"),
                         resultSet.getLong("author_id"),
@@ -47,9 +44,8 @@ public class CommentRepo implements GenericCRUD<Comment> {
 
     @Override
     public Comment create(Comment comment) {
-        try (PreparedStatement preparedStatement =
-                     dataSource.getConnection().prepareStatement(CREATE_COMMENT)) {
-
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_COMMENT)) {
             preparedStatement.setString(1, comment.getText());
             preparedStatement.setLong(2, comment.getTaskId());
             preparedStatement.setLong(3, comment.getAuthorId());
@@ -72,8 +68,8 @@ public class CommentRepo implements GenericCRUD<Comment> {
     @Override
     public Comment read(Long id) {
 
-        try (PreparedStatement preparedStatement =
-                     dataSource.getConnection().prepareStatement(READ_COMMENT)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(READ_COMMENT)) {
             preparedStatement.setLong(1, id);
             List<Comment> result = parsData(preparedStatement.executeQuery());
             if (result.size() != 1) {
@@ -88,8 +84,8 @@ public class CommentRepo implements GenericCRUD<Comment> {
 
     @Override
     public Comment update(Comment comment) {
-        try (PreparedStatement preparedStatement =
-                     dataSource.getConnection().prepareStatement(UPDATE_COMMENT)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_COMMENT)) {
             preparedStatement.setString(1, comment.getText());
             preparedStatement.setLong(2, comment.getId());
             if (preparedStatement.executeUpdate() != 1) {
@@ -103,8 +99,8 @@ public class CommentRepo implements GenericCRUD<Comment> {
 
     @Override
     public void delete(Comment comment) {
-        try (PreparedStatement preparedStatement
-                     = dataSource.getConnection().prepareStatement(DELETE_COMMENT)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_COMMENT)) {
             preparedStatement.setLong(1, comment.getId());
             if (preparedStatement.executeUpdate() != 1) {
                 throw new SQLException("Comment have not being deleted");
@@ -116,8 +112,8 @@ public class CommentRepo implements GenericCRUD<Comment> {
 
     @Override
     public List<Comment> readAll() {
-        try (PreparedStatement preparedStatement
-                     = dataSource.getConnection().prepareStatement(READ_ALL_COMMENTS)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(READ_ALL_COMMENTS)) {
             return parsData(preparedStatement.executeQuery());
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
