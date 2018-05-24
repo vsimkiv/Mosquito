@@ -5,7 +5,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,7 +27,81 @@ public class CommentRepo implements GenericCRUD<Comment> {
     private static final String READ_COMMENT = "SELECT * FROM comments WHERE id=?;";
     private static final String READ_ALL_COMMENTS = "SELECT * FROM comments;";
 
-    private List<Comment> parsData(ResultSet resultSet) {
+    @Override
+    public Comment create(Comment comment) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_COMMENT)) {
+            preparedStatement.setString(1, comment.getText());
+            preparedStatement.setLong(2, comment.getTaskId());
+            preparedStatement.setLong(3, comment.getAuthorId());
+            preparedStatement.execute();
+
+            if (preparedStatement.executeUpdate() == 0)
+                LOGGER.error("Creating comment was failed");
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next())
+                    return read(generatedKeys.getLong(1));
+                else
+                    LOGGER.error("Creating comment was failed");
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public Comment read(Long id) {
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(READ_COMMENT)) {
+            preparedStatement.setLong(1, id);
+            List<Comment> comments = parseData(preparedStatement.executeQuery());
+            if (!comments.isEmpty())
+                return comments.iterator().next();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public Comment update(Comment comment) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_COMMENT)) {
+            preparedStatement.setString(1, comment.getText());
+            preparedStatement.setLong(2, comment.getId());
+            if (preparedStatement.executeUpdate() > 0)
+                return read(comment.getId());
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+        }
+        return comment;
+    }
+
+    @Override
+    public void delete(Comment comment) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_COMMENT)) {
+            preparedStatement.setLong(1, comment.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+        }
+    }
+
+    @Override
+    public List<Comment> readAll() {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(READ_ALL_COMMENTS)) {
+            return parseData(preparedStatement.executeQuery());
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+            return Collections.emptyList();
+        }
+    }
+
+    private List<Comment> parseData(ResultSet resultSet) {
         List<Comment> comments = new ArrayList<>();
 
         try {
@@ -40,84 +117,5 @@ public class CommentRepo implements GenericCRUD<Comment> {
             LOGGER.error(e.getMessage());
         }
         return comments;
-    }
-
-    @Override
-    public Comment create(Comment comment) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_COMMENT)) {
-            preparedStatement.setString(1, comment.getText());
-            preparedStatement.setLong(2, comment.getTaskId());
-            preparedStatement.setLong(3, comment.getAuthorId());
-            preparedStatement.execute();
-
-            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    return read(generatedKeys.getLong(1));
-                } else {
-                    throw new SQLException("Creating Comment failed, no ID obtained.");
-                }
-            }
-
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-            return null;
-        }
-    }
-
-    @Override
-    public Comment read(Long id) {
-
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(READ_COMMENT)) {
-            preparedStatement.setLong(1, id);
-            List<Comment> result = parsData(preparedStatement.executeQuery());
-            if (result.size() != 1) {
-                throw new SQLException("Error with searching comment by id");
-            }
-            return result.iterator().next();
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-            return null;
-        }
-    }
-
-    @Override
-    public Comment update(Comment comment) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_COMMENT)) {
-            preparedStatement.setString(1, comment.getText());
-            preparedStatement.setLong(2, comment.getId());
-            if (preparedStatement.executeUpdate() != 1) {
-                throw new SQLException("Comment have not being updated");
-            }
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-        }
-        return comment;
-    }
-
-    @Override
-    public void delete(Comment comment) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_COMMENT)) {
-            preparedStatement.setLong(1, comment.getId());
-            if (preparedStatement.executeUpdate() != 1) {
-                throw new SQLException("Comment have not being deleted");
-            }
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-        }
-    }
-
-    @Override
-    public List<Comment> readAll() {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(READ_ALL_COMMENTS)) {
-            return parsData(preparedStatement.executeQuery());
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-            return Collections.emptyList();
-        }
     }
 }

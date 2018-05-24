@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class TaskRepo implements GenericCRUD<Task> {
@@ -42,13 +43,13 @@ public class TaskRepo implements GenericCRUD<Task> {
             preparedStatement.setByte(6, task.getPriority().getId());
             preparedStatement.setByte(7, task.getStatus().getId());
 
-            preparedStatement.execute();
+            if (preparedStatement.executeUpdate() == 0)
+                LOGGER.error("Creating task failed");
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
+                if (generatedKeys.next())
                     return read(generatedKeys.getLong(1));
-                } else {
-                    LOGGER.error("Creating user failed, no ID obtained.");
-                }
+                else
+                    LOGGER.error("Creating task failed, no ID obtained.");
             }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
@@ -56,6 +57,19 @@ public class TaskRepo implements GenericCRUD<Task> {
         return null;
     }
 
+    @Override
+    public Task read(Long id) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(READ_TASK)) {
+            preparedStatement.setLong(1, id);
+            List<Task> tasks = getData(preparedStatement.executeQuery());
+            if (!tasks.isEmpty())
+                return tasks.iterator().next();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return null;
+    }
 
     @Override
     public Task update(Task task) {
@@ -67,10 +81,9 @@ public class TaskRepo implements GenericCRUD<Task> {
             preparedStatement.setByte(4, task.getStatus().getId());
             preparedStatement.setLong(5, task.getId());
 
-            int updatedRows = preparedStatement.executeUpdate();
-            if (updatedRows > 0) {
+            if (preparedStatement.executeUpdate() > 0)
                 return read(task.getId());
-            }
+
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -85,6 +98,18 @@ public class TaskRepo implements GenericCRUD<Task> {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public List<Task> readAll() {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(READ_ALL_TASKS);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            return getData(resultSet);
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+            return Collections.emptyList();
         }
     }
 
@@ -113,31 +138,5 @@ public class TaskRepo implements GenericCRUD<Task> {
             LOGGER.error(e.getMessage(), e);
         }
         return tasks;
-    }
-
-    @Override
-    public Task read(Long id) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(READ_TASK)) {
-            preparedStatement.setLong(1, id);
-            return getData(preparedStatement.executeQuery()).iterator().next();
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage(), e);
-            return null;
-        }
-
-    }
-
-    @Override
-    public List<Task> readAll() {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(READ_ALL_TASKS);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
-            return getData(resultSet);
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage(), e);
-            return null;
-        }
-
     }
 }

@@ -8,28 +8,29 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 public class UserValidation {
 
+    private final static String EMAIL_REGEX = "^[_A-Za-z0-9-+]+(.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(.[A-Za-z0-9]+)*(.[A-Za-z]{2,}$)";
+    private final static int MIN_LENGTH_FIRST_NAME = 2;
+    private final static int MIN_LENGTH_LAST_NAME = 2;
+    private final static int MIN_LENGTH_PASSWORD = 7;
+
     private String salt = "r4OSxKpY";
     private UserService userService = new UserService();
 
     public boolean isValidCredentials(UserLoginDto userLoginDto) {
-        if (userLoginDto != null && userLoginDto.getEmail() != null && userLoginDto.getPassword() != null) {
-	        String encryptedLoginPassword = DigestUtils.md5Hex(userLoginDto.getPassword().concat(salt));
-	        User user = userService.getUserByEmail(userLoginDto.getEmail());
-	        
-	        if (user != null) {
-	        	if (encryptedLoginPassword.equals(user.getPassword())) {
-	                return true;
-	            }
-	        }
-	    }
+        if (isLoginDataValid(userLoginDto)) {
+            String encryptedLoginPassword = DigestUtils.md5Hex(userLoginDto.getPassword().concat(salt));
+            User user = userService.getUserByEmail(userLoginDto.getEmail());
+
+            return user != null && encryptedLoginPassword.equals(user.getPassword());
+        }
         return false;
     }
 
     public boolean registerValidation(UserRegistrationDto userForRegister) {
 
         User user = userService.getUserByEmail(userForRegister.getEmail());
-       
-        if (user == null && userForRegister.getConfirmPassword().equals(userForRegister.getPassword())) {
+
+        if (user == null && isUserDataValid(userForRegister)) {
             String password = DigestUtils.md5Hex(userForRegister.getPassword().concat(salt));
             System.out.println(password);
             user = new User(userForRegister.getEmail(),
@@ -38,8 +39,22 @@ public class UserValidation {
                     password);
             return userService.create(user) != null;
         }
-
         return false;
     }
 
+    private boolean isUserDataValid(UserRegistrationDto user) {
+        return user.getEmail().matches(EMAIL_REGEX)
+                && user.getFirstName().length() >= MIN_LENGTH_FIRST_NAME
+                && user.getLastName().length() >= MIN_LENGTH_LAST_NAME
+                && user.getPassword().length() >= MIN_LENGTH_PASSWORD
+                && user.getConfirmPassword().length() >= MIN_LENGTH_PASSWORD
+                && user.getConfirmPassword().equals(user.getPassword());
+
+    }
+
+    private boolean isLoginDataValid(UserLoginDto userLoginDto) {
+        return userLoginDto != null
+                && userLoginDto.getEmail().matches(EMAIL_REGEX)
+                && userLoginDto.getPassword().length() >= MIN_LENGTH_PASSWORD;
+    }
 }

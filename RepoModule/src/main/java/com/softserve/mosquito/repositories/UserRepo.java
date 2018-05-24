@@ -5,11 +5,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class UserRepo implements GenericCRUD<User> {
@@ -30,22 +28,37 @@ public class UserRepo implements GenericCRUD<User> {
     @Override
     public User create(User user) {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_USER)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_USER,
+                     Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, user.getEmail());
             preparedStatement.setString(2, user.getPassword());
             preparedStatement.setString(3, user.getFirstName());
             preparedStatement.setString(4, user.getLastName());
 
-            preparedStatement.execute();
+            if (preparedStatement.executeUpdate() == 0)
+                LOGGER.error("Creating user failed, no rows affected");
 
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
+                if (generatedKeys.next())
                     return read(generatedKeys.getLong(1));
-                } else {
+                else
                     LOGGER.error("Creating user failed, no ID obtained.");
-                }
             }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return null;
+    }
 
+    @Override
+    public User read(Long id) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(READ_USER)) {
+            preparedStatement.setLong(1, id);
+
+            List<User> users = getData(preparedStatement.executeQuery());
+            if (!users.isEmpty())
+                return users.iterator().next();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -62,9 +75,8 @@ public class UserRepo implements GenericCRUD<User> {
             preparedStatement.setString(4, user.getLastName());
             preparedStatement.setLong(5, user.getId());
 
-            if (preparedStatement.executeUpdate() > 0) {
+            if (preparedStatement.executeUpdate() > 0)
                 return read(user.getId());
-            }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -76,11 +88,35 @@ public class UserRepo implements GenericCRUD<User> {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USER)) {
             preparedStatement.setLong(1, user.getId());
-            if (preparedStatement.executeUpdate() != 1)
-                throw new SQLException("Row did not update");
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
+    }
+
+    @Override
+    public List<User> readAll() {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(READ_ALL_USERS)) {
+            return getData(preparedStatement.executeQuery());
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+            return Collections.emptyList();
+        }
+    }
+
+    public User readUserByEmail(String email) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(READ_USER_BY_EMAIL)) {
+            preparedStatement.setString(1, email);
+
+            List<User> users = getData(preparedStatement.executeQuery());
+            if (!users.isEmpty())
+                return users.iterator().next();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return null;
     }
 
     private List<User> getData(ResultSet resultSet) {
@@ -100,41 +136,5 @@ public class UserRepo implements GenericCRUD<User> {
             LOGGER.error(e.getMessage(), e);
         }
         return users;
-    }
-
-    @Override
-    public User read(Long id) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(READ_USER)) {
-            preparedStatement.setLong(1, id);
-            return getData(preparedStatement.executeQuery()).iterator().next();
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage(), e);
-        }
-        return null;
-    }
-
-
-    @Override
-    public List<User> readAll() {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(READ_ALL_USERS)){
-            return getData(preparedStatement.executeQuery());
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage(), e);
-            return null;
-        }
-    }
-
-
-    public User readUserByEmail(String email) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(READ_USER_BY_EMAIL)) {
-            preparedStatement.setString(1, email);
-            return getData(preparedStatement.executeQuery()).iterator().next();
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage(), e);
-        }
-        return null;
     }
 }

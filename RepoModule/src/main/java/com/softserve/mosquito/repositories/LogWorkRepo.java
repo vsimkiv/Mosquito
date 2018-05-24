@@ -30,21 +30,6 @@ public class LogWorkRepo implements GenericCRUD<LogWork> {
     private static final String READ_ALL_LOG_WORKS =
             "SELECT * FROM log_works;";
 
-    private List<LogWork> parsData(ResultSet resultSet) {
-        ArrayList<LogWork> logWorks = new ArrayList<>();
-        try {
-            while (resultSet.next()) {
-                LogWork logWork = new LogWork(resultSet.getLong("id"),
-                        resultSet.getString("description"), resultSet.getInt("logged"),
-                        resultSet.getLong("user_id"), resultSet.getLong("estimation_id"),
-                        resultSet.getTimestamp("last_update").toLocalDateTime());
-                logWorks.add(logWork);
-            }
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-        }
-        return logWorks;
-    }
 
     @Override
     public LogWork create(LogWork logWork) {
@@ -55,17 +40,19 @@ public class LogWorkRepo implements GenericCRUD<LogWork> {
             preparedStatement.setLong(3, logWork.getUserId());
             preparedStatement.setLong(4, logWork.getEstimationId());
             preparedStatement.execute();
+
+            if (preparedStatement.executeUpdate() == 0)
+                LOGGER.error("Creating log-work was failed");
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
+                if (generatedKeys.next())
                     return read(generatedKeys.getLong(1));
-                }else {
-                    throw new SQLException("Creating LogWork failed, no ID obtained.");
-                }
+                else
+                    LOGGER.error("Creating log-work was failed");
             }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
-            return null;
         }
+        return null;
     }
 
     @Override
@@ -73,15 +60,13 @@ public class LogWorkRepo implements GenericCRUD<LogWork> {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(READ_LOG_WORK)) {
             preparedStatement.setLong(1, id);
-            List<LogWork> result = parsData(preparedStatement.executeQuery());
-            if (result.size() != 1) {
-                throw new SQLException("Error with searching LogWork by id");
-            }
-            return result.iterator().next();
+            List<LogWork> logWorks = parsData(preparedStatement.executeQuery());
+            if (!logWorks.isEmpty())
+                return logWorks.iterator().next();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
-            return null;
         }
+        return null;
     }
 
     @Override
@@ -91,10 +76,9 @@ public class LogWorkRepo implements GenericCRUD<LogWork> {
             preparedStatement.setString(1, logWork.getDescription());
             preparedStatement.setInt(2, logWork.getLogged());
             preparedStatement.setLong(3, logWork.getId());
-            if (preparedStatement.executeUpdate() != 1) {
-                throw new SQLException("LogWork have not being updated");
-            }
-        }catch (SQLException e) {
+            if (preparedStatement.executeUpdate() > 0)
+                return read(logWork.getId());
+        } catch (SQLException e) {
             LOGGER.error(e.getMessage());
         }
         return logWork;
@@ -105,9 +89,7 @@ public class LogWorkRepo implements GenericCRUD<LogWork> {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_LOG_WORK)) {
             preparedStatement.setLong(1, logWork.getId());
-            if (preparedStatement.executeUpdate() != 1) {
-                throw new SQLException("LogWork have not being deleted");
-            }
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
         }
@@ -122,5 +104,21 @@ public class LogWorkRepo implements GenericCRUD<LogWork> {
             LOGGER.error(e.getMessage());
             return Collections.emptyList();
         }
+    }
+
+    private List<LogWork> parsData(ResultSet resultSet) {
+        ArrayList<LogWork> logWorks = new ArrayList<>();
+        try {
+            while (resultSet.next()) {
+                LogWork logWork = new LogWork(resultSet.getLong("id"),
+                        resultSet.getString("description"), resultSet.getInt("logged"),
+                        resultSet.getLong("user_id"), resultSet.getLong("estimation_id"),
+                        resultSet.getTimestamp("last_update").toLocalDateTime());
+                logWorks.add(logWork);
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+        }
+        return logWorks;
     }
 }

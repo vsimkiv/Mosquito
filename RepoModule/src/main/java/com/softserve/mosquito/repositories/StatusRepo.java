@@ -24,36 +24,25 @@ public class StatusRepo implements GenericCRUD<Status> {
     private static final String READ_STATUS = "SELECT * FROM statuses WHERE id=?;";
     private static final String READ_ALL_STATUSES = "SELECT * FROM statuses;";
 
-    private List<Status> parseData(ResultSet resultSet) {
-        List<Status> statuses = new ArrayList<>();
-        try {
-            while (resultSet.next()) {
-                Status status = new Status();
-                status.setId(resultSet.getByte("id"));
-                status.setTitle(resultSet.getString("title"));
-                statuses.add(status);
-            }
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-        }
-        return statuses;
-    }
-
     @Override
     public Status create(Status status) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(CREATE_STATUS)) {
             preparedStatement.setString(1, status.getTitle());
             preparedStatement.execute();
+
+            if (preparedStatement.executeUpdate() == 0)
+                LOGGER.error("Creating status failed");
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
+                if (generatedKeys.next())
                     return read(generatedKeys.getLong(1));
-                } else throw new SQLException("Creating status failed, no ID obtained.");
+                else
+                    LOGGER.error("Creating status failed, no ID obtained.");
             }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
-            return null;
         }
+        return null;
     }
 
     @Override
@@ -61,15 +50,13 @@ public class StatusRepo implements GenericCRUD<Status> {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(READ_STATUS)) {
             preparedStatement.setLong(1, id);
-            List<Status> result = parseData(preparedStatement.executeQuery());
-            if (result.size() != 1) {
-                throw new SQLException("Error with searching status by id");
-            }
-            return result.iterator().next();
+            List<Status> statuses = parseData(preparedStatement.executeQuery());
+            if (!statuses.isEmpty())
+                return statuses.iterator().next();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
-            return null;
         }
+        return null;
     }
 
     @Override
@@ -78,23 +65,20 @@ public class StatusRepo implements GenericCRUD<Status> {
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_STATUS)) {
             preparedStatement.setString(1, status.getTitle());
             preparedStatement.setByte(2, status.getId());
-            if (preparedStatement.executeUpdate() != 1)
-                throw new SQLException("Statuses have not being updated");
+            if (preparedStatement.executeUpdate() > 0)
+                return read(Long.valueOf(status.getId()));
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
         }
         return status;
     }
 
-
     @Override
     public void delete(Status status) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_STATUS)) {
             preparedStatement.setByte(1, status.getId());
-            if (preparedStatement.executeUpdate() != 1) {
-                throw new SQLException("Status have not being deleted");
-            }
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
         }
@@ -109,5 +93,20 @@ public class StatusRepo implements GenericCRUD<Status> {
             LOGGER.error(e.getMessage());
             return Collections.emptyList();
         }
+    }
+
+    private List<Status> parseData(ResultSet resultSet) {
+        List<Status> statuses = new ArrayList<>();
+        try {
+            while (resultSet.next()) {
+                Status status = new Status();
+                status.setId(resultSet.getByte("id"));
+                status.setTitle(resultSet.getString("title"));
+                statuses.add(status);
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+        }
+        return statuses;
     }
 }

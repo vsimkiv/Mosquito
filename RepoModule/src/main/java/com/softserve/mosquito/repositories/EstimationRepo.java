@@ -32,6 +32,79 @@ public class EstimationRepo implements GenericCRUD<Estimation> {
     private static final String READ_ALL_ESTIMATIONS = "SELECT * FROM estimations " +
             "LEFT JOIN log_works USING(id);";
 
+    @Override
+    public Estimation create(Estimation estimation) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_ESTIMATION)) {
+            preparedStatement.setInt(1, estimation.getEstimation());
+            preparedStatement.setInt(2, estimation.getRemaining());
+            preparedStatement.execute();
+
+            if (preparedStatement.executeUpdate() == 0)
+                LOGGER.error("Creating estimation was failed");
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next())
+                    return read(generatedKeys.getLong(1));
+                else
+                    LOGGER.error("Creating estimation was failed");
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public Estimation read(Long id) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(READ_ESTIMATION)) {
+            preparedStatement.setLong(1, id);
+            List<Estimation> estimations = parsData(preparedStatement.executeQuery());
+            if (!estimations.isEmpty())
+                return estimations.iterator().next();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public Estimation update(Estimation estimation) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_ESTIMATION)) {
+            preparedStatement.setInt(2, estimation.getEstimation());
+            preparedStatement.setInt(3, estimation.getRemaining());
+            preparedStatement.setLong(3, estimation.getId());
+            if (preparedStatement.executeUpdate() > 0)
+                return read(estimation.getId());
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+        }
+        return estimation;
+    }
+
+    @Override
+    public void delete(Estimation estimation) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_ESTIMATION)) {
+            preparedStatement.setLong(1, estimation.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+        }
+    }
+
+    @Override
+    public List<Estimation> readAll() {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(READ_ALL_ESTIMATIONS)) {
+            return parsData(preparedStatement.executeQuery());
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+            return Collections.emptyList();
+        }
+    }
+
     private List<Estimation> parsData(ResultSet resultSet) {
         HashSet<Estimation> estimations = new HashSet<>();
         try {
@@ -63,79 +136,5 @@ public class EstimationRepo implements GenericCRUD<Estimation> {
             LOGGER.error(e.getMessage());
         }
         return new ArrayList<>(estimations);
-    }
-
-    @Override
-    public Estimation create(Estimation estimation) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_ESTIMATION)) {
-            preparedStatement.setInt(1, estimation.getEstimation());
-            preparedStatement.setInt(2, estimation.getRemaining());
-            preparedStatement.execute();
-            try(ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-                if (generatedKeys.next())
-                    return read(generatedKeys.getLong(1));
-                else
-                    throw new SQLException("Creating Estimation failed, no ID obtained.");
-            }
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-            return null;
-        }
-    }
-
-    @Override
-    public Estimation read(Long id) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(READ_ESTIMATION)) {
-            preparedStatement.setLong(1, id);
-            List<Estimation> result = parsData(preparedStatement.executeQuery());
-            if (result.size() != 1){
-                throw new SQLException("Error with searching Estimation by id");
-            }
-            return result.iterator().next();
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-            return null;
-        }
-    }
-
-    @Override
-    public Estimation update(Estimation estimation) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_ESTIMATION)) {
-            preparedStatement.setInt(2, estimation.getEstimation());
-            preparedStatement.setInt(3, estimation.getRemaining());
-            preparedStatement.setLong(3, estimation.getId());
-            if (preparedStatement.executeUpdate() != 1)
-                throw new SQLException("Estimation have not being updated");
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-        }
-        return estimation;
-    }
-
-    @Override
-    public void delete(Estimation estimation) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_ESTIMATION)) {
-            preparedStatement.setLong(1, estimation.getId());
-            if (preparedStatement.executeUpdate() != 1){
-                throw new SQLException("Estimation have not being deleted");
-            }
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-        }
-    }
-
-    @Override
-    public List<Estimation> readAll() {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(READ_ALL_ESTIMATIONS)) {
-            return parsData(preparedStatement.executeQuery());
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-            return Collections.emptyList();
-        }
     }
 }
