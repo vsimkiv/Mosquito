@@ -1,4 +1,4 @@
-package com.softserve.mosquito.repositories;
+package com.softserve.mosquito.repo.api;
 
 import java.util.List;
 

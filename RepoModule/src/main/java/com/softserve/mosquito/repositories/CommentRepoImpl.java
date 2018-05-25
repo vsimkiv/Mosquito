@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CommentRepo implements GenericCRUD<Comment> {
+public class CommentRepoImpl implements GenericCRUD<Comment> {
 
-    private static final Logger LOGGER = LogManager.getLogger(CommentRepo.class);
+    private static final Logger LOGGER = LogManager.getLogger(CommentRepoImpl.class);
     private DataSource dataSource = MySqlDataSource.getDataSource();
 
     private static final String CREATE_COMMENT =
