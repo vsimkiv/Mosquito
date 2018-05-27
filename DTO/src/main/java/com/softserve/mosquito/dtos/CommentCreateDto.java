@@ -6,13 +6,15 @@ package com.softserve.mosquito.dtos;
 public class CommentCreateDto {
     private String text;
     private Long taskId;
+    private Long authorId;
 
     public CommentCreateDto() {
     }
 
-    public CommentCreateDto(String text, Long taskId) {
+    public CommentCreateDto(String text, Long taskId, Long authorId) {
         this.text = text;
         this.taskId = taskId;
+        this.authorId = authorId;
     }
 
     public String getText() {
@@ -29,5 +31,14 @@ public class CommentCreateDto {
 
     public void setTaskId(Long taskId) {
         this.taskId = taskId;
+    }
+
+
+    public Long getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(Long authorId) {
+        this.authorId = authorId;
     }
 }

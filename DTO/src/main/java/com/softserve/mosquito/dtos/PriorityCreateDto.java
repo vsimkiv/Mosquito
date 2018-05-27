@@ -7,7 +7,6 @@ public class PriorityCreateDto {
     }
 
     public PriorityCreateDto(String title) {
-        super();
         this.title = title;
     }
 

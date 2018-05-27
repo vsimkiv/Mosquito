@@ -7,7 +7,6 @@ public class StatusCreateDto {
     }
 
     public StatusCreateDto(String title) {
-        super();
         this.title = title;
     }
 

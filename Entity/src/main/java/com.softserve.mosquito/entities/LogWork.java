@@ -2,7 +2,6 @@ package com.softserve.mosquito.entities;
 
 import java.time.LocalDateTime;
 
-
 public class LogWork {
     private Long id;
     private String description;

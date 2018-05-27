@@ -10,7 +10,6 @@ public class LogWorkCreateDto {
     }
 
     public LogWorkCreateDto(String description, Long userId, int logged, int remaining) {
-        super();
         this.description = description;
         this.userId = userId;
         this.logged = logged;
