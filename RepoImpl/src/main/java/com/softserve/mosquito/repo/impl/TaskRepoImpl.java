@@ -124,19 +124,20 @@ public class TaskRepoImpl implements TaskRepo {
             while (resultSet.next()) {
                 Task task = new Task();
                 task.setId(resultSet.getLong("id"));
+                task.setName(resultSet.getString("name"));
                 task.setParentId(resultSet.getLong("parent_id"));
                 task.setOwnerId(resultSet.getLong("owner_id"));
                 task.setWorkerId(resultSet.getLong("worker_id"));
                 task.setEstimation(new Estimation(
-                        resultSet.getLong(8),
-                        resultSet.getInt(9),
-                        resultSet.getInt(10)));
+                        resultSet.getLong(4),
+                        resultSet.getInt(12),
+                        resultSet.getInt(13)));
                 task.setPriority(new Priority(
-                        resultSet.getByte(11),
-                        resultSet.getString(12)));
+                        resultSet.getByte(7),
+                        resultSet.getString(15)));
                 task.setStatus(new Status(
-                        resultSet.getByte(13),
-                        resultSet.getString(14)));
+                        resultSet.getByte(8),
+                        resultSet.getString(10)));
                 tasks.add(task);
             }
         } catch (SQLException e) {
