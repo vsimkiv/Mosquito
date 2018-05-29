@@ -6,6 +6,8 @@ import com.softserve.mosquito.entities.User;
 import com.softserve.mosquito.services.UserService;
 import com.softserve.mosquito.services.UserServiceImpl;
 import com.softserve.mosquito.validation.UserValidation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -23,7 +25,8 @@ public class IndexController {
     @GET
     @Produces(MediaType.TEXT_HTML)
     public String testIndex() {
-
+        Logger logger = LogManager.getLogger(IndexController.class);
+        logger.error("Test error");//TODO Logger test
         return "Hello Mosquito <br>" +
                 "<a href = \"/users\">Get users </a>";
     }
