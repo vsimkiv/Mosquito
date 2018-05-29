@@ -27,15 +27,19 @@ public class TaskController {
     @GET
     @Path("/workers")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getWorkerTasks(@QueryParam("worker_id") Long workerId) {
-        return Response.ok(taskService.getTasksByWorkerId(workerId)).build();
+    public Response getWorkerTasks(@QueryParam("worker_id") Long workerId,
+                                   @QueryParam("status_id") Long statusId,
+                                   @QueryParam("parent_id") Long parentId) {
+        return Response.ok(taskService.getTasksByParentAndWorkerAndStatus(parentId, workerId, statusId)).build();
     }
 
     @GET
     @Path("/owners")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getOwnerTasks(@QueryParam("owner_id") Long ownerId) {
-        return Response.ok(taskService.getTasksByOwnerId(ownerId)).build();
+    public Response getOwnerTasks(@QueryParam("owner_id") Long ownerId,
+                                  @QueryParam("status_id") Long statusId,
+                                  @QueryParam("parent_id") Long parentId) {
+        return Response.ok(taskService.getTasksByParentAndOwnerAndStatus(parentId, ownerId, statusId)).build();
     }
 
     @GET

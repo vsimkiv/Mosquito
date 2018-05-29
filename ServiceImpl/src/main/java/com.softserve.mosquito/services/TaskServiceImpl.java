@@ -22,27 +22,6 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> getTasksByOwnerId(Long ownerId) {
-        List<Task> tasks = taskRepo.readAll();
-        tasks.removeIf((Task task) -> !task.getOwnerId().equals(ownerId));
-        return tasks;
-    }
-
-    @Override
-    public List<Task> getTasksByWorkerId(Long workerId) {
-        List<Task> tasks = taskRepo.readAll();
-        tasks.removeIf((Task task) -> !task.getWorkerId().equals(workerId));
-        return tasks;
-    }
-
-    @Override
-    public List<Task> getSubTasks(Long parentTaskId) {
-        List<Task> tasks = taskRepo.readAll();
-        tasks.removeIf((Task task) -> !task.getParentId().equals(parentTaskId));
-        return tasks;
-    }
-
-    @Override
     public Task createTask(Task task) {
         return taskRepo.create(task);
     }
@@ -55,5 +34,85 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void removeTask(Task task) {
         taskRepo.delete(task);
+    }
+
+    @Override
+    public List<Task> getSubTasks(Long parentTaskId) {
+        List<Task> resultTasksList = taskRepo.readAll();
+        filterTasksByParent(resultTasksList, parentTaskId);
+        return resultTasksList;
+    }
+
+    @Override
+    public List<Task> getTasksByOwnerId(Long ownerId) {
+        List<Task> resultTasksList = taskRepo.readAll();
+        filterTasksByOwner(resultTasksList, ownerId);
+        return resultTasksList;
+    }
+
+    @Override
+    public List<Task> getTasksByWorkerId(Long workerId) {
+        List<Task> resultTasksList = taskRepo.readAll();
+        filterTasksByWorker(resultTasksList, workerId);
+        return resultTasksList;
+    }
+
+    @Override
+    public List<Task> getTasksByOwnerAndStatus(Long ownerId, Long statusId) {
+        List<Task> resultTasksList = getTasksByOwnerId(ownerId);
+        filterTasksByStatus(resultTasksList, statusId);
+        return resultTasksList;
+    }
+
+    @Override
+    public List<Task> getTasksByWorkerAndStatus(Long workerId, Long statusId) {
+        List<Task> resultTasksList = getTasksByWorkerId(workerId);
+        filterTasksByStatus(resultTasksList, statusId);
+        return resultTasksList;
+    }
+
+    @Override
+    public List<Task> getTasksByParentAndOwnerAndStatus(Long parentId, Long ownerId, Long statusId) {
+        List<Task> resultTasksList = taskRepo.readAll();
+        filterTasksByOwner(resultTasksList, ownerId);
+        filterTasksByParent(resultTasksList, parentId);
+        filterTasksByStatus(resultTasksList, statusId);
+        return resultTasksList;
+    }
+
+    @Override
+    public List<Task> getTasksByParentAndWorkerAndStatus(Long parentId, Long workerId, Long statusId) {
+        List<Task> resultTasksList = taskRepo.readAll();
+        filterTasksByWorker(resultTasksList, workerId);
+        filterTasksByParent(resultTasksList, parentId);
+        filterTasksByStatus(resultTasksList, statusId);
+        return resultTasksList;
+    }
+
+
+    private void filterTasksByParent(List<Task> tasks, Long parentTaskId) {
+        if(parentTaskId != null) {
+            tasks.removeIf((Task task) -> !task.getParentId().equals(parentTaskId));
+        } else {
+            tasks.removeIf((Task task) -> !task.getParentId().equals(0L));
+        }
+    }
+
+    private void filterTasksByStatus(List<Task> tasks, Long statusId) {
+        if(statusId != null) {
+            tasks.removeIf((Task task) -> !statusId.equals(new Long(task.getStatus().getId())));
+        }
+    }
+
+    private void filterTasksByWorker(List<Task> tasks, Long workerId) {
+        if(workerId != null) {
+            tasks.removeIf((Task task) -> !task.getWorkerId().equals(workerId));
+        }
+    }
+
+    private void filterTasksByOwner(List<Task> tasks, Long ownerId) {
+        if(ownerId != null) {
+            tasks.removeIf((Task task) -> !task.getWorkerId().equals(ownerId));
+        }
     }
 }

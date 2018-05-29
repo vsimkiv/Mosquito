@@ -21,4 +21,12 @@ public interface TaskService {
     Task updateTask(Task task);
 
     void removeTask(Task task);
+
+    List<Task> getTasksByOwnerAndStatus(Long ownerId, Long statusId);
+
+    List<Task> getTasksByWorkerAndStatus(Long workerId, Long statusId);
+
+    List<Task> getTasksByParentAndOwnerAndStatus(Long parentId, Long ownerId, Long statusId);
+
+    List<Task> getTasksByParentAndWorkerAndStatus(Long parentId, Long workerId, Long statusId);
 }
