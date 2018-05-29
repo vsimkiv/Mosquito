@@ -28,9 +28,8 @@ public class TaskController {
     @Path("/workers")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getWorkerTasks(@QueryParam("worker_id") Long workerId,
-                                   @QueryParam("status_id") Long statusId,
-                                   @QueryParam("parent_id") Long parentId) {
-        return Response.ok(taskService.getTasksByParentAndWorkerAndStatus(parentId, workerId, statusId)).build();
+                                   @QueryParam("status_id") Long statusId) {
+        return Response.ok(taskService.getTasksByWorkerAndStatus(workerId, statusId)).build();
     }
 
     @GET

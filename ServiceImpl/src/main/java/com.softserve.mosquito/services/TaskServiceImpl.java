@@ -66,7 +66,8 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<Task> getTasksByWorkerAndStatus(Long workerId, Long statusId) {
-        List<Task> resultTasksList = getTasksByWorkerId(workerId);
+        List<Task> resultTasksList = getAllTasks();
+        filterTasksByWorker(resultTasksList, workerId);
         filterTasksByStatus(resultTasksList, statusId);
         return resultTasksList;
     }
