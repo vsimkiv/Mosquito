@@ -3,8 +3,8 @@
 
   <Resource name="jdbc/mosquitoDB" 
   			type="javax.sql.DataSource"
-        maxWait="10000"
-        maxActive="3" maxTotal="3" initialSize="3" maxIdle="3" removeAbandonedTimeout="300" 
+        maxWait="-1"
+        maxActive="3" maxTotal="3" initialSize="3" maxIdle="3" removeAbandonedTimeout="900000" removeAbandoned="false"
         factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
         username="sql7234875" password="Th8hPT4tYH" 
         driverClassName="com.mysql.cj.jdbc.Driver"

@@ -35,7 +35,6 @@ public class TaskController {
     @Path("/owners")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getOwnerTasks(@QueryParam("owner_id") Long ownerId) {
-        System.out.println(ownerId);
         return Response.ok(taskService.getTasksByOwnerId(ownerId)).build();
     }
 
