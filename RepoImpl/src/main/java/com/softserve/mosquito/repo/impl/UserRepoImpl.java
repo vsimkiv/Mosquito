@@ -99,6 +99,7 @@ public class UserRepoImpl implements UserRepo {
     public List<User> readAll() {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(READ_ALL_USERS)) {
+            LOGGER.warn("loggger don`t work");
             return getData(preparedStatement.executeQuery());
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
