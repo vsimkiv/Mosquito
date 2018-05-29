@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -27,17 +28,18 @@ public class SpecializationRepoImpl implements SpecializationRepo {
     @Override
     public Specialization create(Specialization specialization) {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_SPECIALIZATION)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_SPECIALIZATION, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, specialization.getTitle());
-            preparedStatement.execute();
+            int affectedRows = preparedStatement.executeUpdate();
 
-            if (preparedStatement.executeUpdate() == 0)
+            if (affectedRows == 0)
                 LOGGER.error("Set up specialization was failed");
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-                if (generatedKeys.next())
+                if (generatedKeys.next()){
                     return read(generatedKeys.getLong(1));
-                else
+                } else {
                     LOGGER.error("Set up specialization was failed");
+                }
             }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
@@ -70,7 +72,7 @@ public class SpecializationRepoImpl implements SpecializationRepo {
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
         }
-        return specialization;
+        return null;
     }
 
     @Override
