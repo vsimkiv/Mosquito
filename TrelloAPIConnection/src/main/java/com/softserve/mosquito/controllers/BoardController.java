@@ -15,7 +15,7 @@ public class BoardController {
 
     public Board[] getAllBoards(){
         Board[] boards= null;
-        String urlGetAllBoards = "https://api.trello.com/1/members/if086softserve/boards?key=9097df69617e33b2dd4d9fe573570eac&token=b30aab2aa99bd68be5f45032ce63c5568363b2bac0a5c6088743270acdb02493";
+        String urlGetAllBoards = "https://impl.trello.com/1/members/if086softserve/boards?key=9097df69617e33b2dd4d9fe573570eac&token=b30aab2aa99bd68be5f45032ce63c5568363b2bac0a5c6088743270acdb02493";
 
         try {
 
@@ -39,7 +39,7 @@ public class BoardController {
 
     public List[] getListByBoard(String idBoard){
         List[] lists = null;
-        String urlGetListOfBoard = "https://api.trello.com/1/boards/"+idBoard+"/lists?cards=open&card_fields=name&fields=name&key=9097df69617e33b2dd4d9fe573570eac&token=b30aab2aa99bd68be5f45032ce63c5568363b2bac0a5c6088743270acdb02493";
+        String urlGetListOfBoard = "https://impl.trello.com/1/boards/"+idBoard+"/lists?cards=open&card_fields=name&fields=name&key=9097df69617e33b2dd4d9fe573570eac&token=b30aab2aa99bd68be5f45032ce63c5568363b2bac0a5c6088743270acdb02493";
 
         try {
 
@@ -63,7 +63,7 @@ public class BoardController {
 
     public Card[] getCardsByList(String idList){
         Card[] cards = null;
-        String urlGetCardsByList= "https://api.trello.com/1/lists/"+idList+"/cards?key=9097df69617e33b2dd4d9fe573570eac&token=b30aab2aa99bd68be5f45032ce63c5568363b2bac0a5c6088743270acdb02493";
+        String urlGetCardsByList= "https://impl.trello.com/1/lists/"+idList+"/cards?key=9097df69617e33b2dd4d9fe573570eac&token=b30aab2aa99bd68be5f45032ce63c5568363b2bac0a5c6088743270acdb02493";
 
         try {
 
