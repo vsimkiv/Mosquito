@@ -1,5 +1,6 @@
 package com.softserve.mosquito.services.api;
 
+import com.softserve.mosquito.dtos.TaskCreateDto;
 import com.softserve.mosquito.entities.Task;
 
 import java.util.List;
@@ -10,23 +11,27 @@ public interface TaskService {
 
     Task getTaskById(Long id);
 
-    List<Task> getTasksByOwnerId(Long ownerId);
-
-    List<Task> getTasksByWorkerId(Long workerId);
-
-    List<Task> getSubTasks(Long parentTaskId);
-
-    Task createTask(Task task);
+    Task createTask(TaskCreateDto taskCreateDto);
 
     Task updateTask(Task task);
 
+    void removeTask(Task task);
+
+    List<Task> getTasksByOwner(Long ownerId);
+
+    List<Task> getTasksByWorker(Long workerId);
+
+
     void removeTask(Long id);
 
-    List<Task> getTasksByOwnerAndStatus(Long ownerId, Long statusId);
+    List<Task> getSubTasks(Long parentTaskId);
 
-    List<Task> getTasksByWorkerAndStatus(Long workerId, Long statusId);
 
-    List<Task> getTasksByParentAndOwnerAndStatus(Long parentId, Long ownerId, Long statusId);
+    List<Task> getTasksByOwnerAndStatus(Long ownerId, Byte statusId);
 
-    List<Task> getTasksByParentAndWorkerAndStatus(Long parentId, Long workerId, Long statusId);
+    List<Task> getTasksByWorkerAndStatus(Long workerId, Byte statusId);
+
+    List<Task> getTasksByOwnerAndStatusAndParent(Long parentId, Long ownerId, Byte statusId);
+
+    List<Task> getTasksByWorkerAndStatusAndParent(Long parentId, Long workerId, Byte statusId);
 }

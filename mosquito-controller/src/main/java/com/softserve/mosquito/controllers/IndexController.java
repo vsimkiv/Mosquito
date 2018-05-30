@@ -24,8 +24,6 @@ public class IndexController {
     @GET
     @Produces(MediaType.TEXT_HTML)
     public String testIndex() {
-        Logger logger = LogManager.getLogger(IndexController.class);
-        logger.error("Test error");//TODO Logger test
         return "Hello Mosquito <br>" +
                 "<a href = \"/users\">Get users </a>";
     }
