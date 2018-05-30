@@ -6,14 +6,15 @@ package com.softserve.mosquito.dtos;
 
 public class UserLoginDto {
 
+	private Long userId;
 	private String email;
-
 	private String password;
 
 	public UserLoginDto() {
 	}
 
-    public UserLoginDto(String email, String password) {
+    public UserLoginDto(Long userId, String email, String password) {
+		this.userId = userId;
 		this.email = email;
 		this.password = password;
 	}
@@ -33,6 +34,9 @@ public class UserLoginDto {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
 
+
+	public Long getUserId() { return userId; }
+
+	public void setUserId(Long userId) { this.userId = userId; }
 }

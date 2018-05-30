@@ -7,10 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -29,14 +26,14 @@ public class EstimationRepoImpl implements EstimationRepo {
             "DELETE FROM estimations WHERE id=?;";
 
     private static final String READ_ESTIMATION =
-            "SELECT * FROM estimations e LEFT JOIN log_works l ON e.id=l.estimation_id  WHERE id=?;";
+            "SELECT * FROM estimations e LEFT JOIN log_works l ON e.id=l.estimation_id  WHERE e.id=?;";
     private static final String READ_ALL_ESTIMATIONS = "SELECT * FROM estimations " +
             "LEFT JOIN log_works USING(id);";
 
     @Override
     public Estimation create(Estimation estimation) {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_ESTIMATION)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_ESTIMATION, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setInt(1, estimation.getEstimation());
             preparedStatement.setInt(2, estimation.getRemaining());
             preparedStatement.execute();
