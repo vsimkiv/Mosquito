@@ -8,7 +8,6 @@ public interface UserService {
 
     User createUser(User user);
 
-
     User getUserById(Long id);
 
     User updateUser(User user);
@@ -16,7 +15,6 @@ public interface UserService {
     void removeUser(User user);
 
     List<User> getAllUsers();
-
 
     User getUserByEmail(String email);
 }
