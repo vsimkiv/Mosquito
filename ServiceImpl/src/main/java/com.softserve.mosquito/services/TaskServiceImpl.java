@@ -101,7 +101,7 @@ public class TaskServiceImpl implements TaskService {
 
     private void filterTasksByStatus(List<Task> tasks, Long statusId) {
         if(statusId != null) {
-            tasks.removeIf((Task task) -> !statusId.equals(new Long(task.getStatus().getId())));
+            tasks.removeIf((Task task) -> !statusId.equals(Long.valueOf(task.getStatus().getId())));
         }
     }
 
