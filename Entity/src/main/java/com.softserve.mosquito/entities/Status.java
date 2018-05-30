@@ -7,17 +7,11 @@ public final class Status {
     public Status() {
     }
 
-    public Status(Byte id, String title) {
-        this.id = id;
+    public Status(String title) {
         this.title = title;
     }
 
-    public Status(Byte id) {
-        this.id = id;
-    }
-
-    /// What it is?
-    public Status(Byte id, String title, Boolean byDefault) {
+    public Status(Byte id, String title) {
         this.id = id;
         this.title = title;
     }

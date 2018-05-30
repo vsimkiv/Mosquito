@@ -45,7 +45,6 @@ public class SpecializationServiceImpl implements SpecializationService{
     @Override
     public SpecializationDto createSpecialization(SpecializationCreateDto specialization){
         Specialization createdSpecialization = specializationRepo.create(specializationCreateTransformer.toEntity(specialization));
-        System.out.println("Servise: " + createdSpecialization);
         if(createdSpecialization == null){
             return null;
         }

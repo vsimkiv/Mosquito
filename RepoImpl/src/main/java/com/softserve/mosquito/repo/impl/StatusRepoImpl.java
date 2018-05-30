@@ -7,10 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -28,11 +25,11 @@ public class StatusRepoImpl implements StatusRepo {
     @Override
     public Status create(Status status) {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_STATUS)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_STATUS, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, status.getTitle());
-            preparedStatement.execute();
+            int affectedRow = preparedStatement.executeUpdate();
 
-            if (preparedStatement.executeUpdate() == 0)
+            if (affectedRow == 0)
                 LOGGER.error("Creating status failed");
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next())
