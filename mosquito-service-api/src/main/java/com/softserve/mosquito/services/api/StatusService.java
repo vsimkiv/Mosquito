@@ -14,5 +14,5 @@ public interface StatusService {
 
     StatusDto updateStatus(StatusDto statusDto);
 
-    void removeStatus(StatusDto statusForDelete);
+    void removeStatus(Long id);
 }

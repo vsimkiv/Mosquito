@@ -1,6 +1,8 @@
 package com.softserve.mosquito.controllers;
 
 import com.softserve.mosquito.dtos.CommentCreateDto;
+import com.softserve.mosquito.entities.Comment;
+import com.softserve.mosquito.impl.CommentTransformer;
 import com.softserve.mosquito.services.api.CommentService;
 import com.softserve.mosquito.services.impl.CommentServiceImpl;
 
@@ -9,48 +11,53 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-@Path("/")
+@Path("/task")
 public class CommentController {
 
     private CommentService service = new CommentServiceImpl();
 
     @POST
-    @Path("/tasks/{task_id}/comments")
+    @Path("/{task_id}/comments")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createComment(@PathParam("task_id") Long taskId, CommentCreateDto commentDto) {
-        //TODO: For testing. Use CommentService.create(CommentCreateDto)
-        return Response.ok().entity(service.save(null)).build();
+    public Response createComment(CommentCreateDto commentDto) {
+        Comment comment = new CommentTransformer.CommentCreate().toEntity(commentDto);
+        System.out.println(comment);
+        return Response
+                .ok()
+                .entity(service.save(comment))
+                .build();
     }
 
     @GET
-    @Path("tasks/{task_id}/comments")
+    @Path("/{task_id}/comments")
     @Produces({MediaType.APPLICATION_JSON})
     public Response getCommentsByTaskId(@PathParam("task_id") Long taskId) {
-        //TODO: For testing. Use CommentService.getCommentsByTaskId(id)
-        return Response.ok().entity(service.getComment(taskId)).build();
+        return Response
+                .ok()
+                .entity(service.getComment(taskId))
+                .build();
     }
 
-//    @GET
-//    @Path("/comments/{commentId}")
-//    @Produces({MediaType.APPLICATION_JSON})
-//    public Response getCommentByCommentId(@PathParam("commentId") Long commentId) {
-//        //TODO: For testing. Use CommentService.getCommentByCommentId(id)
-//        return Response.status(Status.OK).build();
-//    }
-
     @PUT
-    @Path("/comments/{comment_id}")
+    @Path("/{comment_id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON})
-    public Response updateComment(@PathParam("comment_id") Long commentId, CommentCreateDto commentUpdateDto) {
-        //TODO: For testing. Use CommentService.updateComment(commentUpdateDto)
-        return Response.status(Status.OK).build();
+    public Response updateComment(@PathParam("comment_id")Long commentId, Comment comment) {
+        comment.setId(commentId);
+        System.out.println(comment);
+        return Response
+                .ok()
+                .entity(service.update(comment))
+                .build();
     }
 
     @DELETE
-    @Path("/comments/{commentId}")
+    @Path("/{commentId}")
     public Response deleteComments(@PathParam("commentId") Long commentId) {
-        //TODO: For testing. Use CommentService.deleteComment(id)
-        return Response.status(Status.OK).build();
+        service.delete(commentId);
+        return Response
+                .ok()
+                .build();
+
     }
 }

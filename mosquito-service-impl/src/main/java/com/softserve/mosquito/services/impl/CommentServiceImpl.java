@@ -11,6 +11,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment save(Comment comment) {
+        System.out.println(comment);
         return repo.create(comment);
     }
 
@@ -21,11 +22,12 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment update(Comment comment) {
+        System.out.println(comment);
         return repo.update(comment);
     }
 
     @Override
-    public void delete(Comment comment) {
-        repo.delete(comment);
+    public void delete(Long id) {
+        repo.delete(id);
     }
 }

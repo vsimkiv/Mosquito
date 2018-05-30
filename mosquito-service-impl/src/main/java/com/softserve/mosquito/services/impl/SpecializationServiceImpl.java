@@ -62,7 +62,7 @@ public class SpecializationServiceImpl implements SpecializationService {
     }
 
     @Override
-    public void removeSpecialization(SpecializationDto specialization){
-        specializationRepo.delete(specializationGenericTransformer.toEntity(specialization));
+    public void removeSpecialization(Long id){
+        specializationRepo.delete(id);
     }
 }

@@ -22,8 +22,8 @@ public class UserServiceImpl implements com.softserve.mosquito.services.api.User
     }
 
     @Override
-    public void removeUser(User user) {
-        userRepo.delete(user);
+    public void removeUser(Long id) {
+        userRepo.delete(id);
     }
 
     @Override

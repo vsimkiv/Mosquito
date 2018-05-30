@@ -85,10 +85,10 @@ public class EstimationRepoImpl implements EstimationRepo {
     }
 
     @Override
-    public void delete(Estimation estimation) {
+    public void delete(Long id) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_ESTIMATION)) {
-            preparedStatement.setLong(1, estimation.getId());
+            preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());

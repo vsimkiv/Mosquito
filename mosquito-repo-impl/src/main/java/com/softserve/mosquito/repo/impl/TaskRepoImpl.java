@@ -96,10 +96,10 @@ public class TaskRepoImpl implements TaskRepo {
     }
 
     @Override
-    public void delete(Task task) {
+    public void delete(Long id) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_TASK)) {
-            preparedStatement.setLong(1, task.getId());
+            preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);

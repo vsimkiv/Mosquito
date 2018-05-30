@@ -60,10 +60,8 @@ public class StatusController {
 
     @DELETE
     @Path("/{status_id}")
-    public Response deletePriority(@PathParam("status_id") Byte id) {
-        StatusDto statusForRemove = new StatusDto();
-        statusForRemove.setId(id);
-        statusService.removeStatus(statusForRemove);
+    public Response deletePriority(@PathParam("status_id") Long id) {
+        statusService.removeStatus(id);
 
         return Response.status(Status.OK).build();
     }

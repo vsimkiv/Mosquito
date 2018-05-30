@@ -35,7 +35,7 @@ public class SpecializationRepoImpl implements SpecializationRepo {
             if (affectedRows == 0)
                 LOGGER.error("Set up specialization was failed");
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-                if (generatedKeys.next()){
+                if (generatedKeys.next()) {
                     return read(generatedKeys.getLong(1));
                 } else {
                     LOGGER.error("Set up specialization was failed");
@@ -76,10 +76,10 @@ public class SpecializationRepoImpl implements SpecializationRepo {
     }
 
     @Override
-    public void delete(Specialization specialization) {
+    public void delete(Long id) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SPECIALIZATION)) {
-            preparedStatement.setByte(1, specialization.getId());
+            preparedStatement.setByte(1, Byte.parseByte(String.valueOf(id)));
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());

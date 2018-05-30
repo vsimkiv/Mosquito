@@ -26,7 +26,7 @@ public class CommentRepoImpl implements CommentRepo {
             "UPDATE comments SET text=? WHERE id=?;";
     private static final String DELETE_COMMENT =
             "DELETE FROM comments WHERE id=?";
-    private static final String READ_COMMENT = "SELECT * FROM comments WHERE id=?;";
+    private static final String READ_COMMENT = "SELECT * FROM comments WHERE task_id=?;";
     private static final String READ_ALL_COMMENTS = "SELECT * FROM comments;";
 
     @Override
@@ -36,7 +36,6 @@ public class CommentRepoImpl implements CommentRepo {
             preparedStatement.setString(1, comment.getText());
             preparedStatement.setLong(2, comment.getTaskId());
             preparedStatement.setLong(3, comment.getAuthorId());
-            preparedStatement.execute();
 
             if (preparedStatement.executeUpdate() == 0)
                 LOGGER.error("Creating comment was failed");
@@ -54,11 +53,11 @@ public class CommentRepoImpl implements CommentRepo {
 
     @Override
     public Comment read(Long id) {
-
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(READ_COMMENT)) {
             preparedStatement.setLong(1, id);
             List<Comment> comments = parseData(preparedStatement.executeQuery());
+            System.out.println(comments.toString());
             if (!comments.isEmpty())
                 return comments.iterator().next();
         } catch (SQLException e) {
@@ -82,10 +81,10 @@ public class CommentRepoImpl implements CommentRepo {
     }
 
     @Override
-    public void delete(Comment comment) {
+    public void delete(Long id) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_COMMENT)) {
-            preparedStatement.setLong(1, comment.getId());
+            preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());

@@ -49,7 +49,7 @@ public class UserController {
 	@DELETE
 	@Path("/{userId}")
 	public Response deleteUserById(@PathParam("userId") long userId) {
-        userService.removeUser(userService.getUserById(userId));
+        userService.removeUser(userId);
         return Response.ok().build();
 	}
 	

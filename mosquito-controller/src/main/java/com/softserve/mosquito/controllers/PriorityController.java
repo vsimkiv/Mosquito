@@ -60,10 +60,8 @@ public class PriorityController {
 
     @DELETE
     @Path("/{id}")
-    public Response deletePriority(@PathParam("id") Byte id) {
-        PriorityDto priorityForRemove = new PriorityDto();
-        priorityForRemove.setId(id);
-        priorityService.removePriority(priorityForRemove);
+    public Response deletePriority(@PathParam("id") Long id) {
+        priorityService.removePriority(id);
 
         return Response.status(Status.OK).build();
     }

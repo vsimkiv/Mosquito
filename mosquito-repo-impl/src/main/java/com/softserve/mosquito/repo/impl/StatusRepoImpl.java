@@ -72,10 +72,10 @@ public class StatusRepoImpl implements StatusRepo {
     }
 
     @Override
-    public void delete(Status status) {
+    public void delete(Long id) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_STATUS)) {
-            preparedStatement.setByte(1, status.getId());
+            preparedStatement.setByte(1, Byte.parseByte(String.valueOf(id)));
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());

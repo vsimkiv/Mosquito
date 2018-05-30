@@ -20,7 +20,7 @@ public interface TaskService {
 
     Task updateTask(Task task);
 
-    void removeTask(Task task);
+    void removeTask(Long id);
 
     List<Task> getTasksByOwnerAndStatus(Long ownerId, Long statusId);
 

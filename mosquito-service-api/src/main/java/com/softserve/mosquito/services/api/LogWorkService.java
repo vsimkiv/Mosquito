@@ -12,7 +12,7 @@ public interface LogWorkService {
 
     LogWork updateLogWork(LogWork logWork);
 
-    void removeLogWork(LogWork logWork);
+    void removeLogWork(Long id);
 
     List<LogWork> getAllLogWork();
 

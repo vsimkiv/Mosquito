@@ -70,10 +70,8 @@ public class SpecializationController {
 
     @DELETE
     @Path("/{specialization_id}")
-    public Response removeSpecialization(@PathParam("specialization_id") Byte specialization_id){
-        SpecializationDto specializationForRemove = new SpecializationDto();
-        specializationForRemove.setId(specialization_id);
-        specializationService.removeSpecialization(specializationForRemove);
+    public Response removeSpecialization(@PathParam("specialization_id") Long specialization_id){
+        specializationService.removeSpecialization(specialization_id);
         return Response.status(Status.OK).build();
     }
 

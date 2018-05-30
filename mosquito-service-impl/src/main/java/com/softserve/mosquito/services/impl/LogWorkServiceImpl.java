@@ -23,7 +23,7 @@ public class LogWorkServiceImpl implements LogWorkService {
     public LogWork updateLogWork(LogWork logWork) { return logWorkRepo.update(logWork);}
 
     @Override
-    public void removeLogWork(LogWork logWork) { logWorkRepo.delete(logWork); }
+    public void removeLogWork(Long id) { logWorkRepo.delete(id); }
 
     @Override
     public List<LogWork> getAllLogWork() { return logWorkRepo.readAll(); }
