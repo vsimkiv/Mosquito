@@ -1,5 +1,6 @@
 package com.softserve.mosquito.controllers;
 
+import com.softserve.mosquito.dtos.UserDto;
 import com.softserve.mosquito.dtos.UserLoginDto;
 import com.softserve.mosquito.dtos.UserRegistrationDto;
 import com.softserve.mosquito.entities.User;
@@ -38,6 +39,7 @@ public class IndexController {
     public Response login(@Valid UserLoginDto userLoginDto, @Context HttpServletRequest request) {
        if(validation.isValidCredentials(userLoginDto)) {
     	   // Start session with authorized user
+           //TODO: use UserDto instead of User as a return type
     	   User user = userService.getUserByEmail(userLoginDto.getEmail());
     	   HttpSession session = request.getSession();
     	   session.setAttribute("user_id", user.getId());

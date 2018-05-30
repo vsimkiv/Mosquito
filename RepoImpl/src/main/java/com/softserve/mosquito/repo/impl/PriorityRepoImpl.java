@@ -6,10 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,11 +24,11 @@ public class PriorityRepoImpl implements PriorityRepo {
     @Override
     public Priority create(Priority priority) {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_PRIORITY)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_PRIORITY, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, priority.getTitle());
-            preparedStatement.execute();
+            int affectedRows = preparedStatement.executeUpdate();
 
-            if (preparedStatement.executeUpdate() == 0)
+            if (affectedRows == 0)
                 LOGGER.error("Set up priority was failed");
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next())
@@ -87,7 +84,7 @@ public class PriorityRepoImpl implements PriorityRepo {
     @Override
     public List<Priority> readAll() {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_PRIORITY)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(READ_ALL_PRIORITIES)) {
             return parsData(preparedStatement.executeQuery());
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());

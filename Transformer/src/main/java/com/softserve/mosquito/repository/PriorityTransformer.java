@@ -2,11 +2,12 @@ package com.softserve.mosquito.repository;
 
 import com.softserve.mosquito.api.Transformer;
 import com.softserve.mosquito.dtos.PriorityCreateDto;
+import com.softserve.mosquito.dtos.PriorityDto;
 import com.softserve.mosquito.entities.Priority;
 
 public class PriorityTransformer {
 
-    static class PriorityCreate implements Transformer<Priority,PriorityCreateDto>{
+    public static class PriorityCreate implements Transformer<Priority,PriorityCreateDto>{
 
         @Override
         public Priority toEntity(PriorityCreateDto priorityCreateDto) {
@@ -16,6 +17,19 @@ public class PriorityTransformer {
         @Override
         public PriorityCreateDto toDTO(Priority priority) {
             return new PriorityCreateDto(priority.getTitle());
+        }
+    }
+
+    public static class PriorityGeneric implements Transformer<Priority,PriorityDto>{
+
+        @Override
+        public Priority toEntity(PriorityDto priorityDto) {
+            return new Priority(priorityDto.getId(), priorityDto.getTitle());
+        }
+
+        @Override
+        public PriorityDto toDTO(Priority priority) {
+            return new PriorityDto(priority.getId(), priority.getTitle());
         }
     }
 

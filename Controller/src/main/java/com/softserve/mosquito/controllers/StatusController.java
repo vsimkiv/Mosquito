@@ -60,7 +60,6 @@ public class StatusController {
 
     @DELETE
     @Path("/{status_id}")
-    @Consumes(MediaType.APPLICATION_JSON)
     public Response deletePriority(@PathParam("status_id") Byte id) {
         StatusDto statusForRemove = new StatusDto();
         statusForRemove.setId(id);
