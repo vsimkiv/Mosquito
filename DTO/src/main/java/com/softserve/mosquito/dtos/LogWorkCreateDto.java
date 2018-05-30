@@ -4,16 +4,16 @@ public class LogWorkCreateDto {
     private String description;
     private Long userId;
     private int logged;
-    private int remaining;
+    private Long estimationId;
 
     public LogWorkCreateDto() {
     }
 
-    public LogWorkCreateDto(String description, Long userId, int logged, int remaining) {
+    public LogWorkCreateDto(String description, Long userId, int logged, Long estimationId) {
         this.description = description;
         this.userId = userId;
         this.logged = logged;
-        this.remaining = remaining;
+        this.estimationId = estimationId;
     }
 
     public String getDescription() {
@@ -40,13 +40,7 @@ public class LogWorkCreateDto {
         this.userId = userId;
     }
 
-    public int getRemaining() {
-        return remaining;
-    }
+    public Long getEstimationId() { return estimationId; }
 
-    public void setRemaining(int remaining) {
-        this.remaining = remaining;
-    }
-
-
+    public void setEstimationId(Long estimationId) { this.estimationId = estimationId; }
 }

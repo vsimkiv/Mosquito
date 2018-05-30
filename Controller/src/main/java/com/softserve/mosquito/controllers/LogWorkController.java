@@ -8,11 +8,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-@Path("/task-log-works")
+@Path("/tasks/{task_id}")
 public class LogWorkController {
 
     @GET
-    @Path("/{task_id}")
+    @Path("/log-works")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getLogWorksForTask(@PathParam("task_id") Long taskId) {
         //TODO: Change. For testing.
