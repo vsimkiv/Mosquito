@@ -34,7 +34,7 @@ public class EstimationRepoImpl implements EstimationRepo {
     public Estimation create(Estimation estimation) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(CREATE_ESTIMATION, Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setInt(1, estimation.getEstimation());
+            preparedStatement.setInt(1, estimation.getTimeEstimation());
             preparedStatement.setInt(2, estimation.getRemaining());
             preparedStatement.execute();
 
@@ -71,7 +71,7 @@ public class EstimationRepoImpl implements EstimationRepo {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_ESTIMATION)) {
             preparedStatement.setLong(3, estimation.getId());
-            preparedStatement.setInt(1, estimation.getEstimation());
+            preparedStatement.setInt(1, estimation.getTimeEstimation());
             preparedStatement.setInt(2, estimation.getRemaining());
 
             if (preparedStatement.executeUpdate() > 0)
