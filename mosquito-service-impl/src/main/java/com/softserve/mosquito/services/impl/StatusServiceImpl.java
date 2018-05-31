@@ -63,7 +63,7 @@ public class StatusServiceImpl implements StatusService {
         return statusGenericTransformer.toDTO(updatedStatus);
     }
 
-    public void removeStatus(StatusDto statusForDelete){
-        statusRepo.delete(statusGenericTransformer.toEntity(statusForDelete));
+    public void removeStatus(Long id){
+        statusRepo.delete(id);
     }
 }

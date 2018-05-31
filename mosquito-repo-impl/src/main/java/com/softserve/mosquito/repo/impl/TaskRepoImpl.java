@@ -9,10 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -39,9 +36,12 @@ public class TaskRepoImpl implements TaskRepo {
     @Override
     public Task create(Task task) {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_TASK)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_TASK, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, task.getName());
-            preparedStatement.setLong(2, task.getParentId());
+            if(task.getParentId() != null)
+                preparedStatement.setLong(2, task.getParentId());
+            else
+                preparedStatement.setNull(2, Types.BIGINT);
             preparedStatement.setLong(3, task.getOwnerId());
             preparedStatement.setLong(4, task.getWorkerId());
             preparedStatement.setLong(5, task.getEstimation().getId());
@@ -57,6 +57,8 @@ public class TaskRepoImpl implements TaskRepo {
                     LOGGER.error("Creating task failed, no ID obtained.");
             }
         } catch (SQLException e) {
+            LOGGER.error("SQL error:" + e.getMessage(), e);
+        } catch (Exception e){
             LOGGER.error(e.getMessage(), e);
         }
         return null;
@@ -96,10 +98,10 @@ public class TaskRepoImpl implements TaskRepo {
     }
 
     @Override
-    public void delete(Task task) {
+    public void delete(Long id) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_TASK)) {
-            preparedStatement.setLong(1, task.getId());
+            preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);

@@ -1,6 +1,9 @@
 package com.softserve.mosquito.controllers;
 
+import com.softserve.mosquito.api.Transformer;
 import com.softserve.mosquito.dtos.TaskCreateDto;
+import com.softserve.mosquito.entities.Task;
+import com.softserve.mosquito.impl.TaskTransformer;
 import com.softserve.mosquito.services.api.TaskService;
 import com.softserve.mosquito.services.impl.TaskServiceImpl;
 
@@ -19,15 +22,15 @@ public class TaskController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createSubTaskOrProject(TaskCreateDto taskCreateDto) {
-        //TODO: Change. For testing.
-        return Response.status(Status.OK).build();
+        Task task = taskService.createTask(taskCreateDto);
+        return Response.status(Status.CREATED).entity(task).build();
     }
 
     @GET
     @Path("/workers")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getWorkerTasks(@QueryParam("worker_id") Long workerId,
-                                   @QueryParam("status_id") Long statusId) {
+                                   @QueryParam("status_id") Byte statusId) {
         return Response.ok(taskService.getTasksByWorkerAndStatus(workerId, statusId)).build();
     }
 
@@ -35,9 +38,9 @@ public class TaskController {
     @Path("/owners")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getOwnerTasks(@QueryParam("owner_id") Long ownerId,
-                                  @QueryParam("status_id") Long statusId,
+                                  @QueryParam("status_id") Byte statusId,
                                   @QueryParam("parent_id") Long parentId) {
-        return Response.ok(taskService.getTasksByParentAndOwnerAndStatus(parentId, ownerId, statusId)).build();
+        return Response.ok(taskService.getTasksByOwnerAndStatusAndParent(parentId, ownerId, statusId)).build();
     }
 
     @GET
@@ -76,7 +79,7 @@ public class TaskController {
     @GET
     @Path("/statuses")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTaskByStatus(@QueryParam("task_status") Long statusId) {
+    public Response getTaskByStatus(@QueryParam("task_status") Byte statusId) {
         //TODO: Change. For testing.
         return Response.status(Status.OK).build();
     }

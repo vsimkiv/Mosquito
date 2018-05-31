@@ -71,10 +71,10 @@ public class PriorityRepoImpl implements PriorityRepo {
     }
 
     @Override
-    public void delete(Priority priority) {
+    public void delete(Long id) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_PRIORITY)) {
-            preparedStatement.setByte(1, priority.getId());
+            preparedStatement.setByte(1, Byte.parseByte(String.valueOf(id)));
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());

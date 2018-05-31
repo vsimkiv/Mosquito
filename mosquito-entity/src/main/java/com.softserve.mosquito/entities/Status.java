@@ -9,6 +9,10 @@ public final class Status implements Serializable {
     public Status() {
     }
 
+    public Status(Byte id) {
+        this.id = id;
+    }
+
     public Status(String title) {
         this.title = title;
     }

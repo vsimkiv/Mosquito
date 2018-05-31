@@ -6,6 +6,7 @@ import com.softserve.mosquito.dtos.Board;
 import com.softserve.mosquito.dtos.Card;
 import com.softserve.mosquito.dtos.List;
 
+import com.sun.javafx.binding.StringFormatter;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
@@ -13,9 +14,23 @@ import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
 public class BoardController {
 
+    private Long userID = 1L;
+    private String userName = "if086softserve";
+    private String userKey = "9097df69617e33b2dd4d9fe573570eac";
+    private String userToken = "b30aab2aa99bd68be5f45032ce63c5568363b2bac0a5c6088743270acdb02493";
+
+    public Long getUserID() {
+        return userID;
+    }
+
+    public void setUserID(Long userID) {
+        this.userID = userID;
+    }
+
     public Board[] getAllBoards(){
         Board[] boards= null;
-        String urlGetAllBoards = "https://impl.trello.com/1/members/if086softserve/boards?key=9097df69617e33b2dd4d9fe573570eac&token=b30aab2aa99bd68be5f45032ce63c5568363b2bac0a5c6088743270acdb02493";
+        String urlGetAllBoards = String.format("https://impl.trello.com/1/members/%s/boards?key=%s&token=%s",
+                userName, userKey, userToken);
 
         try {
 
@@ -39,7 +54,8 @@ public class BoardController {
 
     public List[] getListByBoard(String idBoard){
         List[] lists = null;
-        String urlGetListOfBoard = "https://impl.trello.com/1/boards/"+idBoard+"/lists?cards=open&card_fields=name&fields=name&key=9097df69617e33b2dd4d9fe573570eac&token=b30aab2aa99bd68be5f45032ce63c5568363b2bac0a5c6088743270acdb02493";
+        String urlGetListOfBoard = String.format("https://impl.trello.com/1/boards/%s/lists?cards=open&card_fields=name&fields=name&key=%s&token=%s",
+                idBoard, userKey, userToken);
 
         try {
 
@@ -63,7 +79,8 @@ public class BoardController {
 
     public Card[] getCardsByList(String idList){
         Card[] cards = null;
-        String urlGetCardsByList= "https://impl.trello.com/1/lists/"+idList+"/cards?key=9097df69617e33b2dd4d9fe573570eac&token=b30aab2aa99bd68be5f45032ce63c5568363b2bac0a5c6088743270acdb02493";
+        String urlGetCardsByList= String.format("https://impl.trello.com/1/lists/%s/cards?key=%s&token=%s",
+                idList, userKey, userToken);
 
         try {
 

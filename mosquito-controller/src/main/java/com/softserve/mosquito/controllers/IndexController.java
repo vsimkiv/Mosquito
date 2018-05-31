@@ -24,8 +24,6 @@ public class IndexController {
     @GET
     @Produces(MediaType.TEXT_HTML)
     public String testIndex() {
-        Logger logger = LogManager.getLogger(IndexController.class);
-        logger.error("Test error");//TODO Logger test
         return "Hello Mosquito <br>" +
                 "<a href = \"/users\">Get users </a>";
     }
@@ -63,7 +61,7 @@ public class IndexController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response registration(@Valid UserRegistrationDto user){
 
-        if (validation.registerValidation(user))
+        if (validation.isRegistrationValid(user))
             return Response.ok().entity(user).build();
 
         return  Response.status(Response.Status.FORBIDDEN).entity(user).build();

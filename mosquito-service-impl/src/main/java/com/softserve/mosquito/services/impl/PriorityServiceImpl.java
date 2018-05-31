@@ -69,7 +69,7 @@ public class PriorityServiceImpl implements PriorityService {
     }
 
     @Override
-    public void removePriority(PriorityDto priorityForDelete){
-        priorityRepo.delete(priorityGenericTransformer.toEntity(priorityForDelete));
+    public void removePriority(Long id){
+        priorityRepo.delete(id);
     }
 }

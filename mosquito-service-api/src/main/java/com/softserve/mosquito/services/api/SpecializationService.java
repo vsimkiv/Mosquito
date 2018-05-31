@@ -15,5 +15,5 @@ public interface SpecializationService {
 
     SpecializationDto updateSpecialization(SpecializationDto specialization);
 
-    void removeSpecialization(SpecializationDto specialization);
+    void removeSpecialization(Long id);
 }

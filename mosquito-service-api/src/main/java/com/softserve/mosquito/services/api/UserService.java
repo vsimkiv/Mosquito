@@ -8,15 +8,13 @@ public interface UserService {
 
     User createUser(User user);
 
-
     User getUserById(Long id);
 
     User updateUser(User user);
 
-    void removeUser(User user);
+    void removeUser(Long id);
 
     List<User> getAllUsers();
-
 
     User getUserByEmail(String email);
 }

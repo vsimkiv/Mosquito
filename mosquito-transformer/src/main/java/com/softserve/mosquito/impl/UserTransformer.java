@@ -19,6 +19,7 @@ public class UserTransformer {
         @Override
         public UserLoginDto toDTO(User user) {
             return new UserLoginDto(
+                    user.getId(),
                     user.getEmail(),
                     user.getPassword());
         }

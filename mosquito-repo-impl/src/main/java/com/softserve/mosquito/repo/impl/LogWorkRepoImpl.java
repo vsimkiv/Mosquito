@@ -85,10 +85,10 @@ public class LogWorkRepoImpl implements LogWorkRepo {
     }
 
     @Override
-    public void delete(LogWork logWork) {
+    public void delete(Long id) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_LOG_WORK)) {
-            preparedStatement.setLong(1, logWork.getId());
+            preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());

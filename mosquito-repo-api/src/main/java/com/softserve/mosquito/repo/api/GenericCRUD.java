@@ -10,7 +10,7 @@ public interface GenericCRUD<E extends Serializable> {
 
     E update(E entity);
 
-    void delete(E entity);
+    void delete(Long id);
 
     List<E> readAll();
 }
