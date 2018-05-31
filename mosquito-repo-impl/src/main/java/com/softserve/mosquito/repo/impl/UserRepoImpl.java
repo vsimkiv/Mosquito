@@ -14,7 +14,15 @@ import java.util.List;
 public class UserRepoImpl implements UserRepo {
 
     private static final Logger LOGGER = LogManager.getLogger(UserRepoImpl.class);
-    private DataSource dataSource = MySqlDataSource.getDataSource();
+    private DataSource dataSource;
+
+    public UserRepoImpl() {
+        dataSource = MySqlDataSource.getDataSource();
+    }
+
+    public UserRepoImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     private static final String CREATE_USER =
             "INSERT INTO users (email, password, first_name, last_name) VALUES (?, ?, ?, ?)";
@@ -24,7 +32,6 @@ public class UserRepoImpl implements UserRepo {
     private static final String READ_USER = "SELECT * FROM users WHERE id = ?";
     private static final String READ_ALL_USERS = "SELECT * FROM users";
     private static final String READ_USER_BY_EMAIL = "SELECT * FROM users WHERE email = ?";
-
 
     @Override
     public User create(User user) {
@@ -99,7 +106,6 @@ public class UserRepoImpl implements UserRepo {
     public List<User> readAll() {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(READ_ALL_USERS)) {
-            LOGGER.warn("loggger don`t work");
             return getData(preparedStatement.executeQuery());
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
