@@ -7,6 +7,10 @@ import com.softserve.mosquito.entities.Priority;
 
 public class PriorityTransformer {
 
+    private PriorityTransformer() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static class PriorityCreate implements Transformer<Priority,PriorityCreateDto>{
 
         @Override
@@ -24,12 +28,14 @@ public class PriorityTransformer {
 
         @Override
         public Priority toEntity(PriorityDto priorityDto) {
-            return new Priority(priorityDto.getId(), priorityDto.getTitle());
+            return new Priority(priorityDto.getId(),
+                    priorityDto.getTitle());
         }
 
         @Override
         public PriorityDto toDTO(Priority priority) {
-            return new PriorityDto(priority.getId(), priority.getTitle());
+            return new PriorityDto(priority.getId(),
+                    priority.getTitle());
         }
     }
 

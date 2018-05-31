@@ -7,6 +7,10 @@ import com.softserve.mosquito.entities.Specialization;
 
 public class SpecializationTransformer {
 
+    private SpecializationTransformer() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static class SpecializationCreate implements Transformer<Specialization, SpecializationCreateDto>{
 
         @Override
@@ -24,13 +28,14 @@ public class SpecializationTransformer {
 
         @Override
         public Specialization toEntity(SpecializationDto specializationDto) {
-            return new Specialization(specializationDto.getId(), specializationDto.getTitle());
+            return new Specialization(specializationDto.getId(),
+                    specializationDto.getTitle());
         }
-
 
         @Override
         public SpecializationDto toDTO(Specialization specialization) {
-            return new SpecializationDto(specialization.getId(), specialization.getTitle());
+            return new SpecializationDto(specialization.getId(),
+                    specialization.getTitle());
         }
     }
 

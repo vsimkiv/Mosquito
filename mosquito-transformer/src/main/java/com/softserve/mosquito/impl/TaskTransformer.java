@@ -1,14 +1,18 @@
 package com.softserve.mosquito.impl;
 
 import com.softserve.mosquito.api.Transformer;
-import com.softserve.mosquito.dtos.TaskUpdateDto;
 import com.softserve.mosquito.dtos.TaskDto;
+import com.softserve.mosquito.dtos.TaskUpdateDto;
 import com.softserve.mosquito.entities.Estimation;
 import com.softserve.mosquito.entities.Priority;
 import com.softserve.mosquito.entities.Status;
 import com.softserve.mosquito.entities.Task;
 
 public class TaskTransformer {
+
+    private TaskTransformer() {
+        throw new IllegalStateException("Utility class");
+    }
 
     public static class TaskDefaultDto implements Transformer<Task, TaskDto>{
 

@@ -57,7 +57,6 @@ public class CommentRepoImpl implements CommentRepo {
              PreparedStatement preparedStatement = connection.prepareStatement(READ_COMMENT)) {
             preparedStatement.setLong(1, id);
             List<Comment> comments = parseData(preparedStatement.executeQuery());
-            System.out.println(comments.toString());
             if (!comments.isEmpty())
                 return comments.iterator().next();
         } catch (SQLException e) {

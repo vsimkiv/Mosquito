@@ -7,6 +7,10 @@ import com.softserve.mosquito.entities.User;
 
 public class UserTransformer {
 
+    private UserTransformer() {
+        throw new IllegalStateException("Utility class");
+    }
+
     static class UserLogin implements Transformer<User,UserLoginDto>{
 
         @Override
