@@ -15,17 +15,13 @@ public interface TaskService {
 
     Task updateTask(Task task);
 
-    void removeTask(Task task);
+    void removeTask(Long id);
 
     List<Task> getTasksByOwner(Long ownerId);
 
     List<Task> getTasksByWorker(Long workerId);
 
-
-    void removeTask(Long id);
-
     List<Task> getSubTasks(Long parentTaskId);
-
 
     List<Task> getTasksByOwnerAndStatus(Long ownerId, Byte statusId);
 

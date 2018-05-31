@@ -49,35 +49,35 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<Task> getSubTasks(Long parentTaskId) {
         List<Task> resultTasksList = taskRepo.readAll();
-        resultTasksList.removeIf((Task task) -> filterByParent(task, parentTaskId));
+        resultTasksList.removeIf((Task task) -> isNotParentsTask(task, parentTaskId));
         return resultTasksList;
     }
 
     @Override
     public List<Task> getTasksByOwner(Long ownerId) {
         List<Task> resultTasksList = taskRepo.readAll();
-        resultTasksList.removeIf((Task task) -> filterByOwner(task, ownerId));
+        resultTasksList.removeIf((Task task) -> isNotOwnersTask(task, ownerId));
         return resultTasksList;
     }
 
     @Override
     public List<Task> getTasksByWorker(Long workerId) {
         List<Task> resultTasksList = taskRepo.readAll();
-        resultTasksList.removeIf((Task task) -> filterByWorker(task, workerId));
+        resultTasksList.removeIf((Task task) -> isNotWorkersTask(task, workerId));
         return resultTasksList;
     }
 
     @Override
     public List<Task> getTasksByOwnerAndStatus(Long ownerId, Byte statusId) {
         List<Task> resultTasksList = getTasksByOwner(ownerId);
-        resultTasksList.removeIf((Task task) -> (filterByOwner(task, ownerId) || filterByStatus(task, statusId)));
+        resultTasksList.removeIf((Task task) -> (isNotOwnersTask(task, ownerId) || isNotTaskOfStatus(task, statusId)));
         return resultTasksList;
     }
 
     @Override
     public List<Task> getTasksByWorkerAndStatus(Long workerId, Byte statusId) {
         List<Task> resultTasksList = getAllTasks();
-        resultTasksList.removeIf((Task task) -> (filterByWorker(task, workerId) || filterByStatus(task, statusId)));
+        resultTasksList.removeIf((Task task) -> (isNotWorkersTask(task, workerId) || isNotTaskOfStatus(task, statusId)));
         return resultTasksList;
     }
 
@@ -85,7 +85,7 @@ public class TaskServiceImpl implements TaskService {
     public List<Task> getTasksByOwnerAndStatusAndParent(Long parentId, Long ownerId, Byte statusId) {
         List<Task> resultTasksList = taskRepo.readAll();
         resultTasksList.removeIf((Task task) ->
-                (filterByOwner(task, ownerId) || filterByStatus(task, statusId) || filterByParent(task, parentId)));
+                (isNotOwnersTask(task, ownerId) || isNotTaskOfStatus(task, statusId) || isNotParentsTask(task, parentId)));
         return resultTasksList;
     }
 
@@ -93,17 +93,11 @@ public class TaskServiceImpl implements TaskService {
     public List<Task> getTasksByWorkerAndStatusAndParent(Long parentId, Long workerId, Byte statusId) {
         List<Task> resultTasksList = taskRepo.readAll();
         resultTasksList.removeIf((Task task) ->
-                (filterByWorker(task, workerId) || filterByStatus(task, statusId) || filterByParent(task, parentId)));
+                (isNotWorkersTask(task, workerId) || isNotTaskOfStatus(task, statusId) || isNotParentsTask(task, parentId)));
         return resultTasksList;
     }
 
-    //Марк 31.05.18 2:08 метод був неімплементований.
-    @Override
-    public void removeTask(Task task) {
-
-    }
-
-    private boolean filterByParent(Task task, Long parentTaskId) {
+    private boolean isNotParentsTask(Task task, Long parentTaskId) {
         if(parentTaskId != null) {
             if (task.getParentId().equals(parentTaskId))
                 return false;
@@ -118,7 +112,7 @@ public class TaskServiceImpl implements TaskService {
         }
     }
 
-    private boolean filterByWorker(Task task, Long workerId) {
+    private boolean isNotWorkersTask(Task task, Long workerId) {
         if(workerId != null) {
             if (task.getWorkerId().equals(workerId))
                 return false;
@@ -128,7 +122,7 @@ public class TaskServiceImpl implements TaskService {
         return false;
     }
 
-    private boolean filterByOwner(Task task, Long ownerId) {
+    private boolean isNotOwnersTask(Task task, Long ownerId) {
         if(ownerId != null) {
             if (task.getOwnerId().equals(ownerId))
                 return false;
@@ -138,7 +132,7 @@ public class TaskServiceImpl implements TaskService {
         return false;
     }
 
-    private boolean filterByStatus(Task task, Byte statusId) {
+    private boolean isNotTaskOfStatus(Task task, Byte statusId) {
         if(statusId != null) {
             if (task.getStatus().getId().equals(statusId))
                 return false;
