@@ -10,17 +10,28 @@
     <version>1.0-SNAPSHOT</version>
 
     <modules>
-        <module>Controller</module>
-        <module>DTO</module>
-        <module>Entity</module>
-        <module>MosquitoBOM</module>
-        <module>RepoAPI</module>
-        <module>RepoImpl</module>
-        <module>ServiceAPI</module>
-        <module>ServiceImpl</module>
-        <module>Transformer</module>
-        <module>Web</module>
+        <module>mosquito-controller</module>
+        <module>mosquito-dto</module>
+        <module>mosquito-entity</module>
+        <module>mosquito-bom</module>
+        <module>mosquito-repo-api</module>
+        <module>mosquito-repo-impl</module>
+        <module>mosquito-service-api</module>
+        <module>mosquito-service-impl</module>
+        <module>mosquito-transformer</module>
+        <module>mosquito-web</module>
+        <module>TrelloAPIConnection</module>
     </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.softserve.mosquito</groupId>
+                <artifactId>mosquito-bom</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>
