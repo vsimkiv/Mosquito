@@ -1,14 +1,10 @@
-package com.softserve.mosquito.services;
+package com.softserve.mosquito.services.impl;
 
-import com.softserve.mosquito.dtos.*;
 import com.softserve.mosquito.dtos.TaskDto;
 
 import com.softserve.mosquito.entities.Task;
+import com.softserve.mosquito.entities.*;
 import com.softserve.mosquito.entities.TrelloInfo;
-
-import com.softserve.mosquito.services.impl.StatusServiceImpl;
-import com.softserve.mosquito.services.impl.TaskServiceImpl;
-import com.softserve.mosquito.services.impl.TrelloInfoServiceImpl;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -18,53 +14,51 @@ import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
 import javax.ws.rs.core.Response;
 
-public class CardService {
-
+public class TrelloCardServiceImpl {
     private Long userId = 44L;
     private TrelloInfo trelloInfo = new TrelloInfoServiceImpl().getTrelloInfoByUserId(userId);
 
 
     public void getTasksFromTrello(){
 
-        for (Board board : getAllBoards()){
-            for (List list : getListByBoard(board.getId())){
-                if (list.getName().equalsIgnoreCase("todo")){
-                    createTasksFromCards(getCardsByList(list.getId()), "todo", board.getName());
+        for (TrelloBoard trelloBoard : getAllTrelloBoards()){
+            for (TrelloList trelloList : getTrelloListsByBoard(trelloBoard.getId())){
+                if (trelloList.getName().equalsIgnoreCase("todo")){
+                    createTasksFromTrelloCards(getTrelloCardsByList(trelloList.getId()), "todo", trelloBoard.getName());
                 }
-                if (list.getName().equalsIgnoreCase("doing")){
-                    createTasksFromCards(getCardsByList(list.getId()), "doing", board.getName());
+                if (trelloList.getName().equalsIgnoreCase("doing")){
+                    createTasksFromTrelloCards(getTrelloCardsByList(trelloList.getId()), "doing", trelloBoard.getName());
                 }
-                if (list.getName().equalsIgnoreCase("done")){
-                    createTasksFromCards(getCardsByList(list.getId()), "done", board.getName());
+                if (trelloList.getName().equalsIgnoreCase("done")){
+                    createTasksFromTrelloCards(getTrelloCardsByList(trelloList.getId()), "done", trelloBoard.getName());
                 }
             }
 
         }
     }
 
-    private void createTasksFromCards(Card[] cards, String status, String projectName){
+    private void createTasksFromTrelloCards(TrelloCard[] trelloCards, String status, String projectName){
 
         TaskServiceImpl taskService = new TaskServiceImpl();
-        TaskDto taskCreateDto = new TaskDto();
-        taskCreateDto.setName(projectName);
-        taskCreateDto.setOwnerId(trelloInfo.getUserId());
-        taskCreateDto.setWorkerId(trelloInfo.getUserId());
-        Task task = taskService.createTask(taskCreateDto);
+        TaskDto taskDto = new TaskDto();
+        taskDto.setName(projectName);
+        taskDto.setOwnerId(trelloInfo.getUserId());
+        taskDto.setWorkerId(trelloInfo.getUserId());
+        Task task = taskService.createTask(taskDto);
 
-        for (Card card : cards){
+        for (TrelloCard trelloCard : trelloCards){
             TaskDto trelloTask = new TaskDto();
-            trelloTask.setName(card.getName());
+            trelloTask.setName(trelloCard.getName());
             trelloTask.setWorkerId(trelloInfo.getUserId());
             trelloTask.setOwnerId(trelloInfo.getUserId());
             trelloTask.setParentId(task.getId());
             trelloTask.setStatusId(new StatusServiceImpl().getStatusByName(status).getId());
             taskService.createTask(trelloTask);
-
         }
     }
 
-    private Board[] getAllBoards(){
-        Board[] boards= null;
+    private TrelloBoard[] getAllTrelloBoards(){
+        TrelloBoard[] trelloBoards= null;
         String urlGetAllBoards = String.format("https://impl.trello.com/1/members/%s/boards?key=%s&token=%s",
                 trelloInfo.getUserTrelloName(), trelloInfo.getUserTrelloKey(), trelloInfo.getUserTrelloToken());
 
@@ -78,17 +72,17 @@ public class CardService {
 
             ObjectMapper mapper = new ObjectMapper();
 
-            boards = mapper.readValue(responseAsString, Board[].class);
+            trelloBoards = mapper.readValue(responseAsString, TrelloBoard[].class);
 
         } catch (Exception e) {
             System.err.println(e);
         }
 
-        return boards;
+        return trelloBoards;
     }
 
-    private List[] getListByBoard(String idBoard){
-        List[] lists = null;
+    private TrelloList[] getTrelloListsByBoard(String idBoard){
+        TrelloList[] TrelloLists = null;
         String urlGetListOfBoard = String.format("https://impl.trello.com/1/boards/%s/lists?cards=open&card_fields=name&fields=name&key=%s&token=%s",
                 idBoard, trelloInfo.getUserTrelloKey(), trelloInfo.getUserTrelloToken());
 
@@ -103,17 +97,17 @@ public class CardService {
 
             ObjectMapper mapper = new ObjectMapper();
 
-            lists = mapper.readValue(responseAsString, List[].class);
+            TrelloLists = mapper.readValue(responseAsString, TrelloList[].class);
 
         } catch (Exception e) {
             System.err.println(e);
         }
 
-        return lists;
+        return TrelloLists;
     }
 
-    private Card[] getCardsByList(String idList){
-        Card[] cards = null;
+    private TrelloCard[] getTrelloCardsByList(String idList){
+        TrelloCard[] TrelloCards = null;
 
         String urlGetCardsByList= String.format("https://impl.trello.com/1/lists/%s/cards?key=%s&token=%s",
                 idList, trelloInfo.getUserTrelloKey(), trelloInfo.getUserTrelloToken());
@@ -129,13 +123,14 @@ public class CardService {
 
             ObjectMapper mapper = new ObjectMapper();
 
-            cards = mapper.readValue(responseAsString, Card[].class);
+            TrelloCards = mapper.readValue(responseAsString, TrelloCard[].class);
 
         } catch (Exception e) {
             System.err.println(e);
         }
 
-        return cards;
+        return TrelloCards;
 
     }
+
 }

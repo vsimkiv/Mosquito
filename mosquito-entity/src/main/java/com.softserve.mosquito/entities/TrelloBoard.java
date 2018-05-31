@@ -1,20 +1,24 @@
-package com.softserve.mosquito.dtos;
+package com.softserve.mosquito.entities;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import java.util.Arrays;
 
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Board {
+public class TrelloBoard {
 
     private String name;
     private String id;
     private String descData;
     private String desc;
 
-    private List[] listOfBoards;
+    public TrelloBoard() {
+    }
 
-    public Board() {
+    public TrelloBoard(String name, String id, String descData, String desc) {
+        this.name = name;
+        this.id = id;
+        this.descData = descData;
+        this.desc = desc;
     }
 
     public String getName() {
@@ -49,23 +53,13 @@ public class Board {
         this.desc = desc;
     }
 
-    public List[] getListOfBoards() {
-        return listOfBoards;
-    }
-
-    public void setListOfBoards(List[] listOfBoards) {
-        this.listOfBoards = listOfBoards;
-    }
-
     @Override
     public String toString() {
-        return "Board{" +
+        return "TrelloBoard{" +
                 "name='" + name + '\'' +
                 ", id='" + id + '\'' +
                 ", descData='" + descData + '\'' +
                 ", desc='" + desc + '\'' +
-                ", listOfBoards=" + Arrays.toString(listOfBoards) +
                 '}';
     }
-
 }

@@ -20,7 +20,6 @@
         <module>mosquito-service-impl</module>
         <module>mosquito-transformer</module>
         <module>mosquito-web</module>
-        <module>TrelloAPIConnection</module>
     </modules>
 
     <dependencyManagement>

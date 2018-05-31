@@ -1,15 +1,21 @@
-package com.softserve.mosquito.dtos;
+package com.softserve.mosquito.entities;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Card {
+public class TrelloCard {
 
     private String name;
     private String id;
     private String desc;
 
-    public Card() {
+    public TrelloCard() {
+    }
+
+    public TrelloCard(String name, String id, String desc) {
+        this.name = name;
+        this.id = id;
+        this.desc = desc;
     }
 
     public String getName() {
@@ -38,7 +44,7 @@ public class Card {
 
     @Override
     public String toString() {
-        return "Card{" +
+        return "TrelloCard{" +
                 "name='" + name + '\'' +
                 ", id='" + id + '\'' +
                 ", desc='" + desc + '\'' +
