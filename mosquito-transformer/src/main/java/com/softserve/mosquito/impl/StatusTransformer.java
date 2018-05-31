@@ -7,7 +7,11 @@ import com.softserve.mosquito.entities.Status;
 
 public class StatusTransformer {
 
-    public static class StatusCreate implements Transformer<Status, StatusCreateDto>{
+    private StatusTransformer() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    public static class StatusCreate implements Transformer<Status, StatusCreateDto> {
 
         @Override
         public Status toEntity(StatusCreateDto statusCreateDto) {
@@ -20,16 +24,18 @@ public class StatusTransformer {
         }
     }
 
-    public static class StatusGeneric implements Transformer<Status, StatusDto>{
+    public static class StatusGeneric implements Transformer<Status, StatusDto> {
 
         @Override
         public Status toEntity(StatusDto statusDto) {
-            return new Status(statusDto.getId(), statusDto.getTitle());
+            return new Status(statusDto.getId(),
+                    statusDto.getTitle());
         }
 
         @Override
         public StatusDto toDTO(Status status) {
-            return new StatusDto(status.getId(), status.getTitle());
+            return new StatusDto(status.getId(),
+                    status.getTitle());
         }
     }
 

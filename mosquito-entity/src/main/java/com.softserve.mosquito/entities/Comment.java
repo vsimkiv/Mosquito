@@ -13,12 +13,14 @@ public class Comment implements Serializable {
     public Comment() {
     }
 
+    //transform from DTO
     public Comment(String text, Long taskId, Long authorId) {
         this.text = text;
         this.taskId = taskId;
         this.authorId = authorId;
     }
 
+    //get from DB
     public Comment(Long id, String text, Long taskId, Long authorId,  LocalDateTime lastUpdate) {
         this.id = id;
         this.taskId = taskId;

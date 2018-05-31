@@ -6,7 +6,11 @@ import com.softserve.mosquito.entities.Comment;
 
 public class CommentTransformer {
 
-    public static class CommentCreate implements Transformer<Comment,CommentCreateDto>{
+    private CommentTransformer() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    public static class CommentCreate implements Transformer<Comment, CommentCreateDto> {
 
         @Override
         public Comment toEntity(CommentCreateDto commentCreateDto) {

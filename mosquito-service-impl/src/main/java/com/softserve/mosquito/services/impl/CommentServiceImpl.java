@@ -11,7 +11,6 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment save(Comment comment) {
-        System.out.println(comment);
         return repo.create(comment);
     }
 
@@ -22,7 +21,6 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment update(Comment comment) {
-        System.out.println(comment);
         return repo.update(comment);
     }
 

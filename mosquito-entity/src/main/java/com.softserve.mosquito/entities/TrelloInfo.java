@@ -3,6 +3,8 @@ package com.softserve.mosquito.entities;
 import java.io.Serializable;
 
 public class TrelloInfo implements Serializable {
+
+    private Long id;
     private Long userId;
     private String userTrelloName;
     private String userTrelloKey;
@@ -17,6 +19,22 @@ public class TrelloInfo implements Serializable {
         this.userTrelloName = userTrelloName;
         this.userTrelloKey = userTrelloKey;
         this.userTrelloToken = userTrelloToken;
+    }
+
+    public TrelloInfo(Long id, Long userId, String userTrelloName, String userTrelloKey, String userTrelloToken) {
+        this.id = id;
+        this.userId = userId;
+        this.userTrelloName = userTrelloName;
+        this.userTrelloKey = userTrelloKey;
+        this.userTrelloToken = userTrelloToken;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getUserId() {
