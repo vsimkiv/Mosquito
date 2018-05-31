@@ -97,6 +97,12 @@ public class TaskServiceImpl implements TaskService {
         return resultTasksList;
     }
 
+    //Марк 31.05.18 2:08 метод був неімплементований.
+    @Override
+    public void removeTask(Task task) {
+
+    }
+
     private boolean filterByParent(Task task, Long parentTaskId) {
         if(parentTaskId != null) {
             if (task.getParentId().equals(parentTaskId))
