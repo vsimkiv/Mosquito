@@ -29,7 +29,7 @@ public class TaskTransformer {
         public TaskDto toDTO(Task task) {
             TaskDto taskCreateDto = new TaskDto();
             taskCreateDto.setName(task.getName());
-            taskCreateDto.setEstimation(task.getEstimation().getEstimation());
+            taskCreateDto.setEstimation(task.getEstimation().getTimeEstimation());
             taskCreateDto.setRemaining(task.getEstimation().getRemaining());
             taskCreateDto.setOwnerId(task.getOwnerId());
             taskCreateDto.setWorkerId(task.getWorkerId());
