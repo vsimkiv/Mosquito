@@ -28,8 +28,11 @@ public class LogWorkServiceImpl implements LogWorkService {
     @Override
     public List<LogWork> getAllLogWork() { return logWorkRepo.readAll(); }
 
-    @Override
-    public LogWork getUserByEstimation(Long estimationId) {
-        return null;
+
+    public List<LogWork> getLogWorksByEstimation(Long estimationId) {
+        return ((LogWorkRepoImpl)logWorkRepo).getLogWorksByEstimation(estimationId);
     }
+
+
+
 }

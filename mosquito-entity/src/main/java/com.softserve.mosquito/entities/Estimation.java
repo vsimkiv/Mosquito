@@ -10,28 +10,13 @@ public class Estimation implements Serializable {
     private Integer remaining;
     private List<LogWork> logWorks;
 
-    public Estimation() {
-        this.id = 0L;
-        this.estimation = 0;
-        this.remaining = 0;
-        this.logWorks = new ArrayList<>();
-    }
+    public Estimation() {}
 
-    /**
-     * DB Insert constructor
-     */
-    public Estimation(int estimation) {
-        this();
-        this.estimation = estimation;
-        this.remaining = estimation;
-    }
+    public Estimation(int estimation) { this.estimation = estimation;}
 
-    /**
-     * @param estimation - Reserved time for task (in hours)
-     * @param remaining  - Time for task that remains (in hours)
-     */
+
     public Estimation(Long id, Integer estimation, Integer remaining) {
-        this(estimation);
+        this.estimation = estimation;
         this.id = id;
         this.remaining = remaining;
     }

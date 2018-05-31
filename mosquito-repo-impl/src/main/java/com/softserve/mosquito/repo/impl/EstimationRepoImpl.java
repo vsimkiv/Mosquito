@@ -73,9 +73,10 @@ public class EstimationRepoImpl implements EstimationRepo {
     public Estimation update(Estimation estimation) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_ESTIMATION)) {
-            preparedStatement.setInt(2, estimation.getEstimation());
-            preparedStatement.setInt(3, estimation.getRemaining());
             preparedStatement.setLong(3, estimation.getId());
+            preparedStatement.setInt(1, estimation.getEstimation());
+            preparedStatement.setInt(2, estimation.getRemaining());
+
             if (preparedStatement.executeUpdate() > 0)
                 return read(estimation.getId());
         } catch (SQLException e) {

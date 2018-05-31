@@ -16,5 +16,5 @@ public interface LogWorkService {
 
     List<LogWork> getAllLogWork();
 
-    LogWork getUserByEstimation(Long estimationId);
+    List<LogWork> getLogWorksByEstimation(Long estimationId);
 }
