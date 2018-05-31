@@ -1,8 +1,8 @@
 package com.softserve.mosquito.impl;
 
 import com.softserve.mosquito.api.Transformer;
-import com.softserve.mosquito.dtos.TaskCreateDto;
 import com.softserve.mosquito.dtos.TaskUpdateDto;
+import com.softserve.mosquito.dtos.TaskDto;
 import com.softserve.mosquito.entities.Estimation;
 import com.softserve.mosquito.entities.Priority;
 import com.softserve.mosquito.entities.Status;
@@ -10,10 +10,10 @@ import com.softserve.mosquito.entities.Task;
 
 public class TaskTransformer {
 
-    public static class TaskCreate implements Transformer<Task,TaskCreateDto>{
+    public static class TaskDefaultDto implements Transformer<Task, TaskDto>{
 
         @Override
-        public Task toEntity(TaskCreateDto taskCreateDto) {
+        public Task toEntity(TaskDto taskCreateDto) {
             Task task = new Task();
             task.setName(taskCreateDto.getName());
             task.setEstimation(new Estimation(taskCreateDto.getEstimation()));
@@ -26,8 +26,19 @@ public class TaskTransformer {
         }
 
         @Override
-        public TaskCreateDto toDTO(Task task) {
-            return null;
+        public TaskDto toDTO(Task task) {
+            TaskDto taskCreateDto = new TaskDto();
+            taskCreateDto.setName(task.getName());
+            taskCreateDto.setEstimation(task.getEstimation().getEstimation());
+            taskCreateDto.setRemaining(task.getEstimation().getRemaining());
+            taskCreateDto.setOwnerId(task.getOwnerId());
+            taskCreateDto.setWorkerId(task.getWorkerId());
+            taskCreateDto.setParentId(task.getParentId());
+            taskCreateDto.setPriorityId(task.getPriority().getId());
+            taskCreateDto.setStatusId(task.getStatus().getId());
+            taskCreateDto.setStatusTitle(task.getStatus().getTitle());
+            taskCreateDto.setPriorityTitle(task.getPriority().getTitle());
+            return taskCreateDto;
         }
     }
 
