@@ -2,9 +2,16 @@ package com.softserve.mosquito.services;
 
 import com.softserve.mosquito.dtos.*;
 import com.softserve.mosquito.dtos.TaskDto;
+
 import com.softserve.mosquito.entities.Task;
+import com.softserve.mosquito.entities.TrelloInfo;
+
+import com.softserve.mosquito.services.impl.StatusServiceImpl;
 import com.softserve.mosquito.services.impl.TaskServiceImpl;
+import com.softserve.mosquito.services.impl.TrelloInfoServiceImpl;
+
 import org.codehaus.jackson.map.ObjectMapper;
+
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
@@ -13,18 +20,12 @@ import javax.ws.rs.core.Response;
 
 public class CardService {
 
-    private Long userID = 1L;
-    private String userName = "if086softserve";
-    private String userKey = "9097df69617e33b2dd4d9fe573570eac";
-    private String userToken = "b30aab2aa99bd68be5f45032ce63c5568363b2bac0a5c6088743270acdb02493";
+    private Long trelloId = 1L;
+    private TrelloInfo trelloInfo = new TrelloInfoServiceImpl().getTrelloInfoById(trelloId);
 
-    public Long getUserID() {
-        return userID;
-    }
-
-    public void setUserID(Long userID) {
-        this.userID = userID;
-    }
+    private String userName = trelloInfo.getUserTrelloName();
+    private String userKey = trelloInfo.getUserTrelloKey();
+    private String userToken = trelloInfo.getUserTrelloToken();
 
 
     public void getTasksFromTrello(){
@@ -50,17 +51,19 @@ public class CardService {
         TaskServiceImpl taskService = new TaskServiceImpl();
         TaskDto taskCreateDto = new TaskDto();
         taskCreateDto.setName(projectName);
-        taskCreateDto.setOwnerId(getUserID());
-        taskCreateDto.setWorkerId(getUserID());
+        taskCreateDto.setOwnerId(trelloInfo.getUserId());
+        taskCreateDto.setWorkerId(trelloInfo.getUserId());
         Task task = taskService.createTask(taskCreateDto);
 
         for (Card card : cards){
             TaskDto trelloTask = new TaskDto();
             trelloTask.setName(card.getName());
-            trelloTask.setWorkerId(getUserID());
-            trelloTask.setOwnerId(getUserID());
+            trelloTask.setWorkerId(trelloInfo.getUserId());
+            trelloTask.setOwnerId(trelloInfo.getUserId());
             trelloTask.setParentId(task.getId());
+            trelloTask.setStatusId(new StatusServiceImpl().getStatusByName(status).getId());
             taskService.createTask(trelloTask);
+
         }
     }
 

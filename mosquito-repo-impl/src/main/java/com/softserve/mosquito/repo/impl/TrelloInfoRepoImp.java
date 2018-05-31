@@ -1,7 +1,6 @@
 package com.softserve.mosquito.repo.impl;
 
 import com.softserve.mosquito.entities.TrelloInfo;
-import com.softserve.mosquito.entities.User;
 import com.softserve.mosquito.repo.api.TrelloInfoRepo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
