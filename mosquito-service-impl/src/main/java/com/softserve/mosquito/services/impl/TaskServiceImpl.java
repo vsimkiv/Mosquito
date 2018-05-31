@@ -1,37 +1,45 @@
 package com.softserve.mosquito.services.impl;
 
 import com.softserve.mosquito.api.Transformer;
-import com.softserve.mosquito.dtos.TaskCreateDto;
+import com.softserve.mosquito.dtos.TaskDto;
 import com.softserve.mosquito.entities.Estimation;
 import com.softserve.mosquito.entities.Task;
+import com.softserve.mosquito.entities.User;
 import com.softserve.mosquito.impl.TaskTransformer;
 import com.softserve.mosquito.repo.api.EstimationRepo;
 import com.softserve.mosquito.repo.api.TaskRepo;
 import com.softserve.mosquito.repo.impl.EstimationRepoImpl;
 import com.softserve.mosquito.repo.impl.TaskRepoImpl;
 import com.softserve.mosquito.services.api.TaskService;
+import com.softserve.mosquito.services.api.UserService;
 
 import java.util.List;
 
 public class TaskServiceImpl implements TaskService {
 
     private TaskRepo taskRepo = new TaskRepoImpl();
+    private UserService userService = new UserServiceImpl();
     private EstimationRepo estimationRepo = new EstimationRepoImpl();
-    private Transformer<Task, TaskCreateDto> taskCreateTransformer = new TaskTransformer.TaskCreate();
+    private Transformer<Task, TaskDto> taskDtoTransformer = new TaskTransformer.TaskDefaultDto();
 
     @Override
-    public List<Task> getAllTasks() {
-        return taskRepo.readAll();
+    public List<Task> getAllTasks() { return taskRepo.readAll(); }
+
+    @Override
+    public TaskDto getTaskById(Long id) {
+        Task task = taskRepo.read(id);
+        User assigneeUser = userService.getUserById(task.getWorkerId());
+
+        TaskDto taskDto = taskDtoTransformer.toDTO(task);
+        taskDto.setAssigneeFirstName(assigneeUser.getFirstName());
+        taskDto.setAssigneeLastName(assigneeUser.getLastName());
+
+        return taskDto;
     }
 
     @Override
-    public Task getTaskById(Long id) {
-        return taskRepo.read(id);
-    }
-
-    @Override
-    public Task createTask(TaskCreateDto taskCreateDto) {
-        Task task = taskCreateTransformer.toEntity(taskCreateDto);
+    public Task createTask(com.softserve.mosquito.dtos.TaskDto taskCreateDto) {
+        Task task = taskDtoTransformer.toEntity(taskCreateDto);
         Estimation createdEstimation = estimationRepo.create(task.getEstimation());
         task.setEstimation(createdEstimation);
         return taskRepo.create(task);
@@ -99,45 +107,30 @@ public class TaskServiceImpl implements TaskService {
 
     private boolean isNotParentsTask(Task task, Long parentTaskId) {
         if(parentTaskId != null) {
-            if (task.getParentId().equals(parentTaskId))
-                return false;
-            else
-                return true;
+            return !task.getParentId().equals(parentTaskId);
         }
         else { // parentId = null -> Get projects where parentId = 0
-            if(task.getParentId().equals(0L))
-                return false;
-            else
-                return true;
+            return !task.getParentId().equals(0L);
         }
     }
 
     private boolean isNotWorkersTask(Task task, Long workerId) {
         if(workerId != null) {
-            if (task.getWorkerId().equals(workerId))
-                return false;
-            else
-                return true;
+            return !task.getWorkerId().equals(workerId);
         }
         return false;
     }
 
     private boolean isNotOwnersTask(Task task, Long ownerId) {
         if(ownerId != null) {
-            if (task.getOwnerId().equals(ownerId))
-                return false;
-            else
-                return true;
+            return !task.getOwnerId().equals(ownerId);
         }
         return false;
     }
 
     private boolean isNotTaskOfStatus(Task task, Byte statusId) {
         if(statusId != null) {
-            if (task.getStatus().getId().equals(statusId))
-                return false;
-            else
-                return true;
+            return !task.getStatus().getId().equals(statusId);
         }
         return false;
     }

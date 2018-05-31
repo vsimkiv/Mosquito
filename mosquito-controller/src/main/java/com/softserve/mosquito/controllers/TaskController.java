@@ -1,9 +1,7 @@
 package com.softserve.mosquito.controllers;
 
-import com.softserve.mosquito.api.Transformer;
-import com.softserve.mosquito.dtos.TaskCreateDto;
+import com.softserve.mosquito.dtos.TaskDto;
 import com.softserve.mosquito.entities.Task;
-import com.softserve.mosquito.impl.TaskTransformer;
 import com.softserve.mosquito.services.api.TaskService;
 import com.softserve.mosquito.services.impl.TaskServiceImpl;
 
@@ -21,7 +19,7 @@ public class TaskController {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createSubTaskOrProject(TaskCreateDto taskCreateDto) {
+    public Response createSubTaskOrProject(TaskDto taskCreateDto) {
         Task task = taskService.createTask(taskCreateDto);
         return Response.status(Status.CREATED).entity(task).build();
     }
@@ -54,7 +52,7 @@ public class TaskController {
     @Path("/{task_id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateTask(TaskCreateDto taskCreateDto) {
+    public Response updateTask(TaskDto taskCreateDto) {
         //TODO: Change. For testing.
         return Response.status(Status.OK).build();
 

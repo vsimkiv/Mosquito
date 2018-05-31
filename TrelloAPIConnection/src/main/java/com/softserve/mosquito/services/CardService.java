@@ -4,7 +4,7 @@ import com.softserve.mosquito.controllers.BoardController;
 import com.softserve.mosquito.dtos.Board;
 import com.softserve.mosquito.dtos.Card;
 import com.softserve.mosquito.dtos.List;
-import com.softserve.mosquito.dtos.TaskCreateDto;
+import com.softserve.mosquito.dtos.TaskDto;
 import com.softserve.mosquito.entities.Task;
 import com.softserve.mosquito.services.impl.TaskServiceImpl;
 
@@ -34,14 +34,14 @@ public class CardService {
     private void createTasksFromCards(Card[] cards, String status, String projectName){
 
         TaskServiceImpl taskService = new TaskServiceImpl();
-        TaskCreateDto taskCreateDto = new TaskCreateDto();
+        TaskDto taskCreateDto = new TaskDto();
         taskCreateDto.setName(projectName);
         taskCreateDto.setOwnerId(boardController.getUserID());
         taskCreateDto.setWorkerId(boardController.getUserID());
         Task task = taskService.createTask(taskCreateDto);
 
         for (Card card : cards){
-            TaskCreateDto trelloTask = new TaskCreateDto();
+            TaskDto trelloTask = new TaskDto();
             trelloTask.setName(card.getName());
             trelloTask.setWorkerId(boardController.getUserID());
             trelloTask.setOwnerId(boardController.getUserID());
