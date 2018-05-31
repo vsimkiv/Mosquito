@@ -15,4 +15,6 @@ public interface StatusService {
     StatusDto updateStatus(StatusDto statusDto);
 
     void removeStatus(Long id);
+
+    StatusDto getStatusByName(String title);
 }

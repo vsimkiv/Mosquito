@@ -18,6 +18,7 @@ public class StatusServiceImpl implements StatusService {
     private Transformer<Status, StatusCreateDto> statusCreateTransformer = new StatusTransformer.StatusCreate();
     private Transformer<Status, StatusDto> statusGenericTransformer = new StatusTransformer.StatusGeneric();
 
+    @Override
     public List<StatusDto> getAllStatus(){
         List<Status> statuses = statusRepo.readAll();
 
@@ -33,6 +34,7 @@ public class StatusServiceImpl implements StatusService {
         return statusDtos;
     }
 
+    @Override
     public StatusDto getStatusById(Long id){
         Status status = statusRepo.read(id);
 
@@ -43,6 +45,7 @@ public class StatusServiceImpl implements StatusService {
         return statusGenericTransformer.toDTO(status);
     }
 
+    @Override
     public StatusDto createStatus(StatusCreateDto statusCreateDto){
         Status createdStatus = statusRepo.create(statusCreateTransformer.toEntity(statusCreateDto));
 
@@ -53,6 +56,7 @@ public class StatusServiceImpl implements StatusService {
         return statusGenericTransformer.toDTO(createdStatus);
     }
 
+    @Override
     public StatusDto updateStatus(StatusDto statusDto){
         Status updatedStatus = statusRepo.update(statusGenericTransformer.toEntity(statusDto));
 
@@ -65,5 +69,19 @@ public class StatusServiceImpl implements StatusService {
 
     public void removeStatus(Long id){
         statusRepo.delete(id);
+    }
+
+    @Override
+    public StatusDto getStatusByName(String title){
+        List<StatusDto> allStatuses = getAllStatus();
+
+        if(allStatuses != null && !allStatuses.isEmpty()){
+            for(StatusDto status: allStatuses){
+                if(status.getTitle().equals(title)){
+                    return status;
+                }
+            }
+        }
+        return null;
     }
 }

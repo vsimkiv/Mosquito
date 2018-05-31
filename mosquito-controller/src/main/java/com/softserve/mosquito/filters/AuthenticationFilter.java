@@ -18,9 +18,8 @@ public class AuthenticationFilter implements Filter{
 		allowedUris = new ArrayList<>();
 
         // initialize allowed uri
-		allowedUris.add("login");
-        allowedUris.add("logout");
-		allowedUris.add("registration");
+		allowedUris.add("/login");
+		allowedUris.add("/registration");
 	}
 
     /*

@@ -1,6 +1,6 @@
 package com.softserve.mosquito.services.api;
 
-import com.softserve.mosquito.dtos.TaskCreateDto;
+import com.softserve.mosquito.dtos.TaskDto;
 import com.softserve.mosquito.entities.Task;
 
 import java.util.List;
@@ -9,9 +9,9 @@ public interface TaskService {
 
     List<Task> getAllTasks();
 
-    Task getTaskById(Long id);
+    TaskDto getTaskById(Long id);
 
-    Task createTask(TaskCreateDto taskCreateDto);
+    Task createTask(TaskDto taskCreateDto);
 
     Task updateTask(Task task);
 
