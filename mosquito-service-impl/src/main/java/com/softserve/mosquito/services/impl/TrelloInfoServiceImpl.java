@@ -35,4 +35,14 @@ public class TrelloInfoServiceImpl implements TrelloInfoService {
     public List<TrelloInfo> getAllTrelloInfos() {
         return trelloInfoRepo.readAll();
     }
+
+    public Long getTrelloInfoIdByUserId(Long userId){
+        for (TrelloInfo trelloInfo : getAllTrelloInfos()){
+            if (trelloInfo.getUserId()==userId) return trelloInfo.getId();
+        }
+        return null;
+    }
+    public TrelloInfo getTrelloInfoByUserId(Long userId){
+        return getTrelloInfoById(getTrelloInfoIdByUserId(userId));
+    }
 }

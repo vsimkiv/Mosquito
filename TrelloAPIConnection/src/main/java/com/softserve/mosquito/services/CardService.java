@@ -20,12 +20,8 @@ import javax.ws.rs.core.Response;
 
 public class CardService {
 
-    private Long trelloId = 1L;
-    private TrelloInfo trelloInfo = new TrelloInfoServiceImpl().getTrelloInfoById(trelloId);
-
-    private String userName = trelloInfo.getUserTrelloName();
-    private String userKey = trelloInfo.getUserTrelloKey();
-    private String userToken = trelloInfo.getUserTrelloToken();
+    private Long userId = 44L;
+    private TrelloInfo trelloInfo = new TrelloInfoServiceImpl().getTrelloInfoByUserId(userId);
 
 
     public void getTasksFromTrello(){
@@ -70,7 +66,7 @@ public class CardService {
     private Board[] getAllBoards(){
         Board[] boards= null;
         String urlGetAllBoards = String.format("https://impl.trello.com/1/members/%s/boards?key=%s&token=%s",
-                userName, userKey, userToken);
+                trelloInfo.getUserTrelloName(), trelloInfo.getUserTrelloKey(), trelloInfo.getUserTrelloToken());
 
         try {
             ResteasyClient client = new ResteasyClientBuilder().build();
@@ -94,7 +90,7 @@ public class CardService {
     private List[] getListByBoard(String idBoard){
         List[] lists = null;
         String urlGetListOfBoard = String.format("https://impl.trello.com/1/boards/%s/lists?cards=open&card_fields=name&fields=name&key=%s&token=%s",
-                idBoard, userKey, userToken);
+                idBoard, trelloInfo.getUserTrelloKey(), trelloInfo.getUserTrelloToken());
 
         try {
 
@@ -120,7 +116,7 @@ public class CardService {
         Card[] cards = null;
 
         String urlGetCardsByList= String.format("https://impl.trello.com/1/lists/%s/cards?key=%s&token=%s",
-                idList, userKey, userToken);
+                idList, trelloInfo.getUserTrelloKey(), trelloInfo.getUserTrelloToken());
 
         try {
 
