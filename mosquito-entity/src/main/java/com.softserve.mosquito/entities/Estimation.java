@@ -1,22 +1,21 @@
 package com.softserve.mosquito.entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Estimation implements Serializable {
     private Long id;
-    private Integer estimation;
+    private Integer timeEstimation;
     private Integer remaining;
     private List<LogWork> logWorks;
 
     public Estimation() {}
 
-    public Estimation(int estimation) { this.estimation = estimation;}
+    public Estimation(int timeEstimation) { this.timeEstimation = timeEstimation;}
 
 
-    public Estimation(Long id, Integer estimation, Integer remaining) {
-        this.estimation = estimation;
+    public Estimation(Long id, Integer timeEstimation, Integer remaining) {
+        this.timeEstimation = timeEstimation;
         this.id = id;
         this.remaining = remaining;
     }
@@ -29,12 +28,12 @@ public class Estimation implements Serializable {
         this.id = id;
     }
 
-    public Integer getEstimation() {
-        return estimation;
+    public Integer getTimeEstimation() {
+        return timeEstimation;
     }
 
-    public void setEstimation(Integer estimation) {
-        this.estimation = estimation;
+    public void setTimeEstimation(Integer timeEstimation) {
+        this.timeEstimation = timeEstimation;
     }
 
     public Integer getRemaining() {
@@ -57,7 +56,7 @@ public class Estimation implements Serializable {
     public String toString() {
         return "Estimation{" +
                 "id=" + id +
-                ", estimation=" + estimation +
+                ", timeEstimation=" + timeEstimation +
                 ", remaining=" + remaining +
                 ", logWorks=" + logWorks +
                 '}';

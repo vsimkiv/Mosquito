@@ -1,15 +1,15 @@
 package com.softserve.mosquito.dtos;
 
-public class LogWorkCreateDto {
+public class LogWorkDto {
     private String description;
     private Long userId;
     private int logged;
     private Long estimationId;
 
-    public LogWorkCreateDto() {
+    public LogWorkDto() {
     }
 
-    public LogWorkCreateDto(String description, Long userId, int logged, Long estimationId) {
+    public LogWorkDto(String description, Long userId, int logged, Long estimationId) {
         this.description = description;
         this.userId = userId;
         this.logged = logged;
