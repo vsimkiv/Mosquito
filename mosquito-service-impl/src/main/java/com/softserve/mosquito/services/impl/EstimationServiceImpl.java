@@ -25,7 +25,7 @@ public class EstimationServiceImpl implements EstimationService {
     }
 
     @Override
-    public void removeEstimation(Estimation estimation) {
-        estimationRepo.delete(estimation);
+    public void removeEstimation(Long id) {
+        estimationRepo.delete(id);
     }
 }

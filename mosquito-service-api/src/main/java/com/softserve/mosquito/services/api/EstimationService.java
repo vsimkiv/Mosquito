@@ -10,6 +10,6 @@ public interface EstimationService {
 
     Estimation updateEstimation(Estimation estimation);
 
-    void removeEstimation(Estimation estimation);
+    void removeEstimation(Long id);
 
     }
