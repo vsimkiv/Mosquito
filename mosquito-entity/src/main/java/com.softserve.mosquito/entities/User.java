@@ -87,6 +87,14 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
+    public Set<Specialization> getSpecializations() {
+        return specializations;
+    }
+
+    public void setSpecializations(Set<Specialization> specializations) {
+        this.specializations = specializations;
+    }
+
     @Override
     public String toString() {
         return "User{" +

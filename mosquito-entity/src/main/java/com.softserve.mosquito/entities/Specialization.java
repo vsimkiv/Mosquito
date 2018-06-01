@@ -1,6 +1,7 @@
 package com.softserve.mosquito.entities;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public final class Specialization implements Serializable {
     private Byte id;
@@ -32,6 +33,20 @@ public final class Specialization implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Specialization)) return false;
+        Specialization that = (Specialization) o;
+        return Objects.equals(getId(), that.getId()) &&
+                Objects.equals(getTitle(), that.getTitle());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getTitle());
     }
 
     @Override

@@ -96,7 +96,7 @@ public class UserRepoImpl implements UserRepo {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USER)) {
             preparedStatement.setLong(1, id);
-            preparedStatement.executeUpdate();
+            preparedStatement.execute();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
