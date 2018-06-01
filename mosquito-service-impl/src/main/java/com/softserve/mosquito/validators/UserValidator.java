@@ -35,7 +35,6 @@ public class UserValidator {
         User user = userService.getUserByEmail(userForRegister.getEmail());
 
         if (user == null && isUserDataValid(userForRegister)) {
-            System.out.println(userForRegister);
             String password = DigestUtils.md5Hex(userForRegister.getPassword().concat(salt));
             user = new User(userForRegister.getEmail(),
                     userForRegister.getFirstName(),
