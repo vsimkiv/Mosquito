@@ -90,7 +90,7 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "{" +
-                "\"id\":" + id +
+                "\"userId\":" + id +
                 ", \"email\":\"" + email + '\"' +
                 ", \"password\":\"" + password + '\"' +
                 ", \"firstName\":\"" + firstName + '\"' +
