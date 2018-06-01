@@ -59,7 +59,7 @@ public class IndexController {
     @Path("/registration")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response registration(@Valid UserRegistrationDto user){
+    public Response registration(UserRegistrationDto user){
 
         if (validation.isRegistrationValid(user))
             return Response.ok().entity(user).build();

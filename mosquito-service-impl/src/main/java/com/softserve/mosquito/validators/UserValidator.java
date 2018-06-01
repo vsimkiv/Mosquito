@@ -35,6 +35,7 @@ public class UserValidator {
         User user = userService.getUserByEmail(userForRegister.getEmail());
 
         if (user == null && isUserDataValid(userForRegister)) {
+            System.out.println(userForRegister);
             String password = DigestUtils.md5Hex(userForRegister.getPassword().concat(salt));
             user = new User(userForRegister.getEmail(),
                     userForRegister.getFirstName(),
@@ -48,10 +49,7 @@ public class UserValidator {
     private boolean isUserDataValid(UserRegistrationDto user) {
         return user.getEmail().matches(EMAIL_REGEX)
                 && user.getFirstName().length() >= MIN_LENGTH_FIRST_NAME
-                && user.getFirstName().matches(FIRST_NAME_REGEX)
                 && user.getLastName().length() >= MIN_LENGTH_LAST_NAME
-                && user.getLastName().matches(LAST_NAME_REGEX)
-                && user.getPassword().length() >= MIN_LENGTH_PASSWORD
                 && user.getConfirmPassword().length() >= MIN_LENGTH_PASSWORD
                 && user.getConfirmPassword().equals(user.getPassword());
     }
