@@ -38,7 +38,7 @@ public class EstimationRepoImpl implements EstimationRepo {
             if(estimation.getRemaining()!= null)
                 preparedStatement.setInt(2, estimation.getRemaining());
             else
-                preparedStatement.setInt(2, 0);
+                preparedStatement.setInt(2, estimation.getRemaining());
             preparedStatement.execute();
 
             if (preparedStatement.executeUpdate() == 0)
