@@ -2,6 +2,7 @@ package com.softserve.mosquito.dtos;
 
 public class UserRegistrationDto {
 
+    private Long id;
     private String email;
     private String firstName;
     private String lastName;
@@ -25,6 +26,14 @@ public class UserRegistrationDto {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getEmail() {

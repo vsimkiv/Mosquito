@@ -11,8 +11,6 @@ public class UserValidator {
 
     private static final String EMAIL_REGEX =
             "^[_A-Za-z0-9-+]+(.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(.[A-Za-z0-9]+)*(.[A-Za-z]{2,}$)";
-    private static final String FIRST_NAME_REGEX = "^[A-Za-z]$";
-    private static final String LAST_NAME_REGEX = "^[A-Za-z]$";
     private static final int MIN_LENGTH_FIRST_NAME = 2;
     private static final int MIN_LENGTH_LAST_NAME = 2;
     private static final int MIN_LENGTH_PASSWORD = 7;

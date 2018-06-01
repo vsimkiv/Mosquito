@@ -3,10 +3,9 @@ package com.softserve.mosquito.controllers;
 import com.softserve.mosquito.dtos.UserLoginDto;
 import com.softserve.mosquito.dtos.UserRegistrationDto;
 import com.softserve.mosquito.entities.User;
+import com.softserve.mosquito.services.api.UserService;
 import com.softserve.mosquito.services.impl.UserServiceImpl;
 import com.softserve.mosquito.validators.UserValidator;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -18,7 +17,7 @@ import javax.ws.rs.core.Response;
 
 @Path("/")
 public class IndexController {
-    private com.softserve.mosquito.services.api.UserService userService = new UserServiceImpl();
+    private UserService userService = new UserServiceImpl();
     private UserValidator validation = new UserValidator();
 
     @GET
@@ -46,7 +45,6 @@ public class IndexController {
        }
     }
 
-
     @GET
     @Path("/logout")
     public Response logout(@Context HttpServletRequest request) {
@@ -58,13 +56,11 @@ public class IndexController {
     @POST
     @Path("/registration")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response registration(UserRegistrationDto user){
 
         if (validation.isRegistrationValid(user))
-            return Response.ok().entity(user).build();
+            return Response.ok().entity(userService.getUserByEmail(user.getEmail()).toString()).build();
 
-        return  Response.status(Response.Status.FORBIDDEN).entity(user).build();
+        return  Response.status(Response.Status.UNAUTHORIZED).entity(user).build();
     }
-    
 }
