@@ -35,7 +35,10 @@ public class EstimationRepoImpl implements EstimationRepo {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(CREATE_ESTIMATION, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setInt(1, estimation.getTimeEstimation());
-            preparedStatement.setInt(2, estimation.getRemaining());
+            if(estimation.getRemaining()!= null)
+                preparedStatement.setInt(2, estimation.getRemaining());
+            else
+                preparedStatement.setInt(2, 0);
             preparedStatement.execute();
 
             if (preparedStatement.executeUpdate() == 0)
@@ -47,8 +50,9 @@ public class EstimationRepoImpl implements EstimationRepo {
                     LOGGER.error("Creating estimation was failed");
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             LOGGER.error(e.getMessage());
-        }
+        } catch (Exception e) { e.printStackTrace(); }
         return null;
     }
 

@@ -26,23 +26,23 @@ public class IndexController {
         return "Hello Mosquito <br>" +
                 "<a href = \"/users\">Get users </a>";
     }
-    
+
     @POST
     @Path("/login")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response login(@Valid UserLoginDto userLoginDto, @Context HttpServletRequest request) {
-       if(validation.isValidCredentials(userLoginDto)) {
-    	   // Start session with authorized user
-           //TODO: use UserDto instead of User as a return type
-    	   User user = userService.getUserByEmail(userLoginDto.getEmail());
-    	   HttpSession session = request.getSession();
-    	   session.setAttribute("user_id", user.getId());
-    	   
-    	   return Response.status(Response.Status.OK).entity(user).build();
-       }else {
-    	   return Response.status(Response.Status.UNAUTHORIZED).build();
-       }
+        if (validation.isValidCredentials(userLoginDto)) {
+            // Start session with authorized user
+            //TODO: use UserDto instead of User as a return type
+            User user = userService.getUserByEmail(userLoginDto.getEmail());
+            HttpSession session = request.getSession();
+            session.setAttribute("user_id", user.getId());
+
+            return Response.status(Response.Status.OK).entity(user).build();
+        } else {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
     }
 
     @GET
@@ -56,11 +56,11 @@ public class IndexController {
     @POST
     @Path("/registration")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response registration(UserRegistrationDto user){
+    public Response registration(UserRegistrationDto user) {
 
         if (validation.isRegistrationValid(user))
             return Response.ok().entity(userService.getUserByEmail(user.getEmail()).toString()).build();
 
-        return  Response.status(Response.Status.UNAUTHORIZED).entity(user).build();
+        return Response.status(Response.Status.UNAUTHORIZED).entity(user).build();
     }
 }
