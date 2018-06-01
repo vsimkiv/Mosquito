@@ -76,4 +76,15 @@ public class UserRegistrationDto {
         this.lastName = lastName;
     }
 
+    @Override
+    public String toString() {
+        return "UserRegistrationDto{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", password='" + password + '\'' +
+                ", confirmPassword='" + confirmPassword + '\'' +
+                '}';
+    }
 }
