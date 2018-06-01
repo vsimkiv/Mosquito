@@ -33,8 +33,8 @@ public class PriorityController {
     @GET
     @Path("/{priority_id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPriorityById(@PathParam("priority_id") Long id){
-        PriorityDto priority = priorityService.getPriorityById(id);
+    public Response getPriorityById(@PathParam("priority_id") Byte id){
+        PriorityDto priority = priorityService.getPriorityById(Long.valueOf(id));
 
         if(priority == null) {
             return Response.status(Status.NOT_FOUND).build();
@@ -60,8 +60,8 @@ public class PriorityController {
 
     @DELETE
     @Path("/{id}")
-    public Response deletePriority(@PathParam("id") Long id) {
-        priorityService.removePriority(id);
+    public Response deletePriority(@PathParam("id") Byte id) {
+        priorityService.removePriority(Long.valueOf(id));
 
         return Response.status(Status.OK).build();
     }

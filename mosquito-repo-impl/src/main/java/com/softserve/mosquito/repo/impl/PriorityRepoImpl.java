@@ -13,7 +13,15 @@ import java.util.List;
 
 public class PriorityRepoImpl implements PriorityRepo {
     private static final Logger LOGGER = LogManager.getLogger(PriorityRepoImpl.class);
-    private DataSource dataSource = MySqlDataSource.getDataSource();
+    private DataSource dataSource;
+
+    public PriorityRepoImpl() {
+        dataSource = MySqlDataSource.getDataSource();
+    }
+
+    public PriorityRepoImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     private static final String CREATE_PRIORITY = "INSERT INTO priorities (title) VALUE (?);";
     private static final String UPDATE_PRIORITY = "UPDATE priorities SET title=? WHERE id=?;";

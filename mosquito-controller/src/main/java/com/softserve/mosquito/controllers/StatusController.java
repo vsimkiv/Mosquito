@@ -32,8 +32,8 @@ public class StatusController {
     @GET
     @Path("/{status_id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getStatusById(@PathParam("status_id") Long id){
-        StatusDto statusDto = statusService.getStatusById(id);
+    public Response getStatusById(@PathParam("status_id") Byte id){
+        StatusDto statusDto = statusService.getStatusById(Long.valueOf(id));
 
         if(statusDto == null) {
             return Response.status(Status.NOT_FOUND).build();
@@ -60,8 +60,8 @@ public class StatusController {
 
     @DELETE
     @Path("/{status_id}")
-    public Response deletePriority(@PathParam("status_id") Long id) {
-        statusService.removeStatus(id);
+    public Response deletePriority(@PathParam("status_id") Byte id) {
+        statusService.removeStatus(Long.valueOf(id));
 
         return Response.status(Status.OK).build();
     }

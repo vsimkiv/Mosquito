@@ -32,8 +32,8 @@ public class SpecializationController {
     @GET
     @Path("/{specialization_id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getSpecializationById(@PathParam("specialization_id") Long specialization_id){
-        SpecializationDto specialization = specializationService.getSpecializationById(specialization_id);
+    public Response getSpecializationById(@PathParam("specialization_id") Byte specialization_id){
+        SpecializationDto specialization = specializationService.getSpecializationById(Long.valueOf(specialization_id));
 
         if(specialization == null) {
             return Response.status(Status.NOT_FOUND).build();
@@ -70,8 +70,8 @@ public class SpecializationController {
 
     @DELETE
     @Path("/{specialization_id}")
-    public Response removeSpecialization(@PathParam("specialization_id") Long specialization_id){
-        specializationService.removeSpecialization(specialization_id);
+    public Response removeSpecialization(@PathParam("specialization_id") Byte specialization_id){
+        specializationService.removeSpecialization(Long.valueOf(specialization_id));
         return Response.status(Status.OK).build();
     }
 

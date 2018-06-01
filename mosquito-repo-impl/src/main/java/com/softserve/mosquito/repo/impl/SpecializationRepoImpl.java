@@ -17,7 +17,15 @@ import java.util.List;
 
 public class SpecializationRepoImpl implements SpecializationRepo {
     private static final Logger LOGGER = LogManager.getLogger(SpecializationRepoImpl.class);
-    private DataSource dataSource = MySqlDataSource.getDataSource();
+    private DataSource dataSource;
+
+    public SpecializationRepoImpl() {
+        dataSource = MySqlDataSource.getDataSource();
+    }
+
+    public SpecializationRepoImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     private static final String CREATE_SPECIALIZATION = "INSERT INTO specializations (title) VALUE (?);";
     private static final String UPDATE_SPECIALIZATION = "UPDATE specializations SET title=? WHERE id=?;";

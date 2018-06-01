@@ -14,7 +14,15 @@ import java.util.List;
 
 public class StatusRepoImpl implements StatusRepo {
     private static final Logger LOGGER = LogManager.getLogger(StatusRepoImpl.class);
-    private DataSource dataSource = MySqlDataSource.getDataSource();
+    private DataSource dataSource;
+
+    public StatusRepoImpl() {
+        dataSource = MySqlDataSource.getDataSource();
+    }
+
+    public StatusRepoImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     private static final String CREATE_STATUS = "INSERT INTO statuses (title) VALUE (?);";
     private static final String UPDATE_STATUS = "UPDATE statuses SET title=? WHERE id=?;";
