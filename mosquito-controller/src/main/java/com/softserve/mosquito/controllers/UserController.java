@@ -2,6 +2,7 @@ package com.softserve.mosquito.controllers;
 
 import com.softserve.mosquito.dtos.UserRegistrationDto;
 import com.softserve.mosquito.entities.User;
+import com.softserve.mosquito.services.api.UserService;
 import com.softserve.mosquito.services.impl.UserServiceImpl;
 
 import javax.ws.rs.*;
@@ -12,8 +13,12 @@ import javax.ws.rs.core.Response.Status;
 @Path("/users")
 public class UserController {
 
-    private com.softserve.mosquito.services.api.UserService userService = new UserServiceImpl();
-	
+    private UserService userService;
+
+	public UserController(UserService userService) {
+		this.userService = userService;
+	}
+
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)

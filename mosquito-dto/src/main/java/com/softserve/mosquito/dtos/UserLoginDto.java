@@ -13,7 +13,12 @@ public class UserLoginDto {
 	public UserLoginDto() {
 	}
 
-    public UserLoginDto(Long userId, String email, String password) {
+	public UserLoginDto(String email, String password) {
+		this.email = email;
+		this.password = password;
+	}
+
+	public UserLoginDto(Long userId, String email, String password) {
 		this.userId = userId;
 		this.email = email;
 		this.password = password;

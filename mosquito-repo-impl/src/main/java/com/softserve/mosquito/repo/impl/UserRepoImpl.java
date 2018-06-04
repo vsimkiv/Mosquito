@@ -4,6 +4,7 @@ import com.softserve.mosquito.entities.User;
 import com.softserve.mosquito.repo.api.UserRepo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@Repository
 public class UserRepoImpl implements UserRepo {
 
     private static final Logger LOGGER = LogManager.getLogger(UserRepoImpl.class);
