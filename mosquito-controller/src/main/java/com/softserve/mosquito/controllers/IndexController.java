@@ -56,11 +56,11 @@ public class IndexController {
     @ResponseStatus(HttpStatus.OK)
     public ModelAndView registration(@RequestBody UserRegistrationDto user) {
         ModelAndView view = new ModelAndView();
+        view.addObject(user);
         return view;
     }
 
 
     private class UserNotFoundException extends RuntimeException{
-
     }
 }
