@@ -9,7 +9,6 @@ import com.softserve.mosquito.validators.UserValidator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -31,7 +30,7 @@ public class IndexController {
     @Path("/login")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response login(@Valid UserLoginDto userLoginDto, @Context HttpServletRequest request) {
+    public Response login(UserLoginDto userLoginDto, @Context HttpServletRequest request) {
         if (validation.isValidCredentials(userLoginDto)) {
             // Start session with authorized user
             //TODO: use UserDto instead of User as a return type
