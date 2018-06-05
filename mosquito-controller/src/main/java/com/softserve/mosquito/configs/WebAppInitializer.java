@@ -2,11 +2,12 @@ package com.softserve.mosquito.configs;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+
 public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
   @Override
   protected Class<?>[] getRootConfigClasses() {
-    return new Class[]{WebAppConfig.class, AppConfig.class};
+    return new Class[]{WebAppConfig.class};
   }
 
   @Override
@@ -18,4 +19,5 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
   protected String[] getServletMappings() {
     return new String[]{"/"};
   }
+
 }

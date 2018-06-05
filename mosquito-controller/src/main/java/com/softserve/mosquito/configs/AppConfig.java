@@ -8,9 +8,9 @@ import javax.ws.rs.core.Application;
 import java.util.HashMap;
 import java.util.Map;
 
-@ApplicationPath("/*")
+//@ApplicationPath("/*")
 public class AppConfig extends Application {
-    private static final Logger LOGGER = LogManager.getLogger(AppConfig.class);
+  /*  private static final Logger LOGGER = LogManager.getLogger(AppConfig.class);
 
     @Override
     public Map<String, Object> getProperties() {
@@ -18,5 +18,5 @@ public class AppConfig extends Application {
         Map<String, Object> properties = new HashMap<String, Object>();
         properties.put("jersey.config.server.provider.packages", "com.softserve.mosquito");
         return properties;
-    }
+    }*/
 }

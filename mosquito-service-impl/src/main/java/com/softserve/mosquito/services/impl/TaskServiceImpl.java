@@ -18,7 +18,7 @@ import java.util.List;
 public class TaskServiceImpl implements TaskService {
 
     private TaskRepo taskRepo = new TaskRepoImpl();
-    private UserService userService = new UserServiceImpl();
+    private UserService userService = new UserServiceImpl(null);
     private EstimationRepo estimationRepo = new EstimationRepoImpl();
     private Transformer<Task, TaskDto> taskDtoTransformer = new TaskTransformer.TaskDefaultDto();
 

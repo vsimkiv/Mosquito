@@ -23,12 +23,15 @@ public class IndexController {
         this.userService = userService;
     }
 
-    @GetMapping(path = "/", produces = MediaType.TEXT_HTML_VALUE)
+
+    @GetMapping(path = "/")
     @ResponseStatus(HttpStatus.OK)
-    public String testIndexController() {
-        return "Hello Mosquito <br>" +
-                "<a href = \"/users\">Get users </a>";
+    public User testIndexController() {
+        System.out.println("www");
+        return new User();
     }
+
+
 
     @PostMapping(path = "/login", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)

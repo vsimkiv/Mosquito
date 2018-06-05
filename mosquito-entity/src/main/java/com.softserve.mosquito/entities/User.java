@@ -10,6 +10,15 @@ public class User implements Serializable {
     private String firstName;
     private String lastName;
     private String password;
+
+    public Set<Specialization> getSpecializations() {
+        return specializations;
+    }
+
+    public void setSpecializations(Set<Specialization> specializations) {
+        this.specializations = specializations;
+    }
+
     private Set<Specialization> specializations;
 
     public User() {
