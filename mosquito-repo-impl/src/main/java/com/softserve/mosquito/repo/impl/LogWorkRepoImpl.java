@@ -5,6 +5,7 @@ import com.softserve.mosquito.entities.LogWork;
 import com.softserve.mosquito.repo.api.LogWorkRepo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -33,7 +34,8 @@ public class LogWorkRepoImpl implements LogWorkRepo {
 
     @Override
     public LogWork create(LogWork logWork) {
-        try (Connection connection = dataSource.getConnection();
+       throw new NotImplementedException();
+        /* try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(CREATE_LOG_WORK)) {
             preparedStatement.setString(1, logWork.getDescription());
             preparedStatement.setInt(2, logWork.getLogged());
@@ -52,7 +54,7 @@ public class LogWorkRepoImpl implements LogWorkRepo {
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
         }
-        return null;
+        return null;*/
     }
 
     @Override
@@ -132,7 +134,8 @@ public class LogWorkRepoImpl implements LogWorkRepo {
         return logWorks;
     }
     private List<LogWork> parsDataByEstimation(ResultSet resultSet,Long estimationId) {
-        ArrayList<LogWork> logWorks = new ArrayList<>();
+        throw new NotImplementedException();
+        /*ArrayList<LogWork> logWorks = new ArrayList<>();
         try {
             while (resultSet.next()) {
                 LogWork logWork = new LogWork(resultSet.getLong("id"),
@@ -144,6 +147,6 @@ public class LogWorkRepoImpl implements LogWorkRepo {
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
         }
-        return logWorks;
+        return logWorks;*/
     }
 }

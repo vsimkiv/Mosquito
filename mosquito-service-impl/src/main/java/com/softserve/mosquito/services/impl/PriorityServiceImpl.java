@@ -5,25 +5,33 @@ import com.softserve.mosquito.dtos.PriorityCreateDto;
 import com.softserve.mosquito.dtos.PriorityDto;
 import com.softserve.mosquito.entities.Priority;
 import com.softserve.mosquito.repo.api.PriorityRepo;
-import com.softserve.mosquito.repo.impl.PriorityRepoImpl;
 import com.softserve.mosquito.impl.PriorityTransformer;
 import com.softserve.mosquito.services.api.PriorityService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Service
 public class PriorityServiceImpl implements PriorityService {
 
-    private PriorityRepo priorityRepo = new PriorityRepoImpl();
+    private PriorityRepo priorityRepo;
     private Transformer<Priority, PriorityCreateDto> priorityCreateTransformer = new PriorityTransformer.PriorityCreate();
     private Transformer<Priority, PriorityDto> priorityGenericTransformer = new PriorityTransformer.PriorityGeneric();
 
+    @Autowired
+    public PriorityServiceImpl(PriorityRepo priorityRepo) {
+        this.priorityRepo = priorityRepo;
+    }
+
     @Override
-    public List<PriorityDto> getAllPriorities(){
+    @Transactional
+    public List<Priority> getAllPriorities(){
         List<Priority> priorities = priorityRepo.readAll();
 
-        if(priorities == null || priorities.isEmpty()){
+        /*if(priorities == null || priorities.isEmpty()){
             return null;
         }
 
@@ -32,11 +40,13 @@ public class PriorityServiceImpl implements PriorityService {
             priorityDtos.add(priorityGenericTransformer.toDTO(priority));
         }
 
-        return priorityDtos;
+        return priorityDtos;*/
+        return priorities;
     }
 
     @Override
     public PriorityDto getPriorityById(Long id){
+
         Priority priority = priorityRepo.read(id);
 
         if(priority == null){

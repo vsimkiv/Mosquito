@@ -1,40 +1,58 @@
 package com.softserve.mosquito.entities;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "log_works")
 public class LogWork implements Serializable {
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     private String description;
     private Integer logged;
-    private Long userId;
-    private Long estimationId;
+
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private User author;
+
+    @Column(name = "last_update")
     private LocalDateTime lastUpdate;
+    @ManyToOne
+    @JoinColumn(name = "estimation_id")
+    private Estimation estimation;
 
     public LogWork() {
-        this.id = 0L;
+
+        /*this.id = 0L;
         this.description = "";
         this.logged = 0;
         this.userId = 0L;
-        this.estimationId = 0L;
+        this.estimation = new Estimation();*/
     }
 
     public LogWork(String description, Integer logged, Long userId, Long estimationId) {
-        this();
+        throw new NotImplementedException();
+
+        /*this();
         this.description = description;
         this.logged = logged;
         this.userId = userId;
-        this.estimationId = estimationId;
+        this.estimation = null;//TODO*/
     }
 
     public LogWork(Long id, String description, Integer logged, Long userId,
                    Long estimationId, LocalDateTime lastUpdate) {
-        this.id = id;
+        throw new NotImplementedException();
+        /*this.id = id;
         this.description = description;
         this.lastUpdate = lastUpdate;
         this.userId = userId;
         this.logged = logged;
-        this.estimationId = estimationId;
+        this.estimation = null;*/
 
     }
 
@@ -62,22 +80,6 @@ public class LogWork implements Serializable {
         this.logged = logged;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Long getEstimationId() {
-        return estimationId;
-    }
-
-    public void setEstimationId(Long estimationId) {
-        this.estimationId = estimationId;
-    }
-
     public LocalDateTime getLastUpdate() {
         return lastUpdate;
     }
@@ -92,9 +94,23 @@ public class LogWork implements Serializable {
                 "id=" + id +
                 ", description='" + description + '\'' +
                 ", logged=" + logged +
-                ", userId=" + userId +
-                ", estimationId=" + estimationId +
                 ", lastUpdate=" + lastUpdate +
                 '}';
+    }
+
+    public Estimation getEstimation() {
+        return estimation;
+    }
+
+    public void setEstimation(Estimation estimation) {
+        this.estimation = estimation;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
     }
 }

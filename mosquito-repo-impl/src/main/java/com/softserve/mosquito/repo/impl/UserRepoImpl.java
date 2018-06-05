@@ -19,7 +19,7 @@ public class UserRepoImpl implements UserRepo {
     private DataSource dataSource;
 
     public UserRepoImpl() {
-        dataSource = MySqlDataSource.getDataSource();
+        dataSource = null;//MySqlDataSource.getDataSource();
     }
 
     public UserRepoImpl(DataSource dataSource) {

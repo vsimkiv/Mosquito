@@ -1,8 +1,11 @@
 package com.softserve.mosquito.controllers;
 
+import com.softserve.mosquito.dtos.PriorityDto;
 import com.softserve.mosquito.dtos.UserLoginDto;
 import com.softserve.mosquito.dtos.UserRegistrationDto;
+import com.softserve.mosquito.entities.Priority;
 import com.softserve.mosquito.entities.User;
+import com.softserve.mosquito.services.api.PriorityService;
 import com.softserve.mosquito.services.api.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,23 +15,29 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RestController
 @RequestMapping("/")
 public class IndexController {
     private UserService userService;
 
-    @Autowired
+/*    @Autowired
     public IndexController(UserService userService) {
         this.userService = userService;
     }
+*/
+    private PriorityService priorityService;
 
+    @Autowired
+    public IndexController(PriorityService priorityService) {
+        this.priorityService = priorityService;
+    }
 
     @GetMapping(path = "/")
     @ResponseStatus(HttpStatus.OK)
-    public User testIndexController() {
-        System.out.println("www");
-        return new User();
+    public List<Priority> testIndexController() {
+        return priorityService.getAllPriorities();
     }
 
 

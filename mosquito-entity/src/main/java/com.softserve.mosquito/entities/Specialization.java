@@ -1,13 +1,23 @@
 package com.softserve.mosquito.entities;
 
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
+@Entity
+@Table(name = "specializations")
 public final class Specialization implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Byte id;
     private String title;
 
-    public Specialization() {
-    }
+    @ManyToMany(mappedBy = "specializations")
+    private Set<User> users = new HashSet<>();
+
+    public Specialization() { }
 
     public Specialization(String title) {
         this.title = title;
@@ -33,6 +43,10 @@ public final class Specialization implements Serializable {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public Set<User> getUsers() { return users; }
+
+    public void setUsers(Set<User> users) { this.users = users; }
 
     @Override
     public String toString() {
