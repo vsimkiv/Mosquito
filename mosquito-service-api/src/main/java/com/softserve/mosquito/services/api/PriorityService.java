@@ -2,10 +2,12 @@ package com.softserve.mosquito.services.api;
 
 import com.softserve.mosquito.dtos.PriorityCreateDto;
 import com.softserve.mosquito.dtos.PriorityDto;
+import com.softserve.mosquito.entities.Priority;
+
 import java.util.List;
 
 public interface PriorityService {
-    List<PriorityDto> getAllPriorities();
+    List<Priority> getAllPriorities();
 
     PriorityDto getPriorityById(Long id);
 

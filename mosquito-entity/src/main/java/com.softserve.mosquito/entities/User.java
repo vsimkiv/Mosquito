@@ -1,25 +1,46 @@
 package com.softserve.mosquito.entities;
 
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+@Entity
+@Table(name = "users")
 public class User implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     private String email;
+
+    @Column(name = "first_name")
     private String firstName;
+
+    @Column(name = "last_name")
     private String lastName;
     private String password;
 
-    public Set<Specialization> getSpecializations() {
-        return specializations;
-    }
+    @OneToMany(mappedBy = "owner", targetEntity = Task.class)
+    private List<Task> taskWhereUserIsOwner = new ArrayList<>();
 
-    public void setSpecializations(Set<Specialization> specializations) {
-        this.specializations = specializations;
-    }
+    @OneToMany(mappedBy = "worker", targetEntity = Task.class)
+    private List<Task> taskWhereUserIsWorker = new ArrayList<>();
 
-    private Set<Specialization> specializations;
+    @OneToMany(mappedBy = "author", targetEntity = Comment.class)
+    private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "author", targetEntity = LogWork.class)
+    private List<LogWork> logWorks = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "users_has_specializations",
+            joinColumns = { @JoinColumn(name = "user_id") },
+            inverseJoinColumns = { @JoinColumn(name = "specialization_id") })
+    private Set<Specialization> specializations = new HashSet<>();
 
     public User() {
     }
@@ -96,6 +117,14 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
+    public Set<Specialization> getSpecializations() {
+        return specializations;
+    }
+
+    public void setSpecializations(Set<Specialization> specializations) {
+        this.specializations = specializations;
+    }
+
     @Override
     public String toString() {
         return "{" +
@@ -105,5 +134,37 @@ public class User implements Serializable {
                 ", \"firstName\":\"" + firstName + '\"' +
                 ", \"lastName\":\"" + lastName + '\"' +
                 '}';
+    }
+
+    public List<Task> getTaskWhereUserIsOwner() {
+        return taskWhereUserIsOwner;
+    }
+
+    public void setTaskWhereUserIsOwner(List<Task> taskWhereUserIsOwner) {
+        this.taskWhereUserIsOwner = taskWhereUserIsOwner;
+    }
+
+    public List<Task> getTaskWhereUserIsWorker() {
+        return taskWhereUserIsWorker;
+    }
+
+    public void setTaskWhereUserIsWorker(List<Task> taskWhereUserIsWorker) {
+        this.taskWhereUserIsWorker = taskWhereUserIsWorker;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public List<LogWork> getLogWorks() {
+        return logWorks;
+    }
+
+    public void setLogWorks(List<LogWork> logWorks) {
+        this.logWorks = logWorks;
     }
 }

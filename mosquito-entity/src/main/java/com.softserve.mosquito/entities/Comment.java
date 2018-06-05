@@ -1,20 +1,35 @@
 package com.softserve.mosquito.entities;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "comments")
 public class Comment implements Serializable {
+
+    @Id
+    @GeneratedValue (strategy=GenerationType.IDENTITY)
     private Long id;
     private String text;
-    private Long taskId;
-    private Long authorId;
+
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private User author;
+
+    @Column(name = "last_update")
     private LocalDateTime lastUpdate;
+
+    @ManyToOne
+    @JoinColumn(name = "task_id")
+    private Task task;
 
     public Comment() {
     }
 
     //transform from DTO
-    public Comment(String text, Long taskId, Long authorId) {
+    /*public Comment(String text, Long taskId, Long authorId) {
+
         this.text = text;
         this.taskId = taskId;
         this.authorId = authorId;
@@ -27,7 +42,7 @@ public class Comment implements Serializable {
         this.authorId = authorId;
         this.text = text;
         this.lastUpdate = lastUpdate;
-    }
+    }*/
 
     public Long getId() {
         return id;
@@ -45,22 +60,6 @@ public class Comment implements Serializable {
         this.text = text;
     }
 
-    public Long getTaskId() {
-        return taskId;
-    }
-
-    public void setTaskId(Long taskId) {
-        this.taskId = taskId;
-    }
-
-    public Long getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
-    }
-
     public LocalDateTime getLastUpdate() {
         return lastUpdate;
     }
@@ -69,14 +68,15 @@ public class Comment implements Serializable {
         this.lastUpdate = lastUpdate;
     }
 
-    @Override
-    public String toString() {
-        return "Comment{" +
-                "id=" + id +
-                ", text='" + text + '\'' +
-                ", taskId=" + taskId +
-                ", authorId=" + authorId +
-                ", lastUpdate=" + lastUpdate +
-                '}';
+    public Task getTask() { return task; }
+
+    public void setTask(Task task) { this.task = task; }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
     }
 }

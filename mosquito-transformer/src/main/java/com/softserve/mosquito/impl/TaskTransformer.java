@@ -7,6 +7,7 @@ import com.softserve.mosquito.entities.Estimation;
 import com.softserve.mosquito.entities.Priority;
 import com.softserve.mosquito.entities.Status;
 import com.softserve.mosquito.entities.Task;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class TaskTransformer {
 
@@ -18,7 +19,9 @@ public class TaskTransformer {
 
         @Override
         public Task toEntity(TaskDto taskCreateDto) {
-            Task task = new Task();
+            throw new NotImplementedException();
+
+            /*Task task = new Task();
             task.setName(taskCreateDto.getName());
             task.setEstimation(new Estimation(taskCreateDto.getEstimation()));
             task.setOwnerId(taskCreateDto.getOwnerId());
@@ -26,12 +29,14 @@ public class TaskTransformer {
             task.setParentId(taskCreateDto.getParentId());
             task.setStatus(new Status(taskCreateDto.getStatusId()));
             task.setPriority(new Priority(taskCreateDto.getPriorityId()));
-            return task;
+            return task;*/
         }
 
         @Override
         public TaskDto toDTO(Task task) {
-            TaskDto taskCreateDto = new TaskDto();
+            throw new NotImplementedException();
+
+            /*TaskDto taskCreateDto = new TaskDto();
             taskCreateDto.setName(task.getName());
             taskCreateDto.setEstimation(task.getEstimation().getTimeEstimation());
             taskCreateDto.setRemaining(task.getEstimation().getRemaining());
@@ -42,7 +47,7 @@ public class TaskTransformer {
             taskCreateDto.setStatusId(task.getStatus().getId());
             taskCreateDto.setStatusTitle(task.getStatus().getTitle());
             taskCreateDto.setPriorityTitle(task.getPriority().getTitle());
-            return taskCreateDto;
+            return taskCreateDto;*/
         }
     }
 

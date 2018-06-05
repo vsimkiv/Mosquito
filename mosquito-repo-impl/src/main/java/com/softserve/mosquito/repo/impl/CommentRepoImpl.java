@@ -3,8 +3,10 @@ package com.softserve.mosquito.repo.impl;
 
 import com.softserve.mosquito.entities.Comment;
 import com.softserve.mosquito.repo.api.CommentRepo;
+import com.sun.xml.internal.stream.events.NotationDeclarationImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -31,7 +33,8 @@ public class CommentRepoImpl implements CommentRepo {
 
     @Override
     public Comment create(Comment comment) {
-        try (Connection connection = dataSource.getConnection();
+        throw new NotImplementedException();
+        /*try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(CREATE_COMMENT)) {
             preparedStatement.setString(1, comment.getText());
             preparedStatement.setLong(2, comment.getTaskId());
@@ -48,7 +51,7 @@ public class CommentRepoImpl implements CommentRepo {
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
         }
-        return null;
+        return null;*/
     }
 
     @Override
@@ -102,7 +105,8 @@ public class CommentRepoImpl implements CommentRepo {
     }
 
     private List<Comment> parseData(ResultSet resultSet) {
-        List<Comment> comments = new ArrayList<>();
+        throw new NotImplementedException();
+        /*List<Comment> comments = new ArrayList<>();
 
         try {
             while (resultSet.next()) {
@@ -116,6 +120,6 @@ public class CommentRepoImpl implements CommentRepo {
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
         }
-        return comments;
+        return comments;*/
     }
 }
