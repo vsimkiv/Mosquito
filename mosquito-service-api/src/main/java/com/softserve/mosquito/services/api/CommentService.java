@@ -1,15 +1,21 @@
 package com.softserve.mosquito.services.api;
 
+import com.softserve.mosquito.dtos.CommentCreateDto;
 import com.softserve.mosquito.entities.Comment;
+
+import java.util.List;
+
 
 public interface CommentService {
 
-    Comment save(Comment comment);
+    CommentCreateDto save(CommentCreateDto commentCreateDto);
 
-    Comment getComment(Long id);
+    CommentCreateDto getCommentById(Long id);
 
-    Comment update(Comment comment);
+    CommentCreateDto update(CommentCreateDto commentCreateDto);
 
     void delete(Long id);
+
+    List<Comment> getAllComments();
 
 }

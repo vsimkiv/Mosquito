@@ -4,7 +4,6 @@ import com.softserve.mosquito.entities.Priority;
 import com.softserve.mosquito.repo.api.PriorityRepo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,7 @@ public class PriorityRepoImpl implements PriorityRepo {
     private SessionFactory sessionFactory;
 
     @Autowired
-    public PriorityRepoImpl(SessionFactory sessionFactory){
+    public PriorityRepoImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
     /*private DataSource dataSource = MySqlDataSource.getDataSource();
@@ -34,6 +33,7 @@ public class PriorityRepoImpl implements PriorityRepo {
 
     @Override
     public Priority create(Priority priority) {
+
         throw new NotImplementedException();
         /*try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(CREATE_PRIORITY, Statement.RETURN_GENERATED_KEYS)) {

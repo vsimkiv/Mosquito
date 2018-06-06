@@ -12,13 +12,14 @@ import org.springframework.dao.annotation.PersistenceExceptionTranslationPostPro
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
 import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@PropertySource({ "classpath:persistence-mysql.properties" })
-@ComponentScan({ "com.softserve.mosquito" })
+@PropertySource({"classpath:persistence-mysql.properties"})
+@ComponentScan({"com.softserve.mosquito"})
 public class PersistenceConfig {
 
     @Autowired
@@ -29,7 +30,7 @@ public class PersistenceConfig {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(restDataSource());
         sessionFactory.setPackagesToScan(
-                new String[] { "com.softserve.mosquito.entities" });
+                new String[]{"com.softserve.mosquito.entities"});
         sessionFactory.setHibernateProperties(hibernateProperties());
 
         return sessionFactory;
