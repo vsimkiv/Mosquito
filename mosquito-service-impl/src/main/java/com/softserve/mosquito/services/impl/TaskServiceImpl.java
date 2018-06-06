@@ -34,8 +34,8 @@ public class TaskServiceImpl implements TaskService {
         User assigneeUser = userService.getUserById(task.getWorkerId());
 
         TaskDto taskDto = taskDtoTransformer.toDTO(task);
-        taskDto.setAssigneeFirstName(assigneeUser.getFirstName());
-        taskDto.setAssigneeLastName(assigneeUser.getLastName());
+        taskDto.setFirstNameOfWorker(assigneeUser.getFirstName());
+        taskDto.setLastNameOfWorker(assigneeUser.getLastName());
 
         return taskDto;*/
     }
