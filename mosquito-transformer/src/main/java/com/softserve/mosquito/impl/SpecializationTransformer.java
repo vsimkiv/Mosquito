@@ -4,11 +4,23 @@ import com.softserve.mosquito.api.Transformer;
 import com.softserve.mosquito.dtos.SpecializationCreateDto;
 import com.softserve.mosquito.dtos.SpecializationDto;
 import com.softserve.mosquito.entities.Specialization;
+import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
+@Service
 public class SpecializationTransformer {
 
     private SpecializationTransformer() {
         throw new IllegalStateException("Utility class");
+    }
+
+    public Set<Specialization> toEntity(Set<SpecializationDto> specializations) {
+        return null;
+    }
+
+    public Set<SpecializationDto> toDTO(Set<Specialization> specializations) {
+        return null;
     }
 
     public static class SpecializationCreate implements Transformer<Specialization, SpecializationCreateDto>{

@@ -115,6 +115,7 @@ public class UserRepoImpl implements UserRepo {
         }
     }
 
+    @Override
     public User readUserByEmail(String email) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(READ_USER_BY_EMAIL)) {
