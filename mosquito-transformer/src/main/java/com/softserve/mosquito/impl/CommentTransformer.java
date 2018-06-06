@@ -15,21 +15,20 @@ public class CommentTransformer {
 
         @Override
         public Comment toEntity(CommentCreateDto commentCreateDto) {
-            throw new NotImplementedException();
-            /*return new Comment(
+            return new Comment(
                     commentCreateDto.getText(),
-                    commentCreateDto.getTaskId(),
-                    commentCreateDto.getAuthorId());*/
+                    commentCreateDto.getTask(),
+                    commentCreateDto.getAuthor());
         }
 
         @Override
         public CommentCreateDto toDTO(Comment comment) {
-            throw new NotImplementedException();
-            /* return new CommentCreateDto(
+            return new CommentCreateDto(
+                    comment.getId(),
                     comment.getText(),
-                    comment.getTaskId(),
-                    comment.getAuthorId());*/
-            }
+                    comment.getTask(),
+                    comment.getAuthor());
         }
+    }
 
 }

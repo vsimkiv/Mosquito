@@ -26,8 +26,9 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public CommentCreateDto save(CommentCreateDto commentCreateDto) {
+        System.out.println(commentCreateDto);
         Comment comment = repo.create(transformer.toEntity(commentCreateDto));
-
+        System.out.println(comment);
         if (comment == null)
             return null;
 

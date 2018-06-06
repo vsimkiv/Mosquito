@@ -1,20 +1,42 @@
 package com.softserve.mosquito.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.softserve.mosquito.entities.Task;
+import com.softserve.mosquito.entities.User;
+
 /*
  * DTO for creating comments
  */
 public class CommentCreateDto {
+    private Long id;
     private String text;
-    private Long taskId;
-    private Long authorId;
+    @JsonIgnore
+    private Task task;
+    @JsonIgnore
+    private User author;
 
     public CommentCreateDto() {
     }
 
-    public CommentCreateDto(String text, Long taskId, Long authorId) {
+    public CommentCreateDto(Long id, String text, Task task, User author) {
+        this.id = id;
         this.text = text;
-        this.taskId = taskId;
-        this.authorId = authorId;
+        this.task = task;
+        this.author = author;
+    }
+
+    public CommentCreateDto(String text, Task task, User author) {
+        this.text = text;
+        this.task = task;
+        this.author = author;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getText() {
@@ -25,20 +47,29 @@ public class CommentCreateDto {
         this.text = text;
     }
 
-    public Long getTaskId() {
-        return taskId;
+    public Task getTask() {
+        return task;
     }
 
-    public void setTaskId(Long taskId) {
-        this.taskId = taskId;
+    public void setTask(Task task) {
+        this.task = task;
     }
 
-
-    public Long getAuthorId() {
-        return authorId;
+    public User getAuthor() {
+        return author;
     }
 
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
+    @Override
+    public String toString() {
+        return "CommentCreateDto{" +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                ", task=" + task +
+                ", author=" + author +
+                '}';
     }
 }

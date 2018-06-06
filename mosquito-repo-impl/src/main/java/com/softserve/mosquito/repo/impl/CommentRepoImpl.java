@@ -33,7 +33,7 @@ public class CommentRepoImpl implements CommentRepo {
         Transaction transaction = session.getTransaction();
         try {
             transaction.begin();
-
+            System.out.println(comment);
             session.save(comment);
 
             transaction.commit();
@@ -54,9 +54,7 @@ public class CommentRepoImpl implements CommentRepo {
         Transaction transaction = session.getTransaction();
         try {
             transaction.begin();
-
             Comment comment = session.get(Comment.class, id);
-
             transaction.commit();
             return comment;
         } catch (HibernateException e) {

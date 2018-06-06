@@ -1,5 +1,7 @@
 package com.softserve.mosquito.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -15,6 +17,7 @@ public class Comment implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "author_id")
+    @JsonIgnore
     private User author;
 
     @Column(name = "last_update")
@@ -22,27 +25,28 @@ public class Comment implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "task_id")
+    @JsonIgnore
     private Task task;
 
     public Comment() {
     }
 
     //transform from DTO
-    /*public Comment(String text, Long taskId, Long authorId) {
+    public Comment(String text, Task task, User author) {
 
         this.text = text;
-        this.taskId = taskId;
-        this.authorId = authorId;
+        this.task = task;
+        this.author = author;
     }
 
     //get from DB
-    public Comment(Long id, String text, Long taskId, Long authorId,  LocalDateTime lastUpdate) {
+    public Comment(Long id, String text, Task task, User author,  LocalDateTime lastUpdate) {
         this.id = id;
-        this.taskId = taskId;
-        this.authorId = authorId;
+        this.task = task;
+        this.author = author;
         this.text = text;
         this.lastUpdate = lastUpdate;
-    }*/
+    }
 
     public Long getId() {
         return id;
@@ -78,5 +82,16 @@ public class Comment implements Serializable {
 
     public void setAuthor(User author) {
         this.author = author;
+    }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                ", author=" + author +
+                ", lastUpdate=" + lastUpdate +
+                ", task=" + task +
+                '}';
     }
 }
