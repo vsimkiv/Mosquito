@@ -7,6 +7,7 @@ import com.softserve.mosquito.entities.Task;
 import com.softserve.mosquito.repo.api.TaskRepo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Repository;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.sql.DataSource;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@Repository
 public class TaskRepoImpl implements TaskRepo {
     private static final Logger LOGGER = LogManager.getLogger(TaskRepoImpl.class);
     private DataSource dataSource = MySqlDataSource.getDataSource();

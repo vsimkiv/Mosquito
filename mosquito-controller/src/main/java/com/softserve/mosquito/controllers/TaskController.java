@@ -1,90 +1,77 @@
 package com.softserve.mosquito.controllers;
 
 import com.softserve.mosquito.dtos.TaskDto;
-import com.softserve.mosquito.entities.Task;
-import com.softserve.mosquito.services.api.TaskService;
-import com.softserve.mosquito.services.impl.TaskServiceImpl;
+import com.softserve.mosquito.services.api.TaskServiceUsingDto;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
+import java.util.ArrayList;
+import java.util.List;
 
-
-@Path("/tasks")
+@RestController
+@RequestMapping(path = "/tasks")
 public class TaskController {
 
-    private TaskService taskService = new TaskServiceImpl();
+    private TaskServiceUsingDto taskServiceUsingDto;
 
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response createSubTaskOrProject(TaskDto taskCreateDto) {
-        Task task = taskService.createTask(taskCreateDto);
-        return Response.status(Status.CREATED).entity(task).build();
+    @Autowired
+    public TaskController(TaskServiceUsingDto taskServiceUsingDto) {
+        this.taskServiceUsingDto = taskServiceUsingDto;
     }
 
-    @GET
-    @Path("/workers")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getWorkerTasks(@QueryParam("worker_id") Long workerId,
-                                   @QueryParam("status_id") Byte statusId) {
-        return Response.ok(taskService.getTasksByWorkerAndStatus(workerId, statusId)).build();
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public TaskDto createSubTaskOrProject(@RequestBody TaskDto taskDto) {
+        return taskServiceUsingDto.save(taskDto);
     }
 
-    @GET
-    @Path("/owners")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getOwnerTasks(@QueryParam("owner_id") Long ownerId,
-                                  @QueryParam("status_id") Byte statusId,
-                                  @QueryParam("parent_id") Long parentId) {
-        return Response.ok(taskService.getTasksByOwnerAndStatusAndParent(parentId, ownerId, statusId)).build();
-    }
-
-    @GET
-    @Path("/{task_id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getTaskById(@PathParam("task_id") Long taskId) {
-        return Response.ok(taskService.getTaskById(taskId)).build();
-    }
-
-    @PUT
-    @Path("/{task_id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response updateTask(TaskDto taskCreateDto) {
-        //TODO: Change. For testing.
-        return Response.status(Status.OK).build();
+    @PutMapping(path = "/{task_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public TaskDto updateTask(@RequestBody TaskDto taskDto) {
+        return taskDto;
 
     }
 
-    @GET
-    @Path("/parents")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getSubTaskOrProject(@QueryParam("parent_id") Long parentId) {
-        return Response.ok(taskService.getSubTasks(parentId)).build();
+    @DeleteMapping(path = "/{task_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteTask(@PathVariable Long id) {
+        taskServiceUsingDto.remove(id);
     }
 
-    @DELETE
-    @Path("/{task_id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteTask(@PathParam("task_id") Long taskId) {
-        //TODO: Change. For testing.
-        return Response.status(Status.OK).build();
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<TaskDto> getAllTasks() {
+        return taskServiceUsingDto.getAll();
     }
 
-    @GET
-    @Path("/statuses")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getTaskByStatus(@QueryParam("task_status") Byte statusId) {
-        //TODO: Change. For testing.
-        return Response.status(Status.OK).build();
+    @GetMapping(path = "/{task_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public TaskDto getTaskById(@PathVariable("task_id") Long taskId) {
+        return null;
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllTasks() {
-        return Response.ok(taskService.getAllTasks()).build();
+    @GetMapping(path = "{owner_id}/owners-tasks")
+    @ResponseStatus(HttpStatus.OK)
+    public TaskDto getOwnerTasks(@PathVariable("owner_id") Long ownerId) {
+        return null;
+    }
+
+    @GetMapping(path = "{worker_id}/workers-tasks")
+    @ResponseStatus(HttpStatus.OK)
+    public List<TaskDto> getWorkerTasks(@PathVariable("worker_id") Long workerId) {
+        return new ArrayList<>();
+    }
+
+    @GetMapping (path = "/{parent_id}/tasks")
+    @ResponseStatus(HttpStatus.OK)
+    public List<TaskDto> getSubTasks(@PathVariable("parent_id") Long parentId) {
+        return new ArrayList<>();
+    }
+
+    @GetMapping (path = "/{task_status}/tasks")
+    @ResponseStatus(HttpStatus.OK)
+    public List<TaskDto> getTaskByStatus(@PathVariable("task_status") Long statusId) {
+        return new ArrayList<>();
     }
 }
