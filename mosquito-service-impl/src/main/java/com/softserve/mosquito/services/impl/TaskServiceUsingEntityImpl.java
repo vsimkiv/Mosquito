@@ -26,7 +26,7 @@ public class TaskServiceUsingEntityImpl implements TaskServiceUsingEntity {
     }
 
     @Override
-    public Task createTask(Task task) {
+    public Task create(Task task) {
         try {
             return taskRepo.create(task);
         } catch (DataAccessException e) {
@@ -35,18 +35,13 @@ public class TaskServiceUsingEntityImpl implements TaskServiceUsingEntity {
     }
 
     @Override
-    public Task updateTask(Task task) {
+    public Task update(Task task) {
         return null;
     }
 
     @Override
-    public void removeTask(Long id) {
+    public void delete(Long id) {
 
-    }
-
-    @Override
-    public List<Task> getAllTasks() {
-        return null;
     }
 
     @Override
@@ -55,12 +50,34 @@ public class TaskServiceUsingEntityImpl implements TaskServiceUsingEntity {
     }
 
     @Override
-    public List<Task> getTasksByOwner(Long ownerId) {
+    public List<Task> getAllTasks() {
         return null;
     }
 
     @Override
-    public List<Task> getSubTasks(Long parentId) {
+    public List<Task> filterTasksByParent(Long parentId) {
         return null;
     }
+
+    @Override
+    public List<Task> filterTasksByOwner(Long ownerId) {
+        return null;
+    }
+
+    @Override
+    public List<Task> filterTasksByWorker(Long workerId) {
+        return null;
+    }
+
+    @Override
+    public List<Task> filterTasksByPriority(Long statusId) {
+        return null;
+    }
+
+    @Override
+    public List<Task> filterTasksByStatus(Long statusId) {
+        return null;
+    }
+
+
 }

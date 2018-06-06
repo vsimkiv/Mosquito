@@ -11,12 +11,28 @@ import java.util.List;
 public class TaskServiceUsingDtoImpl implements TaskServiceUsingDto {
 
     @Override
-    public TaskDto save(TaskDto taskDto) {
+    public TaskDto create(TaskDto taskDto) {
         return taskDto;
     }
 
     @Override
-    public List<TaskDto> getAll() {
+    public TaskDto update(TaskDto taskDto) {
+        return taskDto;
+    }
+
+    @Override
+    public void delete(Long id) {
+
+    }
+
+    @Override
+    public TaskDto read(Long id) {
+        return null;
+    }
+
+    @Override
+    public List<TaskDto> readAll() {
         return new ArrayList<>();
     }
+
 }

@@ -23,55 +23,54 @@ public class TaskController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public TaskDto createSubTaskOrProject(@RequestBody TaskDto taskDto) {
-        return taskServiceUsingDto.save(taskDto);
+        return taskServiceUsingDto.create(taskDto);
     }
 
-    @PutMapping(path = "/{task_id}")
+    @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TaskDto updateTask(@RequestBody TaskDto taskDto) {
-        return taskDto;
-
+    public TaskDto updateTask(@PathVariable("id") Long id, @RequestBody TaskDto taskDto) {
+        return taskServiceUsingDto.update(taskDto);
     }
 
-    @DeleteMapping(path = "/{task_id}")
+    @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteTask(@PathVariable Long id) {
-        taskServiceUsingDto.remove(id);
+    public void deleteTask(@PathVariable("id") Long id) {
+        taskServiceUsingDto.delete(id);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<TaskDto> getAllTasks() {
-        return taskServiceUsingDto.getAll();
+        return taskServiceUsingDto.readAll();
     }
 
-    @GetMapping(path = "/{task_id}")
+    @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TaskDto getTaskById(@PathVariable("task_id") Long taskId) {
+    public TaskDto getTaskById(@PathVariable("id") Long taskId) {
         return null;
     }
 
-    @GetMapping(path = "{owner_id}/owners-tasks")
-    @ResponseStatus(HttpStatus.OK)
-    public TaskDto getOwnerTasks(@PathVariable("owner_id") Long ownerId) {
-        return null;
-    }
-
-    @GetMapping(path = "{worker_id}/workers-tasks")
-    @ResponseStatus(HttpStatus.OK)
-    public List<TaskDto> getWorkerTasks(@PathVariable("worker_id") Long workerId) {
-        return new ArrayList<>();
-    }
-
-    @GetMapping (path = "/{parent_id}/tasks")
+    @GetMapping (path = "filter/{parent_id}")
     @ResponseStatus(HttpStatus.OK)
     public List<TaskDto> getSubTasks(@PathVariable("parent_id") Long parentId) {
         return new ArrayList<>();
     }
 
-    @GetMapping (path = "/{task_status}/tasks")
+    @GetMapping(path = "filter/{owner_id}")
     @ResponseStatus(HttpStatus.OK)
-    public List<TaskDto> getTaskByStatus(@PathVariable("task_status") Long statusId) {
+    public TaskDto getOwnerTasks(@PathVariable("owner_id") Long ownerId) {
+        return null;
+    }
+
+    @GetMapping(path = "filter/{worker_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<TaskDto> getWorkerTasks(@PathVariable("worker_id") Long workerId) {
+        return new ArrayList<>();
+    }
+
+    @GetMapping (path = "filter/{status_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<TaskDto> getTaskByStatus(@PathVariable("status_id") Long statusId) {
         return new ArrayList<>();
     }
 }

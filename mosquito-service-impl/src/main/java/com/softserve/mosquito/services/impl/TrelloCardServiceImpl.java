@@ -44,7 +44,7 @@ public class TrelloCardServiceImpl {
         taskDto.setName(projectName);
         taskDto.setOwnerId(trelloInfo.getUserId());
         taskDto.setWorkerId(trelloInfo.getUserId());
-        Task task = taskService.createTask(taskDto);
+        Task task = taskService.create(taskDto);
 
         for (TrelloCard trelloCard : trelloCards){
             TaskDto trelloTask = new TaskDto();
@@ -53,7 +53,7 @@ public class TrelloCardServiceImpl {
             trelloTask.setOwnerId(trelloInfo.getUserId());
             trelloTask.setParentId(task.getId());
             trelloTask.setStatusId(new StatusServiceImpl().getStatusByName(status).getId());
-            taskService.createTask(trelloTask);
+            taskService.create(trelloTask);
         }
     }
 

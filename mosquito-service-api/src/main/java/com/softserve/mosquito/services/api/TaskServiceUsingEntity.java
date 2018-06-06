@@ -1,23 +1,33 @@
 package com.softserve.mosquito.services.api;
 
+import com.softserve.mosquito.entities.Priority;
+import com.softserve.mosquito.entities.Status;
 import com.softserve.mosquito.entities.Task;
+import com.softserve.mosquito.entities.User;
 
 import java.util.List;
 
 public interface TaskServiceUsingEntity {
 
-    Task createTask(Task task);
+    Task create(Task task);
 
-    Task updateTask(Task task);
+    Task update(Task task);
 
-    void removeTask(Long id);
+    void delete(Long id);
 
 
-    List<Task> getAllTasks();
 
     Task getTaskById(Long id);
 
-    List<Task> getTasksByOwner(Long ownerId);
+    List<Task> getAllTasks();
 
-    List<Task> getSubTasks(Long parentId);
+    List<Task> filterTasksByParent(Task parentTask);
+
+    List<Task> filterTasksByOwner(User owner);
+
+    List<Task> filterTasksByWorker(User worker);
+
+    List<Task> filterTasksByPriority(Priority priority);
+
+    List<Task> filterTasksByStatus(Status status);
 }
