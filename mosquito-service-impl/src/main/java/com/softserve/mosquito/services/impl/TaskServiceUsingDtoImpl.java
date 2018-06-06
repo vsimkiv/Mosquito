@@ -35,4 +35,39 @@ public class TaskServiceUsingDtoImpl implements TaskServiceUsingDto {
         return new ArrayList<>();
     }
 
+    @Override
+    public TaskDto getTaskById(Long id) {
+        return null;
+    }
+
+    @Override
+    public List<TaskDto> getAllTasks() {
+        return null;
+    }
+
+    @Override
+    public List<TaskDto> filterTasksByParent(Long parentId) {
+        return null;
+    }
+
+    @Override
+    public List<TaskDto> filterTasksByOwner(Long ownerId) {
+        return null;
+    }
+
+    @Override
+    public List<TaskDto> filterTasksByWorker(Long workerId) {
+        return null;
+    }
+
+    @Override
+    public List<TaskDto> filterTasksByPriority(Long priorityId) {
+        return null;
+    }
+
+    @Override
+    public List<TaskDto> filterTasksByStatus(Long statusId) {
+        return null;
+    }
+
 }

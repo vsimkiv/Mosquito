@@ -1,9 +1,9 @@
 package com.softserve.mosquito.services.impl;
 
-import com.softserve.mosquito.api.Transformer;
+import com.softserve.mosquito.transformer.api.Transformer;
 import com.softserve.mosquito.dtos.CommentCreateDto;
 import com.softserve.mosquito.entities.Comment;
-import com.softserve.mosquito.impl.CommentTransformer;
+import com.softserve.mosquito.transformer.impl.CommentTransformer;
 import com.softserve.mosquito.repo.api.CommentRepo;
 import com.softserve.mosquito.services.api.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;

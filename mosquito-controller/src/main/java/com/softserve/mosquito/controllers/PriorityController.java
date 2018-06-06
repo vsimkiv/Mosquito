@@ -12,8 +12,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import java.util.List;
-
 @Path("/priorities")
 public class PriorityController {
     private PriorityService priorityService = new PriorityServiceImpl(null);//TODO @autowired

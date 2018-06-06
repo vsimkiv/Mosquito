@@ -1,8 +1,7 @@
 package com.softserve.mosquito.services.impl;
 
 import com.softserve.mosquito.dtos.TaskDto;
-import com.softserve.mosquito.entities.Estimation;
-import com.softserve.mosquito.entities.Task;
+import com.softserve.mosquito.entities.*;
 import com.softserve.mosquito.repo.api.EstimationRepo;
 import com.softserve.mosquito.repo.api.TaskRepo;
 import com.softserve.mosquito.repo.impl.EstimationRepoImpl;
@@ -55,29 +54,30 @@ public class TaskServiceUsingEntityImpl implements TaskServiceUsingEntity {
     }
 
     @Override
-    public List<Task> filterTasksByParent(Long parentId) {
+    public List<Task> filterTasksByParent(Task parentTask) {
         return null;
     }
 
     @Override
-    public List<Task> filterTasksByOwner(Long ownerId) {
+    public List<Task> filterTasksByOwner(User owner) {
         return null;
     }
 
     @Override
-    public List<Task> filterTasksByWorker(Long workerId) {
+    public List<Task> filterTasksByWorker(User worker) {
         return null;
     }
 
     @Override
-    public List<Task> filterTasksByPriority(Long statusId) {
+    public List<Task> filterTasksByPriority(Priority priority) {
         return null;
     }
 
     @Override
-    public List<Task> filterTasksByStatus(Long statusId) {
+    public List<Task> filterTasksByStatus(Status status) {
         return null;
     }
+
 
 
 }

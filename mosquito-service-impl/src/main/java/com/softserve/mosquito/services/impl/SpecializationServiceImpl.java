@@ -1,12 +1,12 @@
 package com.softserve.mosquito.services.impl;
 
-import com.softserve.mosquito.api.Transformer;
+import com.softserve.mosquito.transformer.api.Transformer;
 import com.softserve.mosquito.dtos.SpecializationCreateDto;
 import com.softserve.mosquito.dtos.SpecializationDto;
 import com.softserve.mosquito.entities.Specialization;
 import com.softserve.mosquito.repo.api.SpecializationRepo;
 import com.softserve.mosquito.repo.impl.SpecializationRepoImpl;
-import com.softserve.mosquito.impl.SpecializationTransformer;
+import com.softserve.mosquito.transformer.impl.SpecializationTransformer;
 import com.softserve.mosquito.services.api.SpecializationService;
 
 import java.util.ArrayList;

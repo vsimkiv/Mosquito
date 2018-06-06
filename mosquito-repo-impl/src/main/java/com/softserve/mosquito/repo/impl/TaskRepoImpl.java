@@ -1,8 +1,5 @@
 package com.softserve.mosquito.repo.impl;
 
-import com.softserve.mosquito.entities.Estimation;
-import com.softserve.mosquito.entities.Priority;
-import com.softserve.mosquito.entities.Status;
 import com.softserve.mosquito.entities.Task;
 import com.softserve.mosquito.repo.api.TaskRepo;
 import org.apache.logging.log4j.LogManager;
@@ -12,8 +9,6 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.sql.DataSource;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Repository

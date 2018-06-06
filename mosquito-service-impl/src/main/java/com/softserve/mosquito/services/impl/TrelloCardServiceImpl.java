@@ -2,9 +2,7 @@ package com.softserve.mosquito.services.impl;
 
 import com.softserve.mosquito.dtos.TaskDto;
 
-import com.softserve.mosquito.entities.Task;
 import com.softserve.mosquito.entities.*;
-import com.softserve.mosquito.entities.TrelloInfo;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -15,6 +13,7 @@ import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 import javax.ws.rs.core.Response;
 
 public class TrelloCardServiceImpl {
+
     private Long userId = 44L;
     private TrelloInfo trelloInfo = new TrelloInfoServiceImpl().getTrelloInfoByUserId(userId);
 
@@ -37,25 +36,25 @@ public class TrelloCardServiceImpl {
         }
     }
 
-    private void createTasksFromTrelloCards(TrelloCard[] trelloCards, String status, String projectName){
-
-        TaskServiceUsingEntityImpl taskService = new TaskServiceUsingEntityImpl();
-        TaskDto taskDto = new TaskDto();
-        taskDto.setName(projectName);
-        taskDto.setOwnerId(trelloInfo.getUserId());
-        taskDto.setWorkerId(trelloInfo.getUserId());
-        Task task = taskService.create(taskDto);
-
-        for (TrelloCard trelloCard : trelloCards){
-            TaskDto trelloTask = new TaskDto();
-            trelloTask.setName(trelloCard.getName());
-            trelloTask.setWorkerId(trelloInfo.getUserId());
-            trelloTask.setOwnerId(trelloInfo.getUserId());
-            trelloTask.setParentId(task.getId());
-            trelloTask.setStatusId(new StatusServiceImpl().getStatusByName(status).getId());
-            taskService.create(trelloTask);
-        }
-    }
+   private void createTasksFromTrelloCards(TrelloCard[] trelloCards, String status, String projectName){
+//
+//        TaskServiceUsingEntityImpl taskService = new TaskServiceUsingDtoImpl();
+//        TaskDto taskDto = new TaskDto();
+//        taskDto.setName(projectName);
+//        taskDto.setOwnerId(trelloInfo.getUserId());
+//        taskDto.setWorkerId(trelloInfo.getUserId());
+//        Task task = taskService.create(taskDto);
+//
+//        for (TrelloCard trelloCard : trelloCards){
+//            TaskDto trelloTask = new TaskDto();
+//            trelloTask.setName(trelloCard.getName());
+//            trelloTask.setWorkerId(trelloInfo.getUserId());
+//            trelloTask.setOwnerId(trelloInfo.getUserId());
+//            trelloTask.setParentId(task.getId());
+//            trelloTask.setStatusId(new StatusServiceImpl().getStatusByName(status).getId());
+//            taskService.create(trelloTask);
+//        }
+   }
 
     private TrelloBoard[] getAllTrelloBoards(){
         TrelloBoard[] trelloBoards= null;
@@ -130,7 +129,6 @@ public class TrelloCardServiceImpl {
         }
 
         return TrelloCards;
-
     }
 
 }
