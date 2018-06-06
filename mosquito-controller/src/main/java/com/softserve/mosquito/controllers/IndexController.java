@@ -1,6 +1,5 @@
 package com.softserve.mosquito.controllers;
 
-import com.softserve.mosquito.dtos.PriorityDto;
 import com.softserve.mosquito.dtos.UserLoginDto;
 import com.softserve.mosquito.dtos.UserRegistrationDto;
 import com.softserve.mosquito.entities.Priority;
@@ -21,6 +20,7 @@ import java.util.List;
 @RequestMapping("/")
 public class IndexController {
     private UserService userService;
+
 
 /*    @Autowired
     public IndexController(UserService userService) {

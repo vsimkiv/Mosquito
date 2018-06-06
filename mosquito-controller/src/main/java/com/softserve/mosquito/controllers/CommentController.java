@@ -5,24 +5,30 @@ import com.softserve.mosquito.entities.Comment;
 import com.softserve.mosquito.impl.CommentTransformer;
 import com.softserve.mosquito.services.api.CommentService;
 import com.softserve.mosquito.services.impl.CommentServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Path("/task")
+@Path("/comment")
 public class CommentController {
 
-    private CommentService service = new CommentServiceImpl();
+    private CommentService commentService;
 
-    @POST
+    @Autowired
+    public CommentController(CommentService commentService) {
+        this.commentService = commentService;
+    }
+
+    
     @Path("/{task_id}/comments")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createComment(CommentCreateDto commentDto) {
         Comment comment = new CommentTransformer.CommentCreate().toEntity(commentDto);
         return Response
                 .ok()
-                .entity(service.save(comment))
+                .entity(commentService.save(comment))
                 .build();
     }
 
@@ -32,7 +38,7 @@ public class CommentController {
     public Response getCommentsByTaskId(@PathParam("task_id") Long taskId) {
         return Response
                 .ok()
-                .entity(service.getComment(taskId))
+                .entity(service.getCommentById(taskId))
                 .build();
     }
 
