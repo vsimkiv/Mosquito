@@ -7,6 +7,7 @@ import com.softserve.mosquito.entities.Task;
 import com.softserve.mosquito.repo.api.TaskRepo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -35,7 +36,8 @@ public class TaskRepoImpl implements TaskRepo {
 
     @Override
     public Task create(Task task) {
-        try (Connection connection = dataSource.getConnection();
+        throw new NotImplementedException();
+        /*try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(CREATE_TASK, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, task.getName());
             if(task.getParentId() != null)
@@ -61,12 +63,14 @@ public class TaskRepoImpl implements TaskRepo {
         } catch (Exception e){
             LOGGER.error(e.getMessage(), e);
         }
-        return null;
+        return null;*/
     }
 
     @Override
     public Task read(Long id) {
-        try (Connection connection = dataSource.getConnection();
+        throw new NotImplementedException();
+
+        /*try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(READ_TASK)) {
             preparedStatement.setLong(1, id);
             List<Task> tasks = getData(preparedStatement.executeQuery());
@@ -75,12 +79,13 @@ public class TaskRepoImpl implements TaskRepo {
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
-        return null;
+        return null;*/
     }
 
     @Override
     public Task update(Task task) {
-        try (Connection connection = dataSource.getConnection();
+        throw new NotImplementedException();
+        /*try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_TASK)) {
             preparedStatement.setString(1, task.getName());
             preparedStatement.setLong(2, task.getWorkerId());
@@ -94,34 +99,40 @@ public class TaskRepoImpl implements TaskRepo {
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
-        return null;
+        return null;*/
     }
 
     @Override
     public void delete(Long id) {
-        try (Connection connection = dataSource.getConnection();
+        throw new NotImplementedException();
+
+        /*try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_TASK)) {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
-        }
+        }*/
     }
 
     @Override
     public List<Task> readAll() {
-        try (Connection connection = dataSource.getConnection();
+        throw new NotImplementedException();
+
+        /*try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(READ_ALL_TASKS);
              ResultSet resultSet = preparedStatement.executeQuery()) {
             return getData(resultSet);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
             return Collections.emptyList();
-        }
+        }*/
     }
 
     private List<Task> getData(ResultSet resultSet) {
-        List<Task> tasks = new ArrayList<>();
+        throw new NotImplementedException();
+        
+        /*List<Task> tasks = new ArrayList<>();
         try {
             while (resultSet.next()) {
                 Task task = new Task();
@@ -145,6 +156,6 @@ public class TaskRepoImpl implements TaskRepo {
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
-        return tasks;
+        return tasks;*/
     }
 }

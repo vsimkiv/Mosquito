@@ -1,8 +1,8 @@
 package com.softserve.mosquito.controllers;
 
 import com.softserve.mosquito.dtos.UserRegistrationDto;
-import com.softserve.mosquito.dtos.UserUpdateDto;
 import com.softserve.mosquito.entities.User;
+import com.softserve.mosquito.services.api.UserService;
 import com.softserve.mosquito.services.impl.UserServiceImpl;
 
 import javax.ws.rs.*;
@@ -13,8 +13,12 @@ import javax.ws.rs.core.Response.Status;
 @Path("/users")
 public class UserController {
 
-    private com.softserve.mosquito.services.api.UserService userService = new UserServiceImpl();
-	
+    private UserService userService;
+
+	public UserController(UserService userService) {
+		this.userService = userService;
+	}
+
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -40,10 +44,10 @@ public class UserController {
 	@Path("/{userId}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-    public Response updateUser(@PathParam("userId") long userId, UserUpdateDto userUpdateDto) {
+    public Response updateUser(@PathParam("userId") long userId, UserRegistrationDto userRegistrationDto) {
 		User user = new User();
 		//TODO: Modify userService.update(User) => userService.update(UserUpdateDtp)
-        return Response.status(Status.OK).entity(userUpdateDto).build();
+        return Response.status(Status.OK).entity(userRegistrationDto).build();
 	}
 	
 	@DELETE

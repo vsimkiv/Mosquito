@@ -5,6 +5,7 @@ import com.softserve.mosquito.dtos.PriorityCreateDto;
 import com.softserve.mosquito.dtos.PriorityDto;
 import com.softserve.mosquito.services.api.PriorityService;
 import com.softserve.mosquito.services.impl.PriorityServiceImpl;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -15,7 +16,7 @@ import java.util.List;
 
 @Path("/priorities")
 public class PriorityController {
-    private PriorityService priorityService = new PriorityServiceImpl();
+    private PriorityService priorityService = new PriorityServiceImpl(null);//TODO @autowired
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -69,12 +70,13 @@ public class PriorityController {
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public Response getAllPriority(){
-        List<PriorityDto>priorities = priorityService.getAllPriorities();
+        /*List<PriorityDto>priorities = priorityService.getAllPriorities();
 
         if(priorities == null || priorities.isEmpty()) {
             return Response.status(Status.NOT_FOUND).build();
         }
 
-        return Response.status(Status.OK).entity(priorities).build();
+        return Response.status(Status.OK).entity(priorities).build();*/
+        throw new NotImplementedException();
     }
 }

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface LogWorkService {
 
-    LogWork createLogWork(LogWork user);
+    LogWork createLogWork(LogWork logWork);
 
     LogWork getLogWorkById(Long logWorkId);
 

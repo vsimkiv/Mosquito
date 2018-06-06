@@ -3,6 +3,7 @@ package com.softserve.mosquito.impl;
 import com.softserve.mosquito.api.Transformer;
 import com.softserve.mosquito.dtos.LogWorkDto;
 import com.softserve.mosquito.entities.LogWork;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class LogWorkTransformer {
 
@@ -23,10 +24,11 @@ public class LogWorkTransformer {
 
         @Override
         public LogWorkDto toDTO(LogWork logWork) {
-            return new LogWorkDto(logWork.getDescription(),
+            /*return new LogWorkDto(logWork.getDescription(),
                     logWork.getUserId(),
                     logWork.getLogged(),
-                    logWork.getEstimationId());
+                    logWork.getEstimationId());*/
+            throw new NotImplementedException();
         }
     }
 }

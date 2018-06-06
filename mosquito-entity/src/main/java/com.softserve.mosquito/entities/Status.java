@@ -1,10 +1,20 @@
 package com.softserve.mosquito.entities;
 
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+@Entity
+@Table(name = "statuses")
 public final class Status implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Byte id;
     private String title;
+    @OneToMany(mappedBy = "status")
+    private List<Task> tasks = new ArrayList<>();
 
     public Status() {
     }
@@ -46,4 +56,11 @@ public final class Status implements Serializable {
                 '}';
     }
 
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
 }

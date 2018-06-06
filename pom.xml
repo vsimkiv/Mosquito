@@ -20,8 +20,11 @@
         <module>mosquito-service-impl</module>
         <module>mosquito-transformer</module>
         <module>mosquito-web</module>
-        <module>TrelloAPIConnection</module>
     </modules>
+
+    <properties>
+        <spring.version>4.3.17.RELEASE</spring.version>
+    </properties>
 
     <dependencyManagement>
         <dependencies>
@@ -29,6 +32,18 @@
                 <groupId>com.softserve.mosquito</groupId>
                 <artifactId>mosquito-bom</artifactId>
                 <version>1.0-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-webmvc</artifactId>
+                <version>${spring.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -12,13 +12,14 @@ import com.softserve.mosquito.repo.impl.EstimationRepoImpl;
 import com.softserve.mosquito.repo.impl.TaskRepoImpl;
 import com.softserve.mosquito.services.api.TaskService;
 import com.softserve.mosquito.services.api.UserService;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
 
 public class TaskServiceImpl implements TaskService {
 
     private TaskRepo taskRepo = new TaskRepoImpl();
-    private UserService userService = new UserServiceImpl();
+    private UserService userService = new UserServiceImpl(null);
     private EstimationRepo estimationRepo = new EstimationRepoImpl();
     private Transformer<Task, TaskDto> taskDtoTransformer = new TaskTransformer.TaskDefaultDto();
 
@@ -27,14 +28,16 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskDto getTaskById(Long id) {
-        Task task = taskRepo.read(id);
+        throw new NotImplementedException();
+
+        /*Task task = taskRepo.read(id);
         User assigneeUser = userService.getUserById(task.getWorkerId());
 
         TaskDto taskDto = taskDtoTransformer.toDTO(task);
         taskDto.setAssigneeFirstName(assigneeUser.getFirstName());
         taskDto.setAssigneeLastName(assigneeUser.getLastName());
 
-        return taskDto;
+        return taskDto;*/
     }
 
     @Override
@@ -106,26 +109,32 @@ public class TaskServiceImpl implements TaskService {
     }
 
     private boolean isNotParentsTask(Task task, Long parentTaskId) {
-        if(parentTaskId != null) {
+        throw new NotImplementedException();
+
+        /*if(parentTaskId != null) {
             return !task.getParentId().equals(parentTaskId);
         }
         else { // parentId = null -> Get projects where parentId = 0
             return !task.getParentId().equals(0L);
-        }
+        }*/
     }
 
     private boolean isNotWorkersTask(Task task, Long workerId) {
-        if(workerId != null) {
+        throw new NotImplementedException();
+
+        /*if(workerId != null) {
             return !task.getWorkerId().equals(workerId);
         }
-        return false;
+        return false;*/
     }
 
     private boolean isNotOwnersTask(Task task, Long ownerId) {
-        if(ownerId != null) {
+        throw new NotImplementedException();
+
+        /*if(ownerId != null) {
             return !task.getOwnerId().equals(ownerId);
         }
-        return false;
+        return false;*/
     }
 
     private boolean isNotTaskOfStatus(Task task, Byte statusId) {

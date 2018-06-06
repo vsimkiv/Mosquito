@@ -1,12 +1,22 @@
 package com.softserve.mosquito.entities;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
+@Entity
+@Table(name = "estimations")
 public class Estimation implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "estimation")
     private Integer timeEstimation;
     private Integer remaining;
+    @OneToOne(mappedBy = "estimation")
+    private Task task;
+    @OneToMany(mappedBy = "estimation")
     private List<LogWork> logWorks;
 
     public Estimation() {}
@@ -60,5 +70,13 @@ public class Estimation implements Serializable {
                 ", remaining=" + remaining +
                 ", logWorks=" + logWorks +
                 '}';
+    }
+
+    public Task getTask() {
+        return task;
+    }
+
+    public void setTask(Task task) {
+        this.task = task;
     }
 }
