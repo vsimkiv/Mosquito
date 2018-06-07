@@ -1,36 +1,19 @@
 package com.softserve.mosquito.transformer.impl;
 
-import com.softserve.mosquito.entities.Priority;
 import com.softserve.mosquito.services.api.*;
-import com.softserve.mosquito.transformer.api.TaskTransformer;
 import com.softserve.mosquito.dtos.TaskDto;
 import com.softserve.mosquito.entities.Task;
-import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.beans.factory.annotation.Autowired;
 
-public class TaskTransformerImpl implements TaskTransformer {
 
-    private UserService userService;
-    private TaskServiceUsingEntity taskServiceUsingEntity;
-    private EstimationService estimationService;
-    private PriorityService priorityService;
-    private StatusService statusService;
-    private CommentService commentService;
+public class TaskTransformerImpl {
+    private static TaskServiceUsingEntity taskServiceUsingEntity;
+    private static UserService userService;
+    private static EstimationService estimationService;
+    private static PriorityService priorityService;
+    private static StatusService statusService;
+    private static CommentService commentService;
 
-    @Autowired
-    public TaskTransformerImpl(UserService userService, TaskServiceUsingEntity taskServiceUsingEntity,
-                               EstimationService estimationService, PriorityService priorityService,
-                               StatusService statusService, CommentService commentService) {
-        this.userService = userService;
-        this.taskServiceUsingEntity = taskServiceUsingEntity;
-        this.estimationService = estimationService;
-        this.priorityService = priorityService;
-        this.statusService = statusService;
-        this.commentService = commentService;
-    }
-
-    @Override
-    public Task toEntity(TaskDto taskDto) {
+    public static Task toEntity(TaskDto taskDto) {
         Task task = new Task();
         task.setId(taskDto.getId());
         task.setName(taskDto.getName());
@@ -61,13 +44,13 @@ public class TaskTransformerImpl implements TaskTransformer {
         return task;
     }
 
-
-    @Override
-    public TaskDto toDTO(Task task) {
+    public static TaskDto toDTO(Task task) {
         TaskDto taskDto = new TaskDto();
         taskDto.setId(task.getId());
         taskDto.setName(task.getName());
-        taskDto.setParentId(task.getParentTask().getId());
+        /*
+         *taskDto.setParentId(task.getParentTask().getId());
+         */
 
         taskDto.setOwnerId(task.getOwner().getId());
         taskDto.setFirstNameOfOwner(task.getOwner().getFirstName());

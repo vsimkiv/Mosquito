@@ -8,10 +8,12 @@ import com.softserve.mosquito.repo.api.StatusRepo;
 import com.softserve.mosquito.repo.impl.StatusRepoImpl;
 import com.softserve.mosquito.transformer.impl.StatusTransformer;
 import com.softserve.mosquito.services.api.StatusService;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class StatusServiceImpl implements StatusService {
 
     private StatusRepo statusRepo = new StatusRepoImpl();
