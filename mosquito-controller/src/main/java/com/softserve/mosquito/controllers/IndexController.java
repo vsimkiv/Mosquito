@@ -19,6 +19,7 @@ import java.util.List;
 public class IndexController {
     private UserService userService;
 
+
 /*    @Autowired
     public IndexController(UserService userService) {
         this.userService = userService;
@@ -33,7 +34,7 @@ public class IndexController {
 
     @GetMapping(path = "/")
     @ResponseStatus(HttpStatus.OK)
-    public List<Priority> testIndexController() {
+    public List<PriorityDto> testIndexController() {
         return priorityService.getAllPriorities();
     }
 

@@ -1,6 +1,6 @@
-package com.softserve.mosquito.impl;
+package com.softserve.mosquito.transformer.impl;
 
-import com.softserve.mosquito.api.Transformer;
+import com.softserve.mosquito.transformer.api.Transformer;
 import com.softserve.mosquito.dtos.SpecializationCreateDto;
 import com.softserve.mosquito.dtos.SpecializationDto;
 import com.softserve.mosquito.entities.Specialization;
