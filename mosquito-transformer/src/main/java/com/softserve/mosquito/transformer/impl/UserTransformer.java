@@ -1,8 +1,8 @@
-package com.softserve.mosquito.impl;
+package com.softserve.mosquito.transformer.impl;
 
-import com.softserve.mosquito.api.Transformer;
 import com.softserve.mosquito.dtos.UserDto;
 import com.softserve.mosquito.entities.User;
+import com.softserve.mosquito.transformer.api.Transformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
