@@ -9,7 +9,11 @@ import java.util.List;
 
 public class TrelloInfoServiceImpl implements TrelloInfoService {
 
-    private TrelloInfoRepo trelloInfoRepo = new TrelloInfoRepoImp();
+    private TrelloInfoRepo trelloInfoRepo;
+
+    public TrelloInfoServiceImpl(TrelloInfoRepo trelloInfoRepo) {
+        this.trelloInfoRepo = trelloInfoRepo;
+    }
 
     @Override
     public TrelloInfo createTrelloInfo(TrelloInfo trelloInfo) {

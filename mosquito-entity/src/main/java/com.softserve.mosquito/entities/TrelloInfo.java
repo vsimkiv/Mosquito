@@ -1,7 +1,13 @@
 package com.softserve.mosquito.entities;
 
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.persistence.*;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "users_trello")
 public class TrelloInfo implements Serializable {
 
     private Long id;
