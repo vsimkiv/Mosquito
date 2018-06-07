@@ -167,4 +167,6 @@ public class User implements Serializable {
     public void setLogWorks(List<LogWork> logWorks) {
         this.logWorks = logWorks;
     }
+
+
 }

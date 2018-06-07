@@ -4,7 +4,9 @@ import com.softserve.mosquito.entities.Estimation;
 import com.softserve.mosquito.repo.api.EstimationRepo;
 import com.softserve.mosquito.repo.impl.EstimationRepoImpl;
 import com.softserve.mosquito.services.api.EstimationService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class EstimationServiceImpl implements EstimationService {
 
     private EstimationRepo estimationRepo = new EstimationRepoImpl();

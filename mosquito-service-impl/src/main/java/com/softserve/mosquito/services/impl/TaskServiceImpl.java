@@ -1,146 +1,108 @@
 package com.softserve.mosquito.services.impl;
 
-import com.softserve.mosquito.api.Transformer;
 import com.softserve.mosquito.dtos.TaskDto;
-import com.softserve.mosquito.entities.Estimation;
 import com.softserve.mosquito.entities.Task;
-import com.softserve.mosquito.entities.User;
-import com.softserve.mosquito.impl.TaskTransformer;
-import com.softserve.mosquito.repo.api.EstimationRepo;
 import com.softserve.mosquito.repo.api.TaskRepo;
-import com.softserve.mosquito.repo.impl.EstimationRepoImpl;
-import com.softserve.mosquito.repo.impl.TaskRepoImpl;
 import com.softserve.mosquito.services.api.TaskService;
-import com.softserve.mosquito.services.api.UserService;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
+import static com.softserve.mosquito.transformer.impl.TaskTransformer.toDTO;
+import static com.softserve.mosquito.transformer.impl.TaskTransformer.toEntity;
+
+@Service
 public class TaskServiceImpl implements TaskService {
+    private TaskRepo taskRepo;
 
-    private TaskRepo taskRepo = new TaskRepoImpl();
-    private UserService userService = new UserServiceImpl(null);
-    private EstimationRepo estimationRepo = new EstimationRepoImpl();
-    private Transformer<Task, TaskDto> taskDtoTransformer = new TaskTransformer.TaskDefaultDto();
-
-    @Override
-    public List<Task> getAllTasks() { return taskRepo.readAll(); }
-
-    @Override
-    public TaskDto getTaskById(Long id) {
-        throw new NotImplementedException();
-
-        /*Task task = taskRepo.read(id);
-        User assigneeUser = userService.getUserById(task.getWorkerId());
-
-        TaskDto taskDto = taskDtoTransformer.toDTO(task);
-        taskDto.setAssigneeFirstName(assigneeUser.getFirstName());
-        taskDto.setAssigneeLastName(assigneeUser.getLastName());
-
-        return taskDto;*/
+    @Autowired
+    public TaskServiceImpl(TaskRepo taskRepo) {
+        this.taskRepo = taskRepo;
     }
 
+    @Transactional
     @Override
-    public Task createTask(com.softserve.mosquito.dtos.TaskDto taskCreateDto) {
-        Task task = taskDtoTransformer.toEntity(taskCreateDto);
-        Estimation createdEstimation = estimationRepo.create(task.getEstimation());
-        task.setEstimation(createdEstimation);
-        return taskRepo.create(task);
-    }
-    @Override
-    public Task updateTask(Task task) {
-        return taskRepo.update(task);
-    }
+    public TaskDto create(TaskDto taskDto) {
+        Task task = taskRepo.create(toEntity(taskDto));
 
-    @Override
-    public void removeTask(Long id) {
-        taskRepo.delete(id);
+        if (task == null)
+            return null;
+
+        return toDTO(task);
     }
 
+    @Transactional
     @Override
-    public List<Task> getSubTasks(Long parentTaskId) {
-        List<Task> resultTasksList = taskRepo.readAll();
-        resultTasksList.removeIf((Task task) -> isNotParentsTask(task, parentTaskId));
-        return resultTasksList;
+    public TaskDto update(TaskDto taskDto) {
+        Task task = taskRepo.update(toEntity(taskDto));
+
+        if (task == null)
+            return null;
+
+        return toDTO(task);
     }
 
+    @Transactional
     @Override
-    public List<Task> getTasksByOwner(Long ownerId) {
-        List<Task> resultTasksList = taskRepo.readAll();
-        resultTasksList.removeIf((Task task) -> isNotOwnersTask(task, ownerId));
-        return resultTasksList;
+    public void delete(Long id) {
+
     }
 
+    @Transactional
     @Override
-    public List<Task> getTasksByWorker(Long workerId) {
-        List<Task> resultTasksList = taskRepo.readAll();
-        resultTasksList.removeIf((Task task) -> isNotWorkersTask(task, workerId));
-        return resultTasksList;
+    public TaskDto read(Long id) {
+        Task task = taskRepo.read(id);
+
+        if (task == null)
+            return null;
+
+        return toDTO(task);
     }
 
+    @Transactional
     @Override
-    public List<Task> getTasksByOwnerAndStatus(Long ownerId, Byte statusId) {
-        List<Task> resultTasksList = getTasksByOwner(ownerId);
-        resultTasksList.removeIf((Task task) -> (isNotOwnersTask(task, ownerId) || isNotTaskOfStatus(task, statusId)));
-        return resultTasksList;
-    }
+    public List<TaskDto> readAll() {
+        List<Task> tasks = taskRepo.readAll();
+        List<TaskDto> taskDtos = new ArrayList<>();
 
-    @Override
-    public List<Task> getTasksByWorkerAndStatus(Long workerId, Byte statusId) {
-        List<Task> resultTasksList = getAllTasks();
-        resultTasksList.removeIf((Task task) -> (isNotWorkersTask(task, workerId) || isNotTaskOfStatus(task, statusId)));
-        return resultTasksList;
-    }
-
-    @Override
-    public List<Task> getTasksByOwnerAndStatusAndParent(Long parentId, Long ownerId, Byte statusId) {
-        List<Task> resultTasksList = taskRepo.readAll();
-        resultTasksList.removeIf((Task task) ->
-                (isNotOwnersTask(task, ownerId) || isNotTaskOfStatus(task, statusId) || isNotParentsTask(task, parentId)));
-        return resultTasksList;
-    }
-
-    @Override
-    public List<Task> getTasksByWorkerAndStatusAndParent(Long parentId, Long workerId, Byte statusId) {
-        List<Task> resultTasksList = taskRepo.readAll();
-        resultTasksList.removeIf((Task task) ->
-                (isNotWorkersTask(task, workerId) || isNotTaskOfStatus(task, statusId) || isNotParentsTask(task, parentId)));
-        return resultTasksList;
-    }
-
-    private boolean isNotParentsTask(Task task, Long parentTaskId) {
-        throw new NotImplementedException();
-
-        /*if(parentTaskId != null) {
-            return !task.getParentId().equals(parentTaskId);
+        for (Task task : tasks){
+            taskDtos.add(toDTO(task));
         }
-        else { // parentId = null -> Get projects where parentId = 0
-            return !task.getParentId().equals(0L);
-        }*/
+
+        return taskDtos;
     }
 
-    private boolean isNotWorkersTask(Task task, Long workerId) {
-        throw new NotImplementedException();
-
-        /*if(workerId != null) {
-            return !task.getWorkerId().equals(workerId);
-        }
-        return false;*/
+    @Transactional
+    @Override
+    public List<TaskDto> filterByParent(Long parentId) {
+        return null;
     }
 
-    private boolean isNotOwnersTask(Task task, Long ownerId) {
-        throw new NotImplementedException();
-
-        /*if(ownerId != null) {
-            return !task.getOwnerId().equals(ownerId);
-        }
-        return false;*/
+    @Transactional
+    @Override
+    public List<TaskDto> filterByOwner(Long ownerId) {
+        return null;
     }
 
-    private boolean isNotTaskOfStatus(Task task, Byte statusId) {
-        if(statusId != null) {
-            return !task.getStatus().getId().equals(statusId);
-        }
-        return false;
+    @Transactional
+    @Override
+    public List<TaskDto> filterByWorker(Long workerId) {
+        return null;
     }
+
+    @Transactional
+    @Override
+    public List<TaskDto> filterByPriority(Long priorityId) {
+        return null;
+    }
+
+    @Transactional
+    @Override
+    public List<TaskDto> filterByStatus(Long statusId) {
+        return null;
+    }
+
 }

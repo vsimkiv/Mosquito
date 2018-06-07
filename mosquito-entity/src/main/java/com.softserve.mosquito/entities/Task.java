@@ -10,7 +10,7 @@ import java.util.List;
 public class Task implements Serializable {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
 
@@ -191,5 +191,71 @@ public class Task implements Serializable {
 
     public void setWorker(User worker) {
         this.worker = worker;
+    }
+
+    public static TaskBuilder builder() {
+        return new TaskBuilder();
+    }
+
+    public static class TaskBuilder {
+        private Task task;
+
+        private TaskBuilder() {
+            task = new Task();
+        }
+
+        public TaskBuilder id(Long id) {
+            task.id = id;
+            return this;
+        }
+
+        public TaskBuilder name(String name) {
+            task.name = name;
+            return this;
+        }
+
+        public TaskBuilder parentTask(Task parentTask) {
+            task.parentTask = parentTask;
+            return this;
+        }
+
+        public TaskBuilder owner(User owner) {
+            task.owner = owner;
+            return this;
+        }
+
+        public TaskBuilder worker(User worker) {
+            task.worker = worker;
+            return this;
+        }
+
+        public TaskBuilder estimation(Estimation estimation) {
+            task.estimation = estimation;
+            return this;
+        }
+
+        public TaskBuilder priority(Priority priority) {
+            task.priority = priority;
+            return this;
+        }
+
+        public TaskBuilder status(Status status) {
+            task.status = status;
+            return this;
+        }
+
+        public TaskBuilder comments(List<Comment> comments) {
+            task.comments = comments;
+            return this;
+        }
+
+        public TaskBuilder childTasks(List<Task> childTasks) {
+            task.childTasks = childTasks;
+            return this;
+        }
+
+        public Task build() {
+            return task;
+        }
     }
 }

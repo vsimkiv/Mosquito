@@ -24,19 +24,19 @@ public class PriorityRepoImpl implements PriorityRepo {
     private SessionFactory sessionFactory;
 
     @Autowired
-    public PriorityRepoImpl(SessionFactory sessionFactory){
+    public PriorityRepoImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
     @Override
     public Priority create(Priority priority) {
-        try{
+        try {
             Session session = sessionFactory.getCurrentSession();
             Byte priorityId = (Byte) session.save(priority);
             priority.setId(priorityId);
 
             return priority;
-        }catch(Exception e){
+        } catch (Exception e) {
             LOGGER.error(e.getMessage());
         }
         return null;
@@ -44,13 +44,13 @@ public class PriorityRepoImpl implements PriorityRepo {
 
     @Override
     public Priority read(Long id) {
-        try{
+        try {
             Session session = sessionFactory.getCurrentSession();
             //TODO: change id type from Byte to Long
             Priority priority = (Priority) session.get(Priority.class, Byte.valueOf(id.toString()));
 
             return priority;
-        }catch(Exception e){
+        } catch (Exception e) {
             LOGGER.error(e.getMessage());
         }
         return null;
@@ -58,12 +58,12 @@ public class PriorityRepoImpl implements PriorityRepo {
 
     @Override
     public Priority update(Priority priority) {
-        try{
+        try {
             Session session = sessionFactory.getCurrentSession();
             session.update(priority);
 
             return priority;
-        }catch(Exception e){
+        } catch (Exception e) {
             LOGGER.error(e.getMessage());
         }
         return null;
@@ -71,14 +71,14 @@ public class PriorityRepoImpl implements PriorityRepo {
 
     @Override
     public void delete(Long id) {
-        try{
+        try {
             //TODO: change from delete(Long) to delete(Specialization) and change id type from Byte to Long
             Priority priority = new Priority();
             priority.setId(Byte.valueOf(id.toString()));
 
             Session session = sessionFactory.getCurrentSession();
             session.delete(priority);
-        }catch(Exception e){
+        } catch (Exception e) {
             LOGGER.error(e.getMessage());
         }
     }
@@ -90,7 +90,7 @@ public class PriorityRepoImpl implements PriorityRepo {
             Query query = session.createQuery("From " + Priority.class.getName());
 
             return query.list();
-        }catch (Exception e){
+        } catch (Exception e) {
             LOGGER.error(e.getMessage());
         }
         return null;

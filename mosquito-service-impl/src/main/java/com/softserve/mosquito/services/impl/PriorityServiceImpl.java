@@ -1,6 +1,5 @@
 package com.softserve.mosquito.services.impl;
 
-import com.softserve.mosquito.api.Transformer;
 import com.softserve.mosquito.dtos.PriorityCreateDto;
 import com.softserve.mosquito.dtos.PriorityDto;
 import com.softserve.mosquito.entities.Priority;

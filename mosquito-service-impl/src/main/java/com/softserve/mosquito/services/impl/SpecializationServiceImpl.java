@@ -5,7 +5,6 @@ import com.softserve.mosquito.dtos.SpecializationDto;
 import com.softserve.mosquito.entities.Specialization;
 import com.softserve.mosquito.repo.api.SpecializationRepo;
 import com.softserve.mosquito.repo.impl.SpecializationRepoImpl;
-import com.softserve.mosquito.impl.SpecializationTransformer;
 import com.softserve.mosquito.services.api.SpecializationService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
