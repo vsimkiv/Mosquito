@@ -1,6 +1,7 @@
 package com.softserve.mosquito.services.api;
 
 import com.softserve.mosquito.dtos.TaskDto;
+import com.softserve.mosquito.entities.Task;
 
 import java.util.List;
 
@@ -16,6 +17,8 @@ public interface TaskService {
     TaskDto read(Long id);
 
     List<TaskDto> readAll();
+
+    List<TaskDto> getSubTasks(Long id);
 
 
     List<TaskDto> filterByParent(Long parentId);

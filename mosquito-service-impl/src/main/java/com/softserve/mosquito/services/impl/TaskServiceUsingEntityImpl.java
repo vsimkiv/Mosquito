@@ -40,4 +40,10 @@ public class TaskServiceUsingEntityImpl implements TaskServiceUsingEntity {
     public List<Task> readAll() {
         return taskRepo.readAll();
     }
+
+    @Transactional
+    @Override
+    public List<Task> getSubTasks(Long id) {
+        return taskRepo.getSubTasks(id);
+    }
 }

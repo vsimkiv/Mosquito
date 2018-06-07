@@ -7,6 +7,7 @@ import com.softserve.mosquito.entities.Task;
 
 public class TaskTransformer {
     private static TaskServiceUsingEntity taskServiceUsingEntity;
+    private static TaskService taskService;
     private static UserService userService;
     private static EstimationService estimationService;
     private static PriorityService priorityService;
@@ -25,7 +26,7 @@ public class TaskTransformer {
                 .status(statusService.getStatusEntityById(taskDto.getStatusId()))
 
                 .comments(commentService.getAllComments())
-                .childTasks(taskServiceUsingEntity.readAll())
+                .childTasks(taskServiceUsingEntity.getSubTasks(taskDto.getId()))
                 .build();
 
         return task;
@@ -53,6 +54,7 @@ public class TaskTransformer {
                 .priorityTitle(task.getPriority().getTitle())
                 .statusId(Long.valueOf(task.getStatus().getId()))
                 .statusTitle(task.getStatus().getTitle())
+                //.childTasks(taskService.getSubTasks(task.getId()))
                 .build();
     }
 }

@@ -50,25 +50,25 @@ public class TaskController {
         return taskService.read(id);
     }
 
-    @GetMapping (path = "filter/{parent_id}")
+    @GetMapping (path = "{id}/subtasks")
     @ResponseStatus(HttpStatus.OK)
-    public List<TaskDto> getSubTasks(@PathVariable("parent_id") Long parentId) {
-        return new ArrayList<>();
+    public List<TaskDto> getSubTasks(@PathVariable("id") Long id) {
+        return taskService.getSubTasks(id);
     }
 
-    @GetMapping(path = "filter/{owner_id}")
+    @GetMapping(path = "{owner_id}/tasks-as-owner")
     @ResponseStatus(HttpStatus.OK)
     public TaskDto getOwnerTasks(@PathVariable("owner_id") Long ownerId) {
         return null;
     }
 
-    @GetMapping(path = "filter/{worker_id}")
+    @GetMapping(path = "{worker_id}/task-as-worker")
     @ResponseStatus(HttpStatus.OK)
     public List<TaskDto> getWorkerTasks(@PathVariable("worker_id") Long workerId) {
         return new ArrayList<>();
     }
 
-    @GetMapping (path = "filter/{status_id}")
+    @GetMapping (path = "{status_id}/task-by-status")
     @ResponseStatus(HttpStatus.OK)
     public List<TaskDto> getTaskByStatus(@PathVariable("status_id") Long statusId) {
         return new ArrayList<>();

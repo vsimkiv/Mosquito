@@ -56,7 +56,17 @@ public class TaskRepoImpl implements TaskRepo {
 
     @Override
     public List<Task> readAll() {
-        Query<Task> query = sessionFactory.getCurrentSession().createQuery("FROM " + Task.class.getName());
+        Session session = sessionFactory.getCurrentSession();
+        Query<Task> query = session.createQuery("FROM " + Task.class.getName());
+        return query.list();
+    }
+
+    @Override
+    public List<Task> getSubTasks(Long id) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("FROM " + Task.class.getName() + " WHERE parent_id = :parentId ");
+        query.setParameter("parentId", id);
+
         return query.list();
     }
 }

@@ -14,4 +14,7 @@ public interface TaskServiceUsingEntity {
     Task read(Long id);
 
     List<Task> readAll();
+
+
+    List<Task> getSubTasks(Long id);
 }

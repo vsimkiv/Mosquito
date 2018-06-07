@@ -77,6 +77,18 @@ public class TaskServiceImpl implements TaskService {
 
     @Transactional
     @Override
+    public List<TaskDto> getSubTasks(Long id) {
+        List<Task> tasks = taskRepo.getSubTasks(id);
+        List<TaskDto> taskDtos = new ArrayList<>();
+        for (Task task : tasks){
+            taskDtos.add(toDTO(task));
+        }
+
+        return taskDtos;
+    }
+
+    @Transactional
+    @Override
     public List<TaskDto> filterByParent(Long parentId) {
         return null;
     }
