@@ -4,17 +4,13 @@ import com.softserve.mosquito.entities.Task;
 import com.softserve.mosquito.repo.api.TaskRepo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import javax.sql.DataSource;
-import java.sql.*;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
@@ -27,82 +23,35 @@ public class TaskRepoImpl implements TaskRepo {
         this.sessionFactory = sessionFactory;
     }
 
+    @Transactional
     @Override
     public Task create(Task task) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.getTransaction();
-        try {
-            transaction.begin();
-            LOGGER.info(task.toString());
-            session.save(task);
-            transaction.commit();
-        }catch (HibernateException e){
-            transaction.rollback();
-            LOGGER.error("Error during saving task", e.getMessage());
-        }finally {
-            session.close();
-        }
+        Session session = sessionFactory.getCurrentSession();
+        session.save(task);
         return task;
     }
 
+    @Transactional
     @Override
     public Task read(Long id) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.getTransaction();
-
-        try {
-            transaction.begin();
-            Task task = session.get(Task.class, id);
-            transaction.commit();
-            return task;
-        } catch (HibernateException e) {
-            transaction.rollback();
-            LOGGER.error("Task reading was failed!", e.getMessage());
-        } finally {
-            session.close();
-        }
-
-        return null;
+        Session session = sessionFactory.getCurrentSession();
+        return session.get(Task.class, id);
     }
 
+    @Transactional
     @Override
     public Task update(Task task) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.getTransaction();
-
-        try {
-            transaction.begin();
-            session.update(task);
-
-            transaction.commit();
-            return task;
-        } catch (HibernateException e) {
-            transaction.rollback();
-            LOGGER.error("Task updating was failed!" + e.getMessage());
-        } finally {
-            session.close();
-        }
-
-        return null;
+        Session session = sessionFactory.getCurrentSession();
+        session.update(task);
+        return task;
     }
 
+    @Transactional
     @Override
     public void delete(Long id) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.getTransaction();
-
-        try {
-            transaction.begin();
-            Task task = session.get(Task.class, id);
-            session.delete(task);
-
-            transaction.commit();
-        } catch (HibernateException e) {
-            transaction.rollback();
-            LOGGER.error("Comment deleting was failed!", e.getMessage());
-        } finally {
-            session.close();
-        }
+        Session session = sessionFactory.getCurrentSession();
+        Task task = session.get(Task.class, id);
+        session.delete(task);
     }
 
     @Override
