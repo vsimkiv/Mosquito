@@ -172,7 +172,7 @@ public class TaskDto {
         this.childTasks = childTasks;
     }
 
-    private TaskDtoBuilder builder() {
+    public TaskDtoBuilder builder() {
         return new TaskDtoBuilder();
     }
 
@@ -209,7 +209,7 @@ public class TaskDto {
         }
 
         public TaskDtoBuilder lastNameOfOwner(String lastNameOfOwner) {
-            taskDto.firstNameOfOwner = lastNameOfOwner;
+            taskDto.lastNameOfOwner = lastNameOfOwner;
             return this;
         }
 
@@ -224,7 +224,7 @@ public class TaskDto {
         }
 
         public TaskDtoBuilder lastNameOfWorker(String lastNameOfWorker) {
-            taskDto.firstNameOfWorker = lastNameOfWorker;
+            taskDto.lastNameOfWorker = lastNameOfWorker;
             return this;
         }
 
@@ -263,13 +263,13 @@ public class TaskDto {
             return this;
         }
 
-        public TaskDtoBuilder commentDtos(List<CommentCreateDto> commentCreateDtos) {
-            taskDto.comments = commentCreateDtos;
+        public TaskDtoBuilder comments(List<CommentCreateDto> comments) {
+            taskDto.comments = comments;
             return this;
         }
 
-        public TaskDtoBuilder childTaskDtos(List<TaskDto> childTaskDtos) {
-            taskDto.childTasks = childTaskDtos;
+        public TaskDtoBuilder childTasks(List<TaskDto> childTasks) {
+            taskDto.childTasks = childTasks;
             return this;
         }
 

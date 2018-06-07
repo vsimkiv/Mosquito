@@ -14,49 +14,45 @@ public class TaskTransformer {
     private static CommentService commentService;
 
     public static Task toEntity(TaskDto taskDto) {
-        Task task = new Task();
-        task.setId(taskDto.getId());
-        task.setName(taskDto.getName());
-        task.setParentTask(taskServiceUsingEntity.read(taskDto.getParentId()));
+        Task task = Task.builder()
+                .id(taskDto.getId())
+                .name(taskDto.getName())
+                .parentTask(taskServiceUsingEntity.read(taskDto.getParentId()))
+                .owner(userService.getUserById(taskDto.getOwnerId()))
+                .worker(userService.getUserById(taskDto.getWorkerId()))
+                .estimation(estimationService.getEstimationById(taskDto.getEstimationId()))
+                .priority(priorityService.getPriorityEntityById(taskDto.getPriorityId()))
+                .status(statusService.getStatusEntityById(taskDto.getStatusId()))
 
-        task.setOwner(userService.getUserById(taskDto.getOwnerId()));
-        task.setWorker(userService.getUserById(taskDto.getWorkerId()));
-
-        task.setEstimation(estimationService.getEstimationById(taskDto.getEstimationId()));
-        task.setPriority(priorityService.getPriorityEntityById(taskDto.getPriorityId()));
-        task.setStatus(statusService.getStatusEntityById(taskDto.getStatusId()));
-
-        task.setComments(commentService.getAllComments());
-        task.setChildTasks(taskServiceUsingEntity.readAll());
+                .comments(commentService.getAllComments())
+                .childTasks(taskServiceUsingEntity.readAll())
+                .build();
 
         return task;
     }
 
     public static TaskDto toDTO(Task task) {
-        TaskDto taskDto = new TaskDto();
-        taskDto.setId(task.getId());
-        taskDto.setName(task.getName());
-        /*
-         *taskDto.setParentId(task.getParentTask().getId());
-         */
+        return new TaskDto().builder()
+                .id(task.getId())
+                .name(task.getName())
+                //.parentId(task.getParentTask().getId())
 
-        taskDto.setOwnerId(task.getOwner().getId());
-        taskDto.setFirstNameOfOwner(task.getOwner().getFirstName());
-        taskDto.setLastNameOfOwner(task.getOwner().getLastName());
+                .ownerId(task.getOwner().getId())
+                .firstNameOfOwner(task.getOwner().getFirstName())
+                .lastNameOfOwner(task.getOwner().getLastName())
 
-        taskDto.setWorkerId(task.getWorker().getId());
-        taskDto.setFirstNameOfWorker(task.getWorker().getFirstName());
-        taskDto.setLastNameOfWorker(task.getWorker().getLastName());
+                .workerId(task.getWorker().getId())
+                .firstNameOfWorker(task.getWorker().getFirstName())
+                .lastNameOfWorker(task.getWorker().getLastName())
 
-        taskDto.setEstimation(task.getEstimation().getTimeEstimation());
-        taskDto.setRemaining(task.getEstimation().getRemaining());
+                .estimationId(task.getEstimation().getId())
+                .estimation(task.getEstimation().getTimeEstimation())
+                .remaining(task.getEstimation().getRemaining())
 
-        taskDto.setPriorityId(Long.valueOf(task.getPriority().getId()));
-        taskDto.setPriorityTitle(task.getPriority().getTitle());
-
-        taskDto.setStatusId(Long.valueOf(task.getStatus().getId()));
-        taskDto.setStatusTitle(task.getStatus().getTitle());
-
-        return taskDto;
+                .priorityId(Long.valueOf(task.getPriority().getId()))
+                .priorityTitle(task.getPriority().getTitle())
+                .statusId(Long.valueOf(task.getStatus().getId()))
+                .statusTitle(task.getStatus().getTitle())
+                .build();
     }
 }
