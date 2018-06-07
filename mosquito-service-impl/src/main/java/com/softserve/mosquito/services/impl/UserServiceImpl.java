@@ -4,10 +4,9 @@ package com.softserve.mosquito.services.impl;
 import com.softserve.mosquito.dtos.UserDto;
 import com.softserve.mosquito.entities.Specialization;
 import com.softserve.mosquito.entities.User;
-import com.softserve.mosquito.impl.UserTransformer;
 import com.softserve.mosquito.repo.api.UserRepo;
-import com.softserve.mosquito.repo.impl.UserRepoImpl;
 import com.softserve.mosquito.services.api.UserService;
+import com.softserve.mosquito.transformer.impl.UserTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,7 +58,9 @@ public class UserServiceImpl implements UserService {
 
 
     public UserDto getUserByEmail(String email) {
-        return transformer.toDTO(userRepo.readUserByEmail(email));
+        User result = userRepo.readAll().stream()
+                .filter(user -> user.getEmail().equals(email)).findFirst().orElse(null);
+        return transformer.toDTO(result);
     }
 
     @Override
@@ -69,7 +70,7 @@ public class UserServiceImpl implements UserService {
 
         for (User user : users) {
             for (Specialization specialization : user.getSpecializations()) {
-                if (specialization.getId() == specializationId)
+                if (specialization.getId().equals(specializationId))
                     userDtos.add(transformer.toDTO(user));
             }
         }
