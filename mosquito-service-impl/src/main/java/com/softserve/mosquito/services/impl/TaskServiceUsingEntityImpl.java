@@ -44,37 +44,37 @@ public class TaskServiceUsingEntityImpl implements TaskServiceUsingEntity {
     }
 
     @Override
-    public Task getTaskById(Long id) {
+    public Task read(Long id) {
         return null;
     }
 
     @Override
-    public List<Task> getAllTasks() {
+    public List<Task> readAll() {
         return null;
     }
 
     @Override
-    public List<Task> filterTasksByParent(Task parentTask) {
+    public List<Task> filterByParent(Task parentTask) {
         return null;
     }
 
     @Override
-    public List<Task> filterTasksByOwner(User owner) {
+    public List<Task> filterByOwner(User owner) {
         return null;
     }
 
     @Override
-    public List<Task> filterTasksByWorker(User worker) {
+    public List<Task> filterByWorker(User worker) {
         return null;
     }
 
     @Override
-    public List<Task> filterTasksByPriority(Priority priority) {
+    public List<Task> filterByPriority(Priority priority) {
         return null;
     }
 
     @Override
-    public List<Task> filterTasksByStatus(Status status) {
+    public List<Task> filterByStatus(Status status) {
         return null;
     }
 

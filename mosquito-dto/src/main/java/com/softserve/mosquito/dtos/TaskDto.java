@@ -1,5 +1,7 @@
 package com.softserve.mosquito.dtos;
 
+import java.util.List;
+
 public class TaskDto {
     private Long id;
     private String name;
@@ -13,6 +15,7 @@ public class TaskDto {
     private String firstNameOfWorker;
     private String lastNameOfWorker;
 
+    private Long estimationId;
     private Integer estimation;
     private Integer remaining;
 
@@ -21,6 +24,9 @@ public class TaskDto {
 
     private Long statusId;
     private String statusTitle;
+
+    private List<CommentCreateDto> commentDtos;
+    private List<TaskDto> childTaskDtos;
 
     public Long getId() {
         return id;
@@ -94,6 +100,14 @@ public class TaskDto {
         this.lastNameOfWorker = lastNameOfWorker;
     }
 
+    public Long getEstimationId() {
+        return estimationId;
+    }
+
+    public void setEstimationId(Long estimationId) {
+        this.estimationId = estimationId;
+    }
+
     public Integer getEstimation() {
         return estimation;
     }
@@ -140,6 +154,22 @@ public class TaskDto {
 
     public void setStatusTitle(String statusTitle) {
         this.statusTitle = statusTitle;
+    }
+
+    public List<CommentCreateDto> getCommentDtos() {
+        return commentDtos;
+    }
+
+    public void setCommentDtos(List<CommentCreateDto> commentDtos) {
+        this.commentDtos = commentDtos;
+    }
+
+    public List<TaskDto> getChildTaskDtos() {
+        return childTaskDtos;
+    }
+
+    public void setChildTaskDtos(List<TaskDto> childTaskDtos) {
+        this.childTaskDtos = childTaskDtos;
     }
 
     private TaskDtoBuilder builder() {
@@ -198,6 +228,11 @@ public class TaskDto {
             return this;
         }
 
+        public TaskDtoBuilder estimationId(Long estimationId) {
+            taskDto.estimationId = estimationId;
+            return this;
+        }
+
         public TaskDtoBuilder estimation(Integer estimation) {
             taskDto.estimation = estimation;
             return this;
@@ -226,6 +261,20 @@ public class TaskDto {
         public TaskDtoBuilder statusTitle(String statusTitle) {
             taskDto.statusTitle = statusTitle;
             return this;
+        }
+
+        public TaskDtoBuilder commentDtos(List<CommentCreateDto> commentCreateDtos) {
+            taskDto.commentDtos = commentCreateDtos;
+            return this;
+        }
+
+        public TaskDtoBuilder childTaskDtos(List<TaskDto> childTaskDtos) {
+            taskDto.childTaskDtos = childTaskDtos;
+            return this;
+        }
+
+        public TaskDto build(){
+            return taskDto;
         }
     }
 }

@@ -17,17 +17,17 @@ public interface TaskServiceUsingEntity {
 
 
 
-    Task getTaskById(Long id);
+    Task read(Long id);
 
-    List<Task> getAllTasks();
+    List<Task> readAll();
 
-    List<Task> filterTasksByParent(Task parentTask);
+    List<Task> filterByParent(Task parentTask);
 
-    List<Task> filterTasksByOwner(User owner);
+    List<Task> filterByOwner(User owner);
 
-    List<Task> filterTasksByWorker(User worker);
+    List<Task> filterByWorker(User worker);
 
-    List<Task> filterTasksByPriority(Priority priority);
+    List<Task> filterByPriority(Priority priority);
 
-    List<Task> filterTasksByStatus(Status status);
+    List<Task> filterByStatus(Status status);
 }
