@@ -1,17 +1,19 @@
 package com.softserve.mosquito.services.impl;
 
-import com.softserve.mosquito.api.Transformer;
+import com.softserve.mosquito.transformer.api.Transformer;
 import com.softserve.mosquito.dtos.StatusCreateDto;
 import com.softserve.mosquito.dtos.StatusDto;
 import com.softserve.mosquito.entities.Status;
 import com.softserve.mosquito.repo.api.StatusRepo;
 import com.softserve.mosquito.repo.impl.StatusRepoImpl;
-import com.softserve.mosquito.impl.StatusTransformer;
+import com.softserve.mosquito.transformer.impl.StatusTransformer;
 import com.softserve.mosquito.services.api.StatusService;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class StatusServiceImpl implements StatusService {
 
     private StatusRepo statusRepo = new StatusRepoImpl();
@@ -83,5 +85,16 @@ public class StatusServiceImpl implements StatusService {
             }
         }
         return null;
+    }
+
+    @Override
+    public Status getStatusEntityById(Long id) {
+        Status status = statusRepo.read(id);
+
+        if(status == null){
+            return null;
+        }
+
+        return status;
     }
 }

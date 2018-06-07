@@ -1,10 +1,10 @@
-package com.softserve.mosquito.impl;
+package com.softserve.mosquito.transformer.impl;
 
-import com.softserve.mosquito.api.Transformer;
 import com.softserve.mosquito.dtos.CommentCreateDto;
 import com.softserve.mosquito.entities.Comment;
 import com.softserve.mosquito.entities.Task;
 import com.softserve.mosquito.entities.User;
+import com.softserve.mosquito.transformer.api.Transformer;
 
 public class CommentTransformer {
 

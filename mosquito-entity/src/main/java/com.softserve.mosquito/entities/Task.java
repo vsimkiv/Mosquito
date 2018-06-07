@@ -47,7 +47,7 @@ public class Task implements Serializable {
     public Task() {
     }
 
-    public Task(Long id){
+    public Task(Long id) {
         this.id = id;
     }
 
@@ -261,5 +261,6 @@ public class Task implements Serializable {
         public Task build() {
             return task;
         }
+
     }
 }

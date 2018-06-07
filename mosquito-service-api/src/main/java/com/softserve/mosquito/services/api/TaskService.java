@@ -7,27 +7,27 @@ import java.util.List;
 
 public interface TaskService {
 
-    List<Task> getAllTasks();
+    TaskDto create(TaskDto taskDto);
 
-    TaskDto getTaskById(Long id);
+    TaskDto update(TaskDto taskDto);
 
-    Task createTask(TaskDto taskCreateDto);
+    void delete(Long id);
 
-    Task updateTask(Task task);
 
-    void removeTask(Long id);
+    TaskDto read(Long id);
 
-    List<Task> getTasksByOwner(Long ownerId);
+    List<TaskDto> readAll();
 
-    List<Task> getTasksByWorker(Long workerId);
+    List<TaskDto> getSubTasks(Long id);
 
-    List<Task> getSubTasks(Long parentTaskId);
 
-    List<Task> getTasksByOwnerAndStatus(Long ownerId, Byte statusId);
+    List<TaskDto> filterByParent(Long parentId);
 
-    List<Task> getTasksByWorkerAndStatus(Long workerId, Byte statusId);
+    List<TaskDto> filterByOwner(Long ownerId);
 
-    List<Task> getTasksByOwnerAndStatusAndParent(Long parentId, Long ownerId, Byte statusId);
+    List<TaskDto> filterByWorker(Long workerId);
 
-    List<Task> getTasksByWorkerAndStatusAndParent(Long parentId, Long workerId, Byte statusId);
+    List<TaskDto> filterByPriority(Long priorityId);
+
+    List<TaskDto> filterByStatus(Long statusId);
 }
