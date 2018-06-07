@@ -4,7 +4,7 @@ import com.softserve.mosquito.dtos.TaskDto;
 
 import java.util.List;
 
-public interface TaskServiceUsingDto{
+public interface TaskService {
 
     TaskDto create(TaskDto taskDto);
 

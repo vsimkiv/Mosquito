@@ -38,7 +38,7 @@ public class TrelloCardServiceImpl {
 
    private void createTasksFromTrelloCards(TrelloCard[] trelloCards, String status, String projectName){
 //
-//        TaskServiceUsingEntityImpl taskService = new TaskServiceUsingDtoImpl();
+//        TaskServiceUsingEntityImpl taskService = new TaskServiceImpl();
 //        TaskDto taskDto = new TaskDto();
 //        taskDto.setName(projectName);
 //        taskDto.setOwnerId(trelloInfo.getUserId());

@@ -26,8 +26,6 @@ public class TaskTransformer {
 
         task.setEstimation(estimationService.getEstimationById(taskDto.getEstimationId()));
 
-
-
         /* There is no method in PriorityService which returns object of class Priority
         Long id = taskDto.getPriorityId();
         Priority priority = priorityService.getPriorityById(id);
@@ -58,7 +56,7 @@ public class TaskTransformer {
 
         taskDto.setWorkerId(task.getWorker().getId());
         taskDto.setFirstNameOfWorker(task.getWorker().getFirstName());
-        taskDto.setLastNameOfOwner(task.getWorker().getLastName());
+        taskDto.setLastNameOfWorker(task.getWorker().getLastName());
 
         taskDto.setEstimation(task.getEstimation().getTimeEstimation());
         taskDto.setRemaining(task.getEstimation().getRemaining());

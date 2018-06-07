@@ -3,8 +3,7 @@ package com.softserve.mosquito.services.impl;
 import com.softserve.mosquito.dtos.TaskDto;
 import com.softserve.mosquito.entities.Task;
 import com.softserve.mosquito.repo.api.TaskRepo;
-import com.softserve.mosquito.services.api.TaskServiceUsingDto;
-import com.softserve.mosquito.transformer.impl.TaskTransformer;
+import com.softserve.mosquito.services.api.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,25 +11,38 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.softserve.mosquito.transformer.impl.TaskTransformer.toDTO;
+import static com.softserve.mosquito.transformer.impl.TaskTransformer.toEntity;
+
 @Service
-public class TaskServiceUsingDtoImpl implements TaskServiceUsingDto {
+public class TaskServiceImpl implements TaskService {
     private TaskRepo taskRepo;
 
     @Autowired
-    public TaskServiceUsingDtoImpl(TaskRepo taskRepo) {
+    public TaskServiceImpl(TaskRepo taskRepo) {
         this.taskRepo = taskRepo;
     }
 
     @Transactional
     @Override
     public TaskDto create(TaskDto taskDto) {
-        return taskDto;
+        Task task = taskRepo.create(toEntity(taskDto));
+
+        if (task == null)
+            return null;
+
+        return toDTO(task);
     }
 
     @Transactional
     @Override
     public TaskDto update(TaskDto taskDto) {
-        return taskDto;
+        Task task = taskRepo.update(toEntity(taskDto));
+
+        if (task == null)
+            return null;
+
+        return toDTO(task);
     }
 
     @Transactional
@@ -42,7 +54,12 @@ public class TaskServiceUsingDtoImpl implements TaskServiceUsingDto {
     @Transactional
     @Override
     public TaskDto read(Long id) {
-        return null;
+        Task task = taskRepo.read(id);
+
+        if (task == null)
+            return null;
+
+        return toDTO(task);
     }
 
     @Transactional
@@ -52,7 +69,7 @@ public class TaskServiceUsingDtoImpl implements TaskServiceUsingDto {
         List<TaskDto> taskDtos = new ArrayList<>();
 
         for (Task task : tasks){
-            taskDtos.add(TaskTransformer.toDTO(task));
+            taskDtos.add(toDTO(task));
         }
 
         return taskDtos;

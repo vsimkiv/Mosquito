@@ -25,8 +25,8 @@ public class TaskDto {
     private Long statusId;
     private String statusTitle;
 
-    private List<CommentCreateDto> commentDtos;
-    private List<TaskDto> childTaskDtos;
+    private List<CommentCreateDto> comments;
+    private List<TaskDto> childTasks;
 
     public Long getId() {
         return id;
@@ -156,20 +156,20 @@ public class TaskDto {
         this.statusTitle = statusTitle;
     }
 
-    public List<CommentCreateDto> getCommentDtos() {
-        return commentDtos;
+    public List<CommentCreateDto> getComments() {
+        return comments;
     }
 
-    public void setCommentDtos(List<CommentCreateDto> commentDtos) {
-        this.commentDtos = commentDtos;
+    public void setComments(List<CommentCreateDto> comments) {
+        this.comments = comments;
     }
 
-    public List<TaskDto> getChildTaskDtos() {
-        return childTaskDtos;
+    public List<TaskDto> getChildTasks() {
+        return childTasks;
     }
 
-    public void setChildTaskDtos(List<TaskDto> childTaskDtos) {
-        this.childTaskDtos = childTaskDtos;
+    public void setChildTasks(List<TaskDto> childTasks) {
+        this.childTasks = childTasks;
     }
 
     private TaskDtoBuilder builder() {
@@ -264,12 +264,12 @@ public class TaskDto {
         }
 
         public TaskDtoBuilder commentDtos(List<CommentCreateDto> commentCreateDtos) {
-            taskDto.commentDtos = commentCreateDtos;
+            taskDto.comments = commentCreateDtos;
             return this;
         }
 
         public TaskDtoBuilder childTaskDtos(List<TaskDto> childTaskDtos) {
-            taskDto.childTaskDtos = childTaskDtos;
+            taskDto.childTasks = childTaskDtos;
             return this;
         }
 

@@ -1,17 +1,11 @@
 package com.softserve.mosquito.services.impl;
 
-import com.softserve.mosquito.dtos.TaskDto;
-import com.softserve.mosquito.entities.*;
-import com.softserve.mosquito.repo.api.EstimationRepo;
+import com.softserve.mosquito.entities.Task;
 import com.softserve.mosquito.repo.api.TaskRepo;
-import com.softserve.mosquito.repo.impl.EstimationRepoImpl;
-import com.softserve.mosquito.repo.impl.TaskRepoImpl;
 import com.softserve.mosquito.services.api.TaskServiceUsingEntity;
-import com.softserve.mosquito.services.api.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -37,56 +31,13 @@ public class TaskServiceUsingEntityImpl implements TaskServiceUsingEntity {
 
     @Transactional
     @Override
-    public Task update(Task task) {
-        return null;
-    }
-
-    @Transactional
-    @Override
-    public void delete(Long id) {
-
-    }
-
-    @Transactional
-    @Override
     public Task read(Long id) {
-        return null;
+        return taskRepo.read(id);
     }
 
     @Transactional
     @Override
     public List<Task> readAll() {
-        return null;
+        return taskRepo.readAll();
     }
-
-    @Transactional
-    @Override
-    public List<Task> filterByParent(Task parentTask) {
-        return null;
-    }
-
-    @Transactional
-    @Override
-    public List<Task> filterByOwner(User owner) {
-        return null;
-    }
-
-    @Transactional
-    @Override
-    public List<Task> filterByWorker(User worker) {
-        return null;
-    }
-
-    @Transactional
-    @Override
-    public List<Task> filterByPriority(Priority priority) {
-        return null;
-    }
-
-    @Transactional
-    @Override
-    public List<Task> filterByStatus(Status status) {
-        return null;
-    }
-
 }
