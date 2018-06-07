@@ -51,37 +51,37 @@ public class UserDto {
         private Builder() {
         }
 
-        public Builder setId(Long id) {
+        public Builder id(Long id) {
             UserDto.this.id = id;
             return this;
         }
 
-        public Builder setEmail(String email) {
+        public Builder email(String email) {
             UserDto.this.email = email;
             return this;
         }
 
-        public Builder setFirstName(String firstName) {
+        public Builder firstName(String firstName) {
             UserDto.this.firstName = firstName;
             return this;
         }
 
-        public Builder setLastName(String lastName) {
+        public Builder lastName(String lastName) {
             UserDto.this.lastName = lastName;
             return this;
         }
 
-        public Builder setPassword(String password) {
+        public Builder password(String password) {
             UserDto.this.password = password;
             return this;
         }
 
-        public Builder setConfirmPassword(String confirmPassword) {
+        public Builder confirmPassword(String confirmPassword) {
             UserDto.this.confirmPassword = confirmPassword;
             return this;
         }
 
-        public Builder setSpecializations(Set<SpecializationDto> specializations) {
+        public Builder specializations(Set<SpecializationDto> specializations) {
             UserDto.this.specializations = specializations;
             return this;
         }

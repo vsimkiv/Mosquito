@@ -15,12 +15,13 @@ public class TaskTransformer {
     private static CommentService commentService;
 
     public static Task toEntity(TaskDto taskDto) {
+        //TODO: user service will return only DTO, so that you should change way of creating user entity
         Task task = Task.builder()
                 .id(taskDto.getId())
                 .name(taskDto.getName())
                 .parentTask(taskServiceUsingEntity.read(taskDto.getParentId()))
-                .owner(userService.getUserById(taskDto.getOwnerId()))
-                .worker(userService.getUserById(taskDto.getWorkerId()))
+                //.owner(userService.getUserById(taskDto.getOwnerId()))
+                //.worker(userService.getUserById(taskDto.getWorkerId()))
                 .estimation(estimationService.getEstimationById(taskDto.getEstimationId()))
                 .priority(priorityService.getPriorityEntityById(taskDto.getPriorityId()))
                 .status(statusService.getStatusEntityById(taskDto.getStatusId()))

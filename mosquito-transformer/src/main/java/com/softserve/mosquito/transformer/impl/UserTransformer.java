@@ -24,8 +24,8 @@ public class UserTransformer implements Transformer<User, UserDto> {
 
     @Override
     public UserDto toDTO(User user) {
-        return UserDto.newBuilder().setId(user.getId()).setEmail(user.getEmail()).setPassword(user.getPassword())
-                .setFirstName(user.getFirstName()).setLastName(user.getLastName())
-                .setSpecializations(transformer.toDTO(user.getSpecializations())).build();
+        return UserDto.newBuilder().id(user.getId()).email(user.getEmail()).password(user.getPassword())
+                .firstName(user.getFirstName()).lastName(user.getLastName())
+                .specializations(transformer.toDTO(user.getSpecializations())).build();
     }
 }
