@@ -13,6 +13,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -24,6 +25,7 @@ public class TaskServiceUsingEntityImpl implements TaskServiceUsingEntity {
         this.taskRepo = taskRepo;
     }
 
+    @Transactional
     @Override
     public Task create(Task task) {
         try {
@@ -33,51 +35,58 @@ public class TaskServiceUsingEntityImpl implements TaskServiceUsingEntity {
         }
     }
 
+    @Transactional
     @Override
     public Task update(Task task) {
         return null;
     }
 
+    @Transactional
     @Override
     public void delete(Long id) {
 
     }
 
+    @Transactional
     @Override
     public Task read(Long id) {
         return null;
     }
 
+    @Transactional
     @Override
     public List<Task> readAll() {
         return null;
     }
 
+    @Transactional
     @Override
     public List<Task> filterByParent(Task parentTask) {
         return null;
     }
 
+    @Transactional
     @Override
     public List<Task> filterByOwner(User owner) {
         return null;
     }
 
+    @Transactional
     @Override
     public List<Task> filterByWorker(User worker) {
         return null;
     }
 
+    @Transactional
     @Override
     public List<Task> filterByPriority(Priority priority) {
         return null;
     }
 
+    @Transactional
     @Override
     public List<Task> filterByStatus(Status status) {
         return null;
     }
-
-
 
 }

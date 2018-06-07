@@ -4,7 +4,7 @@ import com.softserve.mosquito.dtos.TaskDto;
 import com.softserve.mosquito.entities.Task;
 import com.softserve.mosquito.repo.api.TaskRepo;
 import com.softserve.mosquito.services.api.TaskServiceUsingDto;
-import com.softserve.mosquito.transformer.impl.TaskTransformerImpl;
+import com.softserve.mosquito.transformer.impl.TaskTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,20 +21,25 @@ public class TaskServiceUsingDtoImpl implements TaskServiceUsingDto {
         this.taskRepo = taskRepo;
     }
 
+    @Transactional
     @Override
     public TaskDto create(TaskDto taskDto) {
         return taskDto;
     }
 
+    @Transactional
     @Override
     public TaskDto update(TaskDto taskDto) {
         return taskDto;
     }
 
+    @Transactional
     @Override
     public void delete(Long id) {
 
     }
+
+    @Transactional
     @Override
     public TaskDto read(Long id) {
         return null;
@@ -47,32 +52,37 @@ public class TaskServiceUsingDtoImpl implements TaskServiceUsingDto {
         List<TaskDto> taskDtos = new ArrayList<>();
 
         for (Task task : tasks){
-            taskDtos.add(TaskTransformerImpl.toDTO(task));
+            taskDtos.add(TaskTransformer.toDTO(task));
         }
 
         return taskDtos;
     }
 
+    @Transactional
     @Override
     public List<TaskDto> filterByParent(Long parentId) {
         return null;
     }
 
+    @Transactional
     @Override
     public List<TaskDto> filterByOwner(Long ownerId) {
         return null;
     }
 
+    @Transactional
     @Override
     public List<TaskDto> filterByWorker(Long workerId) {
         return null;
     }
 
+    @Transactional
     @Override
     public List<TaskDto> filterByPriority(Long priorityId) {
         return null;
     }
 
+    @Transactional
     @Override
     public List<TaskDto> filterByStatus(Long statusId) {
         return null;

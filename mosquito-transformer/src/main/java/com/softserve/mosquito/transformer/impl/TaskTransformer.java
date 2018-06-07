@@ -5,7 +5,7 @@ import com.softserve.mosquito.dtos.TaskDto;
 import com.softserve.mosquito.entities.Task;
 
 
-public class TaskTransformerImpl {
+public class TaskTransformer {
     private static TaskServiceUsingEntity taskServiceUsingEntity;
     private static UserService userService;
     private static EstimationService estimationService;
