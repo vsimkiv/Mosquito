@@ -1,5 +1,6 @@
 package com.softserve.mosquito.controllers;
 
+import com.softserve.mosquito.dtos.PriorityDto;
 import com.softserve.mosquito.dtos.UserLoginDto;
 import com.softserve.mosquito.dtos.UserRegistrationDto;
 import com.softserve.mosquito.entities.Priority;
@@ -36,7 +37,7 @@ public class IndexController {
 
     @GetMapping(path = "/")
     @ResponseStatus(HttpStatus.OK)
-    public List<Priority> testIndexController() {
+    public List<PriorityDto> testIndexController() {
         return priorityService.getAllPriorities();
     }
 
