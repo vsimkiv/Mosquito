@@ -7,7 +7,7 @@ import com.softserve.mosquito.entities.Priority;
 import java.util.List;
 
 public interface PriorityService {
-    List<Priority> getAllPriorities();
+    List<PriorityDto> getAllPriorities();
 
     PriorityDto getPriorityById(Long id);
 

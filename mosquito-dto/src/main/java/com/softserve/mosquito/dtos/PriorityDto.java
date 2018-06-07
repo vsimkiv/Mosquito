@@ -1,9 +1,11 @@
 package com.softserve.mosquito.dtos;
 
+import java.io.Serializable;
+
 /**
  * Generic DTO for Priority Entity
  */
-public class PriorityDto {
+public class PriorityDto implements Serializable{
     private Byte id;
     private String title;
 
