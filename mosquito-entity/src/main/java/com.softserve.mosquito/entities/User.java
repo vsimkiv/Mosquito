@@ -12,16 +12,16 @@ import java.util.Set;
 public class User implements Serializable {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String email;
+    private String password;
 
     @Column(name = "first_name")
     private String firstName;
 
     @Column(name = "last_name")
     private String lastName;
-    private String password;
 
     @OneToMany(mappedBy = "owner", targetEntity = Task.class)
     private List<Task> taskWhereUserIsOwner = new ArrayList<>();
@@ -38,42 +38,16 @@ public class User implements Serializable {
     @ManyToMany
     @JoinTable(
             name = "users_has_specializations",
-            joinColumns = { @JoinColumn(name = "user_id") },
-            inverseJoinColumns = { @JoinColumn(name = "specialization_id") })
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "specialization_id")})
     private Set<Specialization> specializations = new HashSet<>();
 
     public User() {
+
     }
 
-    public User(Long id){
-        this.id = id;
-    }
-
-    public User(String email, String password, String firstName, String lastName, Set<Specialization> specializations) {
-        this.email = email;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.specializations = specializations;
-    }
-
-    //Constructor for sign-in
-    public User(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
-
-    //Constructor for sign-up
-    public User(String email, String firstName, String lastName, String password) {
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.password = password;
-    }
-
-    public User(Long id, String email, String password,
+    public User(String email, String password,
                 String firstName, String lastName, Set<Specialization> specializations) {
-        this.id = id;
         this.email = email;
         this.password = password;
         this.firstName = firstName;
@@ -129,17 +103,6 @@ public class User implements Serializable {
         this.specializations = specializations;
     }
 
-    @Override
-    public String toString() {
-        return "{" +
-                "\"userId\":" + id +
-                ", \"email\":\"" + email + '\"' +
-                ", \"password\":\"" + password + '\"' +
-                ", \"firstName\":\"" + firstName + '\"' +
-                ", \"lastName\":\"" + lastName + '\"' +
-                '}';
-    }
-
     public List<Task> getTaskWhereUserIsOwner() {
         return taskWhereUserIsOwner;
     }
@@ -171,6 +134,4 @@ public class User implements Serializable {
     public void setLogWorks(List<LogWork> logWorks) {
         this.logWorks = logWorks;
     }
-
-
 }

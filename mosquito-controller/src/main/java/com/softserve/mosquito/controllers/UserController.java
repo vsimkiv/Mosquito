@@ -1,6 +1,5 @@
 package com.softserve.mosquito.controllers;
 
-import com.softserve.mosquito.dtos.UserRegistrationDto;
 import com.softserve.mosquito.entities.User;
 import com.softserve.mosquito.services.api.UserService;
 

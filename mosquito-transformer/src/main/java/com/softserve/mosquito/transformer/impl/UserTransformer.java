@@ -1,51 +1,31 @@
 package com.softserve.mosquito.transformer.impl;
 
-import com.softserve.mosquito.transformer.api.Transformer;
-import com.softserve.mosquito.dtos.UserLoginDto;
-import com.softserve.mosquito.dtos.UserRegistrationDto;
+import com.softserve.mosquito.dtos.UserDto;
 import com.softserve.mosquito.entities.User;
+import com.softserve.mosquito.transformer.api.Transformer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-public class UserTransformer {
+@Service
+public class UserTransformer implements Transformer<User, UserDto> {
 
-    private UserTransformer() {
-        throw new IllegalStateException("Utility class");
+    private SpecializationTransformer transformer;
+
+    @Autowired
+    public UserTransformer(SpecializationTransformer transformer) {
+        this.transformer = transformer;
     }
 
-    static class UserLogin implements Transformer<User,UserLoginDto>{
-
-        @Override
-        public User toEntity(UserLoginDto loginDto) {
-            return new User(
-                    loginDto.getEmail(),
-                    loginDto.getPassword());
-        }
-
-        @Override
-        public UserLoginDto toDTO(User user) {
-            return new UserLoginDto(
-                    user.getId(),
-                    user.getEmail(),
-                    user.getPassword());
-        }
+    @Override
+    public User toEntity(UserDto userDto) {
+        return new User(userDto.getEmail(), userDto.getPassword(), userDto.getFirstName(),
+                userDto.getLastName(), transformer.toEntity(userDto.getSpecializations()));
     }
 
-    static class UserRegistration implements Transformer<User,UserRegistrationDto>{
-
-        @Override
-        public User toEntity(UserRegistrationDto registrationDto) {
-            return new User(registrationDto.getEmail(),
-                    registrationDto.getFirstName(),
-                    registrationDto.getLastName(),
-                    registrationDto.getPassword());
-        }
-
-        @Override
-        public UserRegistrationDto toDTO(User user) {
-            return new UserRegistrationDto(user.getEmail(),
-                    user.getFirstName(),
-                    user.getLastName(),
-                    user.getPassword());
-        }
+    @Override
+    public UserDto toDTO(User user) {
+        return UserDto.newBuilder().setId(user.getId()).setEmail(user.getEmail()).setPassword(user.getPassword())
+                .setFirstName(user.getFirstName()).setLastName(user.getLastName())
+                .setSpecializations(transformer.toDTO(user.getSpecializations())).build();
     }
-
 }
