@@ -26,9 +26,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public CommentCreateDto save(CommentCreateDto commentCreateDto) {
-        System.out.println(commentCreateDto);
         Comment comment = repo.create(transformer.toEntity(commentCreateDto));
-        System.out.println(comment);
         if (comment == null)
             return null;
 
@@ -42,16 +40,15 @@ public class CommentServiceImpl implements CommentService {
 
         if (comment == null)
             return null;
-
+        System.out.println(transformer.toDTO(comment).toString());
         return transformer.toDTO(comment);
     }
 
     @Override
     @Transactional
     public CommentCreateDto update(CommentCreateDto commentCreateDto) {
-
         Comment comment = repo.update(transformer.toEntity(commentCreateDto));
-
+        System.out.println(comment + " Service 2");
         if (comment == null)
             return null;
 

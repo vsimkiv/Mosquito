@@ -3,7 +3,8 @@ package com.softserve.mosquito.impl;
 import com.softserve.mosquito.api.Transformer;
 import com.softserve.mosquito.dtos.CommentCreateDto;
 import com.softserve.mosquito.entities.Comment;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import com.softserve.mosquito.entities.Task;
+import com.softserve.mosquito.entities.User;
 
 public class CommentTransformer {
 
@@ -16,9 +17,10 @@ public class CommentTransformer {
         @Override
         public Comment toEntity(CommentCreateDto commentCreateDto) {
             return new Comment(
+                    commentCreateDto.getId(),
                     commentCreateDto.getText(),
-                    commentCreateDto.getTask(),
-                    commentCreateDto.getAuthor());
+                    new Task(commentCreateDto.getTaskId()),
+                    new User(commentCreateDto.getAuthorId()));
         }
 
         @Override
@@ -26,8 +28,8 @@ public class CommentTransformer {
             return new CommentCreateDto(
                     comment.getId(),
                     comment.getText(),
-                    comment.getTask(),
-                    comment.getAuthor());
+                    comment.getTask().getId(),
+                    comment.getAuthor().getId());
         }
     }
 

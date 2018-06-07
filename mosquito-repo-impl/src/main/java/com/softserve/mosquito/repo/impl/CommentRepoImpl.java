@@ -8,7 +8,6 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -28,82 +27,47 @@ public class CommentRepoImpl implements CommentRepo {
 
     @Override
     public Comment create(Comment comment) {
-
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.getTransaction();
-        try {
-            transaction.begin();
-            System.out.println(comment);
+        try (Session session = sessionFactory.openSession()) {
             session.save(comment);
-
-            transaction.commit();
         } catch (HibernateException e) {
-            transaction.rollback();
             LOGGER.error("Error during save comment!");
-        } finally {
-            session.close();
         }
-
         return comment;
     }
 
     @Override
     public Comment read(Long id) {
-
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.getTransaction();
-        try {
-            transaction.begin();
-            Comment comment = session.get(Comment.class, id);
-            transaction.commit();
-            return comment;
+        try (Session session = sessionFactory.openSession()) {
+            return session.get(Comment.class, id);
         } catch (HibernateException e) {
-            transaction.rollback();
             LOGGER.error("Reading comment was failed!");
-        } finally {
-            session.close();
         }
-
         return null;
     }
 
     @Override
     public Comment update(Comment comment) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.getTransaction();
-
-        try {
-            transaction.begin();
+        try (Session session = sessionFactory.openSession()) {
+            session.getTransaction().begin();
             session.update(comment);
-
-            transaction.commit();
+            System.out.println(comment + " Repository");
+            session.getTransaction().commit();
             return comment;
         } catch (HibernateException e) {
-            transaction.rollback();
             LOGGER.error("Updating comment was failed!");
-        } finally {
-            session.close();
         }
-
         return null;
     }
 
     @Override
     public void delete(Long id) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.getTransaction();
-
-        try {
-            transaction.begin();
+        try (Session session = sessionFactory.openSession()) {
+            session.getTransaction().begin();
             Comment comment = session.get(Comment.class, id);
             session.delete(comment);
-
-            transaction.commit();
+            session.getTransaction().commit();
         } catch (HibernateException e) {
-            transaction.rollback();
             LOGGER.error("Deleting comment was failed!");
-        } finally {
-            session.close();
         }
     }
 

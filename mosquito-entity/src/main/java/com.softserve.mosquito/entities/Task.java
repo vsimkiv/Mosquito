@@ -47,6 +47,10 @@ public class Task implements Serializable {
     public Task() {
     }
 
+    public Task(Long id){
+        this.id = id;
+    }
+
     /**
      * Just short constructor
      */

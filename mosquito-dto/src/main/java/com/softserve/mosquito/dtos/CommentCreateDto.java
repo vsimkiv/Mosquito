@@ -1,34 +1,29 @@
 package com.softserve.mosquito.dtos;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.softserve.mosquito.entities.Task;
-import com.softserve.mosquito.entities.User;
-
 /*
  * DTO for creating comments
  */
 public class CommentCreateDto {
     private Long id;
     private String text;
-    @JsonIgnore
-    private Task task;
-    @JsonIgnore
-    private User author;
+    private Long authorId;
+    private Long taskId;
 
     public CommentCreateDto() {
     }
 
-    public CommentCreateDto(Long id, String text, Task task, User author) {
+    public CommentCreateDto(Long id, String text, Long taskId, Long authorId) {
         this.id = id;
         this.text = text;
-        this.task = task;
-        this.author = author;
+        this.authorId = authorId;
+        this.taskId = taskId;
+
     }
 
-    public CommentCreateDto(String text, Task task, User author) {
+    public CommentCreateDto(String text, Long taskId, Long authorId) {
         this.text = text;
-        this.task = task;
-        this.author = author;
+        this.taskId = taskId;
+        this.authorId = authorId;
     }
 
     public Long getId() {
@@ -47,20 +42,20 @@ public class CommentCreateDto {
         this.text = text;
     }
 
-    public Task getTask() {
-        return task;
+    public Long getTaskId() {
+        return taskId;
     }
 
-    public void setTask(Task task) {
-        this.task = task;
+    public void setTaskId(Long taskId) {
+        this.taskId = taskId;
     }
 
-    public User getAuthor() {
-        return author;
+    public Long getAuthorId() {
+        return authorId;
     }
 
-    public void setAuthor(User author) {
-        this.author = author;
+    public void setAuthorId(Long authorId) {
+        this.authorId = authorId;
     }
 
     @Override
@@ -68,8 +63,8 @@ public class CommentCreateDto {
         return "CommentCreateDto{" +
                 "id=" + id +
                 ", text='" + text + '\'' +
-                ", task=" + task +
-                ", author=" + author +
+                ", authorId=" + authorId +
+                ", taskId=" + taskId +
                 '}';
     }
 }

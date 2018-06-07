@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class Comment implements Serializable {
 
     @Id
-    @GeneratedValue (strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String text;
 
@@ -39,8 +39,15 @@ public class Comment implements Serializable {
         this.author = author;
     }
 
+    public Comment(Long id, String text, Task task, User author) {
+        this.id = id;
+        this.text = text;
+        this.task = task;
+        this.author = author;
+    }
+
     //get from DB
-    public Comment(Long id, String text, Task task, User author,  LocalDateTime lastUpdate) {
+    public Comment(Long id, String text, Task task, User author, LocalDateTime lastUpdate) {
         this.id = id;
         this.task = task;
         this.author = author;
@@ -72,9 +79,13 @@ public class Comment implements Serializable {
         this.lastUpdate = lastUpdate;
     }
 
-    public Task getTask() { return task; }
+    public Task getTask() {
+        return task;
+    }
 
-    public void setTask(Task task) { this.task = task; }
+    public void setTask(Task task) {
+        this.task = task;
+    }
 
     public User getAuthor() {
         return author;
