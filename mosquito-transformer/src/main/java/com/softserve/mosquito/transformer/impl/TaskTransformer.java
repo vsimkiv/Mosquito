@@ -17,24 +17,14 @@ public class TaskTransformer {
         Task task = new Task();
         task.setId(taskDto.getId());
         task.setName(taskDto.getName());
-
-
         task.setParentTask(taskServiceUsingEntity.read(taskDto.getParentId()));
 
         task.setOwner(userService.getUserById(taskDto.getOwnerId()));
         task.setWorker(userService.getUserById(taskDto.getWorkerId()));
 
         task.setEstimation(estimationService.getEstimationById(taskDto.getEstimationId()));
-
-        /* There is no method in PriorityService which returns object of class Priority
-        Long id = taskDto.getPriorityId();
-        Priority priority = priorityService.getPriorityById(id);
-        task.setPriority();
-        */
-
-        /* There is no method in StatusService which returns object of class Priority
-        task.setStatus(statusService.getStatusById(taskDto.getStatusId()));
-        */
+        task.setPriority(priorityService.getPriorityEntityById(taskDto.getPriorityId()));
+        task.setStatus(statusService.getStatusEntityById(taskDto.getStatusId()));
 
         task.setComments(commentService.getAllComments());
         task.setChildTasks(taskServiceUsingEntity.readAll());

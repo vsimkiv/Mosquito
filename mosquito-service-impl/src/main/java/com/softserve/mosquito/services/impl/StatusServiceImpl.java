@@ -86,4 +86,15 @@ public class StatusServiceImpl implements StatusService {
         }
         return null;
     }
+
+    @Override
+    public Status getStatusEntityById(Long id) {
+        Status status = statusRepo.read(id);
+
+        if(status == null){
+            return null;
+        }
+
+        return status;
+    }
 }

@@ -16,4 +16,9 @@ public interface PriorityService {
     PriorityDto updatePriority(PriorityDto priorityDto);
 
     void removePriority(Long id);
+
+    /**
+     * method for using in class TaskTransformer
+     */
+    Priority getPriorityEntityById(Long id);
 }
