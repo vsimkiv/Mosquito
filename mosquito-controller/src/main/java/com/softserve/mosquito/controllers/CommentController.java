@@ -5,7 +5,6 @@ import com.softserve.mosquito.entities.Comment;
 import com.softserve.mosquito.services.api.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,7 +39,6 @@ public class CommentController {
     public CommentCreateDto updateComment(@PathVariable("comment_id") Long commentId,
                                           @RequestBody CommentCreateDto comment) {
         comment.setId(commentId);
-        System.out.println(comment + " Controller");
         return commentService.update(comment);
     }
 

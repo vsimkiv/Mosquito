@@ -50,7 +50,6 @@ public class CommentRepoImpl implements CommentRepo {
         try (Session session = sessionFactory.openSession()) {
             session.getTransaction().begin();
             session.update(comment);
-            System.out.println(comment + " Repository");
             session.getTransaction().commit();
             return comment;
         } catch (HibernateException e) {
