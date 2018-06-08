@@ -32,7 +32,7 @@ public class PriorityRepoImpl implements PriorityRepo {
     public Priority create(Priority priority) {
         try {
             Session session = sessionFactory.getCurrentSession();
-            Byte priorityId = (Byte) session.save(priority);
+            Long priorityId = (Long) session.save(priority);
             priority.setId(priorityId);
 
             return priority;
@@ -47,7 +47,7 @@ public class PriorityRepoImpl implements PriorityRepo {
         try {
             Session session = sessionFactory.getCurrentSession();
             //TODO: change id type from Byte to Long
-            Priority priority = (Priority) session.get(Priority.class, Byte.valueOf(id.toString()));
+            Priority priority = (Priority) session.get(Priority.class, Long.valueOf(id.toString()));
 
             return priority;
         } catch (Exception e) {
@@ -74,7 +74,7 @@ public class PriorityRepoImpl implements PriorityRepo {
         try {
             //TODO: change from delete(Long) to delete(Specialization) and change id type from Byte to Long
             Priority priority = new Priority();
-            priority.setId(Byte.valueOf(id.toString()));
+            priority.setId(Long.valueOf(id.toString()));
 
             Session session = sessionFactory.getCurrentSession();
             session.delete(priority);
