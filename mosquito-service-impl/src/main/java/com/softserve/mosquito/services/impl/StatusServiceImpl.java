@@ -1,14 +1,15 @@
 package com.softserve.mosquito.services.impl;
 
-import com.softserve.mosquito.transformer.api.Transformer;
 import com.softserve.mosquito.dtos.StatusCreateDto;
 import com.softserve.mosquito.dtos.StatusDto;
 import com.softserve.mosquito.entities.Status;
 import com.softserve.mosquito.repo.api.StatusRepo;
-import com.softserve.mosquito.repo.impl.StatusRepoImpl;
-import com.softserve.mosquito.transformer.impl.StatusTransformer;
 import com.softserve.mosquito.services.api.StatusService;
+import com.softserve.mosquito.transformer.api.Transformer;
+import com.softserve.mosquito.transformer.impl.StatusTransformer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,27 +17,28 @@ import java.util.List;
 @Service
 public class StatusServiceImpl implements StatusService {
 
-    private StatusRepo statusRepo = new StatusRepoImpl();
-    private Transformer<Status, StatusCreateDto> statusCreateTransformer = new StatusTransformer.StatusCreate();
-    private Transformer<Status, StatusDto> statusGenericTransformer = new StatusTransformer.StatusGeneric();
+    private StatusRepo statusRepo;
+    @Autowired
+    public StatusServiceImpl(StatusRepo statusRepo) {
+        this.statusRepo = statusRepo;
+    }
+    private Transformer<Status, StatusCreateDto> transformer = new StatusTransformer.StatusCreate();
+    private Transformer<Status, StatusDto> transformerDto = new StatusTransformer.StatusGeneric();
 
     @Override
-    public List<StatusDto> getAllStatus(){
-        List<Status> statuses = statusRepo.readAll();
+    @Transactional
+    public StatusDto createStatus(StatusCreateDto statusCreateDto){
+        Status status = statusRepo.create(transformer.toEntity(statusCreateDto));
 
-        if (statuses == null || statuses.isEmpty()){
+        if(status == null){
             return null;
         }
 
-        List<StatusDto> statusDtos = new ArrayList<>();
-        for (Status status: statuses) {
-            statusDtos.add(statusGenericTransformer.toDTO(status));
-        }
-
-        return statusDtos;
+        return transformerDto.toDTO(status);
     }
 
     @Override
+    @Transactional
     public StatusDto getStatusById(Long id){
         Status status = statusRepo.read(id);
 
@@ -44,36 +46,29 @@ public class StatusServiceImpl implements StatusService {
             return null;
         }
 
-        return statusGenericTransformer.toDTO(status);
+        return transformerDto.toDTO(status);
     }
 
-    @Override
-    public StatusDto createStatus(StatusCreateDto statusCreateDto){
-        Status createdStatus = statusRepo.create(statusCreateTransformer.toEntity(statusCreateDto));
-
-        if(createdStatus == null){
-            return null;
-        }
-
-        return statusGenericTransformer.toDTO(createdStatus);
-    }
 
     @Override
+    @Transactional
     public StatusDto updateStatus(StatusDto statusDto){
-        Status updatedStatus = statusRepo.update(statusGenericTransformer.toEntity(statusDto));
+        Status updatedStatus = statusRepo.update(transformerDto.toEntity(statusDto));
 
         if (updatedStatus == null){
             return null;
         }
 
-        return statusGenericTransformer.toDTO(updatedStatus);
+        return transformerDto.toDTO(updatedStatus);
     }
-
+    @Override
+    @Transactional
     public void removeStatus(Long id){
         statusRepo.delete(id);
     }
 
     @Override
+    @Transactional
     public StatusDto getStatusByName(String title){
         List<StatusDto> allStatuses = getAllStatus();
 
@@ -88,6 +83,7 @@ public class StatusServiceImpl implements StatusService {
     }
 
     @Override
+    @Transactional
     public Status getStatusEntityById(Long id) {
         Status status = statusRepo.read(id);
 
@@ -97,4 +93,21 @@ public class StatusServiceImpl implements StatusService {
 
         return status;
     }
+
+    @Override
+    @Transactional
+    public List<StatusDto> getAllStatus(){
+        List<Status> statuses = statusRepo.readAll();
+        if(statuses == null || statuses.isEmpty()){
+            return null;
+        }
+        List<StatusDto> statusDtos = new ArrayList<>();
+
+        for (Status status : statuses){
+            statusDtos.add(transformerDto.toDTO(status));
+        }
+
+        return statusDtos;
+    }
+
 }

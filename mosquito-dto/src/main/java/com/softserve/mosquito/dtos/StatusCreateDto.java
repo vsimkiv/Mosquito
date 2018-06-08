@@ -1,6 +1,8 @@
 package com.softserve.mosquito.dtos;
 
-public class StatusCreateDto {
+import java.io.Serializable;
+
+public class StatusCreateDto implements Serializable {
     private String title;
 
     public StatusCreateDto() {
