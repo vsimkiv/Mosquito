@@ -66,8 +66,8 @@ public class SpecializationController {
     }
 
     @DeleteMapping("/{specialization_id}")
-    public ResponseEntity removeSpecialization(@PathVariable("specialization_id") Byte specialization_id){
-        specializationService.removeSpecialization(Long.valueOf(specialization_id));
+    public ResponseEntity removeSpecialization(@PathVariable("specialization_id") Long specialization_id){
+        specializationService.removeSpecialization(specialization_id);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

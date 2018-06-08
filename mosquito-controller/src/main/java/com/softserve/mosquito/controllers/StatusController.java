@@ -32,14 +32,14 @@ public class StatusController {
     }*/
 
 
-    @GetMapping(path= "/{status_id}")
+    @PutMapping(path= "/{status_id}")
     @ResponseStatus(HttpStatus.OK)
     public StatusDto updateStatus(@PathVariable("status_id") Long id, @RequestBody StatusDto statusDto) {
         statusDto.setId(id);
         return statusService.updateStatus(statusDto);
     }
 
-    @GetMapping(path= "/{id}")
+    @DeleteMapping(path= "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteStatus(@PathVariable("id") Long id) {
         statusService.removeStatus(id);
