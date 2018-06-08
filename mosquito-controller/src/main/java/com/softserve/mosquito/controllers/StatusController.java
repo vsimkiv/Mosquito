@@ -47,7 +47,7 @@ public class StatusController {
     @Path("/{status_id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateStatus(@PathParam("status_id") Byte status_id, StatusCreateDto statusCreateDto) {
+    public Response updateStatus(@PathParam("status_id") Long status_id, StatusCreateDto statusCreateDto) {
         StatusDto statusDto = new StatusDto(status_id, statusCreateDto.getTitle());
         StatusDto updatedStatusDto = statusService.updateStatus(statusDto);
 

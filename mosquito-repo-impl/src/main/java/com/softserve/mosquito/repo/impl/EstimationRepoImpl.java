@@ -119,12 +119,12 @@ public class EstimationRepoImpl implements EstimationRepo {
 
                 if (resultSet.getLong("l.id") != 0) {
                     LogWork logWork = new LogWork(
-                            resultSet.getLong("l.id"),
+                           /* resultSet.getLong("l.id"),
                             resultSet.getString("description"),
                             resultSet.getInt("logged"),
                             resultSet.getLong("user_id"),
                             resultSet.getLong("estimation_id"),
-                            resultSet.getTimestamp("last_update").toLocalDateTime());
+                            resultSet.getTimestamp("last_update").toLocalDateTime()*/);
                     estimation.getLogWorks().add(logWork);
 
                     for (Estimation item : estimations)

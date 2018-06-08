@@ -4,22 +4,22 @@ package com.softserve.mosquito.dtos;
  * Generic DTO for Status Entity
  */
 public class StatusDto {
-    private Byte id;
+    private Long id;
     private String title;
 
     public StatusDto() {
     }
 
-    public StatusDto(Byte id, String title) {
+    public StatusDto(Long id, String title) {
         this.id = id;
         this.title = title;
     }
 
-    public Byte getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Byte id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

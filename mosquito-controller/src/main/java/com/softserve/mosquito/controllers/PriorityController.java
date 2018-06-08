@@ -49,7 +49,7 @@ public class PriorityController {
     @Path("/{priority_id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updatePriority(@PathParam("priority_id") Byte id, PriorityCreateDto priorityCreateDto){
+    public Response updatePriority(@PathParam("priority_id") Long id, PriorityCreateDto priorityCreateDto){
         PriorityDto priorityDto = new PriorityDto(id, priorityCreateDto.getTitle());
         PriorityDto updatetedPriotityDto = priorityService.updatePriority(priorityDto);
 

@@ -13,7 +13,7 @@ public final class Priority implements Serializable {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Byte id;
+    private Long id;
     private String title;
 
     @JsonIgnore
@@ -23,7 +23,7 @@ public final class Priority implements Serializable {
     public Priority() {
     }
 
-    public Priority(Byte id) {
+    public Priority(Long id) {
         this.id = id;
     }
 
@@ -31,16 +31,16 @@ public final class Priority implements Serializable {
         this.title = title;
     }
 
-    public Priority(Byte id, String title) {
+    public Priority(Long id, String title) {
         this.id = id;
         this.title = title;
     }
 
-    public Byte getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Byte id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

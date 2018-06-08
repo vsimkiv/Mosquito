@@ -7,8 +7,8 @@ public class TaskDto {
     private Long workerId;
     private Integer estimation;
     private Integer remaining;
-    private Byte priorityId;
-    private Byte statusId;
+    private Long priorityId;
+    private Long statusId;
     private String assigneeFirstName;
     private String assigneeLastName;
     private String priorityTitle;
@@ -17,8 +17,8 @@ public class TaskDto {
     public TaskDto() {
     }
 
-    public TaskDto(String name, Long parentId, Long ownerId, Long workerId, Integer estimation, Byte priorityId,
-                   Byte statusId) {
+    public TaskDto(String name, Long parentId, Long ownerId, Long workerId, Integer estimation, Long priorityId,
+                   Long statusId) {
         super();
         this.name = name;
         this.parentId = parentId;
@@ -69,19 +69,19 @@ public class TaskDto {
         this.estimation = estimation;
     }
 
-    public Byte getPriorityId() {
+    public Long getPriorityId() {
         return priorityId;
     }
 
-    public void setPriorityId(Byte priorityId) {
+    public void setPriorityId(Long priorityId) {
         this.priorityId = priorityId;
     }
 
-    public Byte getStatusId() {
+    public Long getStatusId() {
         return statusId;
     }
 
-    public void setStatusId(Byte statusId) {
+    public void setStatusId(Long statusId) {
         this.statusId = statusId;
     }
 

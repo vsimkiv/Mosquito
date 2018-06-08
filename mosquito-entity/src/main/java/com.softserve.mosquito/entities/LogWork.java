@@ -12,7 +12,9 @@ public class LogWork implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
+
     private String description;
+
     private Integer logged;
 
     @ManyToOne
@@ -21,45 +23,30 @@ public class LogWork implements Serializable {
 
     @Column(name = "last_update")
     private LocalDateTime lastUpdate;
+
     @ManyToOne
     @JoinColumn(name = "estimation_id")
     private Estimation estimation;
 
-    public LogWork() {
+    public LogWork() { }
 
-        /*this.id = 0L;
-        this.description = "";
-        this.logged = 0;
-        this.userId = 0L;
-        this.estimation = new Estimation();*/
-    }
-
-    public LogWork(String description, Integer logged, Long userId, Long estimationId) {
-        throw new NotImplementedException();
-
-        /*this();
-        this.description = description;
-        this.logged = logged;
-        this.userId = userId;
-        this.estimation = null;//TODO*/
-    }
-
-    public LogWork(Long id, String description, Integer logged, Long userId,
+    public LogWork(Long id, String description, Integer logged, User user,
                    Long estimationId, LocalDateTime lastUpdate) {
-        throw new NotImplementedException();
-        /*this.id = id;
+        this.id=id;
         this.description = description;
         this.lastUpdate = lastUpdate;
-        this.userId = userId;
+        this.author = user;
         this.logged = logged;
-        this.estimation = null;*/
+        Estimation estimation = new Estimation();
+        estimation.setId(estimationId);
+        this.estimation = estimation;
+
 
     }
 
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -67,7 +54,6 @@ public class LogWork implements Serializable {
     public String getDescription() {
         return description;
     }
-
     public void setDescription(String description) {
         this.description = description;
     }
@@ -75,18 +61,24 @@ public class LogWork implements Serializable {
     public Integer getLogged() {
         return logged;
     }
-
     public void setLogged(Integer logged) {
         this.logged = logged;
     }
 
+    public Estimation getEstimation() {   return estimation; }
+    public void setEstimation(Estimation estimation) {   this.estimation = estimation; }
+
+    public User getAuthor() {  return author; }
+    public void setAuthor(User author) { this.author = author;  }
+
+
     public LocalDateTime getLastUpdate() {
         return lastUpdate;
     }
-
     public void setLastUpdate(LocalDateTime lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
+
 
     @Override
     public String toString() {
@@ -94,23 +86,9 @@ public class LogWork implements Serializable {
                 "id=" + id +
                 ", description='" + description + '\'' +
                 ", logged=" + logged +
-                ", lastUpdate=" + lastUpdate +
+                ", lastUpdate=" + lastUpdate.toString() +
                 '}';
     }
 
-    public Estimation getEstimation() {
-        return estimation;
-    }
 
-    public void setEstimation(Estimation estimation) {
-        this.estimation = estimation;
-    }
-
-    public User getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(User author) {
-        this.author = author;
-    }
 }

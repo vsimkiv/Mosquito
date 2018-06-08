@@ -46,7 +46,7 @@ public class SpecializationController {
     @Path("/{specialization_id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateSpecialization(@PathParam("specialization_id") Byte specialization_id, SpecializationCreateDto specializationCreateDto){
+    public Response updateSpecialization(@PathParam("specialization_id") Long specialization_id, SpecializationCreateDto specializationCreateDto){
         SpecializationDto specializationForUpdate = new SpecializationDto(specialization_id, specializationCreateDto.getTitle());
         SpecializationDto updatedSpacialization = specializationService.updateSpecialization(specializationForUpdate);
 

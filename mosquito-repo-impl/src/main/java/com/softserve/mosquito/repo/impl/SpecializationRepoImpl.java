@@ -66,7 +66,7 @@ public class SpecializationRepoImpl implements SpecializationRepo {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SPECIALIZATION)) {
             preparedStatement.setString(1, specialization.getTitle());
-            preparedStatement.setByte(2, specialization.getId());
+            preparedStatement.setLong(2, specialization.getId());
             if (preparedStatement.executeUpdate() > 0)
                 return specialization;
         } catch (SQLException e) {
@@ -103,7 +103,7 @@ public class SpecializationRepoImpl implements SpecializationRepo {
         try {
             while (resultSet.next()) {
                 Specialization specialization = new Specialization();
-                specialization.setId(resultSet.getByte("id"));
+                specialization.setId(resultSet.getLong("id"));
                 specialization.setTitle(resultSet.getString("title"));
                 specializations.add(specialization);
             }

@@ -62,7 +62,7 @@ public class StatusRepoImpl implements StatusRepo {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_STATUS)) {
             preparedStatement.setString(1, status.getTitle());
-            preparedStatement.setByte(2, status.getId());
+            preparedStatement.setLong(2, status.getId());
             if (preparedStatement.executeUpdate() > 0)
                 return read(Long.valueOf(status.getId()));
         } catch (SQLException e) {
@@ -98,7 +98,7 @@ public class StatusRepoImpl implements StatusRepo {
         try {
             while (resultSet.next()) {
                 Status status = new Status();
-                status.setId(resultSet.getByte("id"));
+                status.setId(resultSet.getLong("id"));
                 status.setTitle(resultSet.getString("title"));
                 statuses.add(status);
             }
