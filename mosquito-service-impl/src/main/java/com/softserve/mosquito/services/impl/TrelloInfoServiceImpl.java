@@ -1,43 +1,52 @@
 package com.softserve.mosquito.services.impl;
 
 import com.softserve.mosquito.entities.TrelloInfo;
-import com.softserve.mosquito.repo.api.TrelloInfoRepo;
 import com.softserve.mosquito.repo.impl.TrelloInfoRepoImp;
 import com.softserve.mosquito.services.api.TrelloInfoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
+@Service
 public class TrelloInfoServiceImpl implements TrelloInfoService {
 
-    private TrelloInfoRepo trelloInfoRepo;
+    private TrelloInfoRepoImp trelloInfoRepoImp;
 
-    public TrelloInfoServiceImpl(TrelloInfoRepo trelloInfoRepo) {
-        this.trelloInfoRepo = trelloInfoRepo;
+    @Autowired
+    public TrelloInfoServiceImpl(TrelloInfoRepoImp trelloInfoRepoImp) {
+        this.trelloInfoRepoImp = trelloInfoRepoImp;
     }
 
     @Override
+    @Transactional
     public TrelloInfo createTrelloInfo(TrelloInfo trelloInfo) {
-        return trelloInfoRepo.create(trelloInfo);
+        return trelloInfoRepoImp.create(trelloInfo);
     }
 
     @Override
+    @Transactional
     public TrelloInfo getTrelloInfoById(Long id) {
-        return trelloInfoRepo.read(id);
+        return trelloInfoRepoImp.read(id);
     }
 
     @Override
+    @Transactional
     public TrelloInfo updateTrelloInfo(TrelloInfo trelloInfo) {
-        return trelloInfoRepo.update(trelloInfo);
+        return trelloInfoRepoImp.update(trelloInfo);
     }
 
     @Override
+    @Transactional
     public void removeTrelloInfo(Long id) {
-        trelloInfoRepo.delete(id);
+        trelloInfoRepoImp.delete(id);
     }
 
     @Override
+    @Transactional
     public List<TrelloInfo> getAllTrelloInfos() {
-        return trelloInfoRepo.readAll();
+        return trelloInfoRepoImp.readAll();
     }
 
     public Long getTrelloInfoIdByUserId(Long userId){
@@ -46,6 +55,8 @@ public class TrelloInfoServiceImpl implements TrelloInfoService {
         }
         return null;
     }
+
+    @Transactional
     public TrelloInfo getTrelloInfoByUserId(Long userId){
         return getTrelloInfoById(getTrelloInfoIdByUserId(userId));
     }

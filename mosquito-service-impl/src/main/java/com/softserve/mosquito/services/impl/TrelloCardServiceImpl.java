@@ -3,21 +3,33 @@ package com.softserve.mosquito.services.impl;
 import com.softserve.mosquito.dtos.TaskDto;
 
 import com.softserve.mosquito.entities.*;
-
 import org.codehaus.jackson.map.ObjectMapper;
 
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 import javax.ws.rs.core.Response;
 
+@Service
 public class TrelloCardServiceImpl {
 
+    // MEGA KOSTUL********************************
     private Long userId = 44L;
-    private TrelloInfo trelloInfo = new TrelloInfoServiceImpl().getTrelloInfoByUserId(userId);
+    private TrelloInfoServiceImpl trelloInfoService;
+    private TrelloInfo trelloInfo = trelloInfoService.getTrelloInfoByUserId(userId);
+    //*********************************************
 
+    @Autowired
+    public TrelloCardServiceImpl(TrelloInfoServiceImpl trelloInfoService) {
+        this.trelloInfoService = trelloInfoService;
+    }
 
+    @Transactional
     public void getTasksFromTrello(){
 
         for (TrelloBoard trelloBoard : getAllTrelloBoards()){
@@ -37,7 +49,7 @@ public class TrelloCardServiceImpl {
     }
 
    private void createTasksFromTrelloCards(TrelloCard[] trelloCards, String status, String projectName){
-//
+
 //        TaskServiceUsingEntityImpl taskService = new TaskServiceImpl();
 //        TaskDto taskDto = new TaskDto();
 //        taskDto.setName(projectName);
