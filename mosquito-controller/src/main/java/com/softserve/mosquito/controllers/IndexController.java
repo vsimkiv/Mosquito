@@ -1,9 +1,7 @@
 package com.softserve.mosquito.controllers;
 
-import com.softserve.mosquito.dtos.UserLoginDto;
-import com.softserve.mosquito.dtos.UserRegistrationDto;
-import com.softserve.mosquito.entities.Priority;
-import com.softserve.mosquito.entities.User;
+import com.softserve.mosquito.dtos.PriorityDto;
+import com.softserve.mosquito.dtos.UserDto;
 import com.softserve.mosquito.services.api.PriorityService;
 import com.softserve.mosquito.services.api.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +34,7 @@ public class IndexController {
 
     @GetMapping(path = "/")
     @ResponseStatus(HttpStatus.OK)
-    public List<Priority> testIndexController() {
+    public List<PriorityDto> testIndexController() {
         return priorityService.getAllPriorities();
     }
 
@@ -44,10 +42,9 @@ public class IndexController {
 
     @PostMapping(path = "/login", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public User login(@RequestBody UserLoginDto userLoginDto, HttpServletRequest request) {
-        User user = userService.getUserByEmail(userLoginDto.getEmail());
+    public UserDto login(@RequestBody UserDto userDto, HttpServletRequest request) {
+        UserDto user = userService.getUserByEmail(userDto.getEmail());
         if (user != null) {
-
             HttpSession session = request.getSession();
             session.setAttribute("user_id", user.getId());
             return user;
@@ -66,7 +63,7 @@ public class IndexController {
 
     @PostMapping(path = "/registration", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ModelAndView registration(@RequestBody UserRegistrationDto user) {
+    public ModelAndView registration(@RequestBody UserDto user) {
         ModelAndView view = new ModelAndView();
         view.addObject(user);
         return view;

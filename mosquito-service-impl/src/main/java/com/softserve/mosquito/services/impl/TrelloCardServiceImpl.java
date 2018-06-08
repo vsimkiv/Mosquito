@@ -2,23 +2,34 @@ package com.softserve.mosquito.services.impl;
 
 import com.softserve.mosquito.dtos.TaskDto;
 
-import com.softserve.mosquito.entities.Task;
 import com.softserve.mosquito.entities.*;
-import com.softserve.mosquito.entities.TrelloInfo;
-
 import org.codehaus.jackson.map.ObjectMapper;
 
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 import javax.ws.rs.core.Response;
 
+@Service
 public class TrelloCardServiceImpl {
+
+    // MEGA KOSTUL********************************
     private Long userId = 44L;
-    private TrelloInfo trelloInfo = new TrelloInfoServiceImpl().getTrelloInfoByUserId(userId);
+    private TrelloInfoServiceImpl trelloInfoService;
+    private TrelloInfo trelloInfo = trelloInfoService.getTrelloInfoByUserId(userId);
+    //*********************************************
 
+    @Autowired
+    public TrelloCardServiceImpl(TrelloInfoServiceImpl trelloInfoService) {
+        this.trelloInfoService = trelloInfoService;
+    }
 
+    @Transactional
     public void getTasksFromTrello(){
 
         for (TrelloBoard trelloBoard : getAllTrelloBoards()){
@@ -37,25 +48,25 @@ public class TrelloCardServiceImpl {
         }
     }
 
-    private void createTasksFromTrelloCards(TrelloCard[] trelloCards, String status, String projectName){
+   private void createTasksFromTrelloCards(TrelloCard[] trelloCards, String status, String projectName){
 
-        TaskServiceImpl taskService = new TaskServiceImpl();
-        TaskDto taskDto = new TaskDto();
-        taskDto.setName(projectName);
-        taskDto.setOwnerId(trelloInfo.getUserId());
-        taskDto.setWorkerId(trelloInfo.getUserId());
-        Task task = taskService.createTask(taskDto);
-
-        for (TrelloCard trelloCard : trelloCards){
-            TaskDto trelloTask = new TaskDto();
-            trelloTask.setName(trelloCard.getName());
-            trelloTask.setWorkerId(trelloInfo.getUserId());
-            trelloTask.setOwnerId(trelloInfo.getUserId());
-            trelloTask.setParentId(task.getId());
-            trelloTask.setStatusId(new StatusServiceImpl().getStatusByName(status).getId());
-            taskService.createTask(trelloTask);
-        }
-    }
+//        TaskServiceUsingEntityImpl taskService = new TaskServiceImpl();
+//        TaskDto taskDto = new TaskDto();
+//        taskDto.setName(projectName);
+//        taskDto.setOwnerId(trelloInfo.getUserId());
+//        taskDto.setWorkerId(trelloInfo.getUserId());
+//        Task task = taskService.create(taskDto);
+//
+//        for (TrelloCard trelloCard : trelloCards){
+//            TaskDto trelloTask = new TaskDto();
+//            trelloTask.setName(trelloCard.getName());
+//            trelloTask.setWorkerId(trelloInfo.getUserId());
+//            trelloTask.setOwnerId(trelloInfo.getUserId());
+//            trelloTask.setParentId(task.getId());
+//            trelloTask.setStatusId(new StatusServiceImpl().getStatusByName(status).getId());
+//            taskService.create(trelloTask);
+//        }
+   }
 
     private TrelloBoard[] getAllTrelloBoards(){
         TrelloBoard[] trelloBoards= null;
@@ -130,7 +141,6 @@ public class TrelloCardServiceImpl {
         }
 
         return TrelloCards;
-
     }
 
 }

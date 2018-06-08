@@ -1,13 +1,30 @@
 package com.softserve.mosquito.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 import java.io.Serializable;
 
+@Entity
+@Table(name = "users_trello")
 public class TrelloInfo implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
     private Long userId;
+
+    @JoinColumn(name = "username")
     private String userTrelloName;
+
+    @JoinColumn(name = "access_key")
     private String userTrelloKey;
+
+    @JoinColumn(name = "access_token")
     private String userTrelloToken;
 
 

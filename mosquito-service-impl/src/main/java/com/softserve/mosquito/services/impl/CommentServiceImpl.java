@@ -1,11 +1,11 @@
 package com.softserve.mosquito.services.impl;
 
-import com.softserve.mosquito.api.Transformer;
 import com.softserve.mosquito.dtos.CommentCreateDto;
 import com.softserve.mosquito.entities.Comment;
-import com.softserve.mosquito.impl.CommentTransformer;
 import com.softserve.mosquito.repo.api.CommentRepo;
 import com.softserve.mosquito.services.api.CommentService;
+import com.softserve.mosquito.transformer.api.Transformer;
+import com.softserve.mosquito.transformer.impl.CommentTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,9 +26,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public CommentCreateDto save(CommentCreateDto commentCreateDto) {
-        System.out.println(commentCreateDto);
         Comment comment = repo.create(transformer.toEntity(commentCreateDto));
-        System.out.println(comment);
         if (comment == null)
             return null;
 
@@ -42,16 +40,13 @@ public class CommentServiceImpl implements CommentService {
 
         if (comment == null)
             return null;
-
         return transformer.toDTO(comment);
     }
 
     @Override
     @Transactional
     public CommentCreateDto update(CommentCreateDto commentCreateDto) {
-
         Comment comment = repo.update(transformer.toEntity(commentCreateDto));
-
         if (comment == null)
             return null;
 

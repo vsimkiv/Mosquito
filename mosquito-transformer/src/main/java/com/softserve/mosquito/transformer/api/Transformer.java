@@ -1,4 +1,4 @@
-package com.softserve.mosquito.api;
+package com.softserve.mosquito.transformer.api;
 
 public interface Transformer<E,D> {
 
