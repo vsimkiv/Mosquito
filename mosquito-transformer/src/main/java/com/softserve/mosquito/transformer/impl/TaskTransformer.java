@@ -22,7 +22,7 @@ public class TaskTransformer {
                 .parentTask(taskServiceUsingEntity.read(taskDto.getParentId()))
                 //.owner(userService.getUserById(taskDto.getOwnerId()))
                 //.worker(userService.getUserById(taskDto.getWorkerId()))
-                .estimation(estimationService.getEstimationById(taskDto.getEstimationId()))
+                //.estimation(estimationService.getEstimationById(taskDto.getEstimationId()))
                 .priority(priorityService.getPriorityEntityById(taskDto.getPriorityId()))
                 .status(statusService.getStatusEntityById(taskDto.getStatusId()))
 

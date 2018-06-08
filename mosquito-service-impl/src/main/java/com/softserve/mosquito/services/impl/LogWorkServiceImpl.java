@@ -6,6 +6,7 @@ import com.softserve.mosquito.repo.api.LogWorkRepo;
 import com.softserve.mosquito.repo.impl.LogWorkRepoImpl;
 import com.softserve.mosquito.services.api.LogWorkService;
 import com.softserve.mosquito.transformer.impl.LogWorkTransformer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
@@ -13,7 +14,12 @@ import java.util.List;
 @Service
 public class LogWorkServiceImpl implements LogWorkService {
 
-    private LogWorkRepo logWorkRepo = new LogWorkRepoImpl();
+    private LogWorkRepo logWorkRepo;
+
+@Autowired
+    public LogWorkServiceImpl(LogWorkRepo logWorkRepo) {
+        this.logWorkRepo = logWorkRepo;
+    }
 
     @Override
     public LogWorkDto createLogWork(LogWorkDto logWorkDto) {

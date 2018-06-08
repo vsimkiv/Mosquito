@@ -13,6 +13,7 @@ public class Estimation implements Serializable {
     private Long id;
     @Column(name = "estimation")
     private Integer timeEstimation;
+    @Column(name = "remaining")
     private Integer remaining;
     @OneToOne(mappedBy = "estimation")
     private Task task;
@@ -21,10 +22,9 @@ public class Estimation implements Serializable {
 
     public Estimation() {}
 
-    public Estimation(int timeEstimation) { this.timeEstimation = timeEstimation;}
 
+    public Estimation(Long id, Integer timeEstimation, Integer remaining, Task task,List<LogWork> logWorks) {
 
-    public Estimation(Long id, Integer timeEstimation, Integer remaining) {
         this.timeEstimation = timeEstimation;
         this.id = id;
         this.remaining = remaining;
