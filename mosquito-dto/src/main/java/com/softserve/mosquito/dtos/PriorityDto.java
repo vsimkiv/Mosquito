@@ -6,22 +6,22 @@ import java.io.Serializable;
  * Generic DTO for Priority Entity
  */
 public class PriorityDto implements Serializable{
-    private Byte id;
+    private Long id;
     private String title;
 
     public PriorityDto() {
     }
 
-    public PriorityDto(Byte id, String title) {
+    public PriorityDto(Long id, String title) {
         this.id = id;
         this.title = title;
     }
 
-    public Byte getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Byte id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

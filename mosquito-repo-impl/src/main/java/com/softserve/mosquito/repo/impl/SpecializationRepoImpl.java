@@ -6,7 +6,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -26,7 +25,7 @@ public class SpecializationRepoImpl implements SpecializationRepo {
     public Specialization create(Specialization specialization) {
         try{
             Session session = sessionFactory.getCurrentSession();
-            Byte specializationId = (Byte) session.save(specialization);
+            Long specializationId = (Long) session.save(specialization);
             specialization.setId(specializationId);
 
             return specialization;
@@ -41,7 +40,7 @@ public class SpecializationRepoImpl implements SpecializationRepo {
         try {
             Session session = sessionFactory.getCurrentSession();
             //TODO: change id type from Byte to Long
-            Specialization specialization = (Specialization) session.get(Specialization.class, Byte.valueOf(id.toString()));
+            Specialization specialization = (Specialization) session.get(Specialization.class, Long.valueOf(id.toString()));
 
             return specialization;
         }catch (Exception e){
@@ -68,7 +67,7 @@ public class SpecializationRepoImpl implements SpecializationRepo {
         try {
             //TODO: change from delete(Long) to delete(Specialization) and change id type from Byte to Long
             Specialization specialization = new Specialization();
-            specialization.setId(Byte.valueOf(id.toString()));
+            specialization.setId(Long.valueOf(id.toString()));
 
             Session session = sessionFactory.getCurrentSession();
 

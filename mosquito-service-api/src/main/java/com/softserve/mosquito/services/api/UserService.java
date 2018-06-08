@@ -1,7 +1,6 @@
 package com.softserve.mosquito.services.api;
 
 import com.softserve.mosquito.dtos.UserDto;
-import com.softserve.mosquito.entities.User;
 
 import java.util.List;
 
@@ -19,5 +18,5 @@ public interface UserService {
 
     UserDto getUserByEmail(String email);
 
-    List<UserDto> getUsersBySpecialization(Byte specializationId);
+    List<UserDto> getUsersBySpecialization(Long specializationId);
 }

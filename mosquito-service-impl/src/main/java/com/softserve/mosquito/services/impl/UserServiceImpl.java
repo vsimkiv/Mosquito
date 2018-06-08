@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getUsersBySpecialization(Byte specializationId) {
+    public List<UserDto> getUsersBySpecialization(Long specializationId) {
         List<User> users = userRepo.readAll();
         List<UserDto> userDtos = new ArrayList<>();
 

@@ -1,25 +1,27 @@
 package com.softserve.mosquito.dtos;
 
+import java.io.Serializable;
+
 /**
  * Generic DTO for Status Entity
  */
-public class StatusDto {
-    private Byte id;
+public class StatusDto implements Serializable {
+    private Long id;
     private String title;
 
     public StatusDto() {
     }
 
-    public StatusDto(Byte id, String title) {
+    public StatusDto(Long id, String title) {
         this.id = id;
         this.title = title;
     }
 
-    public Byte getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Byte id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

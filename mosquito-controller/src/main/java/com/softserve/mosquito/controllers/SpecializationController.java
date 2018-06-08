@@ -7,7 +7,6 @@ import com.softserve.mosquito.dtos.SpecializationDto;
 import com.softserve.mosquito.services.api.SpecializationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,7 +43,7 @@ public class SpecializationController {
     }
 
     @PutMapping("/{specialization_id}")
-    public ResponseEntity<SpecializationDto> updateSpecialization(@PathVariable("specialization_id") Byte specialization_id,
+    public ResponseEntity<SpecializationDto> updateSpecialization(@PathVariable("specialization_id") Long specialization_id,
                                                                   @RequestBody SpecializationDto specializationDto){
         SpecializationDto specializationForUpdate = new SpecializationDto(specialization_id, specializationDto.getTitle());
         SpecializationDto updatedSpacialization = specializationService.updateSpecialization(specializationForUpdate);

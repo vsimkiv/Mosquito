@@ -4,17 +4,12 @@ import com.softserve.mosquito.entities.Priority;
 import com.softserve.mosquito.repo.api.PriorityRepo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import javax.transaction.Transactional;
-import java.sql.ResultSet;
 import java.util.List;
 
 @Repository
@@ -32,7 +27,7 @@ public class PriorityRepoImpl implements PriorityRepo {
     public Priority create(Priority priority) {
         try {
             Session session = sessionFactory.getCurrentSession();
-            Byte priorityId = (Byte) session.save(priority);
+            Long priorityId = (Long) session.save(priority);
             priority.setId(priorityId);
 
             return priority;
@@ -47,7 +42,7 @@ public class PriorityRepoImpl implements PriorityRepo {
         try {
             Session session = sessionFactory.getCurrentSession();
             //TODO: change id type from Byte to Long
-            Priority priority = (Priority) session.get(Priority.class, Byte.valueOf(id.toString()));
+            Priority priority = (Priority) session.get(Priority.class, Long.valueOf(id.toString()));
 
             return priority;
         } catch (Exception e) {
@@ -74,7 +69,7 @@ public class PriorityRepoImpl implements PriorityRepo {
         try {
             //TODO: change from delete(Long) to delete(Specialization) and change id type from Byte to Long
             Priority priority = new Priority();
-            priority.setId(Byte.valueOf(id.toString()));
+            priority.setId(Long.valueOf(id.toString()));
 
             Session session = sessionFactory.getCurrentSession();
             session.delete(priority);
