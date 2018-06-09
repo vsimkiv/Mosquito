@@ -7,17 +7,20 @@ import com.softserve.mosquito.entities.User;
 import com.softserve.mosquito.repo.api.UserRepo;
 import com.softserve.mosquito.services.api.UserService;
 import com.softserve.mosquito.transformer.impl.UserTransformer;
+import org.hibernate.mapping.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private UserRepo userRepo;
-    private UserTransformer transformer;
+    private UserTransformer transformer = new UserTransformer();
 
     @Autowired
     public UserServiceImpl(UserRepo userRepo) {

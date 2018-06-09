@@ -6,25 +6,21 @@ import com.softserve.mosquito.transformer.api.Transformer;
 
 public class UserTransformer implements Transformer<User, UserDto> {
 
-    private SpecializationTransformer transformer;
+    private SpecializationTransformer specializationTransformer = new SpecializationTransformer();
 
     public UserTransformer() {
-    }
-
-    public UserTransformer(SpecializationTransformer transformer) {
-        this.transformer = transformer;
     }
 
     @Override
     public User toEntity(UserDto userDto) {
         return new User(userDto.getEmail(), userDto.getPassword(), userDto.getFirstName(),
-                userDto.getLastName(), transformer.toEntity(userDto.getSpecializations()));
+                userDto.getLastName(), specializationTransformer.toEntity(userDto.getSpecializations()));
     }
 
     @Override
     public UserDto toDTO(User user) {
         return UserDto.newBuilder().id(user.getId()).email(user.getEmail()).password(user.getPassword())
-                .firstName(user.getFirstName()).lastName(user.getLastName())
-                .specializations(transformer.toDTO(user.getSpecializations())).build();
+                .confirmPassword(user.getPassword()).firstName(user.getFirstName()).lastName(user.getLastName())
+                .specializations(specializationTransformer.toDTO(user.getSpecializations())).build();
     }
 }
