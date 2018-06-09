@@ -20,8 +20,7 @@ public class UserServiceImpl implements UserService {
     private UserTransformer transformer;
 
     @Autowired
-    public UserServiceImpl(UserRepo userRepo, UserTransformer transformer) {
-        this.transformer = transformer;
+    public UserServiceImpl(UserRepo userRepo) {
         this.userRepo = userRepo;
     }
 
