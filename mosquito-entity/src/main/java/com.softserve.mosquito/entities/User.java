@@ -23,19 +23,19 @@ public class User implements Serializable {
     @Column(name = "last_name")
     private String lastName;
 
-    @OneToMany(mappedBy = "owner", targetEntity = Task.class)
+    @OneToMany(mappedBy = "owner", targetEntity = Task.class, fetch = FetchType.LAZY)
     private List<Task> taskWhereUserIsOwner = new ArrayList<>();
 
-    @OneToMany(mappedBy = "worker", targetEntity = Task.class)
+    @OneToMany(mappedBy = "worker", targetEntity = Task.class, fetch = FetchType.LAZY)
     private List<Task> taskWhereUserIsWorker = new ArrayList<>();
 
-    @OneToMany(mappedBy = "author", targetEntity = Comment.class)
+    @OneToMany(mappedBy = "author", targetEntity = Comment.class, fetch = FetchType.LAZY)
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "author", targetEntity = LogWork.class)
+    @OneToMany(mappedBy = "author", targetEntity = LogWork.class, fetch = FetchType.LAZY)
     private List<LogWork> logWorks = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_has_specializations",
             joinColumns = {@JoinColumn(name = "user_id")},

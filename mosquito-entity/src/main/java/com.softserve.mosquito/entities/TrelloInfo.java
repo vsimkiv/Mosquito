@@ -1,3 +1,4 @@
+
 //package com.softserve.mosquito.entities;
 //
 //import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -9,6 +10,18 @@
 //@Table(name = "users_trello")
 //public class TrelloInfo implements Serializable {
 //
+
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
+import java.io.Serializable;
+
+//@Entity
+//@Table(name = "users_trello")
+//public class TrelloInfo implements Serializable {
+
+
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    private Long id;
@@ -95,4 +108,8 @@
 //                ", userTrelloToken='" + userTrelloToken + '\'' +
 //                '}';
 //    }
+
 //}
+
+//}
+

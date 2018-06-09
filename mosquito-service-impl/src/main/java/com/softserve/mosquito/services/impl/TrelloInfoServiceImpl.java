@@ -1,20 +1,12 @@
-//package com.softserve.mosquito.services.impl;
-//
-//import com.softserve.mosquito.entities.TrelloInfo;
-//import com.softserve.mosquito.repo.impl.TrelloInfoRepoImp;
-//import com.softserve.mosquito.services.api.TrelloInfoService;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
-//
-//import javax.transaction.Transactional;
-//import java.util.List;
-//
+package com.softserve.mosquito.services.impl;
+
 //@Service
-//public class TrelloInfoServiceImpl implements TrelloInfoService {
+public class TrelloInfoServiceImpl {
 //
 //    private TrelloInfoRepoImp trelloInfoRepoImp;
 //
-//    @Autowired
+//    //@Autowired
+
 //    public TrelloInfoServiceImpl(TrelloInfoRepoImp trelloInfoRepoImp) {
 //        this.trelloInfoRepoImp = trelloInfoRepoImp;
 //    }
@@ -28,6 +20,7 @@
 //    @Override
 //    @Transactional
 //    public TrelloInfo getTrelloInfoById(Long id) {
+
 //        return trelloInfoRepoImp.read(id);
 //    }
 //
@@ -48,7 +41,7 @@
 //    public List<TrelloInfo> getAllTrelloInfos() {
 //        return trelloInfoRepoImp.readAll();
 //    }
-//
+
 //    public Long getTrelloInfoIdByUserId(Long userId){
 //        for (TrelloInfo trelloInfo : getAllTrelloInfos()){
 //            if (trelloInfo.getUserId()==userId) return trelloInfo.getId();
@@ -61,3 +54,4 @@
 //        return getTrelloInfoById(getTrelloInfoIdByUserId(userId));
 //    }
 //}
+}

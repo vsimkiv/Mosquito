@@ -31,7 +31,12 @@ public class LogWorkRepoImpl implements LogWorkRepo {
     @Transactional
     @Override
     public LogWork create(LogWork logWork) {
-      return logWork;
+        try (Session session = sessionFactory.openSession()) {
+            session.save(logWork);
+        } catch (HibernateException e) {
+            LOGGER.error("Error during save logWork!");
+        }
+        return logWork;
     }
 
     @Override

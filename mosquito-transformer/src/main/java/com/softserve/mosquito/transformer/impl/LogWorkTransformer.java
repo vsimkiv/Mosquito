@@ -1,10 +1,10 @@
 package com.softserve.mosquito.transformer.impl;
 
-import com.softserve.mosquito.transformer.api.Transformer;
+
 import com.softserve.mosquito.dtos.LogWorkDto;
 import com.softserve.mosquito.entities.LogWork;
 import com.softserve.mosquito.entities.User;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 
 import java.util.List;
 
@@ -13,10 +13,6 @@ public class LogWorkTransformer {
     private LogWorkTransformer() {
         throw new IllegalStateException("Utility class");
     }
-
-
-
-
 
     public static LogWork toEntity(LogWorkDto logWorkDto) {
         User user = new User();

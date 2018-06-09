@@ -11,18 +11,16 @@
 
     <artifactId>mosquito-service-api</artifactId>
     <packaging>jar</packaging>
+
     <dependencies>
         <dependency>
             <groupId>com.softserve.mosquito</groupId>
             <artifactId>mosquito-dto</artifactId>
-            <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.softserve.mosquito</groupId>
             <artifactId>mosquito-entity</artifactId>
-            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
-
-
+    
 </project>

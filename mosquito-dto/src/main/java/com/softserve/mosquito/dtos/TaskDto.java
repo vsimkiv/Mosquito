@@ -1,32 +1,23 @@
 package com.softserve.mosquito.dtos;
 
+
 import java.util.List;
 
 public class TaskDto {
     private Long id;
     private String name;
-    private Long parentId;
 
-    private Long ownerId;
-    private String firstNameOfOwner;
-    private String lastNameOfOwner;
+    private TaskDto parentTaskDto;
 
-    private Long workerId;
-    private String firstNameOfWorker;
-    private String lastNameOfWorker;
+    private UserDto ownerDto;
+    private UserDto workerDto;
 
-    private Long estimationId;
-    private Integer estimation;
-    private Integer remaining;
+    private EstimationDto estimationDto;
+    private PriorityDto priorityDto;
+    private StatusDto statusDto;
 
-    private Long priorityId;
-    private String priorityTitle;
-
-    private Long statusId;
-    private String statusTitle;
-
-    private List<CommentCreateDto> comments;
-    private List<TaskDto> childTasks;
+    private List<CommentCreateDto> commentCreateDtoList;
+    private List<TaskDto> childTaskDtos;
 
     public Long getId() {
         return id;
@@ -44,232 +35,116 @@ public class TaskDto {
         this.name = name;
     }
 
-    public Long getParentId() {
-        return parentId;
+    public TaskDto getParentTaskDto() {
+        return parentTaskDto;
     }
 
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
+    public void setParentTaskDto(TaskDto parentTaskDto) {
+        this.parentTaskDto = parentTaskDto;
     }
 
-    public Long getOwnerId() {
-        return ownerId;
+    public UserDto getOwnerDto() {
+        return ownerDto;
     }
 
-    public void setOwnerId(Long ownerId) {
-        this.ownerId = ownerId;
+    public void setOwnerDto(UserDto ownerDto) {
+        this.ownerDto = ownerDto;
     }
 
-    public String getFirstNameOfOwner() {
-        return firstNameOfOwner;
+    public UserDto getWorkerDto() {
+        return workerDto;
     }
 
-    public void setFirstNameOfOwner(String firstNameOfOwner) {
-        this.firstNameOfOwner = firstNameOfOwner;
+    public void setWorkerDto(UserDto workerDto) {
+        this.workerDto = workerDto;
     }
 
-    public String getLastNameOfOwner() {
-        return lastNameOfOwner;
+    public EstimationDto getEstimationDto() {
+        return estimationDto;
     }
 
-    public void setLastNameOfOwner(String lastNameOfOwner) {
-        this.lastNameOfOwner = lastNameOfOwner;
+    public void setEstimationDto(EstimationDto estimationDto) {
+        this.estimationDto = estimationDto;
     }
 
-    public Long getWorkerId() {
-        return workerId;
+    public PriorityDto getPriorityDto() {
+        return priorityDto;
     }
 
-    public void setWorkerId(Long workerId) {
-        this.workerId = workerId;
+    public void setPriorityDto(PriorityDto priorityDto) {
+        this.priorityDto = priorityDto;
     }
 
-    public String getFirstNameOfWorker() {
-        return firstNameOfWorker;
+    public StatusDto getStatusDto() {
+        return statusDto;
     }
 
-    public void setFirstNameOfWorker(String firstNameOfWorker) {
-        this.firstNameOfWorker = firstNameOfWorker;
+    public void setStatusDto(StatusDto statusDto) {
+        this.statusDto = statusDto;
     }
 
-    public String getLastNameOfWorker() {
-        return lastNameOfWorker;
+    public List<CommentCreateDto> getCommentCreateDtoList() {
+        return commentCreateDtoList;
     }
 
-    public void setLastNameOfWorker(String lastNameOfWorker) {
-        this.lastNameOfWorker = lastNameOfWorker;
+    public void setCommentCreateDtoList(List<CommentCreateDto> commentCreateDtoList) {
+        this.commentCreateDtoList = commentCreateDtoList;
     }
 
-    public Long getEstimationId() {
-        return estimationId;
+    public List<TaskDto> getChildTaskDtos() {
+        return childTaskDtos;
     }
 
-    public void setEstimationId(Long estimationId) {
-        this.estimationId = estimationId;
+    public void setChildTaskDtos(List<TaskDto> childTaskDtos) {
+        this.childTaskDtos = childTaskDtos;
     }
 
-    public Integer getEstimation() {
-        return estimation;
+    public TaskDtoUsingOtherDtosBuilder builder() {
+        return new TaskDtoUsingOtherDtosBuilder();
     }
 
-    public void setEstimation(Integer estimation) {
-        this.estimation = estimation;
-    }
-
-    public Integer getRemaining() {
-        return remaining;
-    }
-
-    public void setRemaining(Integer remaining) {
-        this.remaining = remaining;
-    }
-
-    public Long getPriorityId() {
-        return priorityId;
-    }
-
-    public void setPriorityId(Long priorityId) {
-        this.priorityId = priorityId;
-    }
-
-    public String getPriorityTitle() {
-        return priorityTitle;
-    }
-
-    public void setPriorityTitle(String priorityTitle) {
-        this.priorityTitle = priorityTitle;
-    }
-
-    public Long getStatusId() {
-        return statusId;
-    }
-
-    public void setStatusId(Long statusId) {
-        this.statusId = statusId;
-    }
-
-    public String getStatusTitle() {
-        return statusTitle;
-    }
-
-    public void setStatusTitle(String statusTitle) {
-        this.statusTitle = statusTitle;
-    }
-
-    public List<CommentCreateDto> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<CommentCreateDto> comments) {
-        this.comments = comments;
-    }
-
-    public List<TaskDto> getChildTasks() {
-        return childTasks;
-    }
-
-    public void setChildTasks(List<TaskDto> childTasks) {
-        this.childTasks = childTasks;
-    }
-
-    public TaskDtoBuilder builder() {
-        return new TaskDtoBuilder();
-    }
-
-    public static class TaskDtoBuilder {
+    public static class TaskDtoUsingOtherDtosBuilder {
         private TaskDto taskDto;
 
-        private TaskDtoBuilder() {
+        private TaskDtoUsingOtherDtosBuilder() {
             taskDto = new TaskDto();
         }
 
-        public TaskDtoBuilder id(long id) {
+        public TaskDtoUsingOtherDtosBuilder id(long id) {
             taskDto.id = id;
             return this;
         }
 
-        public TaskDtoBuilder name(String name) {
+        public TaskDtoUsingOtherDtosBuilder name(String name) {
             taskDto.name = name;
             return this;
         }
 
-        public TaskDtoBuilder parentId(Long parentId) {
-            taskDto.parentId = parentId;
+
+        public TaskDtoUsingOtherDtosBuilder ownerDto(UserDto ownerDto) {
+            taskDto.ownerDto = ownerDto;
             return this;
         }
 
-        public TaskDtoBuilder ownerId(Long ownerId) {
-            taskDto.ownerId = ownerId;
+
+        public TaskDtoUsingOtherDtosBuilder workerDto(UserDto workerDto) {
+            taskDto.workerDto = workerDto;
             return this;
         }
 
-        public TaskDtoBuilder firstNameOfOwner(String firstNameOfOwner) {
-            taskDto.firstNameOfOwner = firstNameOfOwner;
+
+        public TaskDtoUsingOtherDtosBuilder estimationDto(EstimationDto estimationDto) {
+            taskDto.estimationDto = estimationDto;
             return this;
         }
 
-        public TaskDtoBuilder lastNameOfOwner(String lastNameOfOwner) {
-            taskDto.lastNameOfOwner = lastNameOfOwner;
+        public TaskDtoUsingOtherDtosBuilder priorityDto(PriorityDto priorityDto) {
+            taskDto.priorityDto = priorityDto;
             return this;
         }
 
-        public TaskDtoBuilder workerId(Long workerId) {
-            taskDto.workerId = workerId;
-            return this;
-        }
-
-        public TaskDtoBuilder firstNameOfWorker(String firstNameOfWorker) {
-            taskDto.firstNameOfWorker = firstNameOfWorker;
-            return this;
-        }
-
-        public TaskDtoBuilder lastNameOfWorker(String lastNameOfWorker) {
-            taskDto.lastNameOfWorker = lastNameOfWorker;
-            return this;
-        }
-
-        public TaskDtoBuilder estimationId(Long estimationId) {
-            taskDto.estimationId = estimationId;
-            return this;
-        }
-
-        public TaskDtoBuilder estimation(Integer estimation) {
-            taskDto.estimation = estimation;
-            return this;
-        }
-
-        public TaskDtoBuilder remaining(Integer remaining) {
-            taskDto.remaining = remaining;
-            return this;
-        }
-
-        public TaskDtoBuilder priorityId(Long priorityId) {
-            taskDto.priorityId = priorityId;
-            return this;
-        }
-
-        public TaskDtoBuilder priorityTitle(String priorityTitle) {
-            taskDto.priorityTitle = priorityTitle;
-            return this;
-        }
-
-        public TaskDtoBuilder statusId(Long statusId) {
-            taskDto.statusId = statusId;
-            return this;
-        }
-
-        public TaskDtoBuilder statusTitle(String statusTitle) {
-            taskDto.statusTitle = statusTitle;
-            return this;
-        }
-
-        public TaskDtoBuilder comments(List<CommentCreateDto> comments) {
-            taskDto.comments = comments;
-            return this;
-        }
-
-        public TaskDtoBuilder childTasks(List<TaskDto> childTasks) {
-            taskDto.childTasks = childTasks;
+        public TaskDtoUsingOtherDtosBuilder statusDto(StatusDto statusDto) {
+            taskDto.statusDto = statusDto;
             return this;
         }
 

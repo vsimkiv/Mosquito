@@ -4,14 +4,15 @@ import com.softserve.mosquito.transformer.api.Transformer;
 import com.softserve.mosquito.dtos.SpecializationCreateDto;
 import com.softserve.mosquito.dtos.SpecializationDto;
 import com.softserve.mosquito.entities.Specialization;
-import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
-@Service
 public class SpecializationTransformer {
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2662b4727fb7da1b2f8d4e38d0ed7dc4f33bd8fc
     public Set<Specialization> toEntity(Set<SpecializationDto> specializations) {
         return null;
     }

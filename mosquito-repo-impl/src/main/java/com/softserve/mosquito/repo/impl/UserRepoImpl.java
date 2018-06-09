@@ -11,9 +11,13 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @Repository
+@Transactional(readOnly = true, propagation = Propagation.REQUIRED, rollbackFor = {java.lang.Exception.class})
 public class UserRepoImpl implements UserRepo {
 
     private static final Logger LOGGER = LogManager.getLogger(UserRepoImpl.class);
@@ -26,7 +30,8 @@ public class UserRepoImpl implements UserRepo {
 
     @Override
     public User create(User user) {
-        try (Session session = sessionFactory.openSession()) {
+        try {
+            Session session = sessionFactory.getCurrentSession();
             Long id = (Long) session.save(user);
             user.setId(id);
         } catch (HibernateException e) {
@@ -37,7 +42,8 @@ public class UserRepoImpl implements UserRepo {
 
     @Override
     public User read(Long id) {
-        try (Session session = sessionFactory.openSession()) {
+        try {
+            Session session = sessionFactory.getCurrentSession();
             return session.get(User.class, id);
         } catch (HibernateException e) {
             LOGGER.error("Reading user was failed!" + e.getMessage());
@@ -47,7 +53,8 @@ public class UserRepoImpl implements UserRepo {
 
     @Override
     public User update(User user) {
-        try (Session session = sessionFactory.openSession()) {
+        try {
+            Session session = sessionFactory.getCurrentSession();
             session.getTransaction().begin();
             session.update(user);
             session.getTransaction().commit();
@@ -60,7 +67,8 @@ public class UserRepoImpl implements UserRepo {
 
     @Override
     public void delete(Long id) {
-        try (Session session = sessionFactory.openSession()) {
+        try {
+            Session session = sessionFactory.getCurrentSession();
             session.getTransaction().begin();
             User user = session.get(User.class, id);
             session.delete(user);
@@ -72,7 +80,13 @@ public class UserRepoImpl implements UserRepo {
 
     @Override
     public List<User> readAll() {
-        Query<User> users = sessionFactory.getCurrentSession().createQuery("FROM " + User.class.getName());
-        return users.list();
+        try {
+            Session session = sessionFactory.getCurrentSession();
+            Query<User> users = session.createQuery("FROM " + User.class.getName());
+            return users.list();
+        } catch (HibernateException e) {
+            LOGGER.error(e.getMessage());
+            return null;
+        }
     }
 }

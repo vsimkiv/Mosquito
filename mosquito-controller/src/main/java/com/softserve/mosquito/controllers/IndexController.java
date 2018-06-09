@@ -1,12 +1,10 @@
 package com.softserve.mosquito.controllers;
 
-import com.softserve.mosquito.dtos.PriorityDto;
 import com.softserve.mosquito.dtos.UserDto;
-import com.softserve.mosquito.services.api.PriorityService;
 import com.softserve.mosquito.services.api.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -19,35 +17,26 @@ import java.util.List;
 public class IndexController {
     private UserService userService;
 
-
-/*    @Autowired
+    @Autowired
     public IndexController(UserService userService) {
         this.userService = userService;
-    }
-*/
-    private PriorityService priorityService;
-
-    @Autowired
-    public IndexController(PriorityService priorityService) {
-        this.priorityService = priorityService;
     }
 
     @GetMapping(path = "/")
     @ResponseStatus(HttpStatus.OK)
-    public List<PriorityDto> testIndexController() {
-        return priorityService.getAllPriorities();
+    public ResponseEntity<List<UserDto>> testIndexController() {
+        return ResponseEntity.ok().body(userService.getAllUsers());
     }
 
 
-
-    @PostMapping(path = "/login", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "/login")
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public UserDto login(@RequestBody UserDto userDto, HttpServletRequest request) {
-        UserDto user = userService.getUserByEmail(userDto.getEmail());
-        if (user != null) {
+    public ResponseEntity<UserDto> login(@RequestBody UserDto userDto, HttpServletRequest request) {
+        UserDto foundUser = userService.getUserByEmail(userDto.getEmail());
+        if (foundUser != null) {
             HttpSession session = request.getSession();
-            session.setAttribute("user_id", user.getId());
-            return user;
+            session.setAttribute("user_id", foundUser.getId());
+            return ResponseEntity.ok().body(foundUser);
         } else {
             throw new UserNotFoundException();
         }
@@ -61,7 +50,7 @@ public class IndexController {
         return view;
     }
 
-    @PostMapping(path = "/registration", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "/registration")
     @ResponseStatus(HttpStatus.OK)
     public ModelAndView registration(@RequestBody UserDto user) {
         ModelAndView view = new ModelAndView();
@@ -70,6 +59,6 @@ public class IndexController {
     }
 
 
-    private class UserNotFoundException extends RuntimeException{
+    private class UserNotFoundException extends RuntimeException {
     }
 }
