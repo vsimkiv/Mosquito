@@ -11,9 +11,6 @@ import java.util.Set;
 @Service
 public class SpecializationTransformer {
 
-    private SpecializationTransformer() {
-        throw new IllegalStateException("Utility class");
-    }
 
     public Set<Specialization> toEntity(Set<SpecializationDto> specializations) {
         return null;
