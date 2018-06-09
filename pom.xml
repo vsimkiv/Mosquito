@@ -25,6 +25,7 @@
     <properties>
         <project.version>1.0-SNAPSHOT</project.version>
         <spring.version>4.3.17.RELEASE</spring.version>
+        <hibernate.validator.version>6.0.10.Final</hibernate.validator.version>
     </properties>
 
     <dependencyManagement>

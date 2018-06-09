@@ -2,6 +2,7 @@ package com.softserve.mosquito.controllers;
 
 import com.softserve.mosquito.dtos.UserDto;
 import com.softserve.mosquito.services.api.UserService;
+import com.softserve.mosquito.services.validation.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,16 +11,19 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping("/")
 public class IndexController {
     private UserService userService;
+    private UserValidator userValidator;
 
     @Autowired
-    public IndexController(UserService userService) {
+    public IndexController(UserService userService, UserValidator userValidator) {
         this.userService = userService;
+        this.userValidator = userValidator;
     }
 
     @GetMapping(path = "/")
@@ -52,10 +56,12 @@ public class IndexController {
 
     @PostMapping(path = "/registration")
     @ResponseStatus(HttpStatus.OK)
-    public ModelAndView registration(@RequestBody UserDto user) {
-        ModelAndView view = new ModelAndView();
-        view.addObject(user);
-        return view;
+    public UserDto registration(@Valid @RequestBody UserDto user) {
+
+        if (userValidator.isRegistrationValid(user))
+            return user;
+
+        return null;
     }
 
 

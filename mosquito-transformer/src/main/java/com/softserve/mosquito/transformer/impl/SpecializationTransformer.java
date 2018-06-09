@@ -9,10 +9,6 @@ import java.util.Set;
 
 public class SpecializationTransformer {
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 2662b4727fb7da1b2f8d4e38d0ed7dc4f33bd8fc
     public Set<Specialization> toEntity(Set<SpecializationDto> specializations) {
         return null;
     }
