@@ -4,11 +4,9 @@ import com.softserve.mosquito.transformer.api.Transformer;
 import com.softserve.mosquito.dtos.SpecializationCreateDto;
 import com.softserve.mosquito.dtos.SpecializationDto;
 import com.softserve.mosquito.entities.Specialization;
-import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
-@Service
 public class SpecializationTransformer {
 
     private SpecializationTransformer() {

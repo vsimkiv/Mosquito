@@ -3,15 +3,14 @@ package com.softserve.mosquito.transformer.impl;
 import com.softserve.mosquito.dtos.UserDto;
 import com.softserve.mosquito.entities.User;
 import com.softserve.mosquito.transformer.api.Transformer;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-@Service
 public class UserTransformer implements Transformer<User, UserDto> {
 
     private SpecializationTransformer transformer;
 
-    @Autowired
+    public UserTransformer() {
+    }
+
     public UserTransformer(SpecializationTransformer transformer) {
         this.transformer = transformer;
     }

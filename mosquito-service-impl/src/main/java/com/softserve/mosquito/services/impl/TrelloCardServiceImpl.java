@@ -1,7 +1,5 @@
 package com.softserve.mosquito.services.impl;
 
-import com.softserve.mosquito.dtos.TaskDto;
-
 import com.softserve.mosquito.entities.*;
 import org.codehaus.jackson.map.ObjectMapper;
 

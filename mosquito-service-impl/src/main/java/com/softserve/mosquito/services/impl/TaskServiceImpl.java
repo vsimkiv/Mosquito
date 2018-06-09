@@ -1,9 +1,10 @@
 package com.softserve.mosquito.services.impl;
 
-import com.softserve.mosquito.dtos.TaskDto;
+import com.softserve.mosquito.dtos.*;
 import com.softserve.mosquito.entities.Task;
 import com.softserve.mosquito.repo.api.TaskRepo;
 import com.softserve.mosquito.services.api.TaskService;
+import com.softserve.mosquito.transformer.impl.TaskTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.softserve.mosquito.transformer.impl.TaskTransformer.toDTO;
-import static com.softserve.mosquito.transformer.impl.TaskTransformer.toEntity;
 
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -26,7 +26,7 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     @Override
     public TaskDto create(TaskDto taskDto) {
-        Task task = taskRepo.create(toEntity(taskDto));
+        Task task = taskRepo.create(TaskTransformer.toEntity(taskDto));
 
         if (task == null)
             return null;
@@ -37,7 +37,7 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     @Override
     public TaskDto update(TaskDto taskDto) {
-        Task task = taskRepo.update(toEntity(taskDto));
+        Task task = taskRepo.update(TaskTransformer.toEntity(taskDto));
 
         if (task == null)
             return null;

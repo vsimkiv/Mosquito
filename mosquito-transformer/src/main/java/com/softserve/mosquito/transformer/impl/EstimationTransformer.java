@@ -5,7 +5,7 @@ import com.softserve.mosquito.entities.Estimation;
 import com.softserve.mosquito.entities.Task;
 
 public class EstimationTransformer  {
-    private EstimationTransformer() {   throw new IllegalStateException("Utility class");}
+    private EstimationTransformer() {}
 
     public static Estimation toEntity(EstimationDto estimationDto) {
         Task task = new Task();
