@@ -28,7 +28,6 @@ public class UserValidator {
                     user.getFirstName(),
                     user.getLastName(),
                     password);
-            System.out.println(userFromDB.toString());
             return userService.createUser(new UserTransformer().toDTO(userFromDB)) != null;
         }
 
