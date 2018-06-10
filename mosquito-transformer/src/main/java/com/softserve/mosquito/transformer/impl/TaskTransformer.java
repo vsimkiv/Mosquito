@@ -17,7 +17,7 @@ public class TaskTransformer {
                 .worker(new UserTransformer().toEntity(taskDto.getWorkerDto()))
                 .estimation(EstimationTransformer.toEntity(taskDto.getEstimationDto()))
                 .priority(new PriorityTransformer.PriorityGeneric().toEntity(taskDto.getPriorityDto()))
-                .status(new StatusTransformer.StatusGeneric().toEntity(taskDto.getStatusDto()))
+                .status(new StatusTransformer().toEntity(taskDto.getStatusDto()))
                 .build();
     }
 
@@ -30,7 +30,7 @@ public class TaskTransformer {
                 .workerDto(new UserTransformer().toDTO(task.getOwner()))
                 .estimationDto(EstimationTransformer.toDTO(task.getEstimation()))
                 .priorityDto(new PriorityTransformer.PriorityGeneric().toDTO(task.getPriority()))
-                .statusDto(new StatusTransformer.StatusGeneric().toDTO(task.getStatus()))
+                .statusDto(new StatusTransformer().toDTO(task.getStatus()))
                 .build();
     }
 }

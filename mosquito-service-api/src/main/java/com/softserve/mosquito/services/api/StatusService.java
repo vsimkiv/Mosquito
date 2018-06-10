@@ -11,7 +11,7 @@ public interface StatusService {
 
     StatusDto getStatusById(Long id);
 
-    StatusDto createStatus(StatusCreateDto statusCreateDto);
+    StatusDto createStatus(StatusDto statusDto);
 
     StatusDto updateStatus(StatusDto statusDto);
 

@@ -1,11 +1,9 @@
 package com.softserve.mosquito.services.impl;
 
-import com.softserve.mosquito.dtos.StatusCreateDto;
 import com.softserve.mosquito.dtos.StatusDto;
 import com.softserve.mosquito.entities.Status;
 import com.softserve.mosquito.repo.api.StatusRepo;
 import com.softserve.mosquito.services.api.StatusService;
-import com.softserve.mosquito.transformer.api.Transformer;
 import com.softserve.mosquito.transformer.impl.StatusTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,23 +16,22 @@ import java.util.List;
 public class StatusServiceImpl implements StatusService {
 
     private StatusRepo statusRepo;
+    private StatusTransformer transformer = new StatusTransformer();
     @Autowired
     public StatusServiceImpl(StatusRepo statusRepo) {
         this.statusRepo = statusRepo;
     }
-    private Transformer<Status, StatusCreateDto> transformer = new StatusTransformer.StatusCreate();
-    private Transformer<Status, StatusDto> transformerDto = new StatusTransformer.StatusGeneric();
 
     @Override
     @Transactional
-    public StatusDto createStatus(StatusCreateDto statusCreateDto){
-        Status status = statusRepo.create(transformer.toEntity(statusCreateDto));
+    public StatusDto createStatus(StatusDto statusDto){
+        Status status = statusRepo.create(transformer.toEntity(statusDto));
 
         if(status == null){
             return null;
         }
 
-        return transformerDto.toDTO(status);
+        return transformer.toDTO(status);
     }
 
     @Override
@@ -46,20 +43,20 @@ public class StatusServiceImpl implements StatusService {
             return null;
         }
 
-        return transformerDto.toDTO(status);
+        return transformer.toDTO(status);
     }
 
 
     @Override
     @Transactional
     public StatusDto updateStatus(StatusDto statusDto){
-        Status updatedStatus = statusRepo.update(transformerDto.toEntity(statusDto));
+        Status updatedStatus = statusRepo.update(transformer.toEntity(statusDto));
 
         if (updatedStatus == null){
             return null;
         }
 
-        return transformerDto.toDTO(updatedStatus);
+        return transformer.toDTO(updatedStatus);
     }
     @Override
     @Transactional
@@ -104,7 +101,7 @@ public class StatusServiceImpl implements StatusService {
         List<StatusDto> statusDtos = new ArrayList<>();
 
         for (Status status : statuses){
-            statusDtos.add(transformerDto.toDTO(status));
+            statusDtos.add(transformer.toDTO(status));
         }
 
         return statusDtos;

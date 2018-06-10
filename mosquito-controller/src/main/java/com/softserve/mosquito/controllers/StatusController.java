@@ -21,15 +21,15 @@ public class StatusController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public StatusDto createStatus(@RequestBody StatusCreateDto statusCreateDto) {
-        return statusService.createStatus(statusCreateDto);
+    public StatusDto createStatus(@RequestBody StatusDto statusDto) {
+        return statusService.createStatus(statusDto);
     }
 
-    /*@GetMapping(path= "/{status_id}")
+    @GetMapping(path= "/{status_id}")
     @ResponseStatus(HttpStatus.OK)
     public StatusDto getStatusById(@PathVariable("status_id") Long id){
         return statusService.getStatusById(id);
-    }*/
+    }
 
 
     @PutMapping(path= "/{status_id}")
