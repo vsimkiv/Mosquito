@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -68,8 +70,12 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    //TODO implement this method. It is necessary for setting commentList in TaskDto
-    public List<CommentCreateDto> getCommentByTask() {
-        return null;
+    public List<CommentCreateDto> getCommentByTask(Long taskId) {
+        List<CommentCreateDto> dtos = new ArrayList<>();
+        List<Comment> comments = getAllComments();
+        for (Comment comment : comments)
+            if (comment.getTask().getId().equals(taskId))
+                dtos.add(transformer.toDTO(comment));
+        return dtos;
     }
 }

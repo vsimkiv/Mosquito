@@ -1,6 +1,8 @@
 package com.softserve.mosquito.controllers;
 
+import com.softserve.mosquito.dtos.CommentCreateDto;
 import com.softserve.mosquito.dtos.TaskDto;
+import com.softserve.mosquito.services.api.CommentService;
 import com.softserve.mosquito.services.api.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,10 +16,12 @@ import java.util.List;
 public class TaskController {
 
     private TaskService taskService;
+    private CommentService commentService;
 
     @Autowired
-    public TaskController(TaskService taskService) {
+    public TaskController(TaskService taskService, CommentService commentService) {
         this.taskService = taskService;
+        this.commentService = commentService;
     }
 
     @PostMapping
@@ -72,5 +76,11 @@ public class TaskController {
     @ResponseStatus(HttpStatus.OK)
     public List<TaskDto> getTaskByStatus(@PathVariable("status_id") Long statusId) {
         return new ArrayList<>();
+    }
+
+    @GetMapping(path = "/{task_id}/comments")
+    @ResponseStatus(HttpStatus.OK)
+    public List<CommentCreateDto> getCommentsByTaskId(@PathVariable("task_id") Long taskId){
+        return commentService.getCommentByTask(taskId);
     }
 }
