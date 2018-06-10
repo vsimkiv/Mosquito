@@ -17,10 +17,11 @@ public interface TaskService {
 
     List<TaskDto> readAll();
 
+
+    TaskDto getParentTaskDto(Long parentId);
+
     List<TaskDto> getSubTasks(Long id);
 
-
-    List<TaskDto> filterByParent(Long parentId);
 
     List<TaskDto> filterByOwner(Long ownerId);
 

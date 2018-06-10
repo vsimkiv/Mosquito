@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -63,5 +64,12 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public List<Comment> getAllComments() {
         return repo.readAll();
+    }
+
+    @Override
+    @Transactional
+    //TODO implement this method. It is necessary for setting commentList in TaskDto
+    public List<CommentCreateDto> getCommentByTask() {
+        return null;
     }
 }

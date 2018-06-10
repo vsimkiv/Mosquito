@@ -3,6 +3,9 @@ package com.softserve.mosquito.transformer.impl;
 import com.softserve.mosquito.dtos.*;
 import com.softserve.mosquito.entities.Task;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class TaskTransformer {
     private TaskTransformer() {
@@ -32,5 +35,22 @@ public class TaskTransformer {
                 .priorityDto(new PriorityTransformer.PriorityGeneric().toDTO(task.getPriority()))
                 .statusDto(new StatusTransformer().toDTO(task.getStatus()))
                 .build();
+    }
+
+
+    public static List<Task> toEntityList(List<TaskDto> taskDtoList) {
+        List<Task> tasks = new ArrayList<>();
+        for (TaskDto taskDto : taskDtoList) {
+            tasks.add(toEntity(taskDto));
+        }
+        return tasks;
+    }
+
+    public static List<TaskDto> toDTOList(List<Task> tasks) {
+        List<TaskDto> taskDtoList = new ArrayList<>();
+        for (Task task : tasks) {
+            taskDtoList.add(toDTO(task));
+        }
+        return taskDtoList;
     }
 }

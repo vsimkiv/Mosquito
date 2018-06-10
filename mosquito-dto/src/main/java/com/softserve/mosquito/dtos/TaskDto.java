@@ -16,8 +16,8 @@ public class TaskDto {
     private PriorityDto priorityDto;
     private StatusDto statusDto;
 
-    private List<CommentCreateDto> commentCreateDtoList;
-    private List<TaskDto> childTaskDtos;
+    private List<CommentCreateDto> commentDtoList;
+    private List<TaskDto> childTaskDtoList;
 
     public Long getId() {
         return id;
@@ -83,20 +83,20 @@ public class TaskDto {
         this.statusDto = statusDto;
     }
 
-    public List<CommentCreateDto> getCommentCreateDtoList() {
-        return commentCreateDtoList;
+    public List<CommentCreateDto> getCommentDtoList() {
+        return commentDtoList;
     }
 
-    public void setCommentCreateDtoList(List<CommentCreateDto> commentCreateDtoList) {
-        this.commentCreateDtoList = commentCreateDtoList;
+    public void setCommentDtoList(List<CommentCreateDto> commentDtoList) {
+        this.commentDtoList = commentDtoList;
     }
 
-    public List<TaskDto> getChildTaskDtos() {
-        return childTaskDtos;
+    public List<TaskDto> getChildTaskDtoList() {
+        return childTaskDtoList;
     }
 
-    public void setChildTaskDtos(List<TaskDto> childTaskDtos) {
-        this.childTaskDtos = childTaskDtos;
+    public void setChildTaskDtoList(List<TaskDto> childTaskDtoList) {
+        this.childTaskDtoList = childTaskDtoList;
     }
 
     public TaskDtoUsingOtherDtosBuilder builder() {
@@ -120,6 +120,12 @@ public class TaskDto {
             return this;
         }
 
+        public TaskDtoUsingOtherDtosBuilder parentTaskDto(TaskDto parentTaskDto) {
+            if (parentTaskDto != null) {
+                taskDto.parentTaskDto = parentTaskDto;
+            }
+            return this;
+        }
 
         public TaskDtoUsingOtherDtosBuilder ownerDto(UserDto ownerDto) {
             taskDto.ownerDto = ownerDto;
@@ -145,6 +151,16 @@ public class TaskDto {
 
         public TaskDtoUsingOtherDtosBuilder statusDto(StatusDto statusDto) {
             taskDto.statusDto = statusDto;
+            return this;
+        }
+
+        public TaskDtoUsingOtherDtosBuilder commentDtoList(List<CommentCreateDto> commentDtoList) {
+            taskDto.commentDtoList = commentDtoList;
+            return this;
+        }
+
+        public TaskDtoUsingOtherDtosBuilder childTaskDtoList(List<TaskDto> childTaskDtoList) {
+            taskDto.childTaskDtoList = childTaskDtoList;
             return this;
         }
 

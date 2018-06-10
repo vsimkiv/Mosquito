@@ -18,4 +18,6 @@ public interface CommentService {
 
     List<Comment> getAllComments();
 
+    List<CommentCreateDto> getCommentByTask();
+
 }

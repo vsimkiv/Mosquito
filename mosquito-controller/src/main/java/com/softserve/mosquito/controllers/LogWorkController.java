@@ -2,17 +2,11 @@ package com.softserve.mosquito.controllers;
 
 
 import com.softserve.mosquito.dtos.LogWorkDto;
-import com.softserve.mosquito.entities.LogWork;
 import com.softserve.mosquito.services.api.LogWorkService;
-import com.softserve.mosquito.services.impl.LogWorkServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 import java.util.List;
 
 @RestController
