@@ -16,7 +16,6 @@ import java.util.List;
 public class StatusServiceImpl implements StatusService {
 
     private StatusRepo statusRepo;
-    private StatusTransformer transformer = new StatusTransformer();
     @Autowired
     public StatusServiceImpl(StatusRepo statusRepo) {
         this.statusRepo = statusRepo;
@@ -25,13 +24,13 @@ public class StatusServiceImpl implements StatusService {
     @Override
     @Transactional
     public StatusDto createStatus(StatusDto statusDto){
-        Status status = statusRepo.create(transformer.toEntity(statusDto));
+        Status status = statusRepo.create(StatusTransformer.toEntity(statusDto));
 
         if(status == null){
             return null;
         }
 
-        return transformer.toDTO(status);
+        return StatusTransformer.toDTO(status);
     }
 
     @Override
@@ -43,20 +42,20 @@ public class StatusServiceImpl implements StatusService {
             return null;
         }
 
-        return transformer.toDTO(status);
+        return StatusTransformer.toDTO(status);
     }
 
 
     @Override
     @Transactional
     public StatusDto updateStatus(StatusDto statusDto){
-        Status updatedStatus = statusRepo.update(transformer.toEntity(statusDto));
+        Status updatedStatus = statusRepo.update(StatusTransformer.toEntity(statusDto));
 
         if (updatedStatus == null){
             return null;
         }
 
-        return transformer.toDTO(updatedStatus);
+        return StatusTransformer.toDTO(updatedStatus);
     }
     @Override
     @Transactional
@@ -101,7 +100,7 @@ public class StatusServiceImpl implements StatusService {
         List<StatusDto> statusDtos = new ArrayList<>();
 
         for (Status status : statuses){
-            statusDtos.add(transformer.toDTO(status));
+            statusDtos.add(StatusTransformer.toDTO(status));
         }
 
         return statusDtos;
