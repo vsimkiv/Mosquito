@@ -40,36 +40,48 @@ public class LogWorkRepoImpl implements LogWorkRepo {
     }
 
     @Override
-    public LogWork read(Long logWorkid) {
-        Session session = sessionFactory.openSession();
-        LogWork logWork = session.load(LogWork.class, logWorkid);
-        return logWork;
+    public LogWork read(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.get(LogWork.class, id);
+        } catch (HibernateException e) {
+            LOGGER.error("Reading logWork was failed!");
+        }
+        return null;
     }
 
     @Override
     public LogWork update(LogWork logWork) {
-        Session session = sessionFactory.openSession();
-        session.update(logWork);
-        session.getTransaction().commit();
-        return logWork;
+        try (Session session = sessionFactory.openSession()) {
+            session.getTransaction().begin();
+            session.update(logWork);
+            session.getTransaction().commit();
+            return logWork;
+        } catch (HibernateException e) {
+            LOGGER.error("Updating logWork was failed!");
+        }
+        return null;
     }
 
     @Override
     public void delete(Long id) {
-        Session session = sessionFactory.openSession();
-        LogWork logWork = new LogWork();
-        logWork.setId(id);
-        session.delete(logWork);
-        session.getTransaction().commit();
+        try (Session session = sessionFactory.openSession()) {
+            session.getTransaction().begin();
+            LogWork logWork  = session.get(LogWork.class, id);
+            session.delete(logWork );
+            session.getTransaction().commit();
+        } catch (HibernateException e) {
+            LOGGER.error("Deleting logWork  was failed!");
+        }
     }
-
     @Override
     public List<LogWork> readAll() {
-        return null;
+        Query<LogWork> query = sessionFactory.getCurrentSession().createQuery("FROM " + LogWork.class.getName());
+        return query.list();
     }
 
     public List<LogWork> getLogWorksByUser(Long userId) {
         Session session = sessionFactory.openSession();
+
         Criteria criteria = session.createCriteria(LogWork.class);
         List<LogWork> logWorks = criteria.add(Restrictions.eq("author_id", userId)).list();
         return logWorks;

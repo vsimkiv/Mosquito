@@ -58,18 +58,6 @@ public class LogWorkDto {
 
     public void setEstimationId(Long estimationId) { this.estimationId = estimationId; }
 
-    @Override
-    public String toString() {
-        return "LogWorkDto{" +
-                "id=" + id +
-                ", description='" + description + '\'' +
-                ", userId=" + userId +
-                ", logged=" + logged +
-                ", lastUpdate=" + lastUpdate.toString() +
-                ", estimationId=" + estimationId +
-                '}';
-    }
-
     public static class LogWorkBuilder {
         private LogWorkDto logWorkDto;
 
@@ -104,7 +92,15 @@ public class LogWorkDto {
 
         }
 
-
-
-
+    @Override
+    public String toString() {
+        return "LogWorkDto{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", userId=" + userId +
+                ", logged=" + logged +
+                ", lastUpdate=" + lastUpdate.toString() +
+                ", estimationId=" + estimationId +
+                '}';
+    }
 }

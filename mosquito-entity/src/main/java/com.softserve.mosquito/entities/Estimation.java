@@ -16,6 +16,7 @@ public class Estimation implements Serializable {
     @Column(name = "remaining")
     private Integer remaining;
     @OneToOne(mappedBy = "estimation")
+    @JoinColumn(name = "id", referencedColumnName = "estimation_id")
     private Task task;
     @OneToMany(mappedBy = "estimation")
     private List<LogWork> logWorks;

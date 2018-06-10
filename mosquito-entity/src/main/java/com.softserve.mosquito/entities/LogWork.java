@@ -1,6 +1,7 @@
 package com.softserve.mosquito.entities;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -18,14 +19,14 @@ public class LogWork implements Serializable {
     private Integer logged;
 
     @ManyToOne
-    @JoinColumn(name = "author_id")
+    @JoinColumn(name = "author_id", referencedColumnName = "id")
     private User author;
 
     @Column(name = "last_update")
     private LocalDateTime lastUpdate;
 
     @ManyToOne
-    @JoinColumn(name = "estimation_id")
+    @JoinColumn(name = "estimation_id", referencedColumnName = "id")
     private Estimation estimation;
 
     public LogWork() { }
