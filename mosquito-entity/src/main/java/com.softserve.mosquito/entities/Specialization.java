@@ -3,6 +3,7 @@ package com.softserve.mosquito.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -47,6 +48,20 @@ public final class Specialization implements Serializable {
     public Set<User> getUsers() { return users; }
 
     public void setUsers(Set<User> users) { this.users = users; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Specialization)) return false;
+        Specialization that = (Specialization) o;
+        return Objects.equals(getId(), that.getId()) &&
+                Objects.equals(getTitle(), that.getTitle());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getTitle());
+    }
 
     @Override
     public String toString() {

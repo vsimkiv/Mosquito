@@ -4,15 +4,18 @@ import com.softserve.mosquito.dtos.UserDto;
 import com.softserve.mosquito.entities.User;
 import com.softserve.mosquito.transformer.api.Transformer;
 
-public class UserTransformer implements Transformer<User, UserDto> {
+import java.util.ArrayList;
+import java.util.List;
 
-    private SpecializationTransformer specializationTransformer = new SpecializationTransformer();
+public class UserTransformer {
 
-    public UserTransformer() {
+    private static SpecializationTransformer specializationTransformer = new SpecializationTransformer();
+
+    private UserTransformer() {
+        throw new IllegalStateException("Utility class");
     }
 
-    @Override
-    public User toEntity(UserDto userDto) {
+    public static User toEntity(UserDto userDto) {
         if (userDto == null)
             return null;
         else
@@ -20,8 +23,7 @@ public class UserTransformer implements Transformer<User, UserDto> {
                     userDto.getLastName(), specializationTransformer.toEntity(userDto.getSpecializations()));
     }
 
-    @Override
-    public UserDto toDTO(User user) {
+    public static UserDto toDTO(User user) {
         if (user == null)
             return null;
         else
@@ -30,4 +32,25 @@ public class UserTransformer implements Transformer<User, UserDto> {
                     .specializations(specializationTransformer.toDTO(user.getSpecializations())).build();
     }
 
+    public static List<User> toEntity(List<UserDto> userDtos) {
+        if (userDtos == null)
+            return null;
+        else {
+            List<User> users = new ArrayList<>();
+            for (UserDto item : userDtos)
+                users.add(toEntity(item));
+            return users;
+        }
+    }
+
+    public static List<UserDto> toDTO(List<User> users) {
+        if (users == null)
+            return null;
+        else {
+            List<UserDto> userDtos = new ArrayList<>();
+            for (User item : users)
+                userDtos.add(toDTO(item));
+            return userDtos;
+        }
+    }
 }

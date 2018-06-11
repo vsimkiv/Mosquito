@@ -23,6 +23,8 @@ public class User implements Serializable {
     @Column(name = "last_name")
     private String lastName;
 
+    private boolean confirmed;
+
     @OneToMany(mappedBy = "owner", targetEntity = Task.class, fetch = FetchType.LAZY)
     private List<Task> taskWhereUserIsOwner = new ArrayList<>();
 
@@ -104,6 +106,14 @@ public class User implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public boolean isConfirmed() {
+        return confirmed;
+    }
+
+    public void setConfirmed(boolean confirmed) {
+        this.confirmed = confirmed;
     }
 
     public Set<Specialization> getSpecializations() {

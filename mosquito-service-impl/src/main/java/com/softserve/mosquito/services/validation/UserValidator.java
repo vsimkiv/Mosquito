@@ -21,14 +21,14 @@ public class UserValidator {
 
     public boolean isRegistrationValid(UserDto user) {
 
-        User userFromDB = new UserTransformer().toEntity(userService.getUserByEmail(user.getEmail()));
+        User userFromDB = UserTransformer.toEntity(userService.getUserByEmail(user.getEmail()));
         if (userFromDB == null && user.getConfirmPassword().equals(user.getPassword())) {
             String password = DigestUtils.md5Hex(user.getPassword().concat(SALT));
             userFromDB = new User(user.getEmail(),
                     user.getFirstName(),
                     user.getLastName(),
                     password);
-            return userService.createUser(new UserTransformer().toDTO(userFromDB)) != null;
+            return userService.createUser(UserTransformer.toDTO(userFromDB)) != null;
         }
 
         return false;

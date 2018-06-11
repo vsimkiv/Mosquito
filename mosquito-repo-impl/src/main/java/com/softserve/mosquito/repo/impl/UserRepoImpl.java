@@ -32,12 +32,6 @@ public class UserRepoImpl implements UserRepo {
     public User create(User user) {
         try (Session session = sessionFactory.openSession()) {
             session.save(user);
-            /**
-             * @Vitalik Mah - this code does not work. I have done refactor and it work.
-             */
-/*            Session session = sessionFactory.getCurrentSession();
-            Long id = (Long) session.save(user);
-            user.setId(id);*/
         } catch (HibernateException e) {
             LOGGER.error("Error during save user! " + e.getMessage());
         }
@@ -57,8 +51,7 @@ public class UserRepoImpl implements UserRepo {
 
     @Override
     public User update(User user) {
-        try {
-            Session session = sessionFactory.getCurrentSession();
+        try (Session session = sessionFactory.openSession()) {
             session.getTransaction().begin();
             session.update(user);
             session.getTransaction().commit();
@@ -71,8 +64,7 @@ public class UserRepoImpl implements UserRepo {
 
     @Override
     public void delete(Long id) {
-        try {
-            Session session = sessionFactory.getCurrentSession();
+        try (Session session = sessionFactory.openSession()) {
             session.getTransaction().begin();
             User user = session.get(User.class, id);
             session.delete(user);

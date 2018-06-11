@@ -20,7 +20,6 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private UserRepo userRepo;
-    private UserTransformer transformer = new UserTransformer();
 
     @Autowired
     public UserServiceImpl(UserRepo userRepo) {
@@ -29,12 +28,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto createUser(UserDto user) {
-        return transformer.toDTO(userRepo.create(transformer.toEntity(user)));
+        return UserTransformer.toDTO(userRepo.create(UserTransformer.toEntity(user)));
     }
 
     @Override
     public UserDto updateUser(UserDto user) {
-        return transformer.toDTO(userRepo.update(transformer.toEntity(user)));
+        return UserTransformer.toDTO(userRepo.update(UserTransformer.toEntity(user)));
     }
 
     @Override
@@ -44,25 +43,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getAllUsers() {
-        List<User> users = userRepo.readAll();
-        List<UserDto> userDtos = new ArrayList<>();
-        for (User user : users) {
-            userDtos.add(transformer.toDTO(user));
-        }
-
-        return userDtos;
+        return UserTransformer.toDTO(userRepo.readAll());
     }
 
     @Override
     public UserDto getUserById(Long id) {
-        return transformer.toDTO(userRepo.read(id));
+        return UserTransformer.toDTO(userRepo.read(id));
     }
 
 
     public UserDto getUserByEmail(String email) {
         User result = userRepo.readAll().stream()
                 .filter(user -> user.getEmail().equals(email)).findFirst().orElse(null);
-        return transformer.toDTO(result);
+        return UserTransformer.toDTO(result);
     }
 
     @Override
@@ -73,7 +66,7 @@ public class UserServiceImpl implements UserService {
         for (User user : users) {
             for (Specialization specialization : user.getSpecializations()) {
                 if (specialization.getId().equals(specializationId))
-                    userDtos.add(transformer.toDTO(user));
+                    userDtos.add(UserTransformer.toDTO(user));
             }
         }
 
