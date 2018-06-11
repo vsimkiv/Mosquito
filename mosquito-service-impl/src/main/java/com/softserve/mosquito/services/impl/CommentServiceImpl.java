@@ -68,10 +68,11 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public List<CommentCreateDto> getCommentByTask(Long taskId) {
         List<CommentCreateDto> dtos = new ArrayList<>();
-        List<Comment> comments = getAllComments();
-        for (Comment comment : comments)
+        List<Comment> comments = repo.getCommentByTaskId(taskId);
+        for (Comment comment : comments){
             if (comment.getTask().getId().equals(taskId))
                 dtos.add(CommentTransformer.toDTO(comment));
+        }
         return dtos;
     }
 }
