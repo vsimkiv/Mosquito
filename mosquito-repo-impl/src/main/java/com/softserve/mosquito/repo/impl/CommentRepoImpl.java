@@ -2,6 +2,7 @@ package com.softserve.mosquito.repo.impl;
 
 
 import com.softserve.mosquito.entities.Comment;
+import com.softserve.mosquito.entities.Task;
 import com.softserve.mosquito.repo.api.CommentRepo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -74,5 +75,12 @@ public class CommentRepoImpl implements CommentRepo {
     public List<Comment> readAll() {
         Query<Comment> query = sessionFactory.getCurrentSession().createQuery("FROM " + Comment.class.getName());
         return query.list();
+    }
+
+    @Override
+    public List<Comment> getCommentByTaskId(Long taskId) {
+        return sessionFactory.getCurrentSession()
+                .createQuery("SELECT T.comments FROM " + Task.class.getName() + " T WHERE T.id = " + taskId + "")
+                .getResultList();
     }
 }

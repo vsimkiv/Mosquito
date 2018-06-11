@@ -1,6 +1,5 @@
 package com.softserve.mosquito.transformer.impl;
 
-import com.softserve.mosquito.transformer.api.Transformer;
 import com.softserve.mosquito.dtos.PriorityCreateDto;
 import com.softserve.mosquito.dtos.PriorityDto;
 import com.softserve.mosquito.entities.Priority;
@@ -11,32 +10,17 @@ public class PriorityTransformer {
         throw new IllegalStateException("Utility class");
     }
 
-    public static class PriorityCreate implements Transformer<Priority,PriorityCreateDto>{
-
-        @Override
-        public Priority toEntity(PriorityCreateDto priorityCreateDto) {
-            return new Priority(priorityCreateDto.getTitle());
-        }
-
-        @Override
-        public PriorityCreateDto toDTO(Priority priority) {
-            return new PriorityCreateDto(priority.getTitle());
-        }
+    public static Priority toEntity(PriorityCreateDto priorityCreateDto) {
+        return new Priority(priorityCreateDto.getTitle());
     }
 
-    public static class PriorityGeneric implements Transformer<Priority,PriorityDto>{
+    public static PriorityCreateDto toDTO(Priority priority) {
+        return new PriorityCreateDto(priority.getTitle());
+    }
 
-        @Override
-        public Priority toEntity(PriorityDto priorityDto) {
-            return new Priority(priorityDto.getId(),
-                    priorityDto.getTitle());
-        }
-
-        @Override
-        public PriorityDto toDTO(Priority priority) {
-            return new PriorityDto(priority.getId(),
-                    priority.getTitle());
-        }
+    public static Priority toEntity(PriorityDto priorityDto) {
+        return new Priority(priorityDto.getId(),
+                priorityDto.getTitle());
     }
 
 }
