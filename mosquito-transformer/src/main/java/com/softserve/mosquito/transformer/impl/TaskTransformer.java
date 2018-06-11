@@ -1,6 +1,6 @@
 package com.softserve.mosquito.transformer.impl;
 
-import com.softserve.mosquito.dtos.*;
+import com.softserve.mosquito.dtos.TaskDto;
 import com.softserve.mosquito.entities.Task;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public class TaskTransformer {
                 .owner(UserTransformer.toEntity(taskDto.getOwnerDto()))
                 .worker(UserTransformer.toEntity(taskDto.getWorkerDto()))
                 .estimation(EstimationTransformer.toEntity(taskDto.getEstimationDto()))
-                .priority(new PriorityTransformer.PriorityGeneric().toEntity(taskDto.getPriorityDto()))
+                .priority(PriorityTransformer.toEntity(taskDto.getPriorityDto()))
                 .status(StatusTransformer.toEntity(taskDto.getStatusDto()))
                 .build();
     }
@@ -32,7 +32,7 @@ public class TaskTransformer {
                 .ownerDto(UserTransformer.toDTO(task.getOwner()))
                 .workerDto(UserTransformer.toDTO(task.getOwner()))
                 .estimationDto(EstimationTransformer.toDTO(task.getEstimation()))
-                .priorityDto(new PriorityTransformer.PriorityGeneric().toDTO(task.getPriority()))
+                .priorityDto(null)
                 .statusDto(StatusTransformer.toDTO(task.getStatus()))
                 .build();
     }
