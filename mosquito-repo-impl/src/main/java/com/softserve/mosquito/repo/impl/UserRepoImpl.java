@@ -31,9 +31,13 @@ public class UserRepoImpl implements UserRepo {
     @Override
     public User create(User user) {
         try (Session session = sessionFactory.openSession()) {
-            session.save(user);
+            Long id = (Long) session.save(user);
+            if (id == null) {
+                throw new HibernateException("Did not get id!");
+            }
         } catch (HibernateException e) {
             LOGGER.error("Error during save user! " + e.getMessage());
+            return null;
         }
         return user;
     }
