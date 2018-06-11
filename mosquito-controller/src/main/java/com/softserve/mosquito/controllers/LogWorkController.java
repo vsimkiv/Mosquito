@@ -48,6 +48,18 @@ public class LogWorkController {
         logWorkService.removeLogWorkDto(logId);
         return HttpStatus.OK;
     }
+    @GetMapping(path = "/by-est/{estimation_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<LogWorkDto> getLogWorksByByEstimation(@PathVariable("estimation_id") Long estimationId) {
+
+        return logWorkService.getLogWorksDtoByEstimation(estimationId);
+    }
+    @GetMapping(path = "/by-user/{user_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<LogWorkDto> getLogWorksByUserId(@PathVariable("user_id") Long userId) {
+
+        return logWorkService.getLogWorksByUser(userId);
+    }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

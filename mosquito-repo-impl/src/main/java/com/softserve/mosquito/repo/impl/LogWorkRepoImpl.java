@@ -1,6 +1,7 @@
 package com.softserve.mosquito.repo.impl;
 
 
+import com.softserve.mosquito.entities.Estimation;
 import com.softserve.mosquito.entities.LogWork;
 import com.softserve.mosquito.repo.api.LogWorkRepo;
 import org.apache.logging.log4j.LogManager;
@@ -82,9 +83,15 @@ public class LogWorkRepoImpl implements LogWorkRepo {
     public List<LogWork> getLogWorksByUser(Long userId) {
         Session session = sessionFactory.openSession();
 
-        Criteria criteria = session.createCriteria(LogWork.class);
-        List<LogWork> logWorks = criteria.add(Restrictions.eq("author_id", userId)).list();
-        return logWorks;
+        Query<LogWork> query = sessionFactory.getCurrentSession().createQuery("from " + LogWork.class.getName()+" where author_id = :user ");
+        query.setParameter("user",userId);
+        return query.list();
     }
+    public List<LogWork> getLogWorksByEstimation(Long estimationId) {
+        Session session = sessionFactory.openSession();
 
+        Query<LogWork> query = sessionFactory.getCurrentSession().createQuery("from " + LogWork.class.getName()+" where estimation_id = :est ");
+        query.setParameter("est",estimationId);
+        return query.list();
+    }
 }

@@ -58,8 +58,16 @@ public class LogWorkServiceImpl implements LogWorkService {
     }
 
     @Transactional
-    public List<LogWorkDto> getLogWorksDtoByEstimation(Long userId) {
+    @Override
+    public List<LogWorkDto> getLogWorksDtoByEstimation(Long estimationId) {
+        List<LogWork> logWorks = logWorkRepo.getLogWorksByEstimation(estimationId);
+        return LogWorkTransformer.toDTOList(logWorks);
+    }
+
+    @Transactional
+    public List<LogWorkDto> getLogWorksByUser(Long userId) {
         List<LogWork> logWorks = logWorkRepo.getLogWorksByUser(userId);
         return LogWorkTransformer.toDTOList(logWorks);
     }
+
 }

@@ -18,4 +18,6 @@ public interface LogWorkService {
     List<LogWorkDto> getAllLogWorkDto();
 
     List<LogWorkDto> getLogWorksDtoByEstimation(Long estimationId);
+
+    List<LogWorkDto> getLogWorksByUser(Long userId);
 }
