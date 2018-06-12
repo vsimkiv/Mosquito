@@ -60,10 +60,4 @@ public class LogWorkController {
 
         return logWorkService.getLogWorksByUser(userId);
     }
-
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public List<LogWorkDto> getAll() {
-        return logWorkService.getAllLogWorkDto();
-    }
 }

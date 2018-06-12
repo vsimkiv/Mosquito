@@ -72,12 +72,6 @@ public class CommentRepoImpl implements CommentRepo {
     }
 
     @Override
-    public List<Comment> readAll() {
-        Query<Comment> query = sessionFactory.getCurrentSession().createQuery("FROM " + Comment.class.getName());
-        return query.list();
-    }
-
-    @Override
     public List<Comment> getCommentByTaskId(Long taskId) {
         return sessionFactory.getCurrentSession()
                 .createQuery("SELECT T.comments FROM " + Task.class.getName() + " T WHERE T.id = " + taskId + "")

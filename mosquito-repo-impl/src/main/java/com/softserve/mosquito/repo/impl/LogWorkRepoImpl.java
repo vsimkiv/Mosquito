@@ -74,8 +74,9 @@ public class LogWorkRepoImpl implements LogWorkRepo {
             LOGGER.error("Deleting logWork  was failed!");
         }
     }
-    @Override
-    public List<LogWork> readAll() {
+
+
+    private List<LogWork> readAll() {
         Query<LogWork> query = sessionFactory.getCurrentSession().createQuery("FROM " + LogWork.class.getName());
         return query.list();
     }

@@ -15,8 +15,6 @@ public interface LogWorkService {
 
     void removeLogWorkDto(Long id);
 
-    List<LogWorkDto> getAllLogWorkDto();
-
     List<LogWorkDto> getLogWorksDtoByEstimation(Long estimationId);
 
     List<LogWorkDto> getLogWorksByUser(Long userId);

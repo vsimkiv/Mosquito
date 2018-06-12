@@ -73,10 +73,6 @@ public class EstimationRepoImpl implements EstimationRepo {
         }
     }
 
-    @Override
-    public List<Estimation> readAll() {
-        Query<Estimation> query = sessionFactory.getCurrentSession().createQuery("FROM " +Estimation.class.getName());
-        return query.list();
-    }
+
     }
 

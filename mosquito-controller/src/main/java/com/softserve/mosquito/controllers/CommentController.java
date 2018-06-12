@@ -47,10 +47,4 @@ public class CommentController {
         commentService.delete(commentId);
         return HttpStatus.OK;
     }
-
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public List<Comment> getAll() {
-        return commentService.getAllComments();
-    }
 }

@@ -15,9 +15,6 @@ public interface TaskService {
 
     TaskDto read(Long id);
 
-    List<TaskDto> readAll();
-
-
     TaskDto getParentTaskDto(Long parentId);
 
     List<TaskDto> getSubTasks(Long id);

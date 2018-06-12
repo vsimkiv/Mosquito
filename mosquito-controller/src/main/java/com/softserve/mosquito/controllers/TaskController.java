@@ -42,12 +42,6 @@ public class TaskController {
         taskService.delete(id);
     }
 
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public List<TaskDto> getAllTasks() {
-        return taskService.readAll();
-    }
-
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public TaskDto getTaskById(@PathVariable("id") Long id) {

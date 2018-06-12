@@ -60,12 +60,6 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public List<Comment> getAllComments() {
-        return repo.readAll();
-    }
-
-    @Override
-    @Transactional
     public List<CommentCreateDto> getCommentByTask(Long taskId) {
         List<CommentCreateDto> dtos = new ArrayList<>();
         List<Comment> comments = repo.getCommentByTaskId(taskId);

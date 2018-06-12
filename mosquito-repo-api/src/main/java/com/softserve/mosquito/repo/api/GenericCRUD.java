@@ -11,6 +11,4 @@ public interface GenericCRUD<E extends Serializable> {
     E update(E e);
 
     void delete(Long id);
-
-    List<E> readAll();
 }

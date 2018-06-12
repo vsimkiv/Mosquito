@@ -16,8 +16,6 @@ public interface CommentService {
 
     void delete(Long id);
 
-    List<Comment> getAllComments();
-
     List<CommentCreateDto> getCommentByTask(Long taskId);
 
 }
