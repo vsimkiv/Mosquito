@@ -2,10 +2,7 @@ package com.softserve.mosquito.services.impl;
 
 import com.softserve.mosquito.dtos.*;
 import com.softserve.mosquito.entities.*;
-import com.softserve.mosquito.services.api.StatusService;
-import com.softserve.mosquito.services.api.TaskService;
-import com.softserve.mosquito.services.api.TrelloInfoService;
-import com.softserve.mosquito.services.api.UserService;
+import com.softserve.mosquito.services.api.*;
 import com.softserve.mosquito.transformer.impl.TrelloInfoTransformer;
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -18,9 +15,11 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
-public class TrelloCardServiceImpl {
+public class TrelloCardServiceImpl implements TrelloCardService {
 
     private TrelloInfoService trelloInfoService;
     private TaskService taskService;
@@ -28,8 +27,8 @@ public class TrelloCardServiceImpl {
     private UserService userService;
 
     // HARDCODE User********************************
-    private Long userId = 44L;
-    private TrelloInfoDto trelloInfo = null;//trelloInfoService.getTrelloInfoByUserId(userId);
+    private Long userId; //= 44L;
+    private TrelloInfoDto trelloInfo; // = trelloInfoService.getTrelloInfoByUserId(userId);
     //*********************************************
 
     @Autowired
@@ -40,9 +39,12 @@ public class TrelloCardServiceImpl {
         this.taskService = taskService;
         this.statusService = statusService;
         this.userService = userService;
+        this.userId = 44L;
+        this.trelloInfo = trelloInfoService.getTrelloInfoByUserId(userId);
     }
 
     @Transactional
+    @Override
     public void getTasksFromTrello(){
 
         for (TrelloBoardDto trelloBoard : getAllTrelloBoards()){
@@ -60,7 +62,29 @@ public class TrelloCardServiceImpl {
 
         }
     }
-   private void createTasksFromTrelloCards(TrelloCardDto[] trelloCards, String status, String projectName){
+
+    public List<Task> showAllNewTrelloTasks(){
+        List<Task> trelloTasks = new ArrayList<Task>();
+
+        for (TrelloBoardDto trelloBoard : getAllTrelloBoards()){
+            for (TrelloListDto trelloList : getTrelloListsByBoard(trelloBoard.getId())){
+                if (trelloList.getName().equalsIgnoreCase("todo")){
+
+                }
+                if (trelloList.getName().equalsIgnoreCase("doing")){
+
+                }
+                if (trelloList.getName().equalsIgnoreCase("done")){
+
+                }
+            }
+
+        }
+
+        return trelloTasks;
+    }
+
+    private void createTasksFromTrelloCards(TrelloCardDto[] trelloCards, String status, String projectName){
 
         TaskDto taskDto = new TaskDto();
         taskDto.setName(projectName);

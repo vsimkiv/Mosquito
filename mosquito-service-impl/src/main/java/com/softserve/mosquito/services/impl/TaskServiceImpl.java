@@ -27,6 +27,9 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     @Override
     public TaskDto create(TaskDto taskDto) {
+
+        if (isTaskPresent(taskDto)) return TaskTransformer.toDTO(taskRepo.read(taskDto.getId()));
+
         Task task = taskRepo.create(TaskTransformer.toEntity(taskDto));
 
         if (task == null)
@@ -101,6 +104,11 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<TaskDto> filterByStatus(Long statusId) {
         return null;
+    }
+
+    private boolean isTaskPresent(TaskDto taskDto){
+        if (read(taskDto.getId())!=null) return true;
+        return false;
     }
 
 }

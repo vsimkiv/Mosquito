@@ -74,7 +74,14 @@ public class TrelloInfoRepoImp implements TrelloInfoRepo {
 
     @Override
     public List<TrelloInfo> readAll() {
-        Query<TrelloInfo> query = sessionFactory.getCurrentSession().createQuery("FROM" + TrelloInfo.class.getName());
-        return query.list();
+
+        try {
+        Session session = sessionFactory.getCurrentSession();
+        Query<TrelloInfo> trelloInfos = session.createQuery("FROM " + TrelloInfo.class.getName());
+        return trelloInfos.list();
+    } catch (HibernateException e) {
+        LOGGER.error(e.getMessage());
+        return null;
+        }
     }
 }

@@ -6,6 +6,7 @@ import com.softserve.mosquito.services.api.TrelloInfoService;
 import com.softserve.mosquito.transformer.impl.TrelloInfoTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -52,6 +53,8 @@ public class TrelloInfoServiceImpl implements TrelloInfoService {
         return null;
     }
 
+    @Override
+    @Transactional
     public TrelloInfoDto getTrelloInfoByUserId(Long userId){
         return getTrelloInfoById(getTrelloInfoIdByUserId(userId));
     }

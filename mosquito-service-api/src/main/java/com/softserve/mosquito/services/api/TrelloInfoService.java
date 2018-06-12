@@ -15,4 +15,6 @@ public interface TrelloInfoService {
     void removeTrelloInfo(Long id);
 
     List<TrelloInfoDto> getAllTrelloInfos();
+
+    TrelloInfoDto getTrelloInfoByUserId(Long userId);
 }
