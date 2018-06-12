@@ -7,15 +7,16 @@ import com.softserve.mosquito.entities.Priority;
 import java.util.List;
 
 public interface PriorityService {
-    List<PriorityDto> getAllPriorities();
 
-    PriorityDto getPriorityById(Long id);
+    List<PriorityDto> getAll();
 
-    PriorityDto createPriority(PriorityCreateDto priorityCreateDto);
+    PriorityDto getById(Long id);
 
-    PriorityDto updatePriority(PriorityDto priorityDto);
+    PriorityDto save(PriorityCreateDto priorityCreateDto);
 
-    void removePriority(Long id);
+    PriorityDto update(PriorityDto priorityDto);
+
+    void delete(Long id);
 
     /**
      * method for using in class TaskTransformer

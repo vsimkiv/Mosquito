@@ -24,7 +24,7 @@ public class PriorityController {
 
     @PostMapping
     public ResponseEntity<PriorityDto> createPriority(@RequestBody PriorityCreateDto priorityCreateDto){
-        PriorityDto createdPriorityDto = priorityService.createPriority(priorityCreateDto);
+        PriorityDto createdPriorityDto = priorityService.save(priorityCreateDto);
 
         if(createdPriorityDto == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -35,7 +35,7 @@ public class PriorityController {
 
     @GetMapping("/{priority_id}")
     public ResponseEntity<PriorityDto> getPriorityById(@PathVariable("priority_id") Long id){
-        PriorityDto priority = priorityService.getPriorityById(id);
+        PriorityDto priority = priorityService.getById(id);
 
         if(priority == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -48,7 +48,7 @@ public class PriorityController {
     @PutMapping(path = "/{priority_id}")
     public ResponseEntity<PriorityDto> updatePriority(@PathVariable("priority_id") Long id, @RequestBody PriorityCreateDto priorityCreateDto){
         PriorityDto priorityDto = new PriorityDto(id, priorityCreateDto.getTitle());
-        PriorityDto updatetedPriotityDto = priorityService.updatePriority(priorityDto);
+        PriorityDto updatetedPriotityDto = priorityService.update(priorityDto);
 
         if(updatetedPriotityDto == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -58,14 +58,14 @@ public class PriorityController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<PriorityDto> deletePriority(@PathVariable("id") Long id) {
-        priorityService.removePriority(id);
+        priorityService.delete(id);
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @GetMapping
     public ResponseEntity<List<PriorityDto>> getAllPriority(){
-        List<PriorityDto>priorities = priorityService.getAllPriorities();
+        List<PriorityDto>priorities = priorityService.getAll();
 
         if(priorities == null || priorities.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

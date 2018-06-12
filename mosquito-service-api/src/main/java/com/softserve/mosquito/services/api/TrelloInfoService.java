@@ -6,15 +6,15 @@ import java.util.List;
 
 public interface TrelloInfoService {
 
-    TrelloInfoDto createTrelloInfo(TrelloInfoDto trelloInfo);
+    TrelloInfoDto save(TrelloInfoDto trelloInfo);
 
-    TrelloInfoDto getTrelloInfoById(Long id);
+    TrelloInfoDto getById(Long id);
 
-    TrelloInfoDto updateTrelloInfo(TrelloInfoDto trelloInfo);
+    TrelloInfoDto update(TrelloInfoDto trelloInfo);
 
-    void removeTrelloInfo(Long id);
+    void delete(Long id);
 
-    List<TrelloInfoDto> getAllTrelloInfos();
+    List<TrelloInfoDto> getAll();
 
-    TrelloInfoDto getTrelloInfoByUserId(Long userId);
+    TrelloInfoDto getByUserId(Long userId);
 }

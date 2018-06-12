@@ -6,19 +6,17 @@ import java.util.List;
 
 public interface TaskService {
 
-    TaskDto create(TaskDto taskDto);
+    TaskDto save(TaskDto taskDto);
 
     TaskDto update(TaskDto taskDto);
 
     void delete(Long id);
 
-
-    TaskDto read(Long id);
+    TaskDto getById(Long id);
 
     TaskDto getParentTaskDto(Long parentId);
 
     List<TaskDto> getSubTasks(Long id);
-
 
     List<TaskDto> filterByOwner(Long ownerId);
 

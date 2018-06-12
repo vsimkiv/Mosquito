@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface TrelloInfoRepo extends GenericCRUD<TrelloInfo> {
 
-    List<TrelloInfo> readAll();
+    List<TrelloInfo> getAll();
 }

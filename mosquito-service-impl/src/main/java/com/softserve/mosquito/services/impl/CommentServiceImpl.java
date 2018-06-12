@@ -34,7 +34,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public CommentCreateDto getCommentById(Long id) {
+    public CommentCreateDto getById(Long id) {
         Comment comment = repo.read(id);
 
         if (comment == null)
@@ -60,10 +60,10 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public List<CommentCreateDto> getCommentByTask(Long taskId) {
+    public List<CommentCreateDto> getByTaskId(Long taskId) {
         List<CommentCreateDto> dtos = new ArrayList<>();
-        List<Comment> comments = repo.getCommentByTaskId(taskId);
-        for (Comment comment : comments){
+        List<Comment> comments = repo.getByTaskId(taskId);
+        for (Comment comment : comments) {
             if (comment.getTask().getId().equals(taskId))
                 dtos.add(CommentTransformer.toDTO(comment));
         }

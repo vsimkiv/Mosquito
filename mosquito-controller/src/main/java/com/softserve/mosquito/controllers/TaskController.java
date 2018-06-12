@@ -27,7 +27,7 @@ public class TaskController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public TaskDto createTask(@RequestBody TaskDto taskDto) {
-        return taskService.create(taskDto);
+        return taskService.save(taskDto);
     }
 
     @PutMapping(path = "/{id}")
@@ -45,7 +45,7 @@ public class TaskController {
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public TaskDto getTaskById(@PathVariable("id") Long id) {
-        return taskService.read(id);
+        return taskService.getById(id);
     }
 
     @GetMapping (path = "{id}/subtasks")
@@ -75,6 +75,6 @@ public class TaskController {
     @GetMapping(path = "/{task_id}/comments")
     @ResponseStatus(HttpStatus.OK)
     public List<CommentCreateDto> getCommentsByTaskId(@PathVariable("task_id") Long taskId){
-        return commentService.getCommentByTask(taskId);
+        return commentService.getByTaskId(taskId);
     }
 }

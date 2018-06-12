@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface CommentRepo extends GenericCRUD<Comment> {
 
-    List<Comment> getCommentByTaskId(Long taskId);
+    List<Comment> getByTaskId(Long taskId);
 
 }

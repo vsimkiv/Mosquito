@@ -5,5 +5,6 @@ import com.softserve.mosquito.entities.Specialization;
 import java.util.List;
 
 public interface SpecializationRepo extends GenericCRUD<Specialization> {
-    List<Specialization> readAll();
+
+    List<Specialization> getAll();
 }

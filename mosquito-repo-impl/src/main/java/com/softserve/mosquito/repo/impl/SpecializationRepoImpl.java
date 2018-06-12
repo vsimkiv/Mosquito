@@ -78,7 +78,7 @@ public class SpecializationRepoImpl implements SpecializationRepo {
     }
 
     @Override
-    public List<Specialization> readAll() {
+    public List<Specialization> getAll() {
         try {
             Session session = sessionFactory.getCurrentSession();
             Query query = session.createQuery("From " + Specialization.class.getName());

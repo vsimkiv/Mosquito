@@ -81,14 +81,14 @@ public class LogWorkRepoImpl implements LogWorkRepo {
         return query.list();
     }
 
-    public List<LogWork> getLogWorksByUser(Long userId) {
+    public List<LogWork> getByUserId(Long userId) {
         Session session = sessionFactory.openSession();
 
         Query<LogWork> query = sessionFactory.getCurrentSession().createQuery("from " + LogWork.class.getName()+" where author_id = :user ");
         query.setParameter("user",userId);
         return query.list();
     }
-    public List<LogWork> getLogWorksByEstimation(Long estimationId) {
+    public List<LogWork> getByEstimationId(Long estimationId) {
         Session session = sessionFactory.openSession();
 
         Query<LogWork> query = sessionFactory.getCurrentSession().createQuery("from " + LogWork.class.getName()+" where estimation_id = :est ");

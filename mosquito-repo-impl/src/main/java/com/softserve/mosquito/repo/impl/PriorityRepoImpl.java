@@ -79,7 +79,7 @@ public class PriorityRepoImpl implements PriorityRepo {
     }
 
     @Override
-    public List<Priority> readAll() {
+    public List<Priority> getAll() {
         try {
             Session session = sessionFactory.openSession();
             Query query = session.createQuery("From " + Priority.class.getName());

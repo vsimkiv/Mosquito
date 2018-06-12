@@ -27,8 +27,8 @@ public class PriorityServiceImpl implements PriorityService {
 
     @Transactional
     @Override
-    public List<PriorityDto> getAllPriorities(){
-        List<Priority> priorities = priorityRepo.readAll();
+    public List<PriorityDto> getAll(){
+        List<Priority> priorities = priorityRepo.getAll();
 
         if(priorities == null || priorities.isEmpty()){
             return null;
@@ -44,7 +44,7 @@ public class PriorityServiceImpl implements PriorityService {
 
     @Transactional
     @Override
-    public PriorityDto getPriorityById(Long id){
+    public PriorityDto getById(Long id){
 
         Priority priority = priorityRepo.read(id);
 
@@ -57,7 +57,7 @@ public class PriorityServiceImpl implements PriorityService {
 
     @Transactional
     @Override
-    public PriorityDto createPriority(PriorityCreateDto priorityCreateDto){
+    public PriorityDto save(PriorityCreateDto priorityCreateDto){
         Priority createdPriority = priorityRepo.create(modelMapper.map(priorityCreateDto, Priority.class));
 
         if(createdPriority == null){
@@ -69,7 +69,7 @@ public class PriorityServiceImpl implements PriorityService {
 
     @Transactional
     @Override
-    public PriorityDto updatePriority(PriorityDto priorityDto){
+    public PriorityDto update(PriorityDto priorityDto){
         Priority updatedPriority = priorityRepo.update(modelMapper.map(priorityDto, Priority.class));
 
         if(updatedPriority == null){
@@ -81,7 +81,7 @@ public class PriorityServiceImpl implements PriorityService {
 
     @Transactional
     @Override
-    public void removePriority(Long id){
+    public void delete(Long id){
         priorityRepo.delete(id);
     }
 

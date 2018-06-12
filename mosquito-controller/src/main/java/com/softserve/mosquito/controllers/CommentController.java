@@ -1,13 +1,10 @@
 package com.softserve.mosquito.controllers;
 
 import com.softserve.mosquito.dtos.CommentCreateDto;
-import com.softserve.mosquito.entities.Comment;
 import com.softserve.mosquito.services.api.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/comment")
@@ -31,7 +28,7 @@ public class CommentController {
     @ResponseStatus(HttpStatus.OK)
     public CommentCreateDto getCommentsById(@PathVariable("comment_id") Long taskId) {
 
-        return commentService.getCommentById(taskId);
+        return commentService.getById(taskId);
     }
 
     @PutMapping(path = "/{comment_id}")

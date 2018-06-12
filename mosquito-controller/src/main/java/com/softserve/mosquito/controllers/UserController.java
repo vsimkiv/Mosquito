@@ -21,7 +21,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
-        UserDto createdUser = userService.createUser(userDto);
+        UserDto createdUser = userService.save(userDto);
         if (createdUser == null) {
             return ResponseEntity.badRequest().build();
         }
@@ -30,18 +30,18 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<UserDto>> getAllUsers() {
-        return ResponseEntity.ok().body(userService.getAllUsers());
+        return ResponseEntity.ok().body(userService.getAll());
     }
 
     @GetMapping("/{userId}")
     public ResponseEntity<UserDto> getUserById(@PathVariable("userId") long id) {
-        return ResponseEntity.ok().body(userService.getUserById(id));
+        return ResponseEntity.ok().body(userService.getById(id));
     }
 
     @PutMapping("/{userId}")
     public ResponseEntity<UserDto> updateUser(@PathVariable("userId") long id, @RequestBody UserDto userDto) {
         userDto.setId(id);
-        userDto = userService.updateUser(userDto);
+        userDto = userService.update(userDto);
         if (userDto == null) {
             return ResponseEntity.badRequest().build();
         }
@@ -50,13 +50,13 @@ public class UserController {
 
     @DeleteMapping("/{userId}")
     public ResponseEntity<UserDto> deleteUserById(@PathVariable("userId") long id) {
-        userService.removeUser(id);
+        userService.delete(id);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/specializations/{specializationId}")
     public ResponseEntity<List<UserDto>> getUsersBySpecializationId(@PathVariable("specializationId") long specializationId) {
-        return ResponseEntity.ok().body(userService.getUsersBySpecialization(specializationId));
+        return ResponseEntity.ok().body(userService.getBySpecializationId(specializationId));
     }
 
 }

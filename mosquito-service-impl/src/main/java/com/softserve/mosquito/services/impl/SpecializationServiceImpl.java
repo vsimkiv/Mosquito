@@ -4,7 +4,6 @@ import com.softserve.mosquito.dtos.SpecializationCreateDto;
 import com.softserve.mosquito.dtos.SpecializationDto;
 import com.softserve.mosquito.entities.Specialization;
 import com.softserve.mosquito.repo.api.SpecializationRepo;
-import com.softserve.mosquito.repo.impl.SpecializationRepoImpl;
 import com.softserve.mosquito.services.api.SpecializationService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +27,8 @@ public class SpecializationServiceImpl implements SpecializationService {
 
     @Transactional
     @Override
-    public List<SpecializationDto> getAllSpecializations(){
-        List<Specialization> specializations = specializationRepo.readAll();
+    public List<SpecializationDto> getAll(){
+        List<Specialization> specializations = specializationRepo.getAll();
 
         if(specializations == null || specializations.isEmpty()){
             return null;
@@ -44,7 +43,7 @@ public class SpecializationServiceImpl implements SpecializationService {
 
     @Transactional
     @Override
-    public SpecializationDto getSpecializationById(Long id){
+    public SpecializationDto getById(Long id){
         Specialization specialization = specializationRepo.read(id);
         if(specialization == null){
             return null;
@@ -54,7 +53,7 @@ public class SpecializationServiceImpl implements SpecializationService {
 
     @Transactional
     @Override
-    public SpecializationDto createSpecialization(SpecializationCreateDto specializationCreateDto){
+    public SpecializationDto save(SpecializationCreateDto specializationCreateDto){
         Specialization createdSpecialization = specializationRepo.create(modelMapper.map(specializationCreateDto,
                                                                             Specialization.class));
         if(createdSpecialization == null){
@@ -66,7 +65,7 @@ public class SpecializationServiceImpl implements SpecializationService {
 
     @Transactional
     @Override
-    public SpecializationDto updateSpecialization(SpecializationDto specializationDto){
+    public SpecializationDto update(SpecializationDto specializationDto){
         Specialization updatedSpecialization = specializationRepo.update(modelMapper.map(specializationDto,
                                                                             Specialization.class));
         if(updatedSpecialization == null){
@@ -77,7 +76,7 @@ public class SpecializationServiceImpl implements SpecializationService {
 
     @Transactional
     @Override
-    public void removeSpecialization(Long id){
+    public void delete(Long id){
         specializationRepo.delete(id);
     }
 }

@@ -21,33 +21,33 @@ public class TrelloInfoServiceImpl implements TrelloInfoService {
     }
 
     @Override
-    public TrelloInfoDto createTrelloInfo(TrelloInfoDto trelloInfo) {
+    public TrelloInfoDto save(TrelloInfoDto trelloInfo) {
         return TrelloInfoTransformer.toDto(trelloInfoRepo.create(TrelloInfoTransformer.toEntity(trelloInfo)));
     }
 
     @Override
-    public TrelloInfoDto getTrelloInfoById(Long id) {
+    public TrelloInfoDto getById(Long id) {
 
         return TrelloInfoTransformer.toDto(trelloInfoRepo.read(id));
     }
 
     @Override
-    public TrelloInfoDto updateTrelloInfo(TrelloInfoDto trelloInfo) {
+    public TrelloInfoDto update(TrelloInfoDto trelloInfo) {
         return TrelloInfoTransformer.toDto(trelloInfoRepo.update(TrelloInfoTransformer.toEntity(trelloInfo)));
     }
 
     @Override
-    public void removeTrelloInfo(Long id) {
+    public void delete(Long id) {
         trelloInfoRepo.delete(id);
     }
 
     @Override
-    public List<TrelloInfoDto> getAllTrelloInfos() {
-        return TrelloInfoTransformer.toDto(trelloInfoRepo.readAll());
+    public List<TrelloInfoDto> getAll() {
+        return TrelloInfoTransformer.toDto(trelloInfoRepo.getAll());
     }
 
     public Long getTrelloInfoIdByUserId(Long userId){
-        for (TrelloInfoDto trelloInfo : getAllTrelloInfos()){
+        for (TrelloInfoDto trelloInfo : getAll()){
             if (trelloInfo.getUser().getId()==userId) return trelloInfo.getId();
         }
         return null;
@@ -55,7 +55,7 @@ public class TrelloInfoServiceImpl implements TrelloInfoService {
 
     @Override
     @Transactional
-    public TrelloInfoDto getTrelloInfoByUserId(Long userId){
-        return getTrelloInfoById(getTrelloInfoIdByUserId(userId));
+    public TrelloInfoDto getByUserId(Long userId){
+        return getById(getTrelloInfoIdByUserId(userId));
     }
 }

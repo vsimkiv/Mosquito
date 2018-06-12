@@ -5,5 +5,6 @@ import com.softserve.mosquito.entities.User;
 import java.util.List;
 
 public interface UserRepo extends GenericCRUD<User> {
-    List<User> readAll();
+
+    List<User> getAll();
 }

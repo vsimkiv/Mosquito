@@ -23,7 +23,7 @@ public class LogWorkServiceImpl implements LogWorkService {
 
     @Transactional
     @Override
-    public LogWorkDto createLogWork(LogWorkDto logWorkDto) {
+    public LogWorkDto save(LogWorkDto logWorkDto) {
         LogWork logWork = LogWorkTransformer.toEntity(logWorkDto);
         logWorkRepo.create(logWork);
         return LogWorkTransformer.toDTO(logWork);
@@ -31,14 +31,14 @@ public class LogWorkServiceImpl implements LogWorkService {
 
     @Transactional
     @Override
-    public LogWorkDto getLogWorkById(Long logWorkId) {
+    public LogWorkDto getById(Long logWorkId) {
         LogWork logWork = logWorkRepo.read(logWorkId);
         return LogWorkTransformer.toDTO(logWork);
     }
 
     @Transactional
     @Override
-    public LogWorkDto updateLogWork(LogWorkDto logWorkDto) {
+    public LogWorkDto update(LogWorkDto logWorkDto) {
         LogWork logWork = LogWorkTransformer.toEntity(logWorkDto);
         logWorkRepo.update(logWork);
         return LogWorkTransformer.toDTO(logWork);
@@ -46,20 +46,20 @@ public class LogWorkServiceImpl implements LogWorkService {
 
     @Transactional
     @Override
-    public void removeLogWorkDto(Long id) {
+    public void delete(Long id) {
         logWorkRepo.delete(id);
     }
 
     @Transactional
     @Override
-    public List<LogWorkDto> getLogWorksDtoByEstimation(Long estimationId) {
-        List<LogWork> logWorks = logWorkRepo.getLogWorksByEstimation(estimationId);
+    public List<LogWorkDto> getByEstimationId(Long estimationId) {
+        List<LogWork> logWorks = logWorkRepo.getByEstimationId(estimationId);
         return LogWorkTransformer.toDTOList(logWorks);
     }
 
     @Transactional
-    public List<LogWorkDto> getLogWorksByUser(Long userId) {
-        List<LogWork> logWorks = logWorkRepo.getLogWorksByUser(userId);
+    public List<LogWorkDto> getByUserId(Long userId) {
+        List<LogWork> logWorks = logWorkRepo.getByUserId(userId);
         return LogWorkTransformer.toDTOList(logWorks);
     }
 

@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface StatusRepo extends GenericCRUD<Status> {
 
-    List<Status> readAll();
+    List<Status> getAll();
 }

@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.softserve.mosquito.transformer.impl.TaskTransformer.toDTO;
-import static com.softserve.mosquito.transformer.impl.TaskTransformer.toDTOList;
 
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -26,7 +25,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Transactional
     @Override
-    public TaskDto create(TaskDto taskDto) {
+    public TaskDto save(TaskDto taskDto) {
 
         if (isTaskPresent(taskDto)) return TaskTransformer.toDTO(taskRepo.read(taskDto.getId()));
 
@@ -55,7 +54,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Transactional
     @Override
-    public TaskDto read(Long id) {
+    public TaskDto getById(Long id) {
         Task task = taskRepo.read(id);
         TaskDto taskDto = toDTO(task);
 
@@ -107,7 +106,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     private boolean isTaskPresent(TaskDto taskDto){
-        if (read(taskDto.getId())!=null) return true;
+        if (getById(taskDto.getId())!=null) return true;
         return false;
     }
 

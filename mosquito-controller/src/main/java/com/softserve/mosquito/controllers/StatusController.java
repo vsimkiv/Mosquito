@@ -1,6 +1,5 @@
 package com.softserve.mosquito.controllers;
 
-import com.softserve.mosquito.dtos.StatusCreateDto;
 import com.softserve.mosquito.dtos.StatusDto;
 import com.softserve.mosquito.services.api.StatusService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +21,13 @@ public class StatusController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public StatusDto createStatus(@RequestBody StatusDto statusDto) {
-        return statusService.createStatus(statusDto);
+        return statusService.save(statusDto);
     }
 
     @GetMapping(path= "/{status_id}")
     @ResponseStatus(HttpStatus.OK)
     public StatusDto getStatusById(@PathVariable("status_id") Long id){
-        return statusService.getStatusById(id);
+        return statusService.getById(id);
     }
 
 
@@ -36,19 +35,19 @@ public class StatusController {
     @ResponseStatus(HttpStatus.OK)
     public StatusDto updateStatus(@PathVariable("status_id") Long id, @RequestBody StatusDto statusDto) {
         statusDto.setId(id);
-        return statusService.updateStatus(statusDto);
+        return statusService.update(statusDto);
     }
 
     @DeleteMapping(path= "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteStatus(@PathVariable("id") Long id) {
-        statusService.removeStatus(id);
+        statusService.delete(id);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<StatusDto>  getAllStatuses(){
-        return statusService.getAllStatus();
+        return statusService.getAll();
     }
 }
 

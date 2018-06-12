@@ -7,13 +7,10 @@ import com.softserve.mosquito.entities.User;
 import com.softserve.mosquito.repo.api.UserRepo;
 import com.softserve.mosquito.services.api.UserService;
 import com.softserve.mosquito.transformer.impl.UserTransformer;
-import org.hibernate.mapping.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -27,40 +24,40 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto createUser(UserDto user) {
+    public UserDto save(UserDto user) {
         return UserTransformer.toDTO(userRepo.create(UserTransformer.toEntity(user)));
     }
 
     @Override
-    public UserDto updateUser(UserDto user) {
+    public UserDto update(UserDto user) {
         return UserTransformer.toDTO(userRepo.update(UserTransformer.toEntity(user)));
     }
 
     @Override
-    public void removeUser(Long id) {
+    public void delete(Long id) {
         userRepo.delete(id);
     }
 
     @Override
-    public List<UserDto> getAllUsers() {
-        return UserTransformer.toDTO(userRepo.readAll());
+    public List<UserDto> getAll() {
+        return UserTransformer.toDTO(userRepo.getAll());
     }
 
     @Override
-    public UserDto getUserById(Long id) {
+    public UserDto getById(Long id) {
         return UserTransformer.toDTO(userRepo.read(id));
     }
 
 
-    public UserDto getUserByEmail(String email) {
-        User result = userRepo.readAll().stream()
+    public UserDto getByEmail(String email) {
+        User result = userRepo.getAll().stream()
                 .filter(user -> user.getEmail().equals(email)).findFirst().orElse(null);
         return UserTransformer.toDTO(result);
     }
 
     @Override
-    public List<UserDto> getUsersBySpecialization(Long specializationId) {
-        List<User> users = userRepo.readAll();
+    public List<UserDto> getBySpecializationId(Long specializationId) {
+        List<User> users = userRepo.getAll();
         List<UserDto> userDtos = new ArrayList<>();
 
         for (User user : users) {

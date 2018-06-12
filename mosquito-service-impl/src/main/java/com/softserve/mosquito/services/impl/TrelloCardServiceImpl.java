@@ -3,7 +3,6 @@ package com.softserve.mosquito.services.impl;
 import com.softserve.mosquito.dtos.*;
 import com.softserve.mosquito.entities.*;
 import com.softserve.mosquito.services.api.*;
-import com.softserve.mosquito.transformer.impl.TrelloInfoTransformer;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
@@ -28,7 +27,7 @@ public class TrelloCardServiceImpl implements TrelloCardService {
 
     // HARDCODE User********************************
     private Long userId; //= 44L;
-    private TrelloInfoDto trelloInfo; // = trelloInfoService.getTrelloInfoByUserId(userId);
+    private TrelloInfoDto trelloInfo; // = trelloInfoService.getByUserId(userId);
     //*********************************************
 
     @Autowired
@@ -40,7 +39,7 @@ public class TrelloCardServiceImpl implements TrelloCardService {
         this.statusService = statusService;
         this.userService = userService;
         this.userId = 44L;
-        this.trelloInfo = trelloInfoService.getTrelloInfoByUserId(userId);
+        this.trelloInfo = trelloInfoService.getByUserId(userId);
     }
 
     @Transactional
@@ -88,18 +87,18 @@ public class TrelloCardServiceImpl implements TrelloCardService {
 
         TaskDto taskDto = new TaskDto();
         taskDto.setName(projectName);
-        taskDto.setOwnerDto(userService.getUserById(trelloInfo.getUser().getId()));
-        taskDto.setWorkerDto(userService.getUserById(trelloInfo.getUser().getId()));
-        taskService.create(taskDto);
+        taskDto.setOwnerDto(userService.getById(trelloInfo.getUser().getId()));
+        taskDto.setWorkerDto(userService.getById(trelloInfo.getUser().getId()));
+        taskService.save(taskDto);
 
         for (TrelloCardDto trelloCard : trelloCards){
             TaskDto trelloTask = new TaskDto();
             trelloTask.setName(trelloCard.getName());
-            trelloTask.setWorkerDto(userService.getUserById(trelloInfo.getUser().getId()));
-            trelloTask.setOwnerDto(userService.getUserById(trelloInfo.getUser().getId()));
+            trelloTask.setWorkerDto(userService.getById(trelloInfo.getUser().getId()));
+            trelloTask.setOwnerDto(userService.getById(trelloInfo.getUser().getId()));
             trelloTask.setParentTaskDto(taskDto);
-            trelloTask.setStatusDto(statusService.getStatusByName(status));
-            taskService.create(trelloTask);
+            trelloTask.setStatusDto(statusService.getByName(status));
+            taskService.save(trelloTask);
         }
    }
 

@@ -25,14 +25,14 @@ public class LogWorkController {
     @ResponseStatus(HttpStatus.OK)
     public LogWorkDto createLogWork(@PathVariable("task_id") Long taskId,
                                            @RequestBody LogWorkDto logWorkDto) {
-        return logWorkService.createLogWork(logWorkDto);
+        return logWorkService.save(logWorkDto);
     }
 
     @GetMapping(path = "/{log-work_id}/log-works")
     @ResponseStatus(HttpStatus.OK)
     public LogWorkDto getLogWorkById(@PathVariable("log-work_id") Long logId) {
 
-        return logWorkService.getLogWorkById(logId);
+        return logWorkService.getById(logId);
     }
 
     @PutMapping(path = "/{log-work_id}")
@@ -40,24 +40,24 @@ public class LogWorkController {
     public LogWorkDto updateLogWork(@PathVariable("log-work_id") Long logId,
                                           @RequestBody LogWorkDto logWorkDto) {
         logWorkDto.setId(logId);
-        return logWorkService.updateLogWork(logWorkDto);
+        return logWorkService.update(logWorkDto);
     }
 
     @DeleteMapping(path = "/{log-workId}")
     public HttpStatus deleteLogWork(@PathVariable("log-workId") Long logId) {
-        logWorkService.removeLogWorkDto(logId);
+        logWorkService.delete(logId);
         return HttpStatus.OK;
     }
     @GetMapping(path = "/by-est/{estimation_id}")
     @ResponseStatus(HttpStatus.OK)
     public List<LogWorkDto> getLogWorksByByEstimation(@PathVariable("estimation_id") Long estimationId) {
 
-        return logWorkService.getLogWorksDtoByEstimation(estimationId);
+        return logWorkService.getByEstimationId(estimationId);
     }
     @GetMapping(path = "/by-user/{user_id}")
     @ResponseStatus(HttpStatus.OK)
     public List<LogWorkDto> getLogWorksByUserId(@PathVariable("user_id") Long userId) {
 
-        return logWorkService.getLogWorksByUser(userId);
+        return logWorkService.getByUserId(userId);
     }
 }

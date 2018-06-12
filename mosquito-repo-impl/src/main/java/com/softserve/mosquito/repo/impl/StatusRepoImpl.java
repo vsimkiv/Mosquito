@@ -80,7 +80,7 @@ public class StatusRepoImpl implements StatusRepo {
     }
 
     @Override
-    public List<Status> readAll() {
+    public List<Status> getAll() {
         Session session = sessionFactory.openSession();
         Query query = session.createQuery("From " + Status.class.getName());
         return query.list();

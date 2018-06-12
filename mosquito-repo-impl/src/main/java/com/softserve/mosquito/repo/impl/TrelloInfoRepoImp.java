@@ -73,7 +73,7 @@ public class TrelloInfoRepoImp implements TrelloInfoRepo {
     }
 
     @Override
-    public List<TrelloInfo> readAll() {
+    public List<TrelloInfo> getAll() {
 
         try {
         Session session = sessionFactory.getCurrentSession();

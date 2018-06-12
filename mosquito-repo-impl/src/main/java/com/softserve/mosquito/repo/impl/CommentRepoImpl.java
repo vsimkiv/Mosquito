@@ -9,7 +9,6 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -72,7 +71,7 @@ public class CommentRepoImpl implements CommentRepo {
     }
 
     @Override
-    public List<Comment> getCommentByTaskId(Long taskId) {
+    public List<Comment> getByTaskId(Long taskId) {
         return sessionFactory.getCurrentSession()
                 .createQuery("SELECT T.comments FROM " + Task.class.getName() + " T WHERE T.id = " + taskId + "")
                 .getResultList();

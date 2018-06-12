@@ -29,14 +29,14 @@ public class IndexController {
     @GetMapping(path = "/")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<UserDto>> testIndexController() {
-        return ResponseEntity.ok().body(userService.getAllUsers());
+        return ResponseEntity.ok().body(userService.getAll());
     }
 
 
     @PostMapping(path = "/login")
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseEntity<UserDto> login(@RequestBody UserDto userDto, HttpServletRequest request) {
-        UserDto foundUser = userService.getUserByEmail(userDto.getEmail());
+        UserDto foundUser = userService.getByEmail(userDto.getEmail());
         if (foundUser != null) {
             HttpSession session = request.getSession();
             session.setAttribute("user_id", foundUser.getId());

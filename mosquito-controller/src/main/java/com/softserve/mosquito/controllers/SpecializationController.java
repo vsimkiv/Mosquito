@@ -22,7 +22,7 @@ public class SpecializationController {
 
     @PostMapping
     public ResponseEntity<SpecializationDto> createSpecialization(@RequestBody SpecializationCreateDto specializationCreateDto){
-        SpecializationDto createdSpecialization = specializationService.createSpecialization(specializationCreateDto);
+        SpecializationDto createdSpecialization = specializationService.save(specializationCreateDto);
 
         if(createdSpecialization == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -33,7 +33,7 @@ public class SpecializationController {
 
     @GetMapping("/{specialization_id}")
     public ResponseEntity<SpecializationDto> getSpecializationById(@PathVariable("specialization_id") Long specialization_id){
-        SpecializationDto specialization = specializationService.getSpecializationById(specialization_id);
+        SpecializationDto specialization = specializationService.getById(specialization_id);
 
         if(specialization == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -46,7 +46,7 @@ public class SpecializationController {
     public ResponseEntity<SpecializationDto> updateSpecialization(@PathVariable("specialization_id") Long specialization_id,
                                                                   @RequestBody SpecializationDto specializationDto){
         SpecializationDto specializationForUpdate = new SpecializationDto(specialization_id, specializationDto.getTitle());
-        SpecializationDto updatedSpacialization = specializationService.updateSpecialization(specializationForUpdate);
+        SpecializationDto updatedSpacialization = specializationService.update(specializationForUpdate);
 
         if(updatedSpacialization == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -56,7 +56,7 @@ public class SpecializationController {
 
     @GetMapping
     public ResponseEntity<List<SpecializationDto>> getAllSpecializations(){
-        List<SpecializationDto>specializations = specializationService.getAllSpecializations();
+        List<SpecializationDto>specializations = specializationService.getAll();
 
         if(specializations == null || specializations.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -67,7 +67,7 @@ public class SpecializationController {
 
     @DeleteMapping("/{specialization_id}")
     public ResponseEntity removeSpecialization(@PathVariable("specialization_id") Long specialization_id){
-        specializationService.removeSpecialization(specialization_id);
+        specializationService.delete(specialization_id);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

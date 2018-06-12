@@ -23,7 +23,7 @@ public class StatusServiceImpl implements StatusService {
 
     @Override
     @Transactional
-    public StatusDto createStatus(StatusDto statusDto){
+    public StatusDto save(StatusDto statusDto){
         Status status = statusRepo.create(StatusTransformer.toEntity(statusDto));
 
         if(status == null){
@@ -35,7 +35,7 @@ public class StatusServiceImpl implements StatusService {
 
     @Override
     @Transactional
-    public StatusDto getStatusById(Long id){
+    public StatusDto getById(Long id){
         Status status = statusRepo.read(id);
 
         if(status == null){
@@ -48,7 +48,7 @@ public class StatusServiceImpl implements StatusService {
 
     @Override
     @Transactional
-    public StatusDto updateStatus(StatusDto statusDto){
+    public StatusDto update(StatusDto statusDto){
         Status updatedStatus = statusRepo.update(StatusTransformer.toEntity(statusDto));
 
         if (updatedStatus == null){
@@ -59,14 +59,14 @@ public class StatusServiceImpl implements StatusService {
     }
     @Override
     @Transactional
-    public void removeStatus(Long id){
+    public void delete(Long id){
         statusRepo.delete(id);
     }
 
     @Override
     @Transactional
-    public StatusDto getStatusByName(String title){
-        List<StatusDto> allStatuses = getAllStatus();
+    public StatusDto getByName(String title){
+        List<StatusDto> allStatuses = getAll();
 
         if(allStatuses != null && !allStatuses.isEmpty()){
             for(StatusDto status: allStatuses){
@@ -92,8 +92,8 @@ public class StatusServiceImpl implements StatusService {
 
     @Override
     @Transactional
-    public List<StatusDto> getAllStatus(){
-        List<Status> statuses = statusRepo.readAll();
+    public List<StatusDto> getAll(){
+        List<Status> statuses = statusRepo.getAll();
         if(statuses == null || statuses.isEmpty()){
             return null;
         }
