@@ -2,6 +2,10 @@ package com.softserve.mosquito.services.impl;
 
 import com.softserve.mosquito.dtos.*;
 import com.softserve.mosquito.entities.*;
+import com.softserve.mosquito.services.api.StatusService;
+import com.softserve.mosquito.services.api.TaskService;
+import com.softserve.mosquito.services.api.TrelloInfoService;
+import com.softserve.mosquito.services.api.UserService;
 import com.softserve.mosquito.transformer.impl.TrelloInfoTransformer;
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -18,19 +22,19 @@ import javax.ws.rs.core.Response;
 @Service
 public class TrelloCardServiceImpl {
 
-    private TrelloInfoServiceImpl trelloInfoService;
-    private TaskServiceImpl taskService;
-    private StatusServiceImpl statusService;
-    private UserServiceImpl userService;
+    private TrelloInfoService trelloInfoService;
+    private TaskService taskService;
+    private StatusService statusService;
+    private UserService userService;
 
     // HARDCODE User********************************
     private Long userId = 44L;
-    private TrelloInfoDto trelloInfo = trelloInfoService.getTrelloInfoByUserId(userId);
+    private TrelloInfoDto trelloInfo = null;//trelloInfoService.getTrelloInfoByUserId(userId);
     //*********************************************
 
     @Autowired
-    public TrelloCardServiceImpl(TrelloInfoServiceImpl trelloInfoService, TaskServiceImpl taskService,
-                                 StatusServiceImpl statusService, UserServiceImpl userService) {
+    public TrelloCardServiceImpl(TrelloInfoService trelloInfoService, TaskService taskService,
+                                 StatusService statusService, UserService userService) {
 
         this.trelloInfoService = trelloInfoService;
         this.taskService = taskService;
@@ -60,15 +64,15 @@ public class TrelloCardServiceImpl {
 
         TaskDto taskDto = new TaskDto();
         taskDto.setName(projectName);
-        taskDto.setOwnerDto(userService.getUserById(trelloInfo.getUserId()));
-        taskDto.setWorkerDto(userService.getUserById(trelloInfo.getUserId()));
+        taskDto.setOwnerDto(userService.getUserById(trelloInfo.getUser().getId()));
+        taskDto.setWorkerDto(userService.getUserById(trelloInfo.getUser().getId()));
         taskService.create(taskDto);
 
         for (TrelloCardDto trelloCard : trelloCards){
             TaskDto trelloTask = new TaskDto();
             trelloTask.setName(trelloCard.getName());
-            trelloTask.setWorkerDto(userService.getUserById(trelloInfo.getUserId()));
-            trelloTask.setOwnerDto(userService.getUserById(trelloInfo.getUserId()));
+            trelloTask.setWorkerDto(userService.getUserById(trelloInfo.getUser().getId()));
+            trelloTask.setOwnerDto(userService.getUserById(trelloInfo.getUser().getId()));
             trelloTask.setParentTaskDto(taskDto);
             trelloTask.setStatusDto(statusService.getStatusByName(status));
             taskService.create(trelloTask);

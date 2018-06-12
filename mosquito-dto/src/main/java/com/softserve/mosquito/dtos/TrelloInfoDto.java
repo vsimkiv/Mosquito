@@ -1,9 +1,11 @@
 package com.softserve.mosquito.dtos;
 
+import com.softserve.mosquito.entities.User;
+
 public class TrelloInfoDto {
 
     private Long id;
-    private Long userId;
+    private User user;
     private String userTrelloName;
     private String userTrelloKey;
     private String userTrelloToken;
@@ -11,9 +13,9 @@ public class TrelloInfoDto {
     public TrelloInfoDto() {
     }
 
-    public TrelloInfoDto(Long id, Long userId, String userTrelloName, String userTrelloKey, String userTrelloToken) {
+    public TrelloInfoDto(Long id, User user, String userTrelloName, String userTrelloKey, String userTrelloToken) {
         this.id = id;
-        this.userId = userId;
+        this.user = user;
         this.userTrelloName = userTrelloName;
         this.userTrelloKey = userTrelloKey;
         this.userTrelloToken = userTrelloToken;
@@ -27,12 +29,12 @@ public class TrelloInfoDto {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getUserTrelloName() {
@@ -63,7 +65,7 @@ public class TrelloInfoDto {
     public String toString() {
         return "TrelloInfoDto{" +
                 "id=" + id +
-                ", userId=" + userId +
+                ", userId=" + user +
                 ", userTrelloName='" + userTrelloName + '\'' +
                 ", userTrelloKey='" + userTrelloKey + '\'' +
                 ", userTrelloToken='" + userTrelloToken + '\'' +

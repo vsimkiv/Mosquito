@@ -37,6 +37,11 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "author", targetEntity = LogWork.class, fetch = FetchType.LAZY)
     private List<LogWork> logWorks = new ArrayList<>();
 
+    @OneToOne(mappedBy = "user")
+    @JoinColumn(name = "id", referencedColumnName = "user_id")
+    private TrelloInfo trelloInfo;
+
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_has_specializations",
@@ -154,5 +159,13 @@ public class User implements Serializable {
 
     public void setLogWorks(List<LogWork> logWorks) {
         this.logWorks = logWorks;
+    }
+
+    public TrelloInfo getTrelloInfo() {
+        return trelloInfo;
+    }
+
+    public void setTrelloInfo(TrelloInfo trelloInfo) {
+        this.trelloInfo = trelloInfo;
     }
 }

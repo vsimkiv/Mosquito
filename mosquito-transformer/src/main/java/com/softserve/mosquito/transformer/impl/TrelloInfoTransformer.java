@@ -13,12 +13,12 @@ public class TrelloInfoTransformer {
     }
 
     public static TrelloInfo toEntity(TrelloInfoDto trelloInfoDto){
-        return new TrelloInfo(trelloInfoDto.getId(), trelloInfoDto.getUserId(), trelloInfoDto.getUserTrelloName(),
+        return new TrelloInfo(trelloInfoDto.getId(), trelloInfoDto.getUser(), trelloInfoDto.getUserTrelloName(),
                 trelloInfoDto.getUserTrelloKey(), trelloInfoDto.getUserTrelloToken());
     }
 
     public static TrelloInfoDto toDto(TrelloInfo trelloInfo){
-        return new TrelloInfoDto(trelloInfo.getId(), trelloInfo.getUserId(), trelloInfo.getUserTrelloName(),
+        return new TrelloInfoDto(trelloInfo.getId(), trelloInfo.getUser(), trelloInfo.getUserTrelloName(),
                 trelloInfo.getUserTrelloKey(), trelloInfo.getUserTrelloToken());
     }
 
