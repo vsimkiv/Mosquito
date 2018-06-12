@@ -1,41 +1,17 @@
+package com.softserve.mosquito.dtos;
 
-package com.softserve.mosquito.entities;
+public class TrelloInfoDto {
 
-import javax.persistence.*;
-import java.io.Serializable;
-
-@Entity
-@Table(name = "users_trello")
-public class TrelloInfo implements Serializable {
-
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "user_id")
     private Long userId;
-
-    @Column(name = "username")
     private String userTrelloName;
-
-    @Column(name = "access_key")
     private String userTrelloKey;
-
-    @Column(name = "access_token")
     private String userTrelloToken;
 
-    public TrelloInfo() {
+    public TrelloInfoDto() {
     }
 
-    public TrelloInfo(Long userId, String userTrelloName, String userTrelloKey, String userTrelloToken) {
-        this.userId = userId;
-        this.userTrelloName = userTrelloName;
-        this.userTrelloKey = userTrelloKey;
-        this.userTrelloToken = userTrelloToken;
-    }
-
-    public TrelloInfo(Long id, Long userId, String userTrelloName, String userTrelloKey, String userTrelloToken) {
+    public TrelloInfoDto(Long id, Long userId, String userTrelloName, String userTrelloKey, String userTrelloToken) {
         this.id = id;
         this.userId = userId;
         this.userTrelloName = userTrelloName;
@@ -85,13 +61,12 @@ public class TrelloInfo implements Serializable {
 
     @Override
     public String toString() {
-        return "TrelloInfo{" +
-                "userId=" + userId +
+        return "TrelloInfoDto{" +
+                "id=" + id +
+                ", userId=" + userId +
                 ", userTrelloName='" + userTrelloName + '\'' +
                 ", userTrelloKey='" + userTrelloKey + '\'' +
                 ", userTrelloToken='" + userTrelloToken + '\'' +
                 '}';
     }
-
 }
-
