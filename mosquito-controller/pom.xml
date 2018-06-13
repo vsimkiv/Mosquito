@@ -19,7 +19,7 @@
         </dependency>
         <dependency>
             <groupId>com.softserve.mosquito</groupId>
-            <artifactId>mosquito-service-impl</artifactId>
+            <artifactId>mosquito-service-api</artifactId>
         </dependency>
 
         <dependency>

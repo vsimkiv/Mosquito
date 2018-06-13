@@ -10,11 +10,23 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>mosquito-config</artifactId>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>com.softserve.mosquito</groupId>
+            <artifactId>mosquito-controller</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.softserve.mosquito</groupId>
+            <artifactId>mosquito-repo-impl</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.softserve.mosquito</groupId>
             <artifactId>mosquito-service-impl</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
@@ -22,10 +34,6 @@
             <artifactId>javax.servlet-api</artifactId>
             <version>3.1.0</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.softserve.mosquito</groupId>
-            <artifactId>mosquito-controller</artifactId>
         </dependency>
     </dependencies>
 </project>

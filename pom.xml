@@ -38,7 +38,6 @@
                 <version>${project.version}</version>
             </dependency>
 
-
             <dependency>
                 <groupId>com.softserve.mosquito</groupId>
                 <artifactId>mosquito-controller</artifactId>
@@ -83,6 +82,12 @@
                 <groupId>com.softserve.mosquito</groupId>
                 <artifactId>mosquito-web</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8.2</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
