@@ -1,4 +1,4 @@
-package security;
+package com.softserve.mosquito.security;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import java.lang.annotation.*;

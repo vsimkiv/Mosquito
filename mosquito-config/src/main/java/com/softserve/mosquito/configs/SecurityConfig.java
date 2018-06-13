@@ -1,8 +1,8 @@
 package com.softserve.mosquito.configs;
 
-import security.CustomUserDetailsService;
-import security.JwtAuthenticationEntryPoint;
-import security.JwtAuthenticationFilter;
+import com.softserve.mosquito.security.CustomUserDetailsService;
+import com.softserve.mosquito.security.JwtAuthenticationEntryPoint;
+import com.softserve.mosquito.security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

@@ -1,4 +1,4 @@
-package security;
+package com.softserve.mosquito.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.softserve.mosquito.dtos.UserDto;

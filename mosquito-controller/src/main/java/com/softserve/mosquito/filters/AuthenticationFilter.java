@@ -1,4 +1,4 @@
-package filters;
+package com.softserve.mosquito.filters;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;

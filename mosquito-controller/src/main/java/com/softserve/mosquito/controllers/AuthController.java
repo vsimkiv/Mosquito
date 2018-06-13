@@ -1,8 +1,8 @@
 package com.softserve.mosquito.controllers;
 
 import com.softserve.mosquito.dtos.UserDto;
-import security.JwtTokenProvider;
-import security.JwtAuthenticationResponse;
+import com.softserve.mosquito.security.JwtTokenProvider;
+import com.softserve.mosquito.security.JwtAuthenticationResponse;
 import com.softserve.mosquito.services.api.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

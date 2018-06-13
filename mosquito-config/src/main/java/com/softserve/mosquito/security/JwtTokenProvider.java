@@ -1,4 +1,4 @@
-package security;
+package com.softserve.mosquito.security;
 
 import io.jsonwebtoken.*;
 import org.apache.logging.log4j.LogManager;
