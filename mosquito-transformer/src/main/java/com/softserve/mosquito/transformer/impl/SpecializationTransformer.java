@@ -10,16 +10,22 @@ public class SpecializationTransformer {
 
     public static Set<Specialization> toEntityList(Set<SpecializationDto> specializationDtos) {
         Set<Specialization> specializations = new HashSet<>();
-        for(SpecializationDto specializationDto: specializationDtos){
-            specializations.add(toEntity(specializationDto));
+
+        if(specializationDtos != null && !specializationDtos.isEmpty()) {
+            for (SpecializationDto specializationDto : specializationDtos) {
+                specializations.add(toEntity(specializationDto));
+            }
         }
         return specializations;
     }
 
     public static Set<SpecializationDto> toDTOList(Set<Specialization> specializations) {
         Set<SpecializationDto> specializationDtos = new HashSet<>();
-        for(Specialization specialization: specializations){
-            specializationDtos.add(toDTO(specialization));
+
+        if(specializations != null && !specializations.isEmpty()) {
+            for (Specialization specialization : specializations) {
+                specializationDtos.add(toDTO(specialization));
+            }
         }
         return specializationDtos;
     }
