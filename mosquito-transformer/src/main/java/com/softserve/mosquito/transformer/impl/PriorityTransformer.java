@@ -20,8 +20,10 @@ public class PriorityTransformer {
     public static List<Priority> toEntityList(List<PriorityDto> priorityDtos) {
         List<Priority> priorities = new ArrayList<>();
 
-        for(PriorityDto priorityDto: priorityDtos){
-            priorities.add(toEntity(priorityDto));
+        if(priorityDtos != null && !priorityDtos.isEmpty()) {
+            for (PriorityDto priorityDto : priorityDtos) {
+                priorities.add(toEntity(priorityDto));
+            }
         }
         return priorities;
     }
@@ -29,8 +31,10 @@ public class PriorityTransformer {
     public static List<PriorityDto> toDTOList(List<Priority> priorities){
         List<PriorityDto> priorityDtos = new ArrayList<>();
 
-        for(Priority priority: priorities){
-            priorityDtos.add(toDTO(priority));
+        if(priorities != null && !priorities.isEmpty()) {
+            for (Priority priority : priorities) {
+                priorityDtos.add(toDTO(priority));
+            }
         }
         return priorityDtos;
     }
