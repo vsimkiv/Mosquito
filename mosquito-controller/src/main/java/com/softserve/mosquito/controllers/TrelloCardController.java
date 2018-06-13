@@ -2,7 +2,6 @@ package com.softserve.mosquito.controllers;
 
 
 import com.softserve.mosquito.dtos.TaskDto;
-import com.softserve.mosquito.entities.Task;
 import com.softserve.mosquito.services.api.TrelloCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

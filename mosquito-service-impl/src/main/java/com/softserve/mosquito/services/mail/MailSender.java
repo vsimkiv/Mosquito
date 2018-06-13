@@ -1,6 +1,8 @@
 package com.softserve.mosquito.services.mail;
 
 import com.softserve.mosquito.dtos.UserDto;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
@@ -14,6 +16,7 @@ import javax.mail.internet.MimeMessage;
 public class MailSender {
 
     private JavaMailSender mailSender;
+    private static final Logger LOGGER = LogManager.getLogger(MailSender.class);
 
     @Autowired
     public MailSender(JavaMailSender mailSender) {
@@ -31,7 +34,7 @@ public class MailSender {
             mailSender.send(mimeMessage);
             return true;
         } catch (MessagingException e) {
-            e.printStackTrace();
+            LOGGER.error("Sending message was failed!");
         }
         return false;
     }

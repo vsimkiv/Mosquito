@@ -48,7 +48,7 @@ public class TrelloInfoServiceImpl implements TrelloInfoService {
 
     public Long getTrelloInfoIdByUserId(Long userId){
         for (TrelloInfoDto trelloInfo : getAll()){
-            if (trelloInfo.getUser().getId()==userId) return trelloInfo.getId();
+            if (trelloInfo.getUserDto().getId()==userId) return trelloInfo.getId();
         }
         return null;
     }
