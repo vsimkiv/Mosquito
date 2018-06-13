@@ -1,4 +1,4 @@
-package com.softserve.mosquito.security;
+package security;
 
 
 import com.softserve.mosquito.dtos.UserDto;

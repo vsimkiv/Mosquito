@@ -1,4 +1,4 @@
-package com.softserve.mosquito.filters;
+package filters;
 
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerResponseContext;

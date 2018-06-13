@@ -1,4 +1,4 @@
-package com.softserve.mosquito.security;
+package security;
 
 public class JwtAuthenticationResponse {
     private String accessToken;

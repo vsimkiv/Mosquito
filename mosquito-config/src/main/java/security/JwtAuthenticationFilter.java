@@ -1,4 +1,4 @@
-package com.softserve.mosquito.security;
+package security;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

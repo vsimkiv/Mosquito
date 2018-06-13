@@ -34,6 +34,12 @@
         <dependencies>
             <dependency>
                 <groupId>com.softserve.mosquito</groupId>
+                <artifactId>mosquito-config</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.softserve.mosquito</groupId>
                 <artifactId>mosquito-bom</artifactId>
                 <version>${project.version}</version>
             </dependency>

@@ -1,8 +1,8 @@
 package com.softserve.mosquito.configs;
 
-import com.softserve.mosquito.security.CustomUserDetailsService;
-import com.softserve.mosquito.security.JwtAuthenticationEntryPoint;
-import com.softserve.mosquito.security.JwtAuthenticationFilter;
+import security.CustomUserDetailsService;
+import security.JwtAuthenticationEntryPoint;
+import security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -20,7 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@ComponentScan("com.softserve.mosquito.security")
+@ComponentScan("security")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
