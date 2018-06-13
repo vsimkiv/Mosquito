@@ -87,15 +87,15 @@ public class TrelloCardServiceImpl implements TrelloCardService {
 
         TaskDto taskDto = new TaskDto();
         taskDto.setName(projectName);
-        taskDto.setOwnerDto(userService.getById(trelloInfo.getUser().getId()));
-        taskDto.setWorkerDto(userService.getById(trelloInfo.getUser().getId()));
+        taskDto.setOwnerDto(userService.getById(trelloInfo.getUserDto().getId()));
+        taskDto.setWorkerDto(userService.getById(trelloInfo.getUserDto().getId()));
         taskService.save(taskDto);
 
         for (TrelloCardDto trelloCard : trelloCards){
             TaskDto trelloTask = new TaskDto();
             trelloTask.setName(trelloCard.getName());
-            trelloTask.setWorkerDto(userService.getById(trelloInfo.getUser().getId()));
-            trelloTask.setOwnerDto(userService.getById(trelloInfo.getUser().getId()));
+            trelloTask.setWorkerDto(userService.getById(trelloInfo.getUserDto().getId()));
+            trelloTask.setOwnerDto(userService.getById(trelloInfo.getUserDto().getId()));
             trelloTask.setParentTaskDto(taskDto);
             trelloTask.setStatusDto(statusService.getByName(status));
             taskService.save(trelloTask);

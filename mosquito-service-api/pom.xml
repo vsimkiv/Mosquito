@@ -22,5 +22,4 @@
             <artifactId>mosquito-entity</artifactId>
         </dependency>
     </dependencies>
-    
 </project>
