@@ -28,7 +28,6 @@
                 <version>2.2</version>
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <webappDirectory>/sample/servlet/container/deploy/directory</webappDirectory>
                 </configuration>
             </plugin>
         </plugins>
