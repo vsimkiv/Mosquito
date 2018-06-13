@@ -2,8 +2,10 @@ package com.softserve.mosquito.controllers;
 
 import com.softserve.mosquito.dtos.CommentCreateDto;
 import com.softserve.mosquito.dtos.TaskDto;
+import com.softserve.mosquito.entities.mongo.Task;
 import com.softserve.mosquito.services.api.CommentService;
 import com.softserve.mosquito.services.api.TaskService;
+import com.softserve.mosquito.services.api.TasksBoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +19,14 @@ public class TaskController {
 
     private TaskService taskService;
     private CommentService commentService;
+    private TasksBoardService tasksBoardService;
+
 
     @Autowired
-    public TaskController(TaskService taskService, CommentService commentService) {
+    public TaskController(TaskService taskService, CommentService commentService, TasksBoardService tasksBoardService) {
         this.taskService = taskService;
         this.commentService = commentService;
+        this.tasksBoardService = tasksBoardService;
     }
 
     @PostMapping
@@ -76,5 +81,11 @@ public class TaskController {
     @ResponseStatus(HttpStatus.OK)
     public List<CommentCreateDto> getCommentsByTaskId(@PathVariable("task_id") Long taskId){
         return commentService.getByTaskId(taskId);
+    }
+
+    @GetMapping(path = "/tasks-board")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Task> mongoTest(@RequestParam(name = "worker_id") Long workerId) {
+        return tasksBoardService.getUserWork(workerId);
     }
 }
