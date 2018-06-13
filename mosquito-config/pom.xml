@@ -16,17 +16,14 @@
         <dependency>
             <groupId>com.softserve.mosquito</groupId>
             <artifactId>mosquito-controller</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.softserve.mosquito</groupId>
             <artifactId>mosquito-repo-impl</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.softserve.mosquito</groupId>
             <artifactId>mosquito-service-impl</artifactId>
-            <version>${project.version}</version>
         </dependency>
 
         <dependency>
