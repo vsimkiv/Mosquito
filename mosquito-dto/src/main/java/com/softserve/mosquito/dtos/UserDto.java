@@ -61,6 +61,30 @@ public class UserDto {
         return specializations;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
+    public void setSpecializations(Set<SpecializationDto> specializations) {
+        this.specializations = specializations;
+    }
+
     public static Builder newBuilder() {
         return new UserDto().new Builder();
     }
@@ -109,4 +133,6 @@ public class UserDto {
             return UserDto.this;
         }
     }
+
+
 }
