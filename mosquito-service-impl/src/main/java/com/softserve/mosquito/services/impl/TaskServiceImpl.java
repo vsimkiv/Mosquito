@@ -1,9 +1,11 @@
 package com.softserve.mosquito.services.impl;
 
 import com.softserve.mosquito.dtos.TaskDto;
+import com.softserve.mosquito.dtos.UserDto;
 import com.softserve.mosquito.entities.Task;
 import com.softserve.mosquito.repo.api.TaskRepo;
 import com.softserve.mosquito.services.api.TaskService;
+import com.softserve.mosquito.services.mail.MailSender;
 import com.softserve.mosquito.transformer.impl.TaskTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,24 +19,23 @@ import static com.softserve.mosquito.transformer.impl.TaskTransformer.toDTO;
 @Service
 public class TaskServiceImpl implements TaskService {
     private TaskRepo taskRepo;
+    private MailSender mailSender;
 
     @Autowired
-    public TaskServiceImpl(TaskRepo taskRepo) {
+    public TaskServiceImpl(TaskRepo taskRepo, MailSender mailSender) {
         this.taskRepo = taskRepo;
+        this.mailSender = mailSender;
     }
 
     @Transactional
     @Override
     public TaskDto save(TaskDto taskDto) {
-
-        if (isTaskPresent(taskDto)) return TaskTransformer.toDTO(taskRepo.read(taskDto.getId()));
-
-        Task task = taskRepo.create(TaskTransformer.toEntity(taskDto));
-
-        if (task == null)
-            return null;
-
-        return toDTO(task);
+        if (isMessageSent(taskDto.getWorkerDto(), "You was assigned for this task" + taskDto.getName(), "Mosquito Task Manager")) {
+            if (isTaskPresent(taskDto)) return TaskTransformer.toDTO(taskRepo.read(taskDto.getId()));
+            Task task = taskRepo.create(TaskTransformer.toEntity(taskDto));
+            return toDTO(task);
+        }
+        return null;
     }
 
     @Transactional
@@ -105,9 +106,13 @@ public class TaskServiceImpl implements TaskService {
         return null;
     }
 
-    private boolean isTaskPresent(TaskDto taskDto){
-        if (getById(taskDto.getId())!=null) return true;
+    private boolean isTaskPresent(TaskDto taskDto) {
+        if (getById(taskDto.getId()) != null) return true;
         return false;
+    }
+
+    private boolean isMessageSent(UserDto userDto, String message, String subject) {
+        return mailSender.sendMessage(userDto, message, subject);
     }
 
 }
