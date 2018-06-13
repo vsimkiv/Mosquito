@@ -28,7 +28,18 @@ public class TasksBoardServiceImpl implements TasksBoardService {
 
     @Override
     public void update(Task task, Long userId) {
-
+        TasksBoard tasksBoard = tasksBoardRepo.findByUserId(userId);
+        if(tasksBoard != null) {
+            List<Task> tasks = tasksBoard.getTasks();
+            for (Task taskTmp : tasks) {
+                if(taskTmp.getTaskId().equals(task.getTaskId())) {
+                    taskTmp.setTaskName(task.getTaskName());
+                    tasksBoard.setTasks(tasks);
+                    break;
+                }
+            }
+            tasksBoardRepo.save(tasksBoard);
+        }
     }
 
     @Override
@@ -45,6 +56,10 @@ public class TasksBoardServiceImpl implements TasksBoardService {
 
     @Override
     public void delete(Task task, Long userId) {
-
+        TasksBoard tasksBoard = tasksBoardRepo.findByUserId(userId);
+        if(tasksBoard != null) {
+            tasksBoard.getTasks().removeIf(taskTmp -> taskTmp.getTaskId().equals(task.getTaskId()));
+            tasksBoardRepo.save(tasksBoard);
+        }
     }
 }
