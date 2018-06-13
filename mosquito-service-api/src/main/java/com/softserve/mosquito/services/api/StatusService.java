@@ -1,20 +1,26 @@
 package com.softserve.mosquito.services.api;
 
 import com.softserve.mosquito.dtos.StatusDto;
-import com.softserve.mosquito.dtos.StatusCreateDto;
+import com.softserve.mosquito.entities.Status;
 
 import java.util.List;
 
 public interface StatusService {
-    List<StatusDto> getAllStatus();
 
-    StatusDto getStatusById(Long id);
+    List<StatusDto> getAll();
 
-    StatusDto createStatus(StatusCreateDto statusCreateDto);
+    StatusDto getById(Long id);
 
-    StatusDto updateStatus(StatusDto statusDto);
+    StatusDto save(StatusDto statusDto);
 
-    void removeStatus(Long id);
+    StatusDto update(StatusDto statusDto);
 
-    StatusDto getStatusByName(String title);
+    void delete(Long id);
+
+    StatusDto getByName(String title);
+
+    /**
+     * method for using in class TaskTransformer
+     */
+    Status getStatusEntityById(Long id);
 }

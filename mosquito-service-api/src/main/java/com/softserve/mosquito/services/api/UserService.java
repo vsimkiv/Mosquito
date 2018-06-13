@@ -1,20 +1,22 @@
 package com.softserve.mosquito.services.api;
 
-import com.softserve.mosquito.entities.User;
+import com.softserve.mosquito.dtos.UserDto;
 
 import java.util.List;
 
 public interface UserService {
 
-    User createUser(User user);
+    UserDto save(UserDto user);
 
-    User getUserById(Long id);
+    UserDto update(UserDto user);
 
-    User updateUser(User user);
+    void delete(Long id);
 
-    void removeUser(Long id);
+    UserDto getById(Long id);
 
-    List<User> getAllUsers();
+    List<UserDto> getAll();
 
-    User getUserByEmail(String email);
+    UserDto getByEmail(String email);
+
+    List<UserDto> getBySpecializationId(Long specializationId);
 }

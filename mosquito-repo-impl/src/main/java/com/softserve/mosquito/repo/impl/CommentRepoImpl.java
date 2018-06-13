@@ -2,120 +2,78 @@ package com.softserve.mosquito.repo.impl;
 
 
 import com.softserve.mosquito.entities.Comment;
+import com.softserve.mosquito.entities.Task;
 import com.softserve.mosquito.repo.api.CommentRepo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+@Repository
 public class CommentRepoImpl implements CommentRepo {
 
     private static final Logger LOGGER = LogManager.getLogger(CommentRepoImpl.class);
-    private DataSource dataSource = MySqlDataSource.getDataSource();
+    private SessionFactory sessionFactory;
 
-    private static final String CREATE_COMMENT =
-            "INSERT INTO comments (text, task_id, author_id) VALUES(?,?,?);";
-    private static final String UPDATE_COMMENT =
-            "UPDATE comments SET text=? WHERE id=?;";
-    private static final String DELETE_COMMENT =
-            "DELETE FROM comments WHERE id=?";
-    private static final String READ_COMMENT = "SELECT * FROM comments WHERE task_id=?;";
-    private static final String READ_ALL_COMMENTS = "SELECT * FROM comments;";
+    @Autowired
+    public CommentRepoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public Comment create(Comment comment) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_COMMENT)) {
-            preparedStatement.setString(1, comment.getText());
-            preparedStatement.setLong(2, comment.getTaskId());
-            preparedStatement.setLong(3, comment.getAuthorId());
-
-            if (preparedStatement.executeUpdate() == 0)
-                LOGGER.error("Creating comment was failed");
-            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-                if (generatedKeys.next())
-                    return read(generatedKeys.getLong(1));
-                else
-                    LOGGER.error("Creating comment was failed");
-            }
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
+        try (Session session = sessionFactory.openSession()) {
+            session.save(comment);
+        } catch (HibernateException e) {
+            LOGGER.error("Error during save comment!");
         }
-        return null;
+        return comment;
     }
 
     @Override
     public Comment read(Long id) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(READ_COMMENT)) {
-            preparedStatement.setLong(1, id);
-            List<Comment> comments = parseData(preparedStatement.executeQuery());
-            if (!comments.isEmpty())
-                return comments.iterator().next();
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
+        try (Session session = sessionFactory.openSession()) {
+            return session.get(Comment.class, id);
+        } catch (HibernateException e) {
+            LOGGER.error("Reading comment was failed!");
         }
         return null;
     }
 
     @Override
     public Comment update(Comment comment) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_COMMENT)) {
-            preparedStatement.setString(1, comment.getText());
-            preparedStatement.setLong(2, comment.getId());
-            if (preparedStatement.executeUpdate() > 0)
-                return read(comment.getId());
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
+        try (Session session = sessionFactory.openSession()) {
+            session.getTransaction().begin();
+            session.update(comment);
+            session.getTransaction().commit();
+            return comment;
+        } catch (HibernateException e) {
+            LOGGER.error("Updating comment was failed!");
         }
-        return comment;
+        return null;
     }
 
     @Override
     public void delete(Long id) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_COMMENT)) {
-            preparedStatement.setLong(1, id);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
+        try (Session session = sessionFactory.openSession()) {
+            session.getTransaction().begin();
+            Comment comment = session.get(Comment.class, id);
+            session.delete(comment);
+            session.getTransaction().commit();
+        } catch (HibernateException e) {
+            LOGGER.error("Deleting comment was failed!");
         }
     }
 
     @Override
-    public List<Comment> readAll() {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(READ_ALL_COMMENTS)) {
-            return parseData(preparedStatement.executeQuery());
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-            return Collections.emptyList();
-        }
-    }
-
-    private List<Comment> parseData(ResultSet resultSet) {
-        List<Comment> comments = new ArrayList<>();
-
-        try {
-            while (resultSet.next()) {
-                Comment comment = new Comment(resultSet.getLong("id"),
-                        resultSet.getString("text"),
-                        resultSet.getLong("task_id"),
-                        resultSet.getLong("author_id"),
-                        resultSet.getTimestamp("last_update").toLocalDateTime());
-                comments.add(comment);
-            }
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-        }
-        return comments;
+    public List<Comment> getByTaskId(Long taskId) {
+        return sessionFactory.getCurrentSession()
+                .createQuery("SELECT T.comments FROM " + Task.class.getName() + " T WHERE T.id = " + taskId + "")
+                .getResultList();
     }
 }

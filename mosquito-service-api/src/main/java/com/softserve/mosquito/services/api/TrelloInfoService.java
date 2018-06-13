@@ -1,18 +1,20 @@
 package com.softserve.mosquito.services.api;
 
-import com.softserve.mosquito.entities.TrelloInfo;
+import com.softserve.mosquito.dtos.TrelloInfoDto;
 
 import java.util.List;
 
 public interface TrelloInfoService {
 
-    TrelloInfo createTrelloInfo(TrelloInfo trelloInfo);
+    TrelloInfoDto save(TrelloInfoDto trelloInfo);
 
-    TrelloInfo getTrelloInfoById(Long id);
+    TrelloInfoDto getById(Long id);
 
-    TrelloInfo updateTrelloInfo(TrelloInfo trelloInfo);
+    TrelloInfoDto update(TrelloInfoDto trelloInfo);
 
-    void removeTrelloInfo(Long id);
+    void delete(Long id);
 
-    List<TrelloInfo> getAllTrelloInfos();
+    List<TrelloInfoDto> getAll();
+
+    TrelloInfoDto getByUserId(Long userId);
 }

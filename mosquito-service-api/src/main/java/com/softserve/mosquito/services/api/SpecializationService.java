@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface SpecializationService {
 
-    List<SpecializationDto> getAllSpecializations();
+    List<SpecializationDto> getAll();
 
-    SpecializationDto getSpecializationById(Long id);
+    SpecializationDto getById(Long id);
 
-    SpecializationDto createSpecialization(SpecializationCreateDto specialization);
+    SpecializationDto save(SpecializationCreateDto specialization);
 
-    SpecializationDto updateSpecialization(SpecializationDto specialization);
+    SpecializationDto update(SpecializationDto specialization);
 
-    void removeSpecialization(Long id);
+    void delete(Long id);
 }

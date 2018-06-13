@@ -1,20 +1,20 @@
 package com.softserve.mosquito.services.api;
 
-import com.softserve.mosquito.entities.LogWork;
+import com.softserve.mosquito.dtos.LogWorkDto;
 
 import java.util.List;
 
 public interface LogWorkService {
 
-    LogWork createLogWork(LogWork logWorkId);
+    LogWorkDto save(LogWorkDto logWork);
 
-    LogWork getLogWorkById(Long logWorkId);
+    LogWorkDto getById(Long logWorkId);
 
-    LogWork updateLogWork(LogWork logWork);
+    LogWorkDto update(LogWorkDto logWork);
 
-    void removeLogWork(Long id);
+    void delete(Long id);
 
-    List<LogWork> getAllLogWork();
+    List<LogWorkDto> getByEstimationId(Long estimationId);
 
-    List<LogWork> getLogWorksByEstimation(Long estimationId);
+    List<LogWorkDto> getByUserId(Long userId);
 }

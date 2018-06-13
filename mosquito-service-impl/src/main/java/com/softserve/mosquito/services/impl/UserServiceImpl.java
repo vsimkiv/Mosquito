@@ -1,43 +1,72 @@
 package com.softserve.mosquito.services.impl;
 
 
+import com.softserve.mosquito.dtos.UserDto;
+import com.softserve.mosquito.entities.Specialization;
 import com.softserve.mosquito.entities.User;
 import com.softserve.mosquito.repo.api.UserRepo;
-import com.softserve.mosquito.repo.impl.UserRepoImpl;
+import com.softserve.mosquito.services.api.UserService;
+import com.softserve.mosquito.transformer.impl.UserTransformer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class UserServiceImpl implements com.softserve.mosquito.services.api.UserService {
+@Service
+public class UserServiceImpl implements UserService {
 
-    private UserRepo userRepo = new UserRepoImpl();
+    private UserRepo userRepo;
 
-    @Override
-    public User createUser(User user) {
-        return userRepo.create(user);
+    @Autowired
+    public UserServiceImpl(UserRepo userRepo) {
+        this.userRepo = userRepo;
     }
 
     @Override
-    public User updateUser(User user) {
-        return userRepo.update(user);
+    public UserDto save(UserDto user) {
+        return UserTransformer.toDTO(userRepo.create(UserTransformer.toEntity(user)));
     }
 
     @Override
-    public void removeUser(Long id) {
+    public UserDto update(UserDto user) {
+        return UserTransformer.toDTO(userRepo.update(UserTransformer.toEntity(user)));
+    }
+
+    @Override
+    public void delete(Long id) {
         userRepo.delete(id);
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepo.readAll();
+    public List<UserDto> getAll() {
+        return UserTransformer.toDTO(userRepo.getAll());
     }
 
     @Override
-    public User getUserById(Long id) {
-        return userRepo.read(id);
+    public UserDto getById(Long id) {
+        return UserTransformer.toDTO(userRepo.read(id));
     }
 
 
-    public User getUserByEmail(String email) {
-        return ((UserRepoImpl) userRepo).readUserByEmail(email);
+    public UserDto getByEmail(String email) {
+        User result = userRepo.getAll().stream()
+                .filter(user -> user.getEmail().equals(email)).findFirst().orElse(null);
+        return UserTransformer.toDTO(result);
+    }
+
+    @Override
+    public List<UserDto> getBySpecializationId(Long specializationId) {
+        List<User> users = userRepo.getAll();
+        List<UserDto> userDtos = new ArrayList<>();
+
+        for (User user : users) {
+            for (Specialization specialization : user.getSpecializations()) {
+                if (specialization.getId().equals(specializationId))
+                    userDtos.add(UserTransformer.toDTO(user));
+            }
+        }
+
+        return userDtos;
     }
 }

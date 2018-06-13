@@ -1,70 +1,70 @@
 package com.softserve.mosquito.controllers;
 
-import com.softserve.mosquito.dtos.UserLoginDto;
-import com.softserve.mosquito.dtos.UserRegistrationDto;
-import com.softserve.mosquito.entities.User;
-import com.softserve.mosquito.services.impl.UserServiceImpl;
-import com.softserve.mosquito.validators.UserValidator;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.softserve.mosquito.dtos.UserDto;
+import com.softserve.mosquito.services.api.UserService;
+import com.softserve.mosquito.services.validation.UserValidator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import java.util.List;
 
-@Path("/")
+@RestController
+@RequestMapping("/")
 public class IndexController {
-    private com.softserve.mosquito.services.api.UserService userService = new UserServiceImpl();
-    private UserValidator validation = new UserValidator();
+    private UserService userService;
+    private UserValidator userValidator;
 
-    @GET
-    @Produces(MediaType.TEXT_HTML)
-    public String testIndex() {
-        return "Hello Mosquito <br>" +
-                "<a href = \"/users\">Get users </a>";
+    @Autowired
+    public IndexController(UserService userService, UserValidator userValidator) {
+        this.userService = userService;
+        this.userValidator = userValidator;
     }
-    
-    @POST
-    @Path("/login")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response login(@Valid UserLoginDto userLoginDto, @Context HttpServletRequest request) {
-       if(validation.isValidCredentials(userLoginDto)) {
-    	   // Start session with authorized user
-           //TODO: use UserDto instead of User as a return type
-    	   User user = userService.getUserByEmail(userLoginDto.getEmail());
-    	   HttpSession session = request.getSession();
-    	   session.setAttribute("user_id", user.getId());
-    	   
-    	   return Response.status(Response.Status.OK).entity(user).build();
-       }else {
-    	   return Response.status(Response.Status.UNAUTHORIZED).build();
-       }
+
+    @GetMapping(path = "/")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<UserDto>> testIndexController() {
+        return ResponseEntity.ok().body(userService.getAll());
     }
 
 
-    @GET
-    @Path("/logout")
-    public Response logout(@Context HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        session.invalidate();
-        return Response.status(Response.Status.OK).build();
+    @PostMapping(path = "/login")
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<UserDto> login(@RequestBody UserDto userDto, HttpServletRequest request) {
+        UserDto foundUser = userService.getByEmail(userDto.getEmail());
+        if (foundUser != null) {
+            HttpSession session = request.getSession();
+            session.setAttribute("user_id", foundUser.getId());
+            return ResponseEntity.ok().body(foundUser);
+        } else {
+            throw new UserNotFoundException();
+        }
     }
 
-    @POST
-    @Path("/registration")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response registration(@Valid UserRegistrationDto user){
-
-        if (validation.isRegistrationValid(user))
-            return Response.ok().entity(user).build();
-
-        return  Response.status(Response.Status.FORBIDDEN).entity(user).build();
+    @GetMapping(path = "/logout")
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ModelAndView logout(HttpServletRequest request) {
+        ModelAndView view = new ModelAndView("Logged out");
+        request.getSession().invalidate();
+        return view;
     }
-    
+
+    @PostMapping(path = "/registration")
+    @ResponseStatus(HttpStatus.OK)
+    public UserDto registration(@Valid @RequestBody UserDto user) {
+
+        if (userValidator.isRegistrationValid(user))
+            return user;
+
+        return null;
+    }
+
+
+    private class UserNotFoundException extends RuntimeException {
+    }
 }

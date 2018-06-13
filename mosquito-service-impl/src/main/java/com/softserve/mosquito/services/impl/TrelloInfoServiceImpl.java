@@ -1,48 +1,61 @@
 package com.softserve.mosquito.services.impl;
 
-import com.softserve.mosquito.entities.TrelloInfo;
+import com.softserve.mosquito.dtos.TrelloInfoDto;
 import com.softserve.mosquito.repo.api.TrelloInfoRepo;
-import com.softserve.mosquito.repo.impl.TrelloInfoRepoImp;
 import com.softserve.mosquito.services.api.TrelloInfoService;
+import com.softserve.mosquito.transformer.impl.TrelloInfoTransformer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Service
 public class TrelloInfoServiceImpl implements TrelloInfoService {
 
-    private TrelloInfoRepo trelloInfoRepo = new TrelloInfoRepoImp();
+    private TrelloInfoRepo trelloInfoRepo;
 
-    @Override
-    public TrelloInfo createTrelloInfo(TrelloInfo trelloInfo) {
-        return trelloInfoRepo.create(trelloInfo);
+    @Autowired
+    public TrelloInfoServiceImpl(TrelloInfoRepo trelloInfoRepo) {
+        this.trelloInfoRepo = trelloInfoRepo;
     }
 
     @Override
-    public TrelloInfo getTrelloInfoById(Long id) {
-        return trelloInfoRepo.read(id);
+    public TrelloInfoDto save(TrelloInfoDto trelloInfo) {
+        return TrelloInfoTransformer.toDto(trelloInfoRepo.create(TrelloInfoTransformer.toEntity(trelloInfo)));
     }
 
     @Override
-    public TrelloInfo updateTrelloInfo(TrelloInfo trelloInfo) {
-        return trelloInfoRepo.update(trelloInfo);
+    public TrelloInfoDto getById(Long id) {
+
+        return TrelloInfoTransformer.toDto(trelloInfoRepo.read(id));
     }
 
     @Override
-    public void removeTrelloInfo(Long id) {
+    public TrelloInfoDto update(TrelloInfoDto trelloInfo) {
+        return TrelloInfoTransformer.toDto(trelloInfoRepo.update(TrelloInfoTransformer.toEntity(trelloInfo)));
+    }
+
+    @Override
+    public void delete(Long id) {
         trelloInfoRepo.delete(id);
     }
 
     @Override
-    public List<TrelloInfo> getAllTrelloInfos() {
-        return trelloInfoRepo.readAll();
+    public List<TrelloInfoDto> getAll() {
+        return TrelloInfoTransformer.toDto(trelloInfoRepo.getAll());
     }
 
     public Long getTrelloInfoIdByUserId(Long userId){
-        for (TrelloInfo trelloInfo : getAllTrelloInfos()){
-            if (trelloInfo.getUserId()==userId) return trelloInfo.getId();
+        for (TrelloInfoDto trelloInfo : getAll()){
+            if (trelloInfo.getUser().getId()==userId) return trelloInfo.getId();
         }
         return null;
     }
-    public TrelloInfo getTrelloInfoByUserId(Long userId){
-        return getTrelloInfoById(getTrelloInfoIdByUserId(userId));
+
+    @Override
+    @Transactional
+    public TrelloInfoDto getByUserId(Long userId){
+        return getById(getTrelloInfoIdByUserId(userId));
     }
 }

@@ -5,114 +5,85 @@ import com.softserve.mosquito.entities.Status;
 import com.softserve.mosquito.repo.api.StatusRepo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+@Repository
 public class StatusRepoImpl implements StatusRepo {
+
     private static final Logger LOGGER = LogManager.getLogger(StatusRepoImpl.class);
-    private DataSource dataSource;
+    private SessionFactory sessionFactory;
 
-    public StatusRepoImpl() {
-        dataSource = MySqlDataSource.getDataSource();
+    @Autowired
+    public StatusRepoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
-
-    public StatusRepoImpl(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-
-    private static final String CREATE_STATUS = "INSERT INTO statuses (title) VALUE (?);";
-    private static final String UPDATE_STATUS = "UPDATE statuses SET title=? WHERE id=?;";
-    private static final String DELETE_STATUS = "DELETE FROM statuses WHERE id=?;";
-    private static final String READ_STATUS = "SELECT * FROM statuses WHERE id=?;";
-    private static final String READ_ALL_STATUSES = "SELECT * FROM statuses;";
 
     @Override
     public Status create(Status status) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_STATUS, Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setString(1, status.getTitle());
-            int affectedRow = preparedStatement.executeUpdate();
 
-            if (affectedRow == 0)
-                LOGGER.error("Creating status failed");
-            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-                if (generatedKeys.next())
-                    return read(generatedKeys.getLong(1));
-                else
-                    LOGGER.error("Creating status failed, no ID obtained.");
-            }
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-        }
-        return null;
-    }
-
-    @Override
-    public Status read(Long id) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(READ_STATUS)) {
-            preparedStatement.setLong(1, id);
-            List<Status> statuses = parseData(preparedStatement.executeQuery());
-            if (!statuses.isEmpty())
-                return statuses.iterator().next();
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-        }
-        return null;
-    }
-
-    @Override
-    public Status update(Status status) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_STATUS)) {
-            preparedStatement.setString(1, status.getTitle());
-            preparedStatement.setByte(2, status.getId());
-            if (preparedStatement.executeUpdate() > 0)
-                return read(Long.valueOf(status.getId()));
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
+        try (Session session = sessionFactory.openSession()) {
+            Long id = (Long) session.save(status);
+            status.setId(id);
+        } catch (HibernateException e) {
+            LOGGER.error("Error during save status!" + e.getMessage());
         }
         return status;
     }
 
     @Override
+    public Status read(Long id) {
+
+        try {
+            Session session = sessionFactory.openSession();
+            Status status = session.get(Status.class, id);
+            return status;
+        } catch (HibernateException e) {
+            LOGGER.error("Status reading was failed!", e.getMessage());
+        }
+
+        return null;
+    }
+
+    @Override
+    public Status update(Status status) {
+        try{
+            Session session = sessionFactory.openSession();
+            session.getTransaction().begin();
+            session.update(status);
+            session.getTransaction().commit();
+            return status;
+        }catch (HibernateException e){
+            LOGGER.error("Status updating was failed" + e.getMessage());
+        }
+        return null;
+    }
+
+    @Override
     public void delete(Long id) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_STATUS)) {
-            preparedStatement.setByte(1, Byte.parseByte(String.valueOf(id)));
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
+
+        try{
+            Session session = sessionFactory.openSession();
+            session.getTransaction().begin();
+            Status status = session.get(Status.class, id);
+            session.delete(status);
+            session.getTransaction().commit();
+        }catch (HibernateException e){
+            LOGGER.error("Status deleting was failed" + e.getMessage());
         }
     }
 
     @Override
-    public List<Status> readAll() {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(READ_ALL_STATUSES)) {
-            return parseData(preparedStatement.executeQuery());
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-            return Collections.emptyList();
-        }
+    public List<Status> getAll() {
+        Session session = sessionFactory.openSession();
+        Query query = session.createQuery("From " + Status.class.getName());
+        return query.list();
     }
 
-    private List<Status> parseData(ResultSet resultSet) {
-        List<Status> statuses = new ArrayList<>();
-        try {
-            while (resultSet.next()) {
-                Status status = new Status();
-                status.setId(resultSet.getByte("id"));
-                status.setTitle(resultSet.getString("title"));
-                statuses.add(status);
-            }
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-        }
-        return statuses;
-    }
 }

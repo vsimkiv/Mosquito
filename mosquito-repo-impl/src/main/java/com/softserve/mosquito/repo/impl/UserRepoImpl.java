@@ -4,145 +4,89 @@ import com.softserve.mosquito.entities.User;
 import com.softserve.mosquito.repo.api.UserRepo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.Collections;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
+@Repository
+@Transactional(readOnly = true, propagation = Propagation.REQUIRED, rollbackFor = {java.lang.Exception.class})
 public class UserRepoImpl implements UserRepo {
 
     private static final Logger LOGGER = LogManager.getLogger(UserRepoImpl.class);
-    private DataSource dataSource;
+    private SessionFactory sessionFactory;
 
-    public UserRepoImpl() {
-        dataSource = MySqlDataSource.getDataSource();
+    @Autowired
+    public UserRepoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
-
-    public UserRepoImpl(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-
-    private static final String CREATE_USER =
-            "INSERT INTO users (email, password, first_name, last_name) VALUES (?, ?, ?, ?)";
-    private static final String UPDATE_USER =
-            "UPDATE users SET email = ?, password = ?, first_name = ?, last_name = ? WHERE id = ?";
-    private static final String DELETE_USER = "DELETE FROM users WHERE id = ?";
-    private static final String READ_USER = "SELECT * FROM users WHERE id = ?";
-    private static final String READ_ALL_USERS = "SELECT * FROM users";
-    private static final String READ_USER_BY_EMAIL = "SELECT * FROM users WHERE email = ?";
 
     @Override
     public User create(User user) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_USER,
-                     Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setString(1, user.getEmail());
-            preparedStatement.setString(2, user.getPassword());
-            preparedStatement.setString(3, user.getFirstName());
-            preparedStatement.setString(4, user.getLastName());
-
-            if (preparedStatement.executeUpdate() == 0)
-                LOGGER.error("Creating user failed, no rows affected");
-
-            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-                if (generatedKeys.next())
-                    return read(generatedKeys.getLong(1));
-                else
-                    LOGGER.error("Creating user failed, no ID obtained.");
+        try (Session session = sessionFactory.openSession()) {
+            Long id = (Long) session.save(user);
+            if (id == null) {
+                throw new HibernateException("Did not get id!");
             }
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage(), e);
+        } catch (HibernateException e) {
+            LOGGER.error("Error during save user! " + e.getMessage());
+            return null;
         }
-        return null;
+        return user;
     }
 
     @Override
     public User read(Long id) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(READ_USER)) {
-            preparedStatement.setLong(1, id);
-
-            List<User> users = getData(preparedStatement.executeQuery());
-            if (!users.isEmpty())
-                return users.iterator().next();
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage(), e);
+        try {
+            Session session = sessionFactory.getCurrentSession();
+            return session.get(User.class, id);
+        } catch (HibernateException e) {
+            LOGGER.error("Reading user was failed!" + e.getMessage());
+            return null;
         }
-        return null;
     }
 
     @Override
     public User update(User user) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_USER)) {
-            preparedStatement.setString(1, user.getEmail());
-            preparedStatement.setString(2, user.getPassword());
-            preparedStatement.setString(3, user.getFirstName());
-            preparedStatement.setString(4, user.getLastName());
-            preparedStatement.setLong(5, user.getId());
-
-            if (preparedStatement.executeUpdate() > 0)
-                return read(user.getId());
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage(), e);
+        try (Session session = sessionFactory.openSession()) {
+            session.getTransaction().begin();
+            session.update(user);
+            session.getTransaction().commit();
+            return user;
+        } catch (HibernateException e) {
+            LOGGER.error("Updating user was failed!" + e.getMessage());
+            return null;
         }
-        return null;
     }
 
     @Override
     public void delete(Long id) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USER)) {
-            preparedStatement.setLong(1, id);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage(), e);
+        try (Session session = sessionFactory.openSession()) {
+            session.getTransaction().begin();
+            User user = session.get(User.class, id);
+            session.delete(user);
+            session.getTransaction().commit();
+        } catch (HibernateException e) {
+            LOGGER.error("Deleting user was failed!" + e.getMessage());
         }
     }
 
     @Override
-    public List<User> readAll() {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(READ_ALL_USERS)) {
-            return getData(preparedStatement.executeQuery());
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage(), e);
-            return Collections.emptyList();
-        }
-    }
-
-    public User readUserByEmail(String email) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(READ_USER_BY_EMAIL)) {
-            preparedStatement.setString(1, email);
-
-            List<User> users = getData(preparedStatement.executeQuery());
-            if (!users.isEmpty())
-                return users.iterator().next();
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage(), e);
-        }
-        return null;
-    }
-
-    private List<User> getData(ResultSet resultSet) {
-        List<User> users = new ArrayList<>();
+    public List<User> getAll() {
         try {
-            while (resultSet.next()) {
-                User user = new User();
-                user.setId(resultSet.getLong("id"));
-                user.setEmail(resultSet.getString("email"));
-                user.setPassword(resultSet.getString("password"));
-                user.setFirstName(resultSet.getString("first_name"));
-                user.setLastName(resultSet.getString("last_name"));
-
-                users.add(user);
-            }
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage(), e);
+            Session session = sessionFactory.getCurrentSession();
+            Query<User> users = session.createQuery("FROM " + User.class.getName());
+            return users.list();
+        } catch (HibernateException e) {
+            LOGGER.error(e.getMessage());
+            return null;
         }
-        return users;
     }
 }

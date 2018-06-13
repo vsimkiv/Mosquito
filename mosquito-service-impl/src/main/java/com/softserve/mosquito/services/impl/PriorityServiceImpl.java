@@ -1,27 +1,34 @@
 package com.softserve.mosquito.services.impl;
 
-import com.softserve.mosquito.api.Transformer;
 import com.softserve.mosquito.dtos.PriorityCreateDto;
 import com.softserve.mosquito.dtos.PriorityDto;
 import com.softserve.mosquito.entities.Priority;
 import com.softserve.mosquito.repo.api.PriorityRepo;
-import com.softserve.mosquito.repo.impl.PriorityRepoImpl;
-import com.softserve.mosquito.impl.PriorityTransformer;
 import com.softserve.mosquito.services.api.PriorityService;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Service
 public class PriorityServiceImpl implements PriorityService {
 
-    private PriorityRepo priorityRepo = new PriorityRepoImpl();
-    private Transformer<Priority, PriorityCreateDto> priorityCreateTransformer = new PriorityTransformer.PriorityCreate();
-    private Transformer<Priority, PriorityDto> priorityGenericTransformer = new PriorityTransformer.PriorityGeneric();
+    private PriorityRepo priorityRepo;
+    //TODO: Autowired
+    private ModelMapper modelMapper = new ModelMapper();
 
+    @Autowired
+    public PriorityServiceImpl(PriorityRepo priorityRepo) {
+        this.priorityRepo = priorityRepo;
+    }
+
+    @Transactional
     @Override
-    public List<PriorityDto> getAllPriorities(){
-        List<Priority> priorities = priorityRepo.readAll();
+    public List<PriorityDto> getAll(){
+        List<Priority> priorities = priorityRepo.getAll();
 
         if(priorities == null || priorities.isEmpty()){
             return null;
@@ -29,47 +36,63 @@ public class PriorityServiceImpl implements PriorityService {
 
         List<PriorityDto> priorityDtos = new ArrayList<>();
         for(Priority priority: priorities){
-            priorityDtos.add(priorityGenericTransformer.toDTO(priority));
+            priorityDtos.add(modelMapper.map(priority, PriorityDto.class));
         }
 
         return priorityDtos;
     }
 
+    @Transactional
     @Override
-    public PriorityDto getPriorityById(Long id){
+    public PriorityDto getById(Long id){
+
         Priority priority = priorityRepo.read(id);
 
         if(priority == null){
             return null;
         }
 
-        return priorityGenericTransformer.toDTO(priority);
+        return modelMapper.map(priority, PriorityDto.class);
     }
 
+    @Transactional
     @Override
-    public PriorityDto createPriority(PriorityCreateDto priorityCreateDto){
-        Priority createdPriority = priorityRepo.create(priorityCreateTransformer.toEntity(priorityCreateDto));
+    public PriorityDto save(PriorityCreateDto priorityCreateDto){
+        Priority createdPriority = priorityRepo.create(modelMapper.map(priorityCreateDto, Priority.class));
 
         if(createdPriority == null){
             return null;
         }
 
-        return priorityGenericTransformer.toDTO(createdPriority);
+        return modelMapper.map(createdPriority, PriorityDto.class);
     }
 
+    @Transactional
     @Override
-    public PriorityDto updatePriority(PriorityDto priorityDto){
-        Priority updatedPriority = priorityRepo.update(priorityGenericTransformer.toEntity(priorityDto));
+    public PriorityDto update(PriorityDto priorityDto){
+        Priority updatedPriority = priorityRepo.update(modelMapper.map(priorityDto, Priority.class));
 
         if(updatedPriority == null){
             return null;
         }
 
-        return priorityGenericTransformer.toDTO(updatedPriority);
+        return modelMapper.map(updatedPriority, PriorityDto.class);
+    }
+
+    @Transactional
+    @Override
+    public void delete(Long id){
+        priorityRepo.delete(id);
     }
 
     @Override
-    public void removePriority(Long id){
-        priorityRepo.delete(id);
+    public Priority getPriorityEntityById(Long id) {
+        Priority priority = priorityRepo.read(id);
+
+        if(priority == null){
+            return null;
+        }
+
+        return priority;
     }
 }

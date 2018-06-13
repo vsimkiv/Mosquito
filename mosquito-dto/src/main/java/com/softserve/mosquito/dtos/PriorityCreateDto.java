@@ -1,6 +1,8 @@
 package com.softserve.mosquito.dtos;
 
-public class PriorityCreateDto {
+import java.io.Serializable;
+
+public class PriorityCreateDto implements Serializable{
     private String title;
 
     public PriorityCreateDto() {

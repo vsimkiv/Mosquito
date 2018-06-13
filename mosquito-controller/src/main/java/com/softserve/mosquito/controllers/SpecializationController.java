@@ -2,78 +2,73 @@ package com.softserve.mosquito.controllers;
 
 import java.util.List;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-
 import com.softserve.mosquito.dtos.SpecializationCreateDto;
 import com.softserve.mosquito.dtos.SpecializationDto;
 import com.softserve.mosquito.services.api.SpecializationService;
-import com.softserve.mosquito.services.impl.SpecializationServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-@Path("/specializations")
+@RestController
+@RequestMapping("/specializations")
 public class SpecializationController {
-    private SpecializationService specializationService = new SpecializationServiceImpl();
+    private SpecializationService specializationService;
 
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response createSpecialization(SpecializationCreateDto specializationCreateDto){
-        SpecializationDto createdSpecialization = specializationService.createSpecialization(specializationCreateDto);
+    @Autowired
+    public SpecializationController(SpecializationService specializationService) {
+        this.specializationService = specializationService;
+    }
+
+    @PostMapping
+    public ResponseEntity<SpecializationDto> createSpecialization(@RequestBody SpecializationCreateDto specializationCreateDto){
+        SpecializationDto createdSpecialization = specializationService.save(specializationCreateDto);
 
         if(createdSpecialization == null) {
-            return Response.status(Status.BAD_REQUEST).build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
-        return Response.status(Status.CREATED).entity(createdSpecialization).build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdSpecialization);
     }
 
-    @GET
-    @Path("/{specialization_id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getSpecializationById(@PathParam("specialization_id") Byte specialization_id){
-        SpecializationDto specialization = specializationService.getSpecializationById(Long.valueOf(specialization_id));
+    @GetMapping("/{specialization_id}")
+    public ResponseEntity<SpecializationDto> getSpecializationById(@PathVariable("specialization_id") Long specialization_id){
+        SpecializationDto specialization = specializationService.getById(specialization_id);
 
         if(specialization == null) {
-            return Response.status(Status.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        return Response.status(Status.OK).entity(specialization).build();
+        return ResponseEntity.status(HttpStatus.OK).body(specialization);
     }
 
-    @PUT
-    @Path("/{specialization_id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response updateSpecialization(@PathParam("specialization_id") Byte specialization_id, SpecializationCreateDto specializationCreateDto){
-        SpecializationDto specializationForUpdate = new SpecializationDto(specialization_id, specializationCreateDto.getTitle());
-        SpecializationDto updatedSpacialization = specializationService.updateSpecialization(specializationForUpdate);
+    @PutMapping("/{specialization_id}")
+    public ResponseEntity<SpecializationDto> updateSpecialization(@PathVariable("specialization_id") Long specialization_id,
+                                                                  @RequestBody SpecializationDto specializationDto){
+        SpecializationDto specializationForUpdate = new SpecializationDto(specialization_id, specializationDto.getTitle());
+        SpecializationDto updatedSpacialization = specializationService.update(specializationForUpdate);
 
         if(updatedSpacialization == null){
-            return Response.status(Status.BAD_REQUEST).build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        return Response.status(Status.OK).entity(updatedSpacialization).build();
+        return ResponseEntity.status(HttpStatus.OK).body(updatedSpacialization);
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllSpecializations(){
-        List<SpecializationDto>specializations = specializationService.getAllSpecializations();
+    @GetMapping
+    public ResponseEntity<List<SpecializationDto>> getAllSpecializations(){
+        List<SpecializationDto>specializations = specializationService.getAll();
 
         if(specializations == null || specializations.isEmpty()) {
-            return Response.status(Status.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        return Response.status(Status.OK).entity(specializations).build();
+        return ResponseEntity.status(HttpStatus.OK).body(specializations);
     }
 
-    @DELETE
-    @Path("/{specialization_id}")
-    public Response removeSpecialization(@PathParam("specialization_id") Byte specialization_id){
-        specializationService.removeSpecialization(Long.valueOf(specialization_id));
-        return Response.status(Status.OK).build();
+    @DeleteMapping("/{specialization_id}")
+    public ResponseEntity removeSpecialization(@PathVariable("specialization_id") Long specialization_id){
+        specializationService.delete(specialization_id);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }
-

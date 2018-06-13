@@ -4,20 +4,20 @@ package com.softserve.mosquito.dtos;
  * Generic DTO for Specialization Entity
  */
 public class SpecializationDto {
-    private Byte id;
+    private Long id;
     private String title;
 
     public SpecializationDto() {
     }
 
-    public SpecializationDto(Byte id, String title) {
+    public SpecializationDto(Long id, String title) {
         this.id = id;
         this.title = title;
     }
 
-    public Byte getId() { return id; }
+    public Long getId() { return id; }
 
-    public void setId(Byte id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

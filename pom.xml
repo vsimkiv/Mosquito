@@ -22,12 +22,65 @@
         <module>mosquito-web</module>
     </modules>
 
+    <properties>
+        <project.version>1.0-SNAPSHOT</project.version>
+        <spring.version>4.3.17.RELEASE</spring.version>
+        <hibernate.validator.version>6.0.10.Final</hibernate.validator.version>
+    </properties>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>com.softserve.mosquito</groupId>
                 <artifactId>mosquito-bom</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>${project.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>com.softserve.mosquito</groupId>
+                <artifactId>mosquito-controller</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.softserve.mosquito</groupId>
+                <artifactId>mosquito-dto</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.softserve.mosquito</groupId>
+                <artifactId>mosquito-entity</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.softserve.mosquito</groupId>
+                <artifactId>mosquito-repo-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.softserve.mosquito</groupId>
+                <artifactId>mosquito-repo-impl</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.softserve.mosquito</groupId>
+                <artifactId>mosquito-service-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.softserve.mosquito</groupId>
+                <artifactId>mosquito-service-impl</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.softserve.mosquito</groupId>
+                <artifactId>mosquito-transformer</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.softserve.mosquito</groupId>
+                <artifactId>mosquito-web</artifactId>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

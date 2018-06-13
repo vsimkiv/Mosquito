@@ -3,51 +3,61 @@ package com.softserve.mosquito.controllers;
 
 import com.softserve.mosquito.dtos.LogWorkDto;
 import com.softserve.mosquito.services.api.LogWorkService;
-import com.softserve.mosquito.services.impl.LogWorkServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
+import java.util.List;
 
-@Path("/log-works")
+@RestController
+@RequestMapping("/log-work")
 public class LogWorkController {
-    private LogWorkService logWorkService = new LogWorkServiceImpl();
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllLogWorks() {
-        return Response.status(Status.OK).entity(logWorkService.getAllLogWork().toString()).build();
+    private LogWorkService logWorkService;
+
+    @Autowired
+    public LogWorkController(LogWorkService logWorkService) {
+        this.logWorkService = logWorkService;
     }
 
-    @GET
-    @Path("/{estimation_Id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getLogWorksForTask(@PathParam("estimation_Id") Long estimation_Id) {
-     return Response.ok(logWorkService.getLogWorksByEstimation(estimation_Id).toString()).build();
+    @PostMapping(path = "/{task_id}/log-works")
+
+    @ResponseStatus(HttpStatus.OK)
+    public LogWorkDto createLogWork(@PathVariable("task_id") Long taskId,
+                                           @RequestBody LogWorkDto logWorkDto) {
+        return logWorkService.save(logWorkDto);
     }
 
-    @POST
-    @Path("/{logWork_id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response createLogWork(@PathParam("logWork_id") Long taskId, LogWorkDto logWorkDto) {
-       return Response.status(Status.OK).build();
+    @GetMapping(path = "/{log-work_id}/log-works")
+    @ResponseStatus(HttpStatus.OK)
+    public LogWorkDto getLogWorkById(@PathVariable("log-work_id") Long logId) {
+
+        return logWorkService.getById(logId);
     }
 
-    @PUT
-    @Path("/{logWork_id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response updateLogWorksForTask(@PathParam("logWork_id") Long taskId, LogWorkDto logWorkDto) {
-        return Response.status(Status.OK).build();
+    @PutMapping(path = "/{log-work_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public LogWorkDto updateLogWork(@PathVariable("log-work_id") Long logId,
+                                          @RequestBody LogWorkDto logWorkDto) {
+        logWorkDto.setId(logId);
+        return logWorkService.update(logWorkDto);
     }
 
-    @DELETE
-    @Path("/{logWork_id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteLogWorksForTask(@PathParam("logWork_id") Long logWorkId) {
-        return Response.status(Status.OK).build();
+    @DeleteMapping(path = "/{log-workId}")
+    public HttpStatus deleteLogWork(@PathVariable("log-workId") Long logId) {
+        logWorkService.delete(logId);
+        return HttpStatus.OK;
+    }
+    @GetMapping(path = "/by-est/{estimation_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<LogWorkDto> getLogWorksByByEstimation(@PathVariable("estimation_id") Long estimationId) {
+
+        return logWorkService.getByEstimationId(estimationId);
+    }
+    @GetMapping(path = "/by-user/{user_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<LogWorkDto> getLogWorksByUserId(@PathVariable("user_id") Long userId) {
+
+        return logWorkService.getByUserId(userId);
     }
 }

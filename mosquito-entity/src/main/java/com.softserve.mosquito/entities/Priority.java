@@ -1,15 +1,29 @@
 package com.softserve.mosquito.entities;
 
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = "priorities")
 public final class Priority implements Serializable {
-    private Byte id;
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long id;
     private String title;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "priority", fetch = FetchType.LAZY)
+    private List<Task> tasks = new ArrayList<>();
 
     public Priority() {
     }
 
-    public Priority(Byte id) {
+    public Priority(Long id) {
         this.id = id;
     }
 
@@ -17,16 +31,16 @@ public final class Priority implements Serializable {
         this.title = title;
     }
 
-    public Priority(Byte id, String title) {
+    public Priority(Long id, String title) {
         this.id = id;
         this.title = title;
     }
 
-    public Byte getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Byte id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -44,6 +58,14 @@ public final class Priority implements Serializable {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 '}';
+    }
+
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
     }
 }
 

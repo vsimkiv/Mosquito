@@ -1,30 +1,56 @@
 package com.softserve.mosquito.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "comments")
 public class Comment implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String text;
-    private Long taskId;
-    private Long authorId;
+
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    @JsonIgnore
+    private User author;
+
+    @Column(name = "last_update")
     private LocalDateTime lastUpdate;
+
+    @ManyToOne
+    @JoinColumn(name = "task_id")
+    @JsonIgnore
+    private Task task;
 
     public Comment() {
     }
 
     //transform from DTO
-    public Comment(String text, Long taskId, Long authorId) {
+    public Comment(String text, Task task, User author) {
+
         this.text = text;
-        this.taskId = taskId;
-        this.authorId = authorId;
+        this.task = task;
+        this.author = author;
+    }
+
+    public Comment(Long id, String text, Task task, User author) {
+        this.id = id;
+        this.text = text;
+        this.task = task;
+        this.author = author;
     }
 
     //get from DB
-    public Comment(Long id, String text, Long taskId, Long authorId,  LocalDateTime lastUpdate) {
+    public Comment(Long id, String text, Task task, User author, LocalDateTime lastUpdate) {
         this.id = id;
-        this.taskId = taskId;
-        this.authorId = authorId;
+        this.task = task;
+        this.author = author;
         this.text = text;
         this.lastUpdate = lastUpdate;
     }
@@ -45,22 +71,6 @@ public class Comment implements Serializable {
         this.text = text;
     }
 
-    public Long getTaskId() {
-        return taskId;
-    }
-
-    public void setTaskId(Long taskId) {
-        this.taskId = taskId;
-    }
-
-    public Long getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
-    }
-
     public LocalDateTime getLastUpdate() {
         return lastUpdate;
     }
@@ -69,14 +79,30 @@ public class Comment implements Serializable {
         this.lastUpdate = lastUpdate;
     }
 
+    public Task getTask() {
+        return task;
+    }
+
+    public void setTask(Task task) {
+        this.task = task;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
     @Override
     public String toString() {
         return "Comment{" +
                 "id=" + id +
                 ", text='" + text + '\'' +
-                ", taskId=" + taskId +
-                ", authorId=" + authorId +
+                ", author=" + author +
                 ", lastUpdate=" + lastUpdate +
+                ", task=" + task +
                 '}';
     }
 }

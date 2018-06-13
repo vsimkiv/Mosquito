@@ -15,13 +15,11 @@
     <dependencies>
         <dependency>
             <groupId>com.softserve.mosquito</groupId>
-            <artifactId>mosquito-entity</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <artifactId>mosquito-dto</artifactId>
         </dependency>
         <dependency>
             <groupId>com.softserve.mosquito</groupId>
-            <artifactId>mosquito-dto</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <artifactId>mosquito-entity</artifactId>
         </dependency>
     </dependencies>
     
