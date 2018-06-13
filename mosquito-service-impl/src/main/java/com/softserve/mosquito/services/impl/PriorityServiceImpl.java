@@ -1,24 +1,20 @@
 package com.softserve.mosquito.services.impl;
 
-import com.softserve.mosquito.dtos.PriorityCreateDto;
 import com.softserve.mosquito.dtos.PriorityDto;
 import com.softserve.mosquito.entities.Priority;
 import com.softserve.mosquito.repo.api.PriorityRepo;
 import com.softserve.mosquito.services.api.PriorityService;
-import org.modelmapper.ModelMapper;
+import com.softserve.mosquito.transformer.impl.PriorityTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class PriorityServiceImpl implements PriorityService {
 
     private PriorityRepo priorityRepo;
-    //TODO: Autowired
-    private ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
     public PriorityServiceImpl(PriorityRepo priorityRepo) {
@@ -34,12 +30,7 @@ public class PriorityServiceImpl implements PriorityService {
             return null;
         }
 
-        List<PriorityDto> priorityDtos = new ArrayList<>();
-        for(Priority priority: priorities){
-            priorityDtos.add(modelMapper.map(priority, PriorityDto.class));
-        }
-
-        return priorityDtos;
+        return PriorityTransformer.toDTOList(priorities);
     }
 
     @Transactional
@@ -52,31 +43,31 @@ public class PriorityServiceImpl implements PriorityService {
             return null;
         }
 
-        return modelMapper.map(priority, PriorityDto.class);
+        return PriorityTransformer.toDTO(priority);
     }
 
     @Transactional
     @Override
-    public PriorityDto save(PriorityCreateDto priorityCreateDto){
-        Priority createdPriority = priorityRepo.create(modelMapper.map(priorityCreateDto, Priority.class));
+    public PriorityDto save(PriorityDto priorityDto){
+        Priority createdPriority = priorityRepo.create(PriorityTransformer.toEntity(priorityDto));
 
         if(createdPriority == null){
             return null;
         }
 
-        return modelMapper.map(createdPriority, PriorityDto.class);
+        return PriorityTransformer.toDTO(createdPriority);
     }
 
     @Transactional
     @Override
     public PriorityDto update(PriorityDto priorityDto){
-        Priority updatedPriority = priorityRepo.update(modelMapper.map(priorityDto, Priority.class));
+        Priority updatedPriority = priorityRepo.update(PriorityTransformer.toEntity(priorityDto));
 
         if(updatedPriority == null){
             return null;
         }
 
-        return modelMapper.map(updatedPriority, PriorityDto.class);
+        return PriorityTransformer.toDTO(updatedPriority);
     }
 
     @Transactional

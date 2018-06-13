@@ -1,6 +1,7 @@
 package com.softserve.mosquito.controllers;
 
 import java.util.List;
+import java.util.Set;
 
 import com.softserve.mosquito.dtos.SpecializationCreateDto;
 import com.softserve.mosquito.dtos.SpecializationDto;
@@ -21,8 +22,8 @@ public class SpecializationController {
     }
 
     @PostMapping
-    public ResponseEntity<SpecializationDto> createSpecialization(@RequestBody SpecializationCreateDto specializationCreateDto){
-        SpecializationDto createdSpecialization = specializationService.save(specializationCreateDto);
+    public ResponseEntity<SpecializationDto> createSpecialization(@RequestBody SpecializationDto specializationDto){
+        SpecializationDto createdSpecialization = specializationService.save(specializationDto);
 
         if(createdSpecialization == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -55,8 +56,8 @@ public class SpecializationController {
     }
 
     @GetMapping
-    public ResponseEntity<List<SpecializationDto>> getAllSpecializations(){
-        List<SpecializationDto>specializations = specializationService.getAll();
+    public ResponseEntity<Set<SpecializationDto>> getAllSpecializations(){
+        Set<SpecializationDto> specializations = specializationService.getAll();
 
         if(specializations == null || specializations.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

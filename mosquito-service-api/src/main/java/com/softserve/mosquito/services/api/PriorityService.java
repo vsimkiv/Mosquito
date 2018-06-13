@@ -12,7 +12,7 @@ public interface PriorityService {
 
     PriorityDto getById(Long id);
 
-    PriorityDto save(PriorityCreateDto priorityCreateDto);
+    PriorityDto save(PriorityDto priorityDto);
 
     PriorityDto update(PriorityDto priorityDto);
 

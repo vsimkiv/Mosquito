@@ -1,24 +1,21 @@
 package com.softserve.mosquito.services.impl;
 
-import com.softserve.mosquito.dtos.SpecializationCreateDto;
 import com.softserve.mosquito.dtos.SpecializationDto;
 import com.softserve.mosquito.entities.Specialization;
 import com.softserve.mosquito.repo.api.SpecializationRepo;
 import com.softserve.mosquito.services.api.SpecializationService;
-import org.modelmapper.ModelMapper;
+import com.softserve.mosquito.transformer.impl.SpecializationTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class SpecializationServiceImpl implements SpecializationService {
 
     private SpecializationRepo specializationRepo;
-    //TODO: Autowired
-    private ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
     public SpecializationServiceImpl(SpecializationRepo specializationRepo) {
@@ -27,18 +24,14 @@ public class SpecializationServiceImpl implements SpecializationService {
 
     @Transactional
     @Override
-    public List<SpecializationDto> getAll(){
-        List<Specialization> specializations = specializationRepo.getAll();
+    public Set<SpecializationDto> getAll(){
+        Set<Specialization> specializations = new HashSet<>(specializationRepo.getAll());
 
         if(specializations == null || specializations.isEmpty()){
             return null;
         }
 
-        List<SpecializationDto> specializationDtos = new ArrayList<>();
-        for (Specialization specialization: specializations) {
-            specializationDtos.add(modelMapper.map(specialization, SpecializationDto.class));
-        }
-        return specializationDtos;
+       return SpecializationTransformer.toDTOList(specializations);
     }
 
     @Transactional
@@ -48,30 +41,27 @@ public class SpecializationServiceImpl implements SpecializationService {
         if(specialization == null){
             return null;
         }
-        return modelMapper.map(specialization, SpecializationDto.class);
+        return SpecializationTransformer.toDTO(specialization);
     }
 
     @Transactional
     @Override
-    public SpecializationDto save(SpecializationCreateDto specializationCreateDto){
-        Specialization createdSpecialization = specializationRepo.create(modelMapper.map(specializationCreateDto,
-                                                                            Specialization.class));
+    public SpecializationDto save(SpecializationDto specializationDto){
+        Specialization createdSpecialization = specializationRepo.create(SpecializationTransformer.toEntity(specializationDto));
         if(createdSpecialization == null){
             return null;
         }
-        System.out.println(createdSpecialization + " " + createdSpecialization.getTitle());
-        return modelMapper.map(createdSpecialization, SpecializationDto.class);
+        return SpecializationTransformer.toDTO(createdSpecialization);
     }
 
     @Transactional
     @Override
     public SpecializationDto update(SpecializationDto specializationDto){
-        Specialization updatedSpecialization = specializationRepo.update(modelMapper.map(specializationDto,
-                                                                            Specialization.class));
+        Specialization updatedSpecialization = specializationRepo.update(SpecializationTransformer.toEntity(specializationDto));
         if(updatedSpecialization == null){
             return null;
         }
-        return modelMapper.map(updatedSpecialization, SpecializationDto.class);
+        return SpecializationTransformer.toDTO(updatedSpecialization);
     }
 
     @Transactional

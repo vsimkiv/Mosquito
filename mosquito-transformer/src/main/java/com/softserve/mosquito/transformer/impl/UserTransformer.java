@@ -19,7 +19,7 @@ public class UserTransformer {
             return null;
         else
             return new User(userDto.getEmail(), userDto.getPassword(), userDto.getFirstName(),
-                    userDto.getLastName(), specializationTransformer.toEntity(userDto.getSpecializations()));
+                    userDto.getLastName(), specializationTransformer.toEntityList(userDto.getSpecializations()));
     }
 
     public static UserDto toDTO(User user) {
@@ -28,7 +28,7 @@ public class UserTransformer {
         else
             return UserDto.newBuilder().id(user.getId()).email(user.getEmail()).password(user.getPassword())
                     .confirmPassword(user.getPassword()).firstName(user.getFirstName()).lastName(user.getLastName())
-                    .specializations(specializationTransformer.toDTO(user.getSpecializations())).build();
+                    .specializations(specializationTransformer.toDTOList(user.getSpecializations())).build();
     }
 
     public static List<User> toEntity(List<UserDto> userDtos) {

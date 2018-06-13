@@ -23,8 +23,8 @@ public class PriorityController {
     }
 
     @PostMapping
-    public ResponseEntity<PriorityDto> createPriority(@RequestBody PriorityCreateDto priorityCreateDto){
-        PriorityDto createdPriorityDto = priorityService.save(priorityCreateDto);
+    public ResponseEntity<PriorityDto> createPriority(@RequestBody PriorityDto priorityDto){
+        PriorityDto createdPriorityDto = priorityService.save(priorityDto);
 
         if(createdPriorityDto == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

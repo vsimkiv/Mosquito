@@ -1,17 +1,16 @@
 package com.softserve.mosquito.services.api;
 
-import com.softserve.mosquito.dtos.SpecializationCreateDto;
 import com.softserve.mosquito.dtos.SpecializationDto;
 
-import java.util.List;
+import java.util.Set;
 
 public interface SpecializationService {
 
-    List<SpecializationDto> getAll();
+    Set<SpecializationDto> getAll();
 
     SpecializationDto getById(Long id);
 
-    SpecializationDto save(SpecializationCreateDto specialization);
+    SpecializationDto save(SpecializationDto specialization);
 
     SpecializationDto update(SpecializationDto specialization);
 
