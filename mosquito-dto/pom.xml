@@ -14,8 +14,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.softserve.mosquito</groupId>
-            <artifactId>mosquito-entity</artifactId>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.9.9</version>
         </dependency>
 
         <dependency>
