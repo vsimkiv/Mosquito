@@ -2,7 +2,6 @@ package com.softserve.mosquito.controllers;
 
 import com.softserve.mosquito.dtos.UserDto;
 import com.softserve.mosquito.services.api.UserService;
-import com.softserve.mosquito.services.validation.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +17,10 @@ import java.util.List;
 @RequestMapping("/")
 public class IndexController {
     private UserService userService;
-    private UserValidator userValidator;
 
     @Autowired
-    public IndexController(UserService userService, UserValidator userValidator) {
+    public IndexController(UserService userService) {
         this.userService = userService;
-        this.userValidator = userValidator;
     }
 
     @GetMapping(path = "/")
@@ -57,13 +54,8 @@ public class IndexController {
     @PostMapping(path = "/registration")
     @ResponseStatus(HttpStatus.OK)
     public UserDto registration(@Valid @RequestBody UserDto user) {
-
-        if (userValidator.isRegistrationValid(user))
-            return user;
-
-        return null;
+        return user;
     }
-
 
     private class UserNotFoundException extends RuntimeException {
     }
