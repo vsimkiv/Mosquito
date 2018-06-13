@@ -19,4 +19,18 @@
             <artifactId>mosquito-controller</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <webappDirectory>/sample/servlet/container/deploy/directory</webappDirectory>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
