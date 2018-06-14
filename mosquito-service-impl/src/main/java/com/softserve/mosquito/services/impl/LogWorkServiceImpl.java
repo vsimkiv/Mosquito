@@ -4,7 +4,7 @@ import com.softserve.mosquito.dtos.LogWorkDto;
 import com.softserve.mosquito.entities.LogWork;
 import com.softserve.mosquito.repo.api.LogWorkRepo;
 import com.softserve.mosquito.services.api.LogWorkService;
-import com.softserve.mosquito.transformer.impl.LogWorkTransformer;
+import com.softserve.mosquito.transformer.LogWorkTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

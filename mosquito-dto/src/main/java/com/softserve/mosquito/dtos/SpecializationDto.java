@@ -1,8 +1,5 @@
 package com.softserve.mosquito.dtos;
 
-/**
- * Generic DTO for Specialization Entity
- */
 public class SpecializationDto {
     private Long id;
     private String title;

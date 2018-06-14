@@ -16,7 +16,7 @@
     <dependencies>
         <dependency>
             <groupId>com.softserve.mosquito</groupId>
-            <artifactId>mosquito-controller</artifactId>
+            <artifactId>mosquito-config</artifactId>
         </dependency>
     </dependencies>
 

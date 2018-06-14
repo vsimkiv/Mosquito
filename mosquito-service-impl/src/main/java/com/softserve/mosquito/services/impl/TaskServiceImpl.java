@@ -1,21 +1,20 @@
 package com.softserve.mosquito.services.impl;
 
-import com.softserve.mosquito.dtos.CommentCreateDto;
 import com.softserve.mosquito.dtos.TaskDto;
 import com.softserve.mosquito.dtos.UserDto;
 import com.softserve.mosquito.entities.Task;
 import com.softserve.mosquito.repo.api.TaskRepo;
 import com.softserve.mosquito.services.api.TaskService;
 import com.softserve.mosquito.services.mail.MailSender;
-import com.softserve.mosquito.transformer.impl.TaskTransformer;
+import com.softserve.mosquito.transformer.TaskTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.softserve.mosquito.transformer.impl.TaskTransformer.toDTO;
+import static com.softserve.mosquito.transformer.TaskTransformer.toDTO;
 
 @Service
 public class TaskServiceImpl implements TaskService {

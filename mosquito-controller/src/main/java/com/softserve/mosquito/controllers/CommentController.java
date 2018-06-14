@@ -1,6 +1,6 @@
 package com.softserve.mosquito.controllers;
 
-import com.softserve.mosquito.dtos.CommentCreateDto;
+import com.softserve.mosquito.dtos.CommentDto;
 import com.softserve.mosquito.services.api.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,22 +19,22 @@ public class CommentController {
 
     @PostMapping(path = "/{task_id}/comments")
     @ResponseStatus(HttpStatus.OK)
-    public CommentCreateDto createComment(@PathVariable("task_id") Long taskId,
-                                          @RequestBody CommentCreateDto commentDto) {
+    public CommentDto createComment(@PathVariable("task_id") Long taskId,
+                                    @RequestBody CommentDto commentDto) {
         return commentService.save(commentDto);
     }
 
     @GetMapping(path = "/{comment_id}/comments")
     @ResponseStatus(HttpStatus.OK)
-    public CommentCreateDto getCommentsById(@PathVariable("comment_id") Long taskId) {
+    public CommentDto getCommentsById(@PathVariable("comment_id") Long taskId) {
 
         return commentService.getById(taskId);
     }
 
     @PutMapping(path = "/{comment_id}")
     @ResponseStatus(HttpStatus.OK)
-    public CommentCreateDto updateComment(@PathVariable("comment_id") Long commentId,
-                                          @RequestBody CommentCreateDto comment) {
+    public CommentDto updateComment(@PathVariable("comment_id") Long commentId,
+                                    @RequestBody CommentDto comment) {
         comment.setId(commentId);
         return commentService.update(comment);
     }

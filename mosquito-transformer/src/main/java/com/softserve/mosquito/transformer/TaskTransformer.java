@@ -1,4 +1,4 @@
-package com.softserve.mosquito.transformer.impl;
+package com.softserve.mosquito.transformer;
 
 import com.softserve.mosquito.dtos.TaskDto;
 import com.softserve.mosquito.entities.Task;
@@ -6,8 +6,8 @@ import com.softserve.mosquito.entities.Task;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class TaskTransformer {
+
     private TaskTransformer() {
     }
 

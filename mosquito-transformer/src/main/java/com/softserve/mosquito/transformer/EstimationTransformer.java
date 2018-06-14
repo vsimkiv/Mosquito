@@ -1,4 +1,4 @@
-package com.softserve.mosquito.transformer.impl;
+package com.softserve.mosquito.transformer;
 
 import com.softserve.mosquito.dtos.EstimationDto;
 import com.softserve.mosquito.entities.Estimation;

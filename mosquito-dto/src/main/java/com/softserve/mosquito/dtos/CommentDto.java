@@ -3,16 +3,16 @@ package com.softserve.mosquito.dtos;
 /*
  * DTO for creating comments
  */
-public class CommentCreateDto {
+public class CommentDto {
     private Long id;
     private String text;
     private Long authorId;
     private Long taskId;
 
-    public CommentCreateDto() {
+    public CommentDto() {
     }
 
-    public CommentCreateDto(Long id, String text, Long taskId, Long authorId) {
+    public CommentDto(Long id, String text, Long taskId, Long authorId) {
         this.id = id;
         this.text = text;
         this.authorId = authorId;
@@ -20,7 +20,7 @@ public class CommentCreateDto {
 
     }
 
-    public CommentCreateDto(String text, Long taskId, Long authorId) {
+    public CommentDto(String text, Long taskId, Long authorId) {
         this.text = text;
         this.taskId = taskId;
         this.authorId = authorId;
@@ -60,7 +60,7 @@ public class CommentCreateDto {
 
     @Override
     public String toString() {
-        return "CommentCreateDto{" +
+        return "CommentDto{" +
                 "id=" + id +
                 ", text='" + text + '\'' +
                 ", authorId=" + authorId +

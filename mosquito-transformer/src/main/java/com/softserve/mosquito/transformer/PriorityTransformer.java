@@ -1,6 +1,5 @@
-package com.softserve.mosquito.transformer.impl;
+package com.softserve.mosquito.transformer;
 
-import com.softserve.mosquito.dtos.PriorityCreateDto;
 import com.softserve.mosquito.dtos.PriorityDto;
 import com.softserve.mosquito.entities.Priority;
 
@@ -8,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PriorityTransformer {
+
+    private PriorityTransformer() {
+    }
 
     public static Priority toEntity(PriorityDto priorityDto) {
         return new Priority(priorityDto.getId(), priorityDto.getTitle());

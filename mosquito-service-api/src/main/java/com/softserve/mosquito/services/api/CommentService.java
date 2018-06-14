@@ -1,20 +1,20 @@
 package com.softserve.mosquito.services.api;
 
-import com.softserve.mosquito.dtos.CommentCreateDto;
+import com.softserve.mosquito.dtos.CommentDto;
 
 import java.util.List;
 
 
 public interface CommentService {
 
-    CommentCreateDto save(CommentCreateDto commentCreateDto);
+    CommentDto save(CommentDto commentDto);
 
-    CommentCreateDto getById(Long id);
+    CommentDto getById(Long id);
 
-    CommentCreateDto update(CommentCreateDto commentCreateDto);
+    CommentDto update(CommentDto commentDto);
 
     void delete(Long id);
 
-    List<CommentCreateDto> getByTaskId(Long taskId);
+    List<CommentDto> getByTaskId(Long taskId);
 
 }

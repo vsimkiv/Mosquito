@@ -4,11 +4,12 @@ import com.softserve.mosquito.dtos.PriorityDto;
 import com.softserve.mosquito.entities.Priority;
 import com.softserve.mosquito.repo.api.PriorityRepo;
 import com.softserve.mosquito.services.api.PriorityService;
-import com.softserve.mosquito.transformer.impl.PriorityTransformer;
+import com.softserve.mosquito.transformer.PriorityTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+
 import java.util.List;
 
 @Service
