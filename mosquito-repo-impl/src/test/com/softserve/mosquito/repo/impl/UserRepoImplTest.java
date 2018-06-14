@@ -1,8 +1,11 @@
 package com.softserve.mosquito.repo.impl;
 
-import com.fasterxml.classmate.AnnotationConfiguration;
 import com.softserve.mosquito.entities.User;
-import org.hibernate.SessionFactory;
+import org.dbunit.database.DatabaseDataSourceConnection;
+import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,49 +14,50 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.sql.DataSource;
+
+import static org.junit.Assert.*;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestConfiguration.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class UserRepoImplTest {
 
-
-    SessionFactory sessionFactory;
-
+    @Autowired
     UserRepoImpl userRepo;
 
-    @Before
+    @Autowired
+    DataSource dataSource;
+
+    /*@Before
     public void setUp() throws Exception {
-        AnnotationConfiguration configuration = new AnnotationConfiguration();
-
-        configuration.addAnnotatedClass(SuperHero.class)
-
-                .addAnnotatedClass(SuperPower.class)
-
-                .addAnnotatedClass(SuperPowerType.class);
-
-        configuration.setProperty("hibernate.dialect",
-
-                "org.hibernate.dialect.H2Dialect");
-
-        configuration.setProperty("hibernate.connection.driver_class",
-
-                "org.h2.Driver");
-
-        configuration.setProperty("hibernate.connection.url", "jdbc:h2:mem");
-
-        configuration.setProperty("hibernate.hbm2ddl.auto", "create");
-
-        sessionFactory = configuration.buildSessionFactory();
-        userRepo = new UserRepoImpl(sessionFactory);
+        IDatabaseConnection dbConn = new DatabaseDataSourceConnection(
+                dataSource);
+        DatabaseOperation.CLEAN_INSERT.execute(dbConn, getDataSet());
     }
+
+    private IDataSet getDataSet() throws Exception{
+        IDataSet dataSet = new FlatXmlDataSet(this.getClass().getClassLoader().getResourceAsStream("User.xml"));
+        return dataSet;
+    }*/
 
     @Test
     public void create() throws Exception {
+        User user = new User();
+        user.setEmail("dfhdfh");
+        user.setPassword("dfhdfh");
+        user.setFirstName("dfhdfh");
+        user.setLastName("dfhdfh");
+        user.setConfirmed(true);
+
+        User created = userRepo.create(user);
+        assertNotNull(created.getId());
     }
 
     @Test
     public void read() throws Exception {
-        User users = userRepo.read(42L);
+        User user = userRepo.read(1L);
+        //assertNotNull(user);
     }
 
     @Test

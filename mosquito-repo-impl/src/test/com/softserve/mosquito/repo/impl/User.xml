@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <users id="1" email="hfghdf@gmail.com" password="8ghtsndfhirgju8923bsjkgdf8ufzxdg"
+          first_name="fhfghfg"  last_name="fhfg" confirmed="1"/>
+    <users id="2" email="hfgfdhdfghdf@gmail.com" password="8fgjgjfj67iffkhhkhjjjkjhkhzfsdfbg"
+          first_name="fhfghfgfhg5"  last_name="kljhbnm" confirmed="1"/>
+</dataset>

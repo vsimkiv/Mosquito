@@ -1,13 +1,12 @@
 package com.softserve.mosquito.repo.impl;
 
-import org.apache.commons.dbcp.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
@@ -18,52 +17,40 @@ import java.util.Properties;
 @ComponentScan({"com.softserve.mosquito"})
 public class TestConfiguration {
     @Autowired
-    private Environment env;
+    private Environment environment;
 
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(restDataSource());
-        sessionFactory.setPackagesToScan(
-                new String[]{"com.softserve.mosquito.entities"});
+        sessionFactory.setDataSource(dataSource());
+        sessionFactory.setPackagesToScan(new String[] { "com.softserve.mosquito" });
         sessionFactory.setHibernateProperties(hibernateProperties());
-
         return sessionFactory;
     }
 
-    @Bean
-    public DataSource restDataSource() {
-        BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setDriverClassName(env.getProperty("jdbc.driverClassName"));
-        dataSource.setUrl(env.getProperty("jdbc.url"));
-        dataSource.setUsername(env.getProperty("jdbc.user"));
-        dataSource.setPassword(env.getProperty("jdbc.pass"));
-
+    @Bean(name = "dataSource")
+    public DataSource dataSource() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName("org.h2.Driver");
+        dataSource.setUrl("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
+        dataSource.setUrl("jdbc:h2:mem:test;INIT=runscript from '~/create.sql'\\;runscript from '~/init.sql");
+        dataSource.setUsername("test");
+        dataSource.setPassword("");
         return dataSource;
+    }
+
+    private Properties hibernateProperties() {
+        Properties properties = new Properties();
+        properties.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+        properties.put("hibernate.hbm2ddl.auto", "create-drop");
+        return properties;
     }
 
     @Bean
     @Autowired
-    public HibernateTransactionManager transactionManager(
-            SessionFactory sessionFactory) {
-        return new HibernateTransactionManager(sessionFactory);
-    }
-
-    @Bean
-    public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
-        return new PersistenceExceptionTranslationPostProcessor();
-    }
-
-    Properties hibernateProperties() {
-        return new Properties() {
-            {
-                setProperty("hibernate.hbm2ddl.auto",
-                        env.getProperty("hibernate.hbm2ddl.auto"));
-                setProperty("hibernate.dialect",
-                        env.getProperty("hibernate.dialect"));
-                setProperty("hibernate.globally_quoted_identifiers",
-                        "true");
-            }
-        };
+    public HibernateTransactionManager transactionManager(SessionFactory s) {
+        HibernateTransactionManager txManager = new HibernateTransactionManager();
+        txManager.setSessionFactory(s);
+        return txManager;
     }
 }
