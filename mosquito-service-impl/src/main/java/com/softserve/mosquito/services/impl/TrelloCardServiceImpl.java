@@ -2,18 +2,13 @@ package com.softserve.mosquito.services.impl;
 
 import com.softserve.mosquito.dtos.*;
 import com.softserve.mosquito.services.api.*;
-import com.softserve.mosquito.transformer.TaskTransformer;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import org.jboss.resteasy.client.jaxrs.ResteasyClient;
-import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
-import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
-
-import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -136,7 +131,7 @@ public class TrelloCardServiceImpl implements TrelloCardService {
         return trelloTasks;
     }
 
-    private void createTasksFromTrelloCards(TrelloCardDto[] trelloCards, String status, String projectName){
+    private void createTasksFromTrelloCards(TrelloCardDto[] trelloCards, String status, String projectName) {
 
         TaskDto taskDto = new TaskDto();
         taskDto.setName(projectName);
@@ -144,7 +139,7 @@ public class TrelloCardServiceImpl implements TrelloCardService {
         taskDto.setWorkerDto(userService.getById(trelloInfo.getUserDto().getId()));
         taskDto = taskService.save(taskDto);
 
-        for (TrelloCardDto trelloCard : trelloCards){
+        for (TrelloCardDto trelloCard : trelloCards) {
             TaskDto trelloTask = new TaskDto();
             trelloTask.setName(trelloCard.getName());
             trelloTask.setWorkerDto(userService.getById(trelloInfo.getUserDto().getId()));
@@ -153,29 +148,22 @@ public class TrelloCardServiceImpl implements TrelloCardService {
             trelloTask.setStatusDto(statusService.getByName(status));
             taskService.save(trelloTask);
         }
-   }
+    }
 
-    private TrelloBoardDto[] getAllTrelloBoards(){
-        TrelloBoardDto[] trelloBoards= null;
+    private TrelloBoardDto[] getAllTrelloBoards() {
+        TrelloBoardDto[] trelloBoards = null;
         String urlGetAllBoards = String.format("https://trello.com/1/members/%s/boards?key=%s&token=%s",
                 trelloInfo.getUserTrelloName(), trelloInfo.getUserTrelloKey(), trelloInfo.getUserTrelloToken());
-
         try {
-            ResteasyClient client = new ResteasyClientBuilder().build();
-            ResteasyWebTarget target = client.target(urlGetAllBoards);
-
-            Response response = target.request().get();
-
-            String responseAsString = response.readEntity(String.class);
+            RestTemplate restTemplate = new RestTemplate();
+            String responseAsString = restTemplate.getForObject(urlGetAllBoards, String.class);
 
             ObjectMapper mapper = new ObjectMapper();
-
             trelloBoards = mapper.readValue(responseAsString, TrelloBoardDto[].class);
 
         } catch (Exception e) {
             System.err.println(e);
         }
-
         return trelloBoards;
     }
 
@@ -183,52 +171,35 @@ public class TrelloCardServiceImpl implements TrelloCardService {
         TrelloListDto[] TrelloLists = null;
         String urlGetListOfBoard = String.format("https://trello.com/1/boards/%s/lists?cards=open&card_fields=name&fields=name&key=%s&token=%s",
                 idBoard, trelloInfo.getUserTrelloKey(), trelloInfo.getUserTrelloToken());
-
         try {
-
-            ResteasyClient client = new ResteasyClientBuilder().build();
-            ResteasyWebTarget target = client.target(urlGetListOfBoard);
-
-            Response response = target.request().get();
-
-            String responseAsString = response.readEntity(String.class);
+            RestTemplate restTemplate = new RestTemplate();
+            String responseAsString = restTemplate.getForObject(urlGetListOfBoard, String.class);
 
             ObjectMapper mapper = new ObjectMapper();
-
             TrelloLists = mapper.readValue(responseAsString, TrelloListDto[].class);
 
         } catch (Exception e) {
             System.err.println(e);
         }
-
         return TrelloLists;
     }
 
-    private TrelloCardDto[] getTrelloCardsByList(String idList){
+    private TrelloCardDto[] getTrelloCardsByList(String idList) {
         TrelloCardDto[] TrelloCards = null;
 
-        String urlGetCardsByList= String.format("https://trello.com/1/lists/%s/cards?key=%s&token=%s",
+        String urlGetCardsByList = String.format("https://trello.com/1/lists/%s/cards?key=%s&token=%s",
                 idList, trelloInfo.getUserTrelloKey(), trelloInfo.getUserTrelloToken());
-
         try {
-
-            ResteasyClient client = new ResteasyClientBuilder().build();
-            ResteasyWebTarget target = client.target(urlGetCardsByList);
-
-            Response response = target.request().get();
-
-            String responseAsString = response.readEntity(String.class);
+            RestTemplate restTemplate = new RestTemplate();
+            String responseAsString = restTemplate.getForObject(urlGetCardsByList, String.class);
 
             ObjectMapper mapper = new ObjectMapper();
-
             TrelloCards = mapper.readValue(responseAsString, TrelloCardDto[].class);
 
         } catch (Exception e) {
             System.err.println(e);
         }
-
         return TrelloCards;
     }
-
 }
 
