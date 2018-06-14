@@ -1,5 +1,6 @@
 package com.softserve.mosquito.services.impl;
 
+import com.softserve.mosquito.dtos.CommentCreateDto;
 import com.softserve.mosquito.dtos.TaskDto;
 import com.softserve.mosquito.dtos.UserDto;
 import com.softserve.mosquito.entities.Task;
@@ -22,7 +23,7 @@ public class TaskServiceImpl implements TaskService {
     private MailSender mailSender;
 
     @Autowired
-    public TaskServiceImpl(TaskRepo taskRepo) {
+    public TaskServiceImpl(TaskRepo taskRepo, MailSender mailSender) {
         this.taskRepo = taskRepo;
         this.mailSender = mailSender;
     }
@@ -32,8 +33,6 @@ public class TaskServiceImpl implements TaskService {
     public TaskDto save(TaskDto taskDto) {
 
         if (isPresent(taskDto)) return TaskTransformer.toDTO(taskRepo.getByName(taskDto.getName()));
-
-
 
         if (isMessageSent(taskDto.getWorkerDto(), "You was assigned for this task" + taskDto.getName(), "Mosquito Task Manager")) {
             if (isPresent(taskDto)) return TaskTransformer.toDTO(taskRepo.getByName(taskDto.getName()));
@@ -90,32 +89,35 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     @Override
     public List<TaskDto> filterByOwner(Long ownerId) {
-        return null;
+        List<TaskDto> taskDtoList = new ArrayList<>();
+        return taskDtoList;
     }
 
-    @Transactional
+        @Transactional
     @Override
     public List<TaskDto> filterByWorker(Long workerId) {
-        return null;
+        List<TaskDto> taskDtoList = new ArrayList<>();
+        return taskDtoList;
     }
 
-    @Transactional
+        @Transactional
     @Override
     public List<TaskDto> filterByPriority(Long priorityId) {
-        return null;
+        List<TaskDto> taskDtoList = new ArrayList<>();
+        return taskDtoList;
     }
 
     @Transactional
     @Override
     public List<TaskDto> filterByStatus(Long statusId) {
-        return null;
+        List<TaskDto> taskDtoList = new ArrayList<>();
+        return taskDtoList;
     }
 
     @Override
     @Transactional
     public boolean isPresent(TaskDto taskDto) {
-        if (taskRepo.getByName(taskDto.getName()) != null) return true;
-        return false;
+        return taskRepo.getByName(taskDto.getName()) != null;
     }
 
     @Override
@@ -128,7 +130,4 @@ public class TaskServiceImpl implements TaskService {
     private boolean isMessageSent(UserDto userDto, String message, String subject) {
         return mailSender.sendMessage(userDto, message, subject);
     }
-
-
-
 }

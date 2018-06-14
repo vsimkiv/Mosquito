@@ -75,15 +75,4 @@ public class PriorityServiceImpl implements PriorityService {
     public void delete(Long id){
         priorityRepo.delete(id);
     }
-
-    @Override
-    public Priority getPriorityEntityById(Long id) {
-        Priority priority = priorityRepo.read(id);
-
-        if(priority == null){
-            return null;
-        }
-
-        return priority;
-    }
 }

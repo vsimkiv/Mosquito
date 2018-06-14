@@ -80,18 +80,6 @@ public class StatusServiceImpl implements StatusService {
 
     @Override
     @Transactional
-    public Status getStatusEntityById(Long id) {
-        Status status = statusRepo.read(id);
-
-        if(status == null){
-            return null;
-        }
-
-        return status;
-    }
-
-    @Override
-    @Transactional
     public List<StatusDto> getAll(){
         List<Status> statuses = statusRepo.getAll();
         if(statuses == null || statuses.isEmpty()){
