@@ -27,49 +27,34 @@ public class TrelloInfoRepoImp implements TrelloInfoRepo {
 
     @Override
     public TrelloInfo create(TrelloInfo trelloInfo) {
-        try(Session session = sessionFactory.openSession()) {
-            session.save(trelloInfo);
-
-            return trelloInfo;
-        } catch (HibernateException e) {
-            LOGGER.error("Error during save trelloInfo!");
-        }
-        return null;
+        Session session = sessionFactory.getCurrentSession();
+        session.save(trelloInfo);
+        return trelloInfo;
     }
 
     @Override
     public TrelloInfo read(Long id) {
-        try (Session session = sessionFactory.openSession()) {
-           return session.get(TrelloInfo.class, id);
-        } catch (HibernateException e) {
-            LOGGER.error("Error during read trelloInfo!");
-        }
-        return null;
+        Session session = sessionFactory.getCurrentSession();
+        return session.get(TrelloInfo.class, id);
+
     }
 
     @Override
     public TrelloInfo update(TrelloInfo trelloInfo) {
-        try (Session session = sessionFactory.openSession()) {
+        Session session = sessionFactory.getCurrentSession();
             session.getTransaction().begin();
             session.update(trelloInfo);
             session.getTransaction().commit();
             return trelloInfo;
-        } catch (HibernateException e) {
-            LOGGER.error("Error during update trelloInfo!");
-        }
-        return null;
     }
 
     @Override
     public void delete(Long id) {
-        try (Session session = sessionFactory.openSession()) {
-            session.getTransaction().begin();
-            TrelloInfo trelloInfo = session.get(TrelloInfo.class, id);
-            session.delete(trelloInfo);
-            session.getTransaction().commit();
-        } catch (HibernateException e) {
-            LOGGER.error("Error during delete trelloInfo!");
-        }
+        Session session = sessionFactory.getCurrentSession();
+        session.getTransaction().begin();
+        TrelloInfo trelloInfo = session.get(TrelloInfo.class, id);
+        session.delete(trelloInfo);
+        session.getTransaction().commit();
     }
 
     @Override
