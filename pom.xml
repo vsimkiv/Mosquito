@@ -26,7 +26,6 @@
 
     <properties>
         <project.version>1.0-SNAPSHOT</project.version>
-        <spring.version>4.3.17.RELEASE</spring.version>
         <hibernate.validator.version>6.0.10.Final</hibernate.validator.version>
     </properties>
 
@@ -34,10 +33,15 @@
         <dependencies>
             <dependency>
                 <groupId>com.softserve.mosquito</groupId>
-                <artifactId>mosquito-bom</artifactId>
+                <artifactId>mosquito-config</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.softserve.mosquito</groupId>
+                <artifactId>mosquito-bom</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>com.softserve.mosquito</groupId>
@@ -84,6 +88,25 @@
                 <artifactId>mosquito-web</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.springframework/spring-framework-bom -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-framework-bom</artifactId>
+                <version>4.3.17.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-bom -->
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-bom</artifactId>
+                <version>4.2.6.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

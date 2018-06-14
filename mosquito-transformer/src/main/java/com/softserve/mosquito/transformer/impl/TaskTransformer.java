@@ -11,7 +11,7 @@ public class TaskTransformer {
     private TaskTransformer() {
     }
 
-    //TODO parentTask, comments, and childTasks will add on service-impl module
+    //parentTask, comments, and childTasks will set on service-impl module
     public static Task toEntity(TaskDto taskDto) {
         return Task.builder()
                 .id(taskDto.getId())
@@ -24,7 +24,7 @@ public class TaskTransformer {
                 .build();
     }
 
-    //TODO parentTask, comments, and childTasks will add on service-impl module
+    //parentTask, comments, and childTasks will set on service-impl module
     public static TaskDto toDTO(Task task) {
         return new TaskDto().builder()
                 .id(task.getId())
@@ -32,7 +32,7 @@ public class TaskTransformer {
                 .ownerDto(UserTransformer.toDTO(task.getOwner()))
                 .workerDto(UserTransformer.toDTO(task.getOwner()))
                 .estimationDto(EstimationTransformer.toDTO(task.getEstimation()))
-                .priorityDto(null)
+                .priorityDto(PriorityTransformer.toDTO(task.getPriority()))
                 .statusDto(StatusTransformer.toDTO(task.getStatus()))
                 .build();
     }

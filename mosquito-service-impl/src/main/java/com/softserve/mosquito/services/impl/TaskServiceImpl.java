@@ -1,9 +1,11 @@
 package com.softserve.mosquito.services.impl;
 
 import com.softserve.mosquito.dtos.TaskDto;
+import com.softserve.mosquito.dtos.UserDto;
 import com.softserve.mosquito.entities.Task;
 import com.softserve.mosquito.repo.api.TaskRepo;
 import com.softserve.mosquito.services.api.TaskService;
+import com.softserve.mosquito.services.mail.MailSender;
 import com.softserve.mosquito.transformer.impl.TaskTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,10 +19,12 @@ import static com.softserve.mosquito.transformer.impl.TaskTransformer.toDTO;
 @Service
 public class TaskServiceImpl implements TaskService {
     private TaskRepo taskRepo;
+    private MailSender mailSender;
 
     @Autowired
     public TaskServiceImpl(TaskRepo taskRepo) {
         this.taskRepo = taskRepo;
+        this.mailSender = mailSender;
     }
 
     @Transactional
@@ -29,12 +33,14 @@ public class TaskServiceImpl implements TaskService {
 
         if (isPresent(taskDto)) return TaskTransformer.toDTO(taskRepo.getByName(taskDto.getName()));
 
-        Task task = taskRepo.create(TaskTransformer.toEntity(taskDto));
 
-        if (task == null)
-            return null;
 
-        return toDTO(task);
+        if (isMessageSent(taskDto.getWorkerDto(), "You was assigned for this task" + taskDto.getName(), "Mosquito Task Manager")) {
+            if (isPresent(taskDto)) return TaskTransformer.toDTO(taskRepo.getByName(taskDto.getName()));
+            Task task = taskRepo.create(TaskTransformer.toEntity(taskDto));
+            return toDTO(task);
+        }
+        return null;
     }
 
     @Transactional
@@ -107,8 +113,8 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
-    public boolean isPresent(TaskDto taskDto){
-        if (taskRepo.getByName(taskDto.getName())!=null) return true;
+    public boolean isPresent(TaskDto taskDto) {
+        if (taskRepo.getByName(taskDto.getName()) != null) return true;
         return false;
     }
 
@@ -117,5 +123,12 @@ public class TaskServiceImpl implements TaskService {
     public TaskDto getByName(String name){
         return TaskTransformer.toDTO(taskRepo.getByName(name));
     }
+
+
+    private boolean isMessageSent(UserDto userDto, String message, String subject) {
+        return mailSender.sendMessage(userDto, message, subject);
+    }
+
+
 
 }
