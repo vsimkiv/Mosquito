@@ -21,7 +21,6 @@
         <module>mosquito-service-impl</module>
         <module>mosquito-transformer</module>
         <module>mosquito-web</module>
-
     </modules>
 
     <properties>
@@ -33,16 +32,15 @@
         <dependencies>
             <dependency>
                 <groupId>com.softserve.mosquito</groupId>
-                <artifactId>mosquito-config</artifactId>
+                <artifactId>mosquito-bom</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.softserve.mosquito</groupId>
-                <artifactId>mosquito-bom</artifactId>
+                <artifactId>mosquito-config</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>com.softserve.mosquito</groupId>
                 <artifactId>mosquito-controller</artifactId>

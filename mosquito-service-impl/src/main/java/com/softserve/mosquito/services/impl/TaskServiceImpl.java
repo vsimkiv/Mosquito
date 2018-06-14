@@ -10,8 +10,8 @@ import com.softserve.mosquito.services.mail.MailSender;
 import com.softserve.mosquito.transformer.impl.TaskTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
