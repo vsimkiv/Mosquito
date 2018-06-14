@@ -1,10 +1,10 @@
 package com.softserve.mosquito.services.impl;
 
-import com.softserve.mosquito.dtos.CommentCreateDto;
+import com.softserve.mosquito.dtos.CommentDto;
 import com.softserve.mosquito.entities.Comment;
 import com.softserve.mosquito.repo.api.CommentRepo;
 import com.softserve.mosquito.services.api.CommentService;
-import com.softserve.mosquito.transformer.impl.CommentTransformer;
+import com.softserve.mosquito.transformer.CommentTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,8 +24,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public CommentCreateDto save(CommentCreateDto commentCreateDto) {
-        Comment comment = repo.create(CommentTransformer.toEntity(commentCreateDto));
+    public CommentDto save(CommentDto commentDto) {
+        Comment comment = repo.create(CommentTransformer.toEntity(commentDto));
         if (comment == null)
             return null;
 
@@ -34,7 +34,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public CommentCreateDto getById(Long id) {
+    public CommentDto getById(Long id) {
         Comment comment = repo.read(id);
 
         if (comment == null)
@@ -44,8 +44,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public CommentCreateDto update(CommentCreateDto commentCreateDto) {
-        Comment comment = repo.update(CommentTransformer.toEntity(commentCreateDto));
+    public CommentDto update(CommentDto commentDto) {
+        Comment comment = repo.update(CommentTransformer.toEntity(commentDto));
         if (comment == null)
             return null;
 
@@ -60,8 +60,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public List<CommentCreateDto> getByTaskId(Long taskId) {
-        List<CommentCreateDto> dtos = new ArrayList<>();
+    public List<CommentDto> getByTaskId(Long taskId) {
+        List<CommentDto> dtos = new ArrayList<>();
         List<Comment> comments = repo.getByTaskId(taskId);
         for (Comment comment : comments) {
             if (comment.getTask().getId().equals(taskId))

@@ -1,4 +1,4 @@
-package com.softserve.mosquito.transformer.impl;
+package com.softserve.mosquito.transformer;
 
 import com.softserve.mosquito.dtos.SpecializationDto;
 import com.softserve.mosquito.entities.Specialization;
@@ -7,6 +7,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class SpecializationTransformer {
+
+    private SpecializationTransformer() {
+    }
 
     public static Set<Specialization> toEntityList(Set<SpecializationDto> specializationDtos) {
         Set<Specialization> specializations = new HashSet<>();

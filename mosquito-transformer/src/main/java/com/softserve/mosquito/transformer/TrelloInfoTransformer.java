@@ -1,4 +1,4 @@
-package com.softserve.mosquito.transformer.impl;
+package com.softserve.mosquito.transformer;
 
 import com.softserve.mosquito.dtos.TrelloInfoDto;
 import com.softserve.mosquito.entities.TrelloInfo;

@@ -4,7 +4,7 @@ import com.softserve.mosquito.dtos.StatusDto;
 import com.softserve.mosquito.entities.Status;
 import com.softserve.mosquito.repo.api.StatusRepo;
 import com.softserve.mosquito.services.api.StatusService;
-import com.softserve.mosquito.transformer.impl.StatusTransformer;
+import com.softserve.mosquito.transformer.StatusTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

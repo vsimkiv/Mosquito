@@ -1,6 +1,6 @@
 package com.softserve.mosquito.controllers;
 
-import com.softserve.mosquito.dtos.CommentCreateDto;
+import com.softserve.mosquito.dtos.CommentDto;
 import com.softserve.mosquito.dtos.TaskDto;
 import com.softserve.mosquito.entities.mongo.Task;
 import com.softserve.mosquito.services.api.CommentService;
@@ -79,7 +79,7 @@ public class TaskController {
 
     @GetMapping(path = "/{task_id}/comments")
     @ResponseStatus(HttpStatus.OK)
-    public List<CommentCreateDto> getCommentsByTaskId(@PathVariable("task_id") Long taskId){
+    public List<CommentDto> getCommentsByTaskId(@PathVariable("task_id") Long taskId){
         return commentService.getByTaskId(taskId);
     }
 

@@ -1,6 +1,6 @@
-package com.softserve.mosquito.transformer.impl;
+package com.softserve.mosquito.transformer;
 
-import com.softserve.mosquito.dtos.CommentCreateDto;
+import com.softserve.mosquito.dtos.CommentDto;
 import com.softserve.mosquito.entities.Comment;
 import com.softserve.mosquito.entities.Task;
 import com.softserve.mosquito.entities.User;
@@ -12,16 +12,16 @@ public class CommentTransformer {
     }
 
 
-    public static Comment toEntity(CommentCreateDto commentCreateDto) {
+    public static Comment toEntity(CommentDto commentDto) {
         return new Comment(
-                commentCreateDto.getId(),
-                commentCreateDto.getText(),
-                new Task(commentCreateDto.getTaskId()),
-                new User(commentCreateDto.getAuthorId()));
+                commentDto.getId(),
+                commentDto.getText(),
+                new Task(commentDto.getTaskId()),
+                new User(commentDto.getAuthorId()));
     }
 
-    public static CommentCreateDto toDTO(Comment comment) {
-        return new CommentCreateDto(
+    public static CommentDto toDTO(Comment comment) {
+        return new CommentDto(
                 comment.getId(),
                 comment.getText(),
                 comment.getTask().getId(),

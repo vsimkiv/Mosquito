@@ -6,7 +6,7 @@ import com.softserve.mosquito.entities.Specialization;
 import com.softserve.mosquito.entities.User;
 import com.softserve.mosquito.repo.api.UserRepo;
 import com.softserve.mosquito.services.api.UserService;
-import com.softserve.mosquito.transformer.impl.UserTransformer;
+import com.softserve.mosquito.transformer.UserTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

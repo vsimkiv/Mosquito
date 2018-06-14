@@ -16,7 +16,7 @@ public class TaskDto {
     private PriorityDto priorityDto;
     private StatusDto statusDto;
 
-    private List<CommentCreateDto> commentDtoList;
+    private List<CommentDto> commentDtoList;
     private List<TaskDto> childTaskDtoList;
 
     public Long getId() {
@@ -83,11 +83,11 @@ public class TaskDto {
         this.statusDto = statusDto;
     }
 
-    public List<CommentCreateDto> getCommentDtoList() {
+    public List<CommentDto> getCommentDtoList() {
         return commentDtoList;
     }
 
-    public void setCommentDtoList(List<CommentCreateDto> commentDtoList) {
+    public void setCommentDtoList(List<CommentDto> commentDtoList) {
         this.commentDtoList = commentDtoList;
     }
 
@@ -154,7 +154,7 @@ public class TaskDto {
             return this;
         }
 
-        public TaskDtoUsingOtherDtosBuilder commentDtoList(List<CommentCreateDto> commentDtoList) {
+        public TaskDtoUsingOtherDtosBuilder commentDtoList(List<CommentDto> commentDtoList) {
             taskDto.commentDtoList = commentDtoList;
             return this;
         }
