@@ -2,7 +2,6 @@ package com.softserve.mosquito.controllers;
 
 
 import com.softserve.mosquito.dtos.TaskDto;
-import com.softserve.mosquito.entities.Task;
 import com.softserve.mosquito.services.api.TrelloCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +22,8 @@ public class TrelloCardController {
         this.trelloCardService = trelloCardService;
     }
 
-    //not finished
-    @GetMapping
-    public ResponseEntity<List<TaskDto>> getAllUsers() {
-        return null;// ResponseEntity.ok().body(trelloCardService);
+    @GetMapping("/1")
+    public ResponseEntity<List<TaskDto>> getAllTrelloTasks() {
+        return ResponseEntity.ok().body(trelloCardService.showAllNewTrelloTasks());
     }
 }

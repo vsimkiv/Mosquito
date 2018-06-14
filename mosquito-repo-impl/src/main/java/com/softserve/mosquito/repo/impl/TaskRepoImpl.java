@@ -62,4 +62,16 @@ public class TaskRepoImpl implements TaskRepo {
 
         return query.list();
     }
+
+    @Override
+    @Transactional
+    public Task getByName(String name) {
+        Session session = sessionFactory.getCurrentSession();
+
+            Query query = session.createQuery("FROM " + Task.class.getName() + " WHERE name = :taskName ");
+            query.setParameter("taskName", name);
+            return (Task) query.uniqueResult();
+
+    }
+
 }

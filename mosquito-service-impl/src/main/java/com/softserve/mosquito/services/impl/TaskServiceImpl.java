@@ -27,7 +27,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskDto save(TaskDto taskDto) {
 
-        if (isTaskPresent(taskDto)) return TaskTransformer.toDTO(taskRepo.read(taskDto.getId()));
+        if (isPresent(taskDto)) return TaskTransformer.toDTO(taskRepo.getByName(taskDto.getName()));
 
         Task task = taskRepo.create(TaskTransformer.toEntity(taskDto));
 
@@ -105,9 +105,17 @@ public class TaskServiceImpl implements TaskService {
         return null;
     }
 
-    private boolean isTaskPresent(TaskDto taskDto){
-        if (getById(taskDto.getId())!=null) return true;
+    @Override
+    @Transactional
+    public boolean isPresent(TaskDto taskDto){
+        if (taskRepo.getByName(taskDto.getName())!=null) return true;
         return false;
+    }
+
+    @Override
+    @Transactional
+    public TaskDto getByName(String name){
+        return TaskTransformer.toDTO(taskRepo.getByName(name));
     }
 
 }

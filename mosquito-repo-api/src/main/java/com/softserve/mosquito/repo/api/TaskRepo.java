@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface TaskRepo extends GenericCRUD<Task> {
     List<Task> getSubTasks(Long id);
+    Task getByName(String name);
 }

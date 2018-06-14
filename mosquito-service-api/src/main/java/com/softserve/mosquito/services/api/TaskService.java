@@ -25,4 +25,8 @@ public interface TaskService {
     List<TaskDto> filterByPriority(Long priorityId);
 
     List<TaskDto> filterByStatus(Long statusId);
+
+    boolean isPresent(TaskDto taskDto);
+
+    TaskDto getByName(String name);
 }
