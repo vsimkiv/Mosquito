@@ -1,6 +1,7 @@
 package com.softserve.mosquito.transformer;
 
 import com.softserve.mosquito.dtos.TaskDto;
+import com.softserve.mosquito.dtos.TaskSimpleDto;
 import com.softserve.mosquito.entities.Task;
 
 import java.util.ArrayList;
@@ -52,5 +53,18 @@ public class TaskTransformer {
             taskDtoList.add(toDTO(task));
         }
         return taskDtoList;
+    }
+
+    public static TaskSimpleDto toSimpleDto(TaskDto taskDto){
+        TaskSimpleDto taskSimpleDto = new TaskSimpleDto();
+        taskSimpleDto.setId(taskDto.getId());
+        taskSimpleDto.setName(taskDto.getName());
+        taskSimpleDto.setParentTask(taskDto.getParentTaskDto().getName());
+        taskSimpleDto.setOwner(taskDto.getOwnerDto().toString());
+        taskSimpleDto.setWorker(taskDto.getOwnerDto().toString());
+        taskSimpleDto.setEstimation(taskDto.getEstimationDto().toString());
+        taskSimpleDto.setPriority(taskDto.getPriorityDto().toString());
+        taskSimpleDto.setStatus(taskDto.getStatusDto().toString());
+        return taskSimpleDto;
     }
 }

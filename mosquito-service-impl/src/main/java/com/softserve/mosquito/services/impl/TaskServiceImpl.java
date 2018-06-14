@@ -121,6 +121,10 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
+    public boolean isPresent(String name){return (taskRepo.getByName(name)!=null);}
+
+    @Override
+    @Transactional
     public TaskDto getByName(String name){
         return TaskTransformer.toDTO(taskRepo.getByName(name));
     }

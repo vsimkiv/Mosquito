@@ -28,5 +28,7 @@ public interface TaskService {
 
     boolean isPresent(TaskDto taskDto);
 
+    boolean isPresent(String name);
+
     TaskDto getByName(String name);
 }

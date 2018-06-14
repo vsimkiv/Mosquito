@@ -2,6 +2,7 @@ package com.softserve.mosquito.services.impl;
 
 import com.softserve.mosquito.dtos.*;
 import com.softserve.mosquito.services.api.*;
+import com.softserve.mosquito.transformer.TaskTransformer;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
@@ -43,17 +44,17 @@ public class TrelloCardServiceImpl implements TrelloCardService {
 
     @Transactional
     @Override
-    public void getTasksFromTrello(){
+    public void getTasksFromTrello() {
 
-        for (TrelloBoardDto trelloBoard : getAllTrelloBoards()){
-            for (TrelloListDto trelloList : getTrelloListsByBoard(trelloBoard.getId())){
-                if (trelloList.getName().equalsIgnoreCase("todo")){
+        for (TrelloBoardDto trelloBoard : getAllTrelloBoards()) {
+            for (TrelloListDto trelloList : getTrelloListsByBoard(trelloBoard.getId())) {
+                if (trelloList.getName().equalsIgnoreCase("todo")) {
                     createTasksFromTrelloCards(getTrelloCardsByList(trelloList.getId()), "todo", trelloBoard.getName());
                 }
-                if (trelloList.getName().equalsIgnoreCase("doing")){
+                if (trelloList.getName().equalsIgnoreCase("doing")) {
                     createTasksFromTrelloCards(getTrelloCardsByList(trelloList.getId()), "doing", trelloBoard.getName());
                 }
-                if (trelloList.getName().equalsIgnoreCase("done")){
+                if (trelloList.getName().equalsIgnoreCase("done")) {
                     createTasksFromTrelloCards(getTrelloCardsByList(trelloList.getId()), "done", trelloBoard.getName());
                 }
             }
@@ -62,27 +63,25 @@ public class TrelloCardServiceImpl implements TrelloCardService {
     }
 
 
-    public List<TaskDto> showAllNewTrelloTasks(){
-        List<TaskDto> trelloTasks = new ArrayList<TaskDto>();
+    public List<TaskSimpleDto> showAllNewTrelloTasks() {
+        List<TaskSimpleDto> trelloTasks = new ArrayList<TaskSimpleDto>();
 
-        for (TrelloBoardDto trelloBoard : getAllTrelloBoards()){
-            for (TrelloListDto trelloList : getTrelloListsByBoard(trelloBoard.getId())){
-//                String trelloListName = trelloList.getName();
-//                TaskDto taskDto = new TaskDto();
-//                taskDto.setName(trelloBoard.getName());
-//                trelloTasks.add(taskDto);
-                if (trelloList.getName().equalsIgnoreCase("todo")){
-                    trelloTasks.addAll(CollectTasksFromTrelloCards(getTrelloCardsByList(trelloList.getId()),
+        for (TrelloBoardDto trelloBoard : getAllTrelloBoards()) {
+            for (TrelloListDto trelloList : getTrelloListsByBoard(trelloBoard.getId())) {
+
+                if (trelloList.getName().equalsIgnoreCase("todo")) {
+                    trelloTasks.addAll(CollectTaskSimpleDtosFromTrelloCards(getTrelloCardsByList(trelloList.getId()),
                             "todo", trelloBoard.getName()));
                 }
-//                if (trelloList.getName().equalsIgnoreCase("doing")){
-//                    trelloTasks.addAll(CollectTasksFromTrelloCards(getTrelloCardsByList(trelloList.getId()),
-//                            "doing", trelloBoard.getName()));
-//                }
-//                if (trelloList.getName().equalsIgnoreCase("done")){
-//                    trelloTasks.addAll(CollectTasksFromTrelloCards(getTrelloCardsByList(trelloList.getId()),
-//                            "done", trelloBoard.getName()));
-//                }
+
+                if (trelloList.getName().equalsIgnoreCase("doing")) {
+                    trelloTasks.addAll(CollectTaskSimpleDtosFromTrelloCards(getTrelloCardsByList(trelloList.getId()),
+                            "doing", trelloBoard.getName()));
+                }
+                if (trelloList.getName().equalsIgnoreCase("done")) {
+                    trelloTasks.addAll(CollectTaskSimpleDtosFromTrelloCards(getTrelloCardsByList(trelloList.getId()),
+                            "done", trelloBoard.getName()));
+                }
             }
 
         }
@@ -90,7 +89,30 @@ public class TrelloCardServiceImpl implements TrelloCardService {
     }
 
 
-    private List<TaskDto> CollectTasksFromTrelloCards(TrelloCardDto[] trelloCards, String status, String projectName){
+    private List<TaskSimpleDto> CollectTaskSimpleDtosFromTrelloCards(TrelloCardDto[] trelloCards, String status, String projectName) {
+
+        List<TaskSimpleDto> trelloTasks = new ArrayList<TaskSimpleDto>();
+
+        TaskSimpleDto taskDto = new TaskSimpleDto();
+        taskDto.setName(projectName);
+        taskDto.setOwner(userService.getById(trelloInfo.getUserDto().getId()).toString());
+        taskDto.setWorker(userService.getById(trelloInfo.getUserDto().getId()).toString());
+        if (!taskService.isPresent(projectName)) trelloTasks.add(taskDto);
+
+        for (TrelloCardDto trelloCard : trelloCards) {
+
+            TaskSimpleDto trelloTask = new TaskSimpleDto();
+            trelloTask.setName(trelloCard.getName());
+            trelloTask.setWorker(userService.getById(trelloInfo.getUserDto().getId()).toString());
+            trelloTask.setOwner(userService.getById(trelloInfo.getUserDto().getId()).toString());
+            trelloTask.setParentTask(projectName);
+            trelloTask.setStatus(status);
+            if (!taskService.isPresent(trelloCard.getName())) trelloTasks.add(trelloTask);
+        }
+        return trelloTasks;
+    }
+
+    private List<TaskDto> CollectTasksFromTrelloCards(TrelloCardDto[] trelloCards, String status, String projectName) {
 
         List<TaskDto> trelloTasks = new ArrayList<TaskDto>();
 
@@ -101,7 +123,7 @@ public class TrelloCardServiceImpl implements TrelloCardService {
         if (taskService.isPresent(taskDto)) taskDto = taskService.getByName(taskDto.getName());
         else trelloTasks.add(taskDto);
 
-        for (TrelloCardDto trelloCard : trelloCards){
+        for (TrelloCardDto trelloCard : trelloCards) {
 
             TaskDto trelloTask = new TaskDto();
             trelloTask.setName(trelloCard.getName());
@@ -157,7 +179,7 @@ public class TrelloCardServiceImpl implements TrelloCardService {
         return trelloBoards;
     }
 
-    private TrelloListDto[] getTrelloListsByBoard(String idBoard){
+    private TrelloListDto[] getTrelloListsByBoard(String idBoard) {
         TrelloListDto[] TrelloLists = null;
         String urlGetListOfBoard = String.format("https://trello.com/1/boards/%s/lists?cards=open&card_fields=name&fields=name&key=%s&token=%s",
                 idBoard, trelloInfo.getUserTrelloKey(), trelloInfo.getUserTrelloToken());
