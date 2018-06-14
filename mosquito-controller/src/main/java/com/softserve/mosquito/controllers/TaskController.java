@@ -86,6 +86,13 @@ public class TaskController {
     @GetMapping(path = "/tasks-board")
     @ResponseStatus(HttpStatus.OK)
     public List<Task> mongoTest(@RequestParam(name = "worker_id") Long workerId) {
+        /*tasksBoardService.add(new Task(100L, "task1"), 1L);
+        tasksBoardService.add(new Task(101L, "task2"), 1L);
+        tasksBoardService.add(new Task(102L, "task3"), 1L);
+
+        tasksBoardService.add(new Task(103L, "task4"), 2L);
+        */
+
         return tasksBoardService.getUserWork(workerId);
     }
 }
