@@ -28,5 +28,4 @@ public class SpecializationTransformer {
         return new Specialization(specializationDto.getId(),
                 specializationDto.getTitle());
     }
-
 }

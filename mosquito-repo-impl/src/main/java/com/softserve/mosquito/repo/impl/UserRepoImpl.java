@@ -44,8 +44,7 @@ public class UserRepoImpl implements UserRepo {
 
     @Override
     public User read(Long id) {
-        try {
-            Session session = sessionFactory.getCurrentSession();
+        try (Session session = sessionFactory.openSession()) {
             return session.get(User.class, id);
         } catch (HibernateException e) {
             LOGGER.error("Reading user was failed!" + e.getMessage());
@@ -80,8 +79,7 @@ public class UserRepoImpl implements UserRepo {
 
     @Override
     public List<User> getAll() {
-        try {
-            Session session = sessionFactory.getCurrentSession();
+        try (Session session = sessionFactory.openSession()) {
             Query<User> users = session.createQuery("FROM " + User.class.getName());
             return users.list();
         } catch (HibernateException e) {

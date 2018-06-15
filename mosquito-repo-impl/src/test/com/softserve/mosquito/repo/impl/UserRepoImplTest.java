@@ -16,7 +16,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {TestConfiguration.class})
+@ContextConfiguration(classes = {TestRepoConfig.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class UserRepoImplTest {
 
@@ -26,33 +26,30 @@ public class UserRepoImplTest {
     @Autowired
     DataSource dataSource;
 
-    @Before
-    public void setUp() throws Exception {
-    }
-
-
     @Test
-    public void create() throws Exception {
+    public void create() {
         User user = new User();
-        user.setEmail("dfhdfh");
-        user.setPassword("dfhdfh");
-        user.setFirstName("dfhdfh");
-        user.setLastName("dfhdfh");
+        user.setEmail("patriot02faqq@gmail.com");
+        user.setPassword("ghsdf921jngjdfgsdfghhsdfhdf");
+        user.setFirstName("Vitalik");
+        user.setLastName("Makh");
         user.setConfirmed(true);
 
         User created = userRepo.create(user);
         assertNotNull(created.getId());
-        System.out.println(created.getId());
+
+        User got = userRepo.read(created.getId());
+        assertNotNull(got);
     }
 
     @Test
-    public void read() throws Exception {
+    public void read() {
         User user = userRepo.read(1L);
         assertNotNull(user);
     }
 
     @Test
-    public void update() throws Exception {
+    public void update() {
         User user = userRepo.read(1L);
         assertNotNull(user);
         user.setEmail("new email");
@@ -60,7 +57,7 @@ public class UserRepoImplTest {
     }
 
     @Test/*(expected = NullPointerException.class)*/
-    public void delete() throws Exception {
+    public void delete() {
         User user = new User();
         user.setId(1L);
         userRepo.delete(1L);
@@ -69,9 +66,8 @@ public class UserRepoImplTest {
     }
 
     @Test
-    public void getAll() throws Exception {
+    public void getAll() {
         List<User> users = userRepo.getAll();
         assertNotNull(users);
     }
-
 }
