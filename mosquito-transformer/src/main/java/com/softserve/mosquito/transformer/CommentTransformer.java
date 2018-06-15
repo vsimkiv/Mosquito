@@ -11,7 +11,6 @@ public class CommentTransformer {
         throw new IllegalStateException("Utility class");
     }
 
-
     public static Comment toEntity(CommentDto commentDto) {
         return new Comment(
                 commentDto.getId(),
