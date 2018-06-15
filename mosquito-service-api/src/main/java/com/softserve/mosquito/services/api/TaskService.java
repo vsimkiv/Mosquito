@@ -1,32 +1,37 @@
 package com.softserve.mosquito.services.api;
 
-import com.softserve.mosquito.dtos.TaskDto;
+import com.softserve.mosquito.dtos.TaskFullDto;
+import com.softserve.mosquito.dtos.TaskSimpleDto;
 
 import java.util.List;
 
 public interface TaskService {
 
-    TaskDto save(TaskDto taskDto);
+    TaskFullDto save(TaskFullDto taskFullDto);
 
-    TaskDto update(TaskDto taskDto);
+    TaskFullDto update(TaskFullDto taskFullDto);
 
     void delete(Long id);
 
-    TaskDto getById(Long id);
+    TaskFullDto getById(Long id);
 
-    TaskDto getParentTaskDto(Long parentId);
+    TaskFullDto getParentTaskDto(Long parentId);
 
-    List<TaskDto> getSubTasks(Long id);
+    List<TaskFullDto> getSubTasks(Long id);
 
-    List<TaskDto> filterByOwner(Long ownerId);
+    List<TaskFullDto> filterByOwner(Long ownerId);
 
-    List<TaskDto> filterByWorker(Long workerId);
+    List<TaskFullDto> filterByWorker(Long workerId);
 
-    List<TaskDto> filterByPriority(Long priorityId);
+    List<TaskFullDto> filterByPriority(Long priorityId);
 
-    List<TaskDto> filterByStatus(Long statusId);
+    List<TaskFullDto> filterByStatus(Long statusId);
 
-    boolean isPresent(TaskDto taskDto);
+    boolean isPresent(TaskFullDto taskFullDto);
 
-    TaskDto getByName(String name);
+    boolean isPresent(String name);
+
+    TaskFullDto getByName(String name);
+
+    TaskSimpleDto getSimpleTaskById(Long id);
 }

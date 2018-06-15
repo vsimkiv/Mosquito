@@ -25,17 +25,19 @@ import java.net.URI;
 @RequestMapping("/")
 public class AuthController {
 
-    @Autowired
-    AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
+    private JwtTokenProvider tokenProvider;
+    private PasswordEncoder passwordEncoder;
+    private UserService userService;
 
     @Autowired
-    UserService userService;
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
-    @Autowired
-    JwtTokenProvider tokenProvider;
+    public AuthController(AuthenticationManager authenticationManager, JwtTokenProvider tokenProvider,
+                          PasswordEncoder passwordEncoder, UserService userService) {
+        this.authenticationManager = authenticationManager;
+        this.tokenProvider = tokenProvider;
+        this.passwordEncoder = passwordEncoder;
+        this.userService = userService;
+    }
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@RequestBody UserDto loginRequest) {

@@ -6,5 +6,9 @@ import java.util.List;
 
 public interface UserRepo extends GenericCRUD<User> {
 
-    List<User> getAll();
+    List<User> readAll();
+
+    User readByEmail(String email);
+
+    List<User> readBySpecializationId(Long id);
 }

@@ -2,8 +2,6 @@ package com.softserve.mosquito.services.impl;
 
 
 import com.softserve.mosquito.dtos.UserDto;
-import com.softserve.mosquito.entities.Specialization;
-import com.softserve.mosquito.entities.User;
 import com.softserve.mosquito.repo.api.UserRepo;
 import com.softserve.mosquito.services.api.UserService;
 import com.softserve.mosquito.transformer.UserTransformer;
@@ -11,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -43,7 +40,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getAll() {
-        return UserTransformer.toDTO(userRepo.getAll());
+        return UserTransformer.toDTO(userRepo.readAll());
     }
 
     @Override
@@ -53,24 +50,12 @@ public class UserServiceImpl implements UserService {
 
 
     public UserDto getByEmail(String email) {
-        User result = userRepo.getAll().stream()
-                .filter(user -> user.getEmail().equals(email)).findFirst().orElse(null);
-        return UserTransformer.toDTO(result);
+        return UserTransformer.toDTO(userRepo.readByEmail(email));
     }
 
     @Override
     public List<UserDto> getBySpecializationId(Long specializationId) {
-        List<User> users = userRepo.getAll();
-        List<UserDto> userDtos = new ArrayList<>();
-
-        for (User user : users) {
-            for (Specialization specialization : user.getSpecializations()) {
-                if (specialization.getId().equals(specializationId))
-                    userDtos.add(UserTransformer.toDTO(user));
-            }
-        }
-
-        return userDtos;
+        return UserTransformer.toDTO(userRepo.readBySpecializationId(specializationId));
     }
 
     @Override
