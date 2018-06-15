@@ -23,7 +23,7 @@ public class TestRepoConfig {
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan(new String[] { "com.softserve.mosquito" });
+        sessionFactory.setPackagesToScan(new String[]{"com.softserve.mosquito"});
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
     }
@@ -32,9 +32,7 @@ public class TestRepoConfig {
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.h2.Driver");
-        dataSource.setUrl("jdbc:h2:mem:test;" +
-                "INIT=runscript FROM '/home/student/IdeaProjects/Mosquito/mosquito-repo-impl/src/resources/create.sql';" +
-                "DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
+        dataSource.setUrl("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
 
         dataSource.setUsername("sa");
         dataSource.setPassword("");

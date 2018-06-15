@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import javax.sql.DataSource;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
@@ -27,7 +28,7 @@ public class UserRepoImplTest {
     DataSource dataSource;
 
     @Test
-    public void create() {
+    public void CRUDTest() {
         User user = new User();
         user.setEmail("patriot02faqq@gmail.com");
         user.setPassword("ghsdf921jngjdfgsdfghhsdfhdf");
@@ -40,20 +41,13 @@ public class UserRepoImplTest {
 
         User got = userRepo.read(created.getId());
         assertNotNull(got);
-    }
 
-    @Test
-    public void read() {
-        User user = userRepo.read(1L);
-        assertNotNull(user);
-    }
+        String newEmail = "patriot@gmail.com";
 
-    @Test
-    public void update() {
-        User user = userRepo.read(1L);
-        assertNotNull(user);
-        user.setEmail("new email");
-        userRepo.update(user);
+        got.setEmail(newEmail);
+        User updated = userRepo.update(got);
+        assertEquals(updated.getEmail(), newEmail);
+
     }
 
     @Test/*(expected = NullPointerException.class)*/
