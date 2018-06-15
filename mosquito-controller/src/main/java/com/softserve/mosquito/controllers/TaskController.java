@@ -42,7 +42,7 @@ public class TaskController {
     }
 
     @DeleteMapping(path = "/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTask(@PathVariable("id") Long id) {
         taskService.delete(id);
     }
@@ -59,19 +59,19 @@ public class TaskController {
         return taskService.getSubTasks(id);
     }
 
-    @GetMapping(path = "{owner_id}/tasks-as-owner")
+    @GetMapping(path = "/tasks-as-owner/{owner_id}")
     @ResponseStatus(HttpStatus.OK)
     public TaskDto getOwnerTasks(@PathVariable("owner_id") Long ownerId) {
         return null;
     }
 
-    @GetMapping(path = "{worker_id}/task-as-worker")
+    @GetMapping(path = "tasks-as-worker/{worker_id}/")
     @ResponseStatus(HttpStatus.OK)
     public List<TaskDto> getWorkerTasks(@PathVariable("worker_id") Long workerId) {
         return new ArrayList<>();
     }
 
-    @GetMapping (path = "{status_id}/task-by-status")
+    @GetMapping (path = "/task-by-status/{status_id}")
     @ResponseStatus(HttpStatus.OK)
     public List<TaskDto> getTaskByStatus(@PathVariable("status_id") Long statusId) {
         return new ArrayList<>();

@@ -7,19 +7,22 @@ import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
 import com.softserve.mosquito.dtos.UserDto;
 import com.softserve.mosquito.services.api.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-
 
 @RestController
 @RequestMapping("/social/facebook")
 public class UserFBControler {
     private static final String MY_APP_ACCESS_TOKEN="MY TEXT";
 
-
     private UserService userService;
+
+    @Autowired
+    public UserFBControler(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping(path = "/signin")
     @ResponseStatus(HttpStatus.OK)

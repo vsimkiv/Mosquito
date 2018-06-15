@@ -1,6 +1,5 @@
 package com.softserve.mosquito.controllers;
 
-
 import com.softserve.mosquito.dtos.LogWorkDto;
 import com.softserve.mosquito.services.api.LogWorkService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,6 @@ public class LogWorkController {
     }
 
     @PostMapping(path = "/{task_id}/log-works")
-
     @ResponseStatus(HttpStatus.OK)
     public LogWorkDto createLogWork(@PathVariable("task_id") Long taskId,
                                            @RequestBody LogWorkDto logWorkDto) {
