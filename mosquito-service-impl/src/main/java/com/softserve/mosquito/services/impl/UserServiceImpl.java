@@ -2,15 +2,12 @@ package com.softserve.mosquito.services.impl;
 
 
 import com.softserve.mosquito.dtos.UserDto;
-import com.softserve.mosquito.entities.Specialization;
-import com.softserve.mosquito.entities.User;
 import com.softserve.mosquito.repo.api.UserRepo;
 import com.softserve.mosquito.services.api.UserService;
 import com.softserve.mosquito.transformer.UserTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -55,16 +52,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getBySpecializationId(Long specializationId) {
-        List<User> users = userRepo.readAll();
-        List<UserDto> userDtos = new ArrayList<>();
-
-        for (User user : users) {
-            for (Specialization specialization : user.getSpecializations()) {
-                if (specialization.getId().equals(specializationId))
-                    userDtos.add(UserTransformer.toDTO(user));
-            }
-        }
-
-        return userDtos;
+        return UserTransformer.toDTO(userRepo.readBySpecializationId(specializationId));
     }
 }
