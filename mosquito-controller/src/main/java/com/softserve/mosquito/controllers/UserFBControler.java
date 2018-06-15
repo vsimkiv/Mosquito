@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/social/facebook")
 public class UserFBControler {
-    private static final String MY_APP_ACCESS_TOKEN="MY TEXT";
+    private static final String MY_APP_ACCESS_TOKEN="178289142884993|v56UAfXm1bqnU3Zro-KbwHAFYqw";
 
     private UserService userService;
 

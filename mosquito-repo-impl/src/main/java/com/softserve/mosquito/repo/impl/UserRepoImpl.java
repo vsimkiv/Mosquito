@@ -1,6 +1,5 @@
 package com.softserve.mosquito.repo.impl;
 
-import com.softserve.mosquito.entities.Specialization;
 import com.softserve.mosquito.entities.User;
 import com.softserve.mosquito.repo.api.UserRepo;
 import org.apache.logging.log4j.LogManager;
@@ -11,10 +10,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
-import org.hibernate.sql.JoinType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,14 +33,13 @@ public class UserRepoImpl implements UserRepo {
     public User create(User user) {
         try (Session session = sessionFactory.openSession()) {
             Long id = (Long) session.save(user);
-            if (id == null) {
+            if (id == null)
                 throw new HibernateException("Did not get id!");
-            }
+            return user;
         } catch (HibernateException e) {
             LOGGER.error("Error during save user! " + e.getMessage());
             return null;
         }
-        return user;
     }
 
     @Override
