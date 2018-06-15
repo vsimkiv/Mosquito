@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import javax.mail.Authenticator;
@@ -38,6 +39,11 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
         Session session = Session.getDefaultInstance(properties, authenticator);
         sender.setSession(session);
         return sender;
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new Interceptor());
     }
 
 }
