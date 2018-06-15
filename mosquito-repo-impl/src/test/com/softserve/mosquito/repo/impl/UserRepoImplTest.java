@@ -1,11 +1,6 @@
 package com.softserve.mosquito.repo.impl;
 
 import com.softserve.mosquito.entities.User;
-import org.dbunit.database.DatabaseDataSourceConnection;
-import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,8 +10,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.sql.DataSource;
+import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestConfiguration.class})
@@ -29,17 +26,10 @@ public class UserRepoImplTest {
     @Autowired
     DataSource dataSource;
 
-    /*@Before
+    @Before
     public void setUp() throws Exception {
-        IDatabaseConnection dbConn = new DatabaseDataSourceConnection(
-                dataSource);
-        DatabaseOperation.CLEAN_INSERT.execute(dbConn, getDataSet());
     }
 
-    private IDataSet getDataSet() throws Exception{
-        IDataSet dataSet = new FlatXmlDataSet(this.getClass().getClassLoader().getResourceAsStream("User.xml"));
-        return dataSet;
-    }*/
 
     @Test
     public void create() throws Exception {
@@ -52,24 +42,36 @@ public class UserRepoImplTest {
 
         User created = userRepo.create(user);
         assertNotNull(created.getId());
+        System.out.println(created.getId());
     }
 
     @Test
     public void read() throws Exception {
         User user = userRepo.read(1L);
-        //assertNotNull(user);
+        assertNotNull(user);
     }
 
     @Test
     public void update() throws Exception {
+        User user = userRepo.read(1L);
+        assertNotNull(user);
+        user.setEmail("new email");
+        userRepo.update(user);
     }
 
-    @Test
+    @Test/*(expected = NullPointerException.class)*/
     public void delete() throws Exception {
+        User user = new User();
+        user.setId(1L);
+        userRepo.delete(1L);
+        user = userRepo.read(1L);
+        assertNull(user);
     }
 
     @Test
     public void getAll() throws Exception {
+        List<User> users = userRepo.getAll();
+        assertNotNull(users);
     }
 
 }
