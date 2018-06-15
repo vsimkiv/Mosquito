@@ -16,8 +16,6 @@ import java.util.Properties;
 @Configuration
 @ComponentScan({"com.softserve.mosquito"})
 public class TestRepoConfig {
-    @Autowired
-    private Environment environment;
 
     @Bean
     public LocalSessionFactoryBean sessionFactory() {

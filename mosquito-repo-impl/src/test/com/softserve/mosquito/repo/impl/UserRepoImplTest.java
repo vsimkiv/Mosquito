@@ -1,7 +1,7 @@
 package com.softserve.mosquito.repo.impl;
 
+import com.softserve.mosquito.entities.Specialization;
 import com.softserve.mosquito.entities.User;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.sql.DataSource;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -29,6 +31,7 @@ public class UserRepoImplTest {
 
     @Test
     public void CRUDTest() {
+        //Create user test
         User user = new User();
         user.setEmail("patriot02faqq@gmail.com");
         user.setPassword("ghsdf921jngjdfgsdfghhsdfhdf");
@@ -37,31 +40,54 @@ public class UserRepoImplTest {
         user.setConfirmed(true);
 
         User created = userRepo.create(user);
-        assertNotNull(created.getId());
+        Long id = created.getId();
+        assertNotNull(id);
 
-        User got = userRepo.read(created.getId());
-        assertNotNull(got);
+        //Read user test
+        User read = userRepo.read(id);
+        assertNotNull(read);
 
+        //Update user test
         String newEmail = "patriot@gmail.com";
-
-        got.setEmail(newEmail);
-        User updated = userRepo.update(got);
+        read.setEmail(newEmail);
+        User updated = userRepo.update(read);
         assertEquals(updated.getEmail(), newEmail);
 
-    }
-
-    @Test/*(expected = NullPointerException.class)*/
-    public void delete() {
-        User user = new User();
-        user.setId(1L);
-        userRepo.delete(1L);
-        user = userRepo.read(1L);
-        assertNull(user);
+        //Delete test
+        userRepo.delete(updated.getId());
+        read = userRepo.read(updated.getId());
+        assertNull(read);
     }
 
     @Test
-    public void getAll() {
-        List<User> users = userRepo.getAll();
+    public void specialReadingTest() {
+        for (int i = 1; i <= 12; i++) {
+            User user = new User();
+            user.setEmail("test_user" + i + "@gmail.com");
+            user.setPassword("12345678");
+            user.setFirstName("User_name" + i);
+            user.setLastName("User_surname" + i);
+            user.setConfirmed(true);
+            Set<Specialization> specializations = new HashSet<>();
+            specializations.add((i <= 6) ? new Specialization("DEV") : new Specialization("UI"));
+            user.setSpecializations(specializations);
+            userRepo.create(user);
+        }
+
+        List<User> users = userRepo.readAll();
         assertNotNull(users);
+        assertEquals(users.size(), 12);
+
+
+        users = userRepo.readBySpecializationId(1L);
+        assertNotNull(users);
+        assertEquals(users.size(), 6);
+        assertEquals(users.iterator().next().getSpecializations().iterator().next().getTitle(), "DEV");
+
+        User readExisting = userRepo.readByEmail("test_user1@gmail.com");
+        assertNotNull(readExisting);
+
+        User readNotExisting = userRepo.readByEmail("no-email");
+        assertNull(readNotExisting);
     }
 }
