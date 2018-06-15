@@ -3,11 +3,11 @@ package com.softserve.mosquito.dtos;
 
 import java.util.List;
 
-public class TaskDto {
+public class TaskFullDto {
     private Long id;
     private String name;
 
-    private TaskDto parentTaskDto;
+    private TaskFullDto parentTaskFullDto;
 
     private UserDto ownerDto;
     private UserDto workerDto;
@@ -17,7 +17,7 @@ public class TaskDto {
     private StatusDto statusDto;
 
     private List<CommentDto> commentDtoList;
-    private List<TaskDto> childTaskDtoList;
+    private List<TaskFullDto> childTaskFullDtoList;
 
     public Long getId() {
         return id;
@@ -35,12 +35,12 @@ public class TaskDto {
         this.name = name;
     }
 
-    public TaskDto getParentTaskDto() {
-        return parentTaskDto;
+    public TaskFullDto getParentTaskFullDto() {
+        return parentTaskFullDto;
     }
 
-    public void setParentTaskDto(TaskDto parentTaskDto) {
-        this.parentTaskDto = parentTaskDto;
+    public void setParentTaskFullDto(TaskFullDto parentTaskFullDto) {
+        this.parentTaskFullDto = parentTaskFullDto;
     }
 
     public UserDto getOwnerDto() {
@@ -91,12 +91,12 @@ public class TaskDto {
         this.commentDtoList = commentDtoList;
     }
 
-    public List<TaskDto> getChildTaskDtoList() {
-        return childTaskDtoList;
+    public List<TaskFullDto> getChildTaskFullDtoList() {
+        return childTaskFullDtoList;
     }
 
-    public void setChildTaskDtoList(List<TaskDto> childTaskDtoList) {
-        this.childTaskDtoList = childTaskDtoList;
+    public void setChildTaskFullDtoList(List<TaskFullDto> childTaskFullDtoList) {
+        this.childTaskFullDtoList = childTaskFullDtoList;
     }
 
     public TaskDtoUsingOtherDtosBuilder builder() {
@@ -104,68 +104,68 @@ public class TaskDto {
     }
 
     public static class TaskDtoUsingOtherDtosBuilder {
-        private TaskDto taskDto;
+        private TaskFullDto taskFullDto;
 
         private TaskDtoUsingOtherDtosBuilder() {
-            taskDto = new TaskDto();
+            taskFullDto = new TaskFullDto();
         }
 
         public TaskDtoUsingOtherDtosBuilder id(long id) {
-            taskDto.id = id;
+            taskFullDto.id = id;
             return this;
         }
 
         public TaskDtoUsingOtherDtosBuilder name(String name) {
-            taskDto.name = name;
+            taskFullDto.name = name;
             return this;
         }
 
-        public TaskDtoUsingOtherDtosBuilder parentTaskDto(TaskDto parentTaskDto) {
-            if (parentTaskDto != null) {
-                taskDto.parentTaskDto = parentTaskDto;
+        public TaskDtoUsingOtherDtosBuilder parentTaskDto(TaskFullDto parentTaskFullDto) {
+            if (parentTaskFullDto != null) {
+                taskFullDto.parentTaskFullDto = parentTaskFullDto;
             }
             return this;
         }
 
         public TaskDtoUsingOtherDtosBuilder ownerDto(UserDto ownerDto) {
-            taskDto.ownerDto = ownerDto;
+            taskFullDto.ownerDto = ownerDto;
             return this;
         }
 
 
         public TaskDtoUsingOtherDtosBuilder workerDto(UserDto workerDto) {
-            taskDto.workerDto = workerDto;
+            taskFullDto.workerDto = workerDto;
             return this;
         }
 
 
         public TaskDtoUsingOtherDtosBuilder estimationDto(EstimationDto estimationDto) {
-            taskDto.estimationDto = estimationDto;
+            taskFullDto.estimationDto = estimationDto;
             return this;
         }
 
         public TaskDtoUsingOtherDtosBuilder priorityDto(PriorityDto priorityDto) {
-            taskDto.priorityDto = priorityDto;
+            taskFullDto.priorityDto = priorityDto;
             return this;
         }
 
         public TaskDtoUsingOtherDtosBuilder statusDto(StatusDto statusDto) {
-            taskDto.statusDto = statusDto;
+            taskFullDto.statusDto = statusDto;
             return this;
         }
 
         public TaskDtoUsingOtherDtosBuilder commentDtoList(List<CommentDto> commentDtoList) {
-            taskDto.commentDtoList = commentDtoList;
+            taskFullDto.commentDtoList = commentDtoList;
             return this;
         }
 
-        public TaskDtoUsingOtherDtosBuilder childTaskDtoList(List<TaskDto> childTaskDtoList) {
-            taskDto.childTaskDtoList = childTaskDtoList;
+        public TaskDtoUsingOtherDtosBuilder childTaskDtoList(List<TaskFullDto> childTaskFullDtoList) {
+            taskFullDto.childTaskFullDtoList = childTaskFullDtoList;
             return this;
         }
 
-        public TaskDto build(){
-            return taskDto;
+        public TaskFullDto build(){
+            return taskFullDto;
         }
     }
 }

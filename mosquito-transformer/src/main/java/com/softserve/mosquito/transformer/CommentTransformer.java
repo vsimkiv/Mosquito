@@ -26,6 +26,4 @@ public class CommentTransformer {
                 comment.getTask().getId(),
                 comment.getAuthor().getId());
     }
-
-
 }

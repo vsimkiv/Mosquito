@@ -1,6 +1,7 @@
 package com.softserve.mosquito.services.impl;
 
-import com.softserve.mosquito.dtos.TaskDto;
+import com.softserve.mosquito.dtos.TaskFullDto;
+import com.softserve.mosquito.dtos.TaskSimpleDto;
 import com.softserve.mosquito.dtos.UserDto;
 import com.softserve.mosquito.entities.Task;
 import com.softserve.mosquito.repo.api.TaskRepo;
@@ -14,7 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.softserve.mosquito.transformer.TaskTransformer.toDTO;
+import static com.softserve.mosquito.transformer.TaskTransformer.toBigDTO;
+import static com.softserve.mosquito.transformer.TaskTransformer.toSimpleDto;
 
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -29,25 +31,25 @@ public class TaskServiceImpl implements TaskService {
 
     @Transactional
     @Override
-    public TaskDto save(TaskDto taskDto) {
+    public TaskFullDto save(TaskFullDto taskFullDto) {
 
-        if (isPresent(taskDto)) return TaskTransformer.toDTO(taskRepo.getByName(taskDto.getName()));
+        if (isPresent(taskFullDto)) return TaskTransformer.toBigDTO(taskRepo.getByName(taskFullDto.getName()));
 
-        if (isMessageSent(taskDto.getWorkerDto(), "You was assigned for this task" + taskDto.getName(), "Mosquito Task Manager")) {
-            if (isPresent(taskDto)) return TaskTransformer.toDTO(taskRepo.getByName(taskDto.getName()));
-            Task task = taskRepo.create(TaskTransformer.toEntity(taskDto));
-            return toDTO(task);
+        if (isMessageSent(taskFullDto.getWorkerDto(), "You was assigned for this task" + taskFullDto.getName(), "Mosquito Task Manager")) {
+            if (isPresent(taskFullDto)) return TaskTransformer.toBigDTO(taskRepo.getByName(taskFullDto.getName()));
+            Task task = taskRepo.create(TaskTransformer.toEntity(taskFullDto));
+            return toBigDTO(task);
         }
         return null;
     }
 
     @Transactional
     @Override
-    public TaskDto update(TaskDto taskDto) {
-        Task task = taskRepo.update(TaskTransformer.toEntity(taskDto));
+    public TaskFullDto update(TaskFullDto taskFullDto) {
+        Task task = taskRepo.update(TaskTransformer.toEntity(taskFullDto));
         if (task == null)
             return null;
-        return toDTO(task);
+        return toBigDTO(task);
     }
 
     @Transactional
@@ -58,65 +60,72 @@ public class TaskServiceImpl implements TaskService {
 
     @Transactional
     @Override
-    public TaskDto getById(Long id) {
+    public TaskFullDto getById(Long id) {
         Task task = taskRepo.read(id);
-        TaskDto taskDto = toDTO(task);
+        TaskFullDto taskFullDto = toBigDTO(task);
 
-        taskDto.setParentTaskDto(getParentTaskDto(taskDto.getId()));
-        taskDto.setChildTaskDtoList(getSubTasks(taskDto.getId()));
-        return taskDto;
+        taskFullDto.setParentTaskFullDto(getParentTaskDto(taskFullDto.getId()));
+        taskFullDto.setChildTaskFullDtoList(getSubTasks(taskFullDto.getId()));
+        return taskFullDto;
     }
 
     @Transactional
     @Override
-    public List<TaskDto> getSubTasks(Long id) {
+    public TaskSimpleDto getSimpleTaskById(Long id) {
+        Task task = taskRepo.read(id);
+        return toSimpleDto(toBigDTO(task));
+    }
+
+    @Transactional
+    @Override
+    public List<TaskFullDto> getSubTasks(Long id) {
         List<Task> tasks = taskRepo.getSubTasks(id);
-        List<TaskDto> taskDtos = new ArrayList<>();
+        List<TaskFullDto> taskFullDtos = new ArrayList<>();
         for (Task task : tasks) {
-            taskDtos.add(toDTO(task));
+            taskFullDtos.add(toBigDTO(task));
         }
-        return taskDtos;
+        return taskFullDtos;
     }
 
     @Transactional
     @Override
-    public TaskDto getParentTaskDto(Long parentId) {
+    public TaskFullDto getParentTaskDto(Long parentId) {
         Task task = taskRepo.read(parentId);
-        return toDTO(task);
+        return toBigDTO(task);
     }
 
     @Transactional
     @Override
-    public List<TaskDto> filterByOwner(Long ownerId) {
-        List<TaskDto> taskDtoList = new ArrayList<>();
-        return taskDtoList;
+    public List<TaskFullDto> filterByOwner(Long ownerId) {
+        List<TaskFullDto> taskFullDtoList = new ArrayList<>();
+        return taskFullDtoList;
     }
 
         @Transactional
     @Override
-    public List<TaskDto> filterByWorker(Long workerId) {
-        List<TaskDto> taskDtoList = new ArrayList<>();
-        return taskDtoList;
+    public List<TaskFullDto> filterByWorker(Long workerId) {
+        List<TaskFullDto> taskFullDtoList = new ArrayList<>();
+        return taskFullDtoList;
     }
 
         @Transactional
     @Override
-    public List<TaskDto> filterByPriority(Long priorityId) {
-        List<TaskDto> taskDtoList = new ArrayList<>();
-        return taskDtoList;
+    public List<TaskFullDto> filterByPriority(Long priorityId) {
+        List<TaskFullDto> taskFullDtoList = new ArrayList<>();
+        return taskFullDtoList;
     }
 
     @Transactional
     @Override
-    public List<TaskDto> filterByStatus(Long statusId) {
-        List<TaskDto> taskDtoList = new ArrayList<>();
-        return taskDtoList;
+    public List<TaskFullDto> filterByStatus(Long statusId) {
+        List<TaskFullDto> taskFullDtoList = new ArrayList<>();
+        return taskFullDtoList;
     }
 
     @Override
     @Transactional
-    public boolean isPresent(TaskDto taskDto) {
-        return taskRepo.getByName(taskDto.getName()) != null;
+    public boolean isPresent(TaskFullDto taskFullDto) {
+        return taskRepo.getByName(taskFullDto.getName()) != null;
     }
 
     @Override
@@ -125,8 +134,8 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
-    public TaskDto getByName(String name){
-        return TaskTransformer.toDTO(taskRepo.getByName(name));
+    public TaskFullDto getByName(String name){
+        return TaskTransformer.toBigDTO(taskRepo.getByName(name));
     }
 
 

@@ -1,7 +1,8 @@
 package com.softserve.mosquito.controllers;
 
 import com.softserve.mosquito.dtos.CommentDto;
-import com.softserve.mosquito.dtos.TaskDto;
+import com.softserve.mosquito.dtos.TaskFullDto;
+import com.softserve.mosquito.dtos.TaskSimpleDto;
 import com.softserve.mosquito.entities.mongo.Task;
 import com.softserve.mosquito.services.api.CommentService;
 import com.softserve.mosquito.services.api.TaskService;
@@ -31,14 +32,14 @@ public class TaskController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TaskDto createTask(@RequestBody TaskDto taskDto) {
-        return taskService.save(taskDto);
+    public TaskFullDto createTask(@RequestBody TaskFullDto taskFullDto) {
+        return taskService.save(taskFullDto);
     }
 
     @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TaskDto updateTask(@PathVariable("id") Long id, @RequestBody TaskDto taskDto) {
-        return taskService.update(taskDto);
+    public TaskFullDto updateTask(@PathVariable("id") Long id, @RequestBody TaskFullDto taskFullDto) {
+        return taskService.update(taskFullDto);
     }
 
     @DeleteMapping(path = "/{id}")
@@ -47,33 +48,40 @@ public class TaskController {
         taskService.delete(id);
     }
 
+//    @GetMapping(path = "/{id}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public TaskFullDto getTaskById(@PathVariable("id") Long id) {
+//        return taskService.getById(id);
+//    }
+
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TaskDto getTaskById(@PathVariable("id") Long id) {
-        return taskService.getById(id);
+    public TaskSimpleDto getTaskById(@PathVariable("id") Long id) {
+        return taskService.getSimpleTaskById(id);
     }
+
 
     @GetMapping (path = "{id}/subtasks")
     @ResponseStatus(HttpStatus.OK)
-    public List<TaskDto> getSubTasks(@PathVariable("id") Long id) {
+    public List<TaskFullDto> getSubTasks(@PathVariable("id") Long id) {
         return taskService.getSubTasks(id);
     }
 
     @GetMapping(path = "/tasks-as-owner/{owner_id}")
     @ResponseStatus(HttpStatus.OK)
-    public TaskDto getOwnerTasks(@PathVariable("owner_id") Long ownerId) {
+    public TaskFullDto getOwnerTasks(@PathVariable("owner_id") Long ownerId) {
         return null;
     }
 
     @GetMapping(path = "tasks-as-worker/{worker_id}/")
     @ResponseStatus(HttpStatus.OK)
-    public List<TaskDto> getWorkerTasks(@PathVariable("worker_id") Long workerId) {
+    public List<TaskFullDto> getWorkerTasks(@PathVariable("worker_id") Long workerId) {
         return new ArrayList<>();
     }
 
     @GetMapping (path = "/task-by-status/{status_id}")
     @ResponseStatus(HttpStatus.OK)
-    public List<TaskDto> getTaskByStatus(@PathVariable("status_id") Long statusId) {
+    public List<TaskFullDto> getTaskByStatus(@PathVariable("status_id") Long statusId) {
         return new ArrayList<>();
     }
 

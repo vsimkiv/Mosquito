@@ -107,24 +107,24 @@ public class TrelloCardServiceImpl implements TrelloCardService {
         return trelloTasks;
     }
 
-    private List<TaskDto> CollectTasksFromTrelloCards(TrelloCardDto[] trelloCards, String status, String projectName) {
+    private List<TaskFullDto> CollectTasksFromTrelloCards(TrelloCardDto[] trelloCards, String status, String projectName) {
 
-        List<TaskDto> trelloTasks = new ArrayList<TaskDto>();
+        List<TaskFullDto> trelloTasks = new ArrayList<TaskFullDto>();
 
-        TaskDto taskDto = new TaskDto();
-        taskDto.setName(projectName);
-        taskDto.setOwnerDto(userService.getById(trelloInfo.getUserDto().getId()));
-        taskDto.setWorkerDto(userService.getById(trelloInfo.getUserDto().getId()));
-        if (taskService.isPresent(taskDto)) taskDto = taskService.getByName(taskDto.getName());
-        else trelloTasks.add(taskDto);
+        TaskFullDto taskFullDto = new TaskFullDto();
+        taskFullDto.setName(projectName);
+        taskFullDto.setOwnerDto(userService.getById(trelloInfo.getUserDto().getId()));
+        taskFullDto.setWorkerDto(userService.getById(trelloInfo.getUserDto().getId()));
+        if (taskService.isPresent(taskFullDto)) taskFullDto = taskService.getByName(taskFullDto.getName());
+        else trelloTasks.add(taskFullDto);
 
         for (TrelloCardDto trelloCard : trelloCards) {
 
-            TaskDto trelloTask = new TaskDto();
+            TaskFullDto trelloTask = new TaskFullDto();
             trelloTask.setName(trelloCard.getName());
             trelloTask.setWorkerDto(userService.getById(trelloInfo.getUserDto().getId()));
             trelloTask.setOwnerDto(userService.getById(trelloInfo.getUserDto().getId()));
-            trelloTask.setParentTaskDto(taskDto);
+            trelloTask.setParentTaskFullDto(taskFullDto);
             trelloTask.setStatusDto(statusService.getByName(status));
             if (!taskService.isPresent(trelloTask)) trelloTasks.add(trelloTask);
         }
@@ -133,18 +133,18 @@ public class TrelloCardServiceImpl implements TrelloCardService {
 
     private void createTasksFromTrelloCards(TrelloCardDto[] trelloCards, String status, String projectName) {
 
-        TaskDto taskDto = new TaskDto();
-        taskDto.setName(projectName);
-        taskDto.setOwnerDto(userService.getById(trelloInfo.getUserDto().getId()));
-        taskDto.setWorkerDto(userService.getById(trelloInfo.getUserDto().getId()));
-        taskDto = taskService.save(taskDto);
+        TaskFullDto taskFullDto = new TaskFullDto();
+        taskFullDto.setName(projectName);
+        taskFullDto.setOwnerDto(userService.getById(trelloInfo.getUserDto().getId()));
+        taskFullDto.setWorkerDto(userService.getById(trelloInfo.getUserDto().getId()));
+        taskFullDto = taskService.save(taskFullDto);
 
         for (TrelloCardDto trelloCard : trelloCards) {
-            TaskDto trelloTask = new TaskDto();
+            TaskFullDto trelloTask = new TaskFullDto();
             trelloTask.setName(trelloCard.getName());
             trelloTask.setWorkerDto(userService.getById(trelloInfo.getUserDto().getId()));
             trelloTask.setOwnerDto(userService.getById(trelloInfo.getUserDto().getId()));
-            trelloTask.setParentTaskDto(taskDto);
+            trelloTask.setParentTaskFullDto(taskFullDto);
             trelloTask.setStatusDto(statusService.getByName(status));
             taskService.save(trelloTask);
         }
