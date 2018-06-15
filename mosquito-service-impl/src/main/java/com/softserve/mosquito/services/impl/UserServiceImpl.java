@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getAll() {
-        return UserTransformer.toDTO(userRepo.getAll());
+        return UserTransformer.toDTO(userRepo.readAll());
     }
 
     @Override
@@ -50,14 +50,12 @@ public class UserServiceImpl implements UserService {
 
 
     public UserDto getByEmail(String email) {
-        User result = userRepo.getAll().stream()
-                .filter(user -> user.getEmail().equals(email)).findFirst().orElse(null);
-        return UserTransformer.toDTO(result);
+        return UserTransformer.toDTO(userRepo.readByEmail(email));
     }
 
     @Override
     public List<UserDto> getBySpecializationId(Long specializationId) {
-        List<User> users = userRepo.getAll();
+        List<User> users = userRepo.readAll();
         List<UserDto> userDtos = new ArrayList<>();
 
         for (User user : users) {
