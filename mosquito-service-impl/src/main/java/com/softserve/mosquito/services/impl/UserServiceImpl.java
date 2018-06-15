@@ -8,6 +8,7 @@ import com.softserve.mosquito.repo.api.UserRepo;
 import com.softserve.mosquito.services.api.UserService;
 import com.softserve.mosquito.transformer.UserTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,9 +18,11 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private UserRepo userRepo;
+    private SimpMessagingTemplate template;
 
     @Autowired
-    public UserServiceImpl(UserRepo userRepo) {
+    public UserServiceImpl(SimpMessagingTemplate template, UserRepo userRepo) {
+        this.template = template;
         this.userRepo = userRepo;
     }
 
@@ -68,5 +71,10 @@ public class UserServiceImpl implements UserService {
         }
 
         return userDtos;
+    }
+
+    @Override
+    public void sendPushMessage(Long userId) {
+        template.convertAndSendToUser(String.valueOf(userId),"/queue/reply", "hello!");
     }
 }
