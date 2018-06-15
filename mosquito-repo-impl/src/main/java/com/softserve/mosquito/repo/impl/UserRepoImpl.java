@@ -1,5 +1,6 @@
 package com.softserve.mosquito.repo.impl;
 
+import com.softserve.mosquito.entities.Specialization;
 import com.softserve.mosquito.entities.User;
 import com.softserve.mosquito.repo.api.UserRepo;
 import org.apache.logging.log4j.LogManager;
@@ -10,6 +11,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
+import org.hibernate.sql.JoinType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -105,11 +107,12 @@ public class UserRepoImpl implements UserRepo {
     @Override
     public List<User> readBySpecializationId(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            Query<User> userQuery = session.createQuery("select u FROM " + User.class.getName() +
-                    " as u inner join u.specializations as s where u.id = :id");
-            return userQuery.list();
+            Criteria criteria = session.createCriteria(User.class);
+            criteria.createAlias("specializations", "s");
+            criteria.add(Restrictions.eq("s.id", id));
+            return criteria.list();
         } catch (HibernateException e) {
-            LOGGER.error("Reading user was failed!" + e.getMessage());
+            LOGGER.error("Reading users was failed!" + e.getMessage());
             return null;
         }
     }
