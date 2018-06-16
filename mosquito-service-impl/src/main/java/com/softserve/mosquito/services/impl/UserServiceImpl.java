@@ -2,6 +2,7 @@ package com.softserve.mosquito.services.impl;
 
 
 import com.softserve.mosquito.dtos.UserDto;
+import com.softserve.mosquito.entities.Specialization;
 import com.softserve.mosquito.entities.User;
 import com.softserve.mosquito.repo.api.UserRepo;
 import com.softserve.mosquito.services.api.UserService;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -50,7 +52,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getAll() {
-        return UserTransformer.toDTO(userRepo.getAll());
+        return UserTransformer.toDTO(userRepo.readAll());
     }
 
     @Override
@@ -64,7 +66,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getBySpecializationId(Long specializationId) {
-        return UserTransformer.toDTO(userRepo.readBySpecializationId(specializationId));
+        List<User> users = userRepo.readAll();
+        List<UserDto> userDtos = new ArrayList<>();
+        for (User user : users) {
+            for (Specialization item : user.getSpecializations()) {
+                if (item.getId() == specializationId)
+                    userDtos.add(UserTransformer.toDTO(user));
+            }
+        }
+        return userDtos;
+        //return UserTransformer.toDTO(userRepo.readBySpecializationId(specializationId));
     }
 
     @Override
@@ -75,7 +86,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public void activateUser(String key) {
         long id = new Hashids().decode(key)[0];
-        userRepo.activateUser(id);
+        User user = userRepo.read(id);
+        user.setConfirmed(true);
+        userRepo.update(user);
     }
 
     private void sendMessageForActivation(UserDto userDto, String message) {

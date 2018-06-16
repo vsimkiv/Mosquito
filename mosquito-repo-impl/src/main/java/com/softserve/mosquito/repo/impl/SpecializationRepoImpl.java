@@ -23,8 +23,7 @@ public class SpecializationRepoImpl implements SpecializationRepo {
 
     @Override
     public Specialization create(Specialization specialization) {
-        try{
-            Session session = sessionFactory.getCurrentSession();
+        try(Session session = sessionFactory.openSession()){
             Long specializationId = (Long) session.save(specialization);
             specialization.setId(specializationId);
 

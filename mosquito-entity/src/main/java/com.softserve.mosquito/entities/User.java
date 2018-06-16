@@ -23,7 +23,6 @@ public class User implements Serializable {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "confirmed",columnDefinition = "TINYINT(1)")
     private boolean confirmed;
 
     @OneToMany(mappedBy = "owner", targetEntity = Task.class, fetch = FetchType.LAZY)
@@ -43,7 +42,7 @@ public class User implements Serializable {
     private TrelloInfo trelloInfo;
 
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "users_has_specializations",
             joinColumns = {@JoinColumn(name = "user_id")},

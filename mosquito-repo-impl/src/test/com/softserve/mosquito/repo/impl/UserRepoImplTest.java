@@ -23,6 +23,9 @@ public class UserRepoImplTest {
     UserRepoImpl userRepo;
 
     @Autowired
+    SpecializationRepoImpl specializationRepo;
+
+    @Autowired
     DataSource dataSource;
 
     @Test
@@ -54,8 +57,11 @@ public class UserRepoImplTest {
         assertNull(notExisting);
     }
 
+
     @Test
     public void specialReadingTest() {
+        Specialization dev = specializationRepo.create(new Specialization("DEV"));
+        Specialization ui = specializationRepo.create(new Specialization("UI"));
         for (int i = 1; i <= 12; i++) {
             User user = new User();
             user.setEmail("test_user" + i + "@gmail.com");
@@ -64,8 +70,7 @@ public class UserRepoImplTest {
             user.setLastName("User_surname" + i);
             user.setConfirmed(true);
             Set<Specialization> specializations = new HashSet<>();
-            specializations.add((i <= 6) ? new Specialization("DEV") :
-                    new Specialization("UI"));
+            specializations.add((i <= 6) ? dev : ui);
             user.setSpecializations(specializations);
             userRepo.create(user);
         }
@@ -73,12 +78,13 @@ public class UserRepoImplTest {
         List<User> users = userRepo.readAll();
         assertNotNull(users);
         assertEquals(12, users.size());
+        System.out.println(users.iterator().next().getSpecializations());
 
-        /*users = taskRepo.readBySpecializationId(1L);
+       /* users = userRepo.readBySpecializationId(1L);
         assertNotNull(users);
         assertEquals(6, users.size());
-        assertEquals(users.iterator().next().getSpecializations().iterator().next().getTitle(), "DEV");
-*/
+        assertEquals(users.iterator().next().getSpecializations().iterator().next().getTitle(), "DEV")*/;
+
         User readExisting = userRepo.readByEmail("test_user1@gmail.com");
         assertNotNull(readExisting);
 

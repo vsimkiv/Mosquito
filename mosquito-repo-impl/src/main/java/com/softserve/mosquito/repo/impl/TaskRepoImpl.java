@@ -39,45 +39,60 @@ public class TaskRepoImpl implements TaskRepo {
     @Transactional
     @Override
     public Task read(Long id) {
-        Session session = sessionFactory.openSession();
-        return session.get(Task.class, id);
+        try (Session session = sessionFactory.openSession()) {
+            return session.get(Task.class, id);
+        } catch (HibernateException e) {
+            LOGGER.error("Error with create task" + e.getMessage());
+            return null;
+        }
     }
 
     @Transactional
     @Override
     public Task update(Task task) {
-        Session session = sessionFactory.openSession();
-        session.update(task);
-        return task;
+        try (Session session = sessionFactory.openSession()) {
+            session.update(task);
+            return task;
+        } catch (HibernateException e) {
+            LOGGER.error("Error with create task" + e.getMessage());
+            return null;
+        }
     }
 
     @Transactional
     @Override
     public void delete(Long id) {
-        Session session = sessionFactory.openSession();
-        Task task = session.get(Task.class, id);
-        session.delete(task);
+        try (Session session = sessionFactory.openSession()) {
+            Task task = session.get(Task.class, id);
+            session.delete(task);
+        } catch (HibernateException e) {
+            LOGGER.error("Error with create task" + e.getMessage());
+        }
     }
 
     @Transactional
     @Override
     public List<Task> getSubTasks(Long id) {
-        Session session = sessionFactory.openSession();
-        Query query = session.createQuery("FROM " + Task.class.getName() + " WHERE parent_id = :parentId ");
-        query.setParameter("parentId", id);
-
-        return query.list();
+        try (Session session = sessionFactory.openSession()) {
+            Query query = session.createQuery("FROM " + Task.class.getName() + " WHERE parent_id = :parentId ");
+            query.setParameter("parentId", id);
+            return query.list();
+        } catch (HibernateException e) {
+            LOGGER.error("Error with create task" + e.getMessage());
+            return null;
+        }
     }
 
     @Override
     @Transactional
     public Task getByName(String name) {
-        Session session = sessionFactory.openSession();
-
-        Query query = session.createQuery("FROM " + Task.class.getName() + " WHERE name = :taskName ");
-        query.setParameter("taskName", name);
-        return (Task) query.uniqueResult();
-
+        try (Session session = sessionFactory.openSession()) {
+            Query query = session.createQuery("FROM " + Task.class.getName() + " WHERE name = :taskName ");
+            query.setParameter("taskName", name);
+            return (Task) query.uniqueResult();
+        } catch (HibernateException e) {
+            LOGGER.error("Error with create task" + e.getMessage());
+            return null;
+        }
     }
-
 }
