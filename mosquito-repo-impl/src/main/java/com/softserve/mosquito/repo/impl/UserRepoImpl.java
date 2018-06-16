@@ -4,9 +4,11 @@ import com.softserve.mosquito.entities.User;
 import com.softserve.mosquito.repo.api.UserRepo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -31,20 +33,18 @@ public class UserRepoImpl implements UserRepo {
     public User create(User user) {
         try (Session session = sessionFactory.openSession()) {
             Long id = (Long) session.save(user);
-            if (id == null) {
+            if (id == null)
                 throw new HibernateException("Did not get id!");
-            }
+            return user;
         } catch (HibernateException e) {
             LOGGER.error("Error during save user! " + e.getMessage());
             return null;
         }
-        return user;
     }
 
     @Override
     public User read(Long id) {
-        try {
-            Session session = sessionFactory.getCurrentSession();
+        try (Session session = sessionFactory.openSession()) {
             return session.get(User.class, id);
         } catch (HibernateException e) {
             LOGGER.error("Reading user was failed!" + e.getMessage());
@@ -79,8 +79,7 @@ public class UserRepoImpl implements UserRepo {
 
     @Override
     public List<User> getAll() {
-        try {
-            Session session = sessionFactory.getCurrentSession();
+        try (Session session = sessionFactory.openSession()) {
             Query<User> users = session.createQuery("FROM " + User.class.getName());
             return users.list();
         } catch (HibernateException e) {
@@ -96,6 +95,30 @@ public class UserRepoImpl implements UserRepo {
             session.createQuery(update).setParameter("id", id);
         } catch (HibernateException e) {
             LOGGER.error("Activating user was failed!");
+        }
+    }
+
+    public User readByEmail(String email) {
+        try (Session session = sessionFactory.openSession()) {
+            Criteria criteria = session.createCriteria(User.class);
+            criteria.add(Restrictions.eq("email", email));
+            return (User) criteria.list().stream().findFirst().orElse(null);
+        } catch (HibernateException e) {
+            LOGGER.error("Reading user was failed!" + e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
+    public List<User> readBySpecializationId(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            Criteria criteria = session.createCriteria(User.class);
+            criteria.createAlias("specializations", "s");
+            criteria.add(Restrictions.eq("s.id", id));
+            return criteria.list();
+        } catch (HibernateException e) {
+            LOGGER.error("Reading users was failed!" + e.getMessage());
+            return null;
         }
     }
 }

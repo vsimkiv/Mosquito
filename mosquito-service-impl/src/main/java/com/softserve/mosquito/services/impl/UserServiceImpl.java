@@ -2,18 +2,16 @@ package com.softserve.mosquito.services.impl;
 
 
 import com.softserve.mosquito.dtos.UserDto;
-import com.softserve.mosquito.entities.Specialization;
 import com.softserve.mosquito.entities.User;
 import com.softserve.mosquito.repo.api.UserRepo;
 import com.softserve.mosquito.services.api.UserService;
 import com.softserve.mosquito.services.mail.MailSender;
-import com.softserve.mosquito.transformer.impl.UserTransformer;
+import com.softserve.mosquito.transformer.UserTransformer;
 import org.hashids.Hashids;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,9 +19,11 @@ public class UserServiceImpl implements UserService {
 
     private UserRepo userRepo;
     private MailSender mailSender;
+    private SimpMessagingTemplate template;
 
     @Autowired
-    public UserServiceImpl(UserRepo userRepo, MailSender mailSender) {
+    public UserServiceImpl(SimpMessagingTemplate template, UserRepo userRepo, MailSender mailSender) {
+        this.template = template;
         this.userRepo = userRepo;
         this.mailSender = mailSender;
     }
@@ -59,24 +59,17 @@ public class UserServiceImpl implements UserService {
     }
 
     public UserDto getByEmail(String email) {
-        User result = userRepo.getAll().stream()
-                .filter(user -> user.getEmail().equals(email)).findFirst().orElse(null);
-        return UserTransformer.toDTO(result);
+        return UserTransformer.toDTO(userRepo.readByEmail(email));
     }
 
     @Override
     public List<UserDto> getBySpecializationId(Long specializationId) {
-        List<User> users = userRepo.getAll();
-        List<UserDto> userDtos = new ArrayList<>();
+        return UserTransformer.toDTO(userRepo.readBySpecializationId(specializationId));
+    }
 
-        for (User user : users) {
-            for (Specialization specialization : user.getSpecializations()) {
-                if (specialization.getId().equals(specializationId))
-                    userDtos.add(UserTransformer.toDTO(user));
-            }
-        }
-
-        return userDtos;
+    @Override
+    public void sendPushMessage(Long userId) {
+        template.convertAndSendToUser(String.valueOf(userId), "/queue/reply", "hello!");
     }
 
     @Override
@@ -88,4 +81,7 @@ public class UserServiceImpl implements UserService {
     private void sendMessageForActivation(UserDto userDto, String message) {
         mailSender.sendMessage(userDto, "Activate your account " + message, "Mosquito Activate Account");
     }
+
 }
+
+

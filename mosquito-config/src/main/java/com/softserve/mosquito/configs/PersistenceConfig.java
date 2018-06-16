@@ -21,16 +21,18 @@ import java.util.Properties;
 @PropertySource({"classpath:persistence-mysql.properties"})
 @ComponentScan({"com.softserve.mosquito"})
 public class PersistenceConfig {
+    private Environment env;
 
     @Autowired
-    private Environment env;
+    public PersistenceConfig(Environment env) {
+        this.env = env;
+    }
 
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(restDataSource());
-        sessionFactory.setPackagesToScan(
-                new String[]{"com.softserve.mosquito.entities"});
+        sessionFactory.setPackagesToScan(new String[]{"com.softserve.mosquito.entities"});
         sessionFactory.setHibernateProperties(hibernateProperties());
 
         return sessionFactory;
@@ -59,16 +61,12 @@ public class PersistenceConfig {
         return new PersistenceExceptionTranslationPostProcessor();
     }
 
-    Properties hibernateProperties() {
-        return new Properties() {
-            {
-                setProperty("hibernate.hbm2ddl.auto",
-                        env.getProperty("hibernate.hbm2ddl.auto"));
-                setProperty("hibernate.dialect",
-                        env.getProperty("hibernate.dialect"));
-                setProperty("hibernate.globally_quoted_identifiers",
-                        "true");
-            }
-        };
+    private Properties hibernateProperties() {
+        Properties properties = new Properties();
+        properties.setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
+        properties.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
+        properties.setProperty("hibernate.globally_quoted_identifiers", "true");
+
+        return properties;
     }
 }

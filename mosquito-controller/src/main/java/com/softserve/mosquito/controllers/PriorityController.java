@@ -1,7 +1,5 @@
 package com.softserve.mosquito.controllers;
 
-
-import com.softserve.mosquito.dtos.PriorityCreateDto;
 import com.softserve.mosquito.dtos.PriorityDto;
 import com.softserve.mosquito.services.api.PriorityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +44,8 @@ public class PriorityController {
 
 
     @PutMapping(path = "/{priority_id}")
-    public ResponseEntity<PriorityDto> updatePriority(@PathVariable("priority_id") Long id, @RequestBody PriorityCreateDto priorityCreateDto){
-        PriorityDto priorityDto = new PriorityDto(id, priorityCreateDto.getTitle());
+    public ResponseEntity<PriorityDto> updatePriority(@PathVariable("priority_id") Long id, @RequestBody PriorityDto priorityDto){
+        priorityDto.setId(id);
         PriorityDto updatetedPriotityDto = priorityService.update(priorityDto);
 
         if(updatetedPriotityDto == null){

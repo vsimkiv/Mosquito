@@ -9,4 +9,8 @@ public interface UserRepo extends GenericCRUD<User> {
     List<User> getAll();
 
     void activateUser(Long id);
+
+    User readByEmail(String email);
+
+    List<User> readBySpecializationId(Long id);
 }

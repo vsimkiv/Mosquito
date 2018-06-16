@@ -21,7 +21,6 @@
         <module>mosquito-service-impl</module>
         <module>mosquito-transformer</module>
         <module>mosquito-web</module>
-
     </modules>
 
     <properties>
@@ -33,16 +32,15 @@
         <dependencies>
             <dependency>
                 <groupId>com.softserve.mosquito</groupId>
-                <artifactId>mosquito-config</artifactId>
+                <artifactId>mosquito-bom</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.softserve.mosquito</groupId>
-                <artifactId>mosquito-bom</artifactId>
+                <artifactId>mosquito-config</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>com.softserve.mosquito</groupId>
                 <artifactId>mosquito-controller</artifactId>
@@ -107,6 +105,17 @@
                 <scope>import</scope>
             </dependency>
 
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.12</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>2.11.0</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

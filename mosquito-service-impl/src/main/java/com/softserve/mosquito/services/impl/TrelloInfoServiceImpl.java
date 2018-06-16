@@ -3,7 +3,7 @@ package com.softserve.mosquito.services.impl;
 import com.softserve.mosquito.dtos.TrelloInfoDto;
 import com.softserve.mosquito.repo.api.TrelloInfoRepo;
 import com.softserve.mosquito.services.api.TrelloInfoService;
-import com.softserve.mosquito.transformer.impl.TrelloInfoTransformer;
+import com.softserve.mosquito.transformer.TrelloInfoTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
