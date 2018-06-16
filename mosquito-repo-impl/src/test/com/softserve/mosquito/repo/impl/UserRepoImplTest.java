@@ -33,7 +33,7 @@ public class UserRepoImplTest {
         user.setPassword("ghsdf921jngjdfgsdfghhsdfhdf");
         user.setFirstName("Vitalik");
         user.setLastName("Makh");
-        user.setConfirmed(true);
+        user.setConfirmed(false);
 
         User created = userRepo.create(user);
         Long id = created.getId();
@@ -44,15 +44,14 @@ public class UserRepoImplTest {
         assertNotNull(read);
 
         //Update user test
-        String newEmail = "patriot@gmail.com";
-        read.setEmail(newEmail);
+        read.setConfirmed(true);
         User updated = userRepo.update(read);
-        assertEquals(newEmail, updated.getEmail());
+        assertEquals(true, updated.isConfirmed());
 
         //Delete test
         userRepo.delete(updated.getId());
-        read = userRepo.read(updated.getId());
-        assertNull(read);
+        User notExisting = userRepo.read(updated.getId());
+        assertNull(notExisting);
     }
 
     @Test
@@ -75,7 +74,7 @@ public class UserRepoImplTest {
         assertNotNull(users);
         assertEquals(12, users.size());
 
-        /*users = userRepo.readBySpecializationId(1L);
+        /*users = taskRepo.readBySpecializationId(1L);
         assertNotNull(users);
         assertEquals(6, users.size());
         assertEquals(users.iterator().next().getSpecializations().iterator().next().getTitle(), "DEV");

@@ -23,6 +23,7 @@ public class User implements Serializable {
     @Column(name = "last_name")
     private String lastName;
 
+    @Column(name = "confirmed",columnDefinition = "TINYINT(1)")
     private boolean confirmed;
 
     @OneToMany(mappedBy = "owner", targetEntity = Task.class, fetch = FetchType.LAZY)

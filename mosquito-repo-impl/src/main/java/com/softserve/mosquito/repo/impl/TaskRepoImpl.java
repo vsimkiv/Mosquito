@@ -4,6 +4,7 @@ import com.softserve.mosquito.entities.Task;
 import com.softserve.mosquito.repo.api.TaskRepo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -26,22 +27,26 @@ public class TaskRepoImpl implements TaskRepo {
     @Transactional
     @Override
     public Task create(Task task) {
-        Session session = sessionFactory.getCurrentSession();
-        session.save(task);
-        return task;
+        try (Session session = sessionFactory.openSession()) {
+            session.save(task);
+            return task;
+        } catch (HibernateException e) {
+            LOGGER.error("Error with create task" + e.getMessage());
+            return null;
+        }
     }
 
     @Transactional
     @Override
     public Task read(Long id) {
-        Session session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.openSession();
         return session.get(Task.class, id);
     }
 
     @Transactional
     @Override
     public Task update(Task task) {
-        Session session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.openSession();
         session.update(task);
         return task;
     }
@@ -49,14 +54,15 @@ public class TaskRepoImpl implements TaskRepo {
     @Transactional
     @Override
     public void delete(Long id) {
-        Session session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.openSession();
         Task task = session.get(Task.class, id);
         session.delete(task);
     }
 
+    @Transactional
     @Override
     public List<Task> getSubTasks(Long id) {
-        Session session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.openSession();
         Query query = session.createQuery("FROM " + Task.class.getName() + " WHERE parent_id = :parentId ");
         query.setParameter("parentId", id);
 
@@ -66,11 +72,11 @@ public class TaskRepoImpl implements TaskRepo {
     @Override
     @Transactional
     public Task getByName(String name) {
-        Session session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.openSession();
 
-            Query query = session.createQuery("FROM " + Task.class.getName() + " WHERE name = :taskName ");
-            query.setParameter("taskName", name);
-            return (Task) query.uniqueResult();
+        Query query = session.createQuery("FROM " + Task.class.getName() + " WHERE name = :taskName ");
+        query.setParameter("taskName", name);
+        return (Task) query.uniqueResult();
 
     }
 
