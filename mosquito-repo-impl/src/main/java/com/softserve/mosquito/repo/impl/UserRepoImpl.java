@@ -78,7 +78,7 @@ public class UserRepoImpl implements UserRepo {
     }
 
     @Override
-    public List<User> readAll() {
+    public List<User> getAll() {
         try (Session session = sessionFactory.openSession()) {
             Query<User> users = session.createQuery("FROM " + User.class.getName());
             return users.list();
@@ -89,6 +89,15 @@ public class UserRepoImpl implements UserRepo {
     }
 
     @Override
+    public void activateUser(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            String update = "UPDATE " + User.class.getName() + " u SET u.confirmed = TRUE WHERE u.id =:id";
+            session.createQuery(update).setParameter("id", id);
+        } catch (HibernateException e) {
+            LOGGER.error("Activating user was failed!");
+        }
+    }
+
     public User readByEmail(String email) {
         try (Session session = sessionFactory.openSession()) {
             Criteria criteria = session.createCriteria(User.class);

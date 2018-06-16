@@ -74,6 +74,11 @@ public class User implements Serializable {
         this.password = password;
     }
 
+    public User(Long id, boolean confirmed) {
+        this.id = id;
+        this.confirmed = confirmed;
+    }
+
     public Long getId() {
         return id;
     }
