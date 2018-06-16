@@ -19,4 +19,6 @@ public interface UserService {
     UserDto getByEmail(String email);
 
     List<UserDto> getBySpecializationId(Long specializationId);
+
+    void activateUser(String key);
 }

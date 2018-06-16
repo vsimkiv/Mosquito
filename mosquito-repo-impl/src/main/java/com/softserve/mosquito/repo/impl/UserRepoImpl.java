@@ -10,7 +10,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -87,6 +86,16 @@ public class UserRepoImpl implements UserRepo {
         } catch (HibernateException e) {
             LOGGER.error(e.getMessage());
             return null;
+        }
+    }
+
+    @Override
+    public void activateUser(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            String update = "UPDATE " + User.class.getName() + " u SET u.confirmed = TRUE WHERE u.id =:id";
+            session.createQuery(update).setParameter("id", id);
+        } catch (HibernateException e) {
+            LOGGER.error("Activating user was failed!");
         }
     }
 }

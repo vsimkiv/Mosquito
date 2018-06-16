@@ -23,6 +23,7 @@ public class User implements Serializable {
     @Column(name = "last_name")
     private String lastName;
 
+    @Column(name = "confirmed")
     private boolean confirmed;
 
     @OneToMany(mappedBy = "owner", targetEntity = Task.class, fetch = FetchType.LAZY)
@@ -71,6 +72,11 @@ public class User implements Serializable {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
+    }
+
+    public User(Long id, boolean confirmed) {
+        this.id = id;
+        this.confirmed = confirmed;
     }
 
     public Long getId() {

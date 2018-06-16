@@ -6,10 +6,13 @@ import com.softserve.mosquito.entities.Specialization;
 import com.softserve.mosquito.entities.User;
 import com.softserve.mosquito.repo.api.UserRepo;
 import com.softserve.mosquito.services.api.UserService;
+import com.softserve.mosquito.services.mail.MailSender;
 import com.softserve.mosquito.transformer.impl.UserTransformer;
+import org.hashids.Hashids;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,15 +20,22 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private UserRepo userRepo;
+    private MailSender mailSender;
 
     @Autowired
-    public UserServiceImpl(UserRepo userRepo) {
+    public UserServiceImpl(UserRepo userRepo, MailSender mailSender) {
         this.userRepo = userRepo;
+        this.mailSender = mailSender;
     }
 
     @Override
     public UserDto save(UserDto user) {
-        return UserTransformer.toDTO(userRepo.create(UserTransformer.toEntity(user)));
+        User activateUser = userRepo.create(UserTransformer.toEntity(user));
+        Hashids hashids = new Hashids();
+        hashids.encode(activateUser.getId());
+        String urlForActivate = "http://localhost:8080/activate/" + hashids.encode(activateUser.getId());
+        sendMessageForActivation(user, urlForActivate);
+        return user;
     }
 
     @Override
@@ -48,7 +58,6 @@ public class UserServiceImpl implements UserService {
         return UserTransformer.toDTO(userRepo.read(id));
     }
 
-
     public UserDto getByEmail(String email) {
         User result = userRepo.getAll().stream()
                 .filter(user -> user.getEmail().equals(email)).findFirst().orElse(null);
@@ -68,5 +77,15 @@ public class UserServiceImpl implements UserService {
         }
 
         return userDtos;
+    }
+
+    @Override
+    public void activateUser(String key) {
+        long id = new Hashids().decode(key)[0];
+        userRepo.activateUser(id);
+    }
+
+    private void sendMessageForActivation(UserDto userDto, String message) {
+        mailSender.sendMessage(userDto, "Activate your account " + message, "Mosquito Activate Account");
     }
 }
