@@ -88,12 +88,11 @@ public class UserRepoImpl implements UserRepo {
         }
     }
 
-    @Override
     public User readByEmail(String email) {
         try (Session session = sessionFactory.openSession()) {
-            Criteria criteria = session.createCriteria(User.class);
-            criteria.add(Restrictions.eq("email", email));
-            return (User) criteria.list().stream().findFirst().orElse(null);
+            Query query = session.createQuery("FROM " + User.class.getName() + " WHERE email = :email ");
+            query.setParameter("email", email);
+            return (User) query.uniqueResult();
         } catch (HibernateException e) {
             LOGGER.error("Reading user was failed!" + e.getMessage());
             return null;
@@ -102,14 +101,15 @@ public class UserRepoImpl implements UserRepo {
 
     @Override
     public List<User> readBySpecializationId(Long id) {
-        try (Session session = sessionFactory.openSession()) {
-            Criteria criteria = session.createCriteria(User.class);
-            criteria.createAlias("specializations", "s");
-            criteria.add(Restrictions.eq("s.id", id));
-            return criteria.list();
+        /*try (Session session = sessionFactory.openSession()) {
+            Query query = session.createQuery("FROM " + User.class.getName() +
+                    " as u JOIN u.specializations as s WHERE s.id = :id ");
+            query.setParameter("id", id);
+            return query.list();
         } catch (HibernateException e) {
             LOGGER.error("Reading users was failed!" + e.getMessage());
             return null;
-        }
+        }*/
+        return null;
     }
 }

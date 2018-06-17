@@ -42,7 +42,7 @@ public class User implements Serializable {
     private TrelloInfo trelloInfo;
 
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "users_has_specializations",
             joinColumns = {@JoinColumn(name = "user_id")},
@@ -71,6 +71,11 @@ public class User implements Serializable {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
+    }
+
+    public User(Long id, boolean confirmed) {
+        this.id = id;
+        this.confirmed = confirmed;
     }
 
     public Long getId() {

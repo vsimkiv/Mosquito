@@ -38,7 +38,7 @@ public class Task implements Serializable {
     @JoinColumn(name = "status_id")
     private Status status;
 
-    @OneToMany(mappedBy = "task", targetEntity = Comment.class)
+    @OneToMany(mappedBy = "task", targetEntity = Comment.class, fetch = FetchType.EAGER)
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "parentTask", targetEntity = Task.class)
