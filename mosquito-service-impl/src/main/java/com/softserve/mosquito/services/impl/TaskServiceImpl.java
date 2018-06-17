@@ -79,13 +79,23 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskSimpleDto getSimpleTaskById(Long id) {
         Task task = taskRepo.read(id);
-        return toSimpleDto(toBigDTO(task));
+        return toSimpleDto(task);
     }
 
     @Transactional
     @Override
     public List<TaskFullDto> getSubTasks(Long id) {
         List<Task> tasks = taskRepo.getSubTasks(id);
+        List<TaskFullDto> taskFullDtos = new ArrayList<>();
+        for (Task task : tasks) {
+            taskFullDtos.add(toBigDTO(task));
+        }
+        return taskFullDtos;
+    }
+
+    @Override
+    public List<TaskFullDto> getProjects() {
+        List<Task> tasks = taskRepo.getProjects();
         List<TaskFullDto> taskFullDtos = new ArrayList<>();
         for (Task task : tasks) {
             taskFullDtos.add(toBigDTO(task));

@@ -11,8 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import javax.sql.DataSource;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestRepoConfig.class})
@@ -58,25 +57,32 @@ public class TaskRepoImplTest {
         assertNotNull(read);
 
         //Delete task test
-        //taskRepo.delete(id);
-        //Task notExisting = taskRepo.read(id);
-        //assertNull(notExisting);
+        taskRepo.delete(id);
+        Task notExisting = taskRepo.read(id);
+        assertNull(notExisting);
     }
 
     @Test
     public void readByNameAndReadSubTasksTest() {
-        Task task = Task.builder().name("Test task").build();
+        Task task = Task.builder().name("Test project").build();
         task = taskRepo.create(task);
         for (int i = 0; i < 5; i++) {
             Task subTask = Task.builder().name("Test sub task" + i).parentTask(task).build();
             taskRepo.create(subTask);
+
+            Task project = Task.builder().name("Test project" + (i + 1)).build();
+            taskRepo.create(project);
         }
 
         List<Task> subTasks = taskRepo.getSubTasks(1L);
         assertNotNull(subTasks);
         assertEquals(5, subTasks.size());
 
-        Task read = taskRepo.getByName("Test task");
+        List<Task> projects = taskRepo.getProjects();
+        assertNotNull(projects);
+        assertEquals(6, projects.size());
+
+        Task read = taskRepo.getByName("Test project");
         assertNotNull(read);
     }
 
