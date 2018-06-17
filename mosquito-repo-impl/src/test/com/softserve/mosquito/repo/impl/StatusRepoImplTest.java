@@ -46,14 +46,16 @@ public class StatusRepoImplTest {
         assertNotNull(updated);
         assertEquals(created.getTitle(), updated.getTitle());
 
+        //get all statuses
+        assertTrue(!statusRepo.getAll().isEmpty());
 
         //Delete status tests
         statusRepo.delete(updated.getId());
         readed = statusRepo.read(updated.getId());
         assertNull(readed);
 
-        //get all statuses
 
-        assertTrue(!statusRepo.getAll().isEmpty());
+
+
     }
 }

@@ -4,6 +4,7 @@ import com.softserve.mosquito.entities.Priority;
 import com.softserve.mosquito.repo.api.PriorityRepo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -25,15 +26,12 @@ public class PriorityRepoImpl implements PriorityRepo {
 
     @Override
     public Priority create(Priority priority) {
-        try {
-            Session session = sessionFactory.openSession();
+        try (Session session = sessionFactory.openSession()) {
             session.save(priority);
-
-            return priority;
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage());
+        } catch (HibernateException e) {
+            LOGGER.error("Error during save pririty!" + e.getMessage());
         }
-        return null;
+        return priority;
     }
 
     @Override
@@ -41,39 +39,38 @@ public class PriorityRepoImpl implements PriorityRepo {
         try {
             Session session = sessionFactory.openSession();
             Priority priority = session.get(Priority.class, id);
-
             return priority;
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage());
+        } catch (HibernateException e) {
+            LOGGER.error("Priority reading was failed!", e.getMessage());
         }
+
         return null;
     }
 
     @Override
     public Priority update(Priority priority) {
-        try {
+        try{
             Session session = sessionFactory.openSession();
             session.getTransaction().begin();
             session.update(priority);
             session.getTransaction().commit();
             return priority;
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage());
+        }catch (HibernateException e){
+            LOGGER.error("Priority updating was failed" + e.getMessage());
         }
         return null;
     }
 
     @Override
     public void delete(Long id) {
-        try {
+        try{
             Session session = sessionFactory.openSession();
             session.getTransaction().begin();
             Priority priority = session.get(Priority.class, id);
             session.delete(priority);
             session.getTransaction().commit();
-
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage());
+        }catch (HibernateException e){
+            LOGGER.error("Priority deleting was failed" + e.getMessage());
         }
     }
 

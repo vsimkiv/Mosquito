@@ -26,41 +26,36 @@ public class SpecializationRepoImpl implements SpecializationRepo {
 
     @Override
     public Specialization create(Specialization specialization) {
-        try{
-            Session session = sessionFactory.openSession();
+        try (Session session = sessionFactory.openSession()) {
             session.save(specialization);
-
-            return specialization;
-        }catch(Exception e){
-            LOGGER.error(e.getMessage());
+        } catch (HibernateException e) {
+            LOGGER.error("Error during save specialization!" + e.getMessage());
         }
-        return null;
+        return specialization;
     }
 
     @Override
     public Specialization read(Long id) {
         try {
             Session session = sessionFactory.openSession();
-            Specialization specialization =  session.get(Specialization.class, id);
-
+            Specialization specialization = session.get(Specialization.class, id);
             return specialization;
-        }catch (Exception e){
-            LOGGER.error(e.getMessage());
+        } catch (HibernateException e) {
+            LOGGER.error("Specialization reading was failed!", e.getMessage());
         }
         return null;
     }
 
     @Override
-    @Transactional
     public Specialization update(Specialization specialization) {
         try{
             Session session = sessionFactory.openSession();
-
+            session.getTransaction().begin();
             session.update(specialization);
-
+            session.getTransaction().commit();
             return specialization;
         }catch (HibernateException e){
-            LOGGER.error("Status updating was failed" + e.getMessage());
+            LOGGER.error("Specialization updating was failed" + e.getMessage());
         }
         return null;
     }
@@ -68,16 +63,15 @@ public class SpecializationRepoImpl implements SpecializationRepo {
     @Override
     public void delete(Long id) {
 
-            try {
-                Session session = sessionFactory.openSession();
-                session.getTransaction().begin();
-                Specialization specialization = session.get(Specialization.class, id);
-                session.delete(specialization);
-                session.getTransaction().commit();
-            } catch (HibernateException e) {
-                LOGGER.error("Specialization deleting was failed" + e.getMessage());
-            }
-
+        try{
+            Session session = sessionFactory.openSession();
+            session.getTransaction().begin();
+            Specialization specialization = session.get(Specialization.class, id);
+            session.delete(specialization);
+            session.getTransaction().commit();
+        }catch (HibernateException e){
+            LOGGER.error("Specialization deleting was failed" + e.getMessage());
+        }
     }
 
     @Override
