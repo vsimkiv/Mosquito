@@ -31,6 +31,7 @@ public class TaskRepoImpl implements TaskRepo {
             session.save(task);
             return task;
         } catch (HibernateException e) {
+            e.printStackTrace();
             LOGGER.error("Error with create task" + e.getMessage());
             return null;
         }

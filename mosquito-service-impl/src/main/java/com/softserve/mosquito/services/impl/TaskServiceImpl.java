@@ -33,14 +33,20 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskFullDto save(TaskFullDto taskFullDto) {
 
-        if (isPresent(taskFullDto)) return TaskTransformer.toBigDTO(taskRepo.getByName(taskFullDto.getName()));
+        if (isPresent(taskFullDto)) {
+            Task existedTask = taskRepo.getByName(taskFullDto.getName());
+            return TaskTransformer.toBigDTO(existedTask);
+        }
 
-        if (isMessageSent(taskFullDto.getWorkerDto(), "You was assigned for this task" + taskFullDto.getName(), "Mosquito Task Manager")) {
+        //TODO messaging exception "Could not convert socket to TLS..."
+        /*if (isMessageSent(taskFullDto.getWorkerDto(),
+                "You was assigned for this task" + taskFullDto.getName(),
+                "Mosquito Task Manager")) {*/
             if (isPresent(taskFullDto)) return TaskTransformer.toBigDTO(taskRepo.getByName(taskFullDto.getName()));
             Task task = taskRepo.create(TaskTransformer.toEntity(taskFullDto));
             return toBigDTO(task);
-        }
-        return null;
+        /*}
+        return null;*/
     }
 
     @Transactional

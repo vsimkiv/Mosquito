@@ -15,9 +15,12 @@ public class UserTransformer {
     public static User toEntity(UserDto userDto) {
         if (userDto == null)
             return null;
-        else
-            return new User(userDto.getEmail(), userDto.getPassword(), userDto.getFirstName(),
+        else {
+            User user = new User(userDto.getEmail(), userDto.getPassword(), userDto.getFirstName(),
                     userDto.getLastName(), SpecializationTransformer.toEntityList(userDto.getSpecializations()));
+            user.setId(userDto.getId());
+            return user;
+        }
     }
 
     public static UserDto toDTO(User user) {

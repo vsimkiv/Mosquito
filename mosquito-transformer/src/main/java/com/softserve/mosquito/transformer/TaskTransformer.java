@@ -3,6 +3,7 @@ package com.softserve.mosquito.transformer;
 import com.softserve.mosquito.dtos.TaskFullDto;
 import com.softserve.mosquito.dtos.TaskSimpleDto;
 import com.softserve.mosquito.entities.Task;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,7 @@ public class TaskTransformer {
     }
 
     //parentTask, comments, and childTasks will set on service-impl module
+
     public static TaskFullDto toBigDTO(Task task) {
         return new TaskFullDto().builder()
                 .id(task.getId())
