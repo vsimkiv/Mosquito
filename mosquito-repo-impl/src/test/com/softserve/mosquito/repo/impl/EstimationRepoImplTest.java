@@ -41,6 +41,7 @@ public class EstimationRepoImplTest {
         created.setTimeEstimation(200);
         created.setRemaining(200);
         Estimation updated = estimationRepo.update(created);
+        assertNotNull(updated);
         assertEquals(created.getId(),updated.getId());
 
         //Delete estimation:

@@ -43,6 +43,7 @@ public class StatusRepoImplTest {
 
         created.setTitle("Changed");
         Status updated = statusRepo.update(created);
+        assertNotNull(updated);
         assertEquals(created.getTitle(), updated.getTitle());
 
 
