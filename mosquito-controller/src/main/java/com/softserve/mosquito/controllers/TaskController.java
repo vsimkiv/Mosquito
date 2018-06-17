@@ -57,11 +57,12 @@ public class TaskController {
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public TaskSimpleDto getTaskById(@PathVariable("id") Long id) {
+        if (taskService.getSimpleTaskById(id) == null)
+            throw new TaskNotFoundException("Task with Id " + id + " not found!");
         return taskService.getSimpleTaskById(id);
     }
 
-
-    @GetMapping (path = "{id}/subtasks")
+    @GetMapping(path = "{id}/subtasks")
     @ResponseStatus(HttpStatus.OK)
     public List<TaskFullDto> getSubTasks(@PathVariable("id") Long id) {
         return taskService.getSubTasks(id);
@@ -79,16 +80,10 @@ public class TaskController {
         return new ArrayList<>();
     }
 
-    @GetMapping (path = "/task-by-status/{status_id}")
+    @GetMapping(path = "/task-by-status/{status_id}")
     @ResponseStatus(HttpStatus.OK)
     public List<TaskFullDto> getTaskByStatus(@PathVariable("status_id") Long statusId) {
         return new ArrayList<>();
-    }
-
-    @GetMapping(path = "/{task_id}/comments")
-    @ResponseStatus(HttpStatus.OK)
-    public List<CommentDto> getCommentsByTaskId(@PathVariable("task_id") Long taskId){
-        return commentService.getByTaskId(taskId);
     }
 
     @GetMapping(path = "/tasks-board")

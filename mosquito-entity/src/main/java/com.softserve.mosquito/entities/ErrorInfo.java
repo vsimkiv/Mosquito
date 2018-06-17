@@ -6,9 +6,6 @@ public class ErrorInfo {
     private String url;
     private int status;
 
-    public ErrorInfo() {
-    }
-
     public ErrorInfo(String message, String url, int status) {
         this.message = message;
         this.url = url;

@@ -42,9 +42,9 @@ public class TaskServiceImpl implements TaskService {
         /*if (isMessageSent(taskFullDto.getWorkerDto(),
                 "You was assigned for this task" + taskFullDto.getName(),
                 "Mosquito Task Manager")) {*/
-            if (isPresent(taskFullDto)) return TaskTransformer.toBigDTO(taskRepo.getByName(taskFullDto.getName()));
-            Task task = taskRepo.create(TaskTransformer.toEntity(taskFullDto));
-            return toBigDTO(task);
+        if (isPresent(taskFullDto)) return TaskTransformer.toBigDTO(taskRepo.getByName(taskFullDto.getName()));
+        Task task = taskRepo.create(TaskTransformer.toEntity(taskFullDto));
+        return toBigDTO(task);
         /*}
         return null;*/
     }
@@ -107,14 +107,14 @@ public class TaskServiceImpl implements TaskService {
         return taskFullDtoList;
     }
 
-        @Transactional
+    @Transactional
     @Override
     public List<TaskFullDto> filterByWorker(Long workerId) {
         List<TaskFullDto> taskFullDtoList = new ArrayList<>();
         return taskFullDtoList;
     }
 
-        @Transactional
+    @Transactional
     @Override
     public List<TaskFullDto> filterByPriority(Long priorityId) {
         List<TaskFullDto> taskFullDtoList = new ArrayList<>();
@@ -136,11 +136,13 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
-    public boolean isPresent(String name){return (taskRepo.getByName(name)!=null);}
+    public boolean isPresent(String name) {
+        return (taskRepo.getByName(name) != null);
+    }
 
     @Override
     @Transactional
-    public TaskFullDto getByName(String name){
+    public TaskFullDto getByName(String name) {
         return TaskTransformer.toBigDTO(taskRepo.getByName(name));
     }
 
