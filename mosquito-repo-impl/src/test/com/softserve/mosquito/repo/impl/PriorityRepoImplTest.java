@@ -17,7 +17,6 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestRepoConfig.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-@Ignore
 public class PriorityRepoImplTest {
     @Autowired
     PriorityRepoImpl priorityRepo;
@@ -46,6 +45,7 @@ public class PriorityRepoImplTest {
         String update = "Changed";
         created.setTitle("Changed");
         Priority updated = priorityRepo.update(created);
+        //assertNotNull(updated);
         //assertEquals(created.getTitle(), updated.getTitle());
 
 
