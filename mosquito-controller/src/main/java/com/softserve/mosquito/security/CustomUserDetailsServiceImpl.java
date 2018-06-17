@@ -12,8 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
 
+    private UserService userService;
+
     @Autowired
-    UserService userService;
+    public CustomUserDetailsServiceImpl(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     @Transactional
@@ -21,7 +25,7 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
             throws UsernameNotFoundException {
         // Let people login with email
         UserDto user = userService.getByEmail(userEmail);
-        if(user == null){
+        if (user == null) {
             throw new UsernameNotFoundException("User not found with email : " + userEmail);
         }
         return UserPrincipal.create(user);
@@ -32,7 +36,7 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
     public UserDetails loadUserById(Long id) {
         UserDto user = userService.getById(id);
         System.out.println("userLoadId:" + user + " User Email: " + user.getEmail());
-        if(user == null){
+        if (user == null) {
             throw new UsernameNotFoundException("User not found with id : " + id);
         }
 

@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+import java.util.List;
+
 @RestController
 @RequestMapping("/comment")
 public class CommentController {
@@ -24,11 +27,12 @@ public class CommentController {
         return commentService.save(commentDto);
     }
 
-    @GetMapping(path = "/{comment_id}/comments")
+    @GetMapping(path = "/{task_id}/comments")
     @ResponseStatus(HttpStatus.OK)
-    public CommentDto getCommentsById(@PathVariable("comment_id") Long taskId) {
-
-        return commentService.getById(taskId);
+    public List<CommentDto> getCommentsByTaskId(@PathVariable("task_id") Long taskId) {
+        if (commentService.getByTaskId(taskId).equals(Collections.emptyList()))
+            throw new CommentNotFoundException("Comments for task with Id " + taskId + " not found!");
+        return commentService.getByTaskId(taskId);
     }
 
     @PutMapping(path = "/{comment_id}")

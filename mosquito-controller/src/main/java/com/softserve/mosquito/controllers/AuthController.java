@@ -38,7 +38,6 @@ public class AuthController {
         this.tokenProvider = tokenProvider;
     }
 
-
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@RequestBody @Valid UserLoginDto loginRequest) {
         Authentication authentication = null;
