@@ -26,7 +26,7 @@ public class Task implements Serializable {
     @JoinColumn(name = "worker_id")
     private User worker;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "estimation_id")
     private Estimation estimation;
 

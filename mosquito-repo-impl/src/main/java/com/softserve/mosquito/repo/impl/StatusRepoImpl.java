@@ -3,6 +3,7 @@ package com.softserve.mosquito.repo.impl;
 
 import com.softserve.mosquito.entities.Status;
 import com.softserve.mosquito.repo.api.StatusRepo;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -29,8 +30,7 @@ public class StatusRepoImpl implements StatusRepo {
     public Status create(Status status) {
 
         try (Session session = sessionFactory.openSession()) {
-            Long id = (Long) session.save(status);
-            status.setId(id);
+            session.save(status);
         } catch (HibernateException e) {
             LOGGER.error("Error during save status!" + e.getMessage());
         }

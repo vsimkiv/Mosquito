@@ -23,7 +23,7 @@ public class StatusRepoImplTest {
     DataSource dataSource;
 
     @Test
-    public void UnitTest() {
+    public void GeneralTest() {
         //Create Status test:
         Status st = new Status();
         st.setTitle("Cancelled");
@@ -40,10 +40,10 @@ public class StatusRepoImplTest {
         assertNotNull(readed);
 
         //Update status test
-        String update = "Changed";
+
         created.setTitle("Changed");
         Status updated = statusRepo.update(created);
-        assertEquals(updated.getTitle(), update);
+        assertEquals(created.getTitle(), updated.getTitle());
 
 
         //Delete status tests
