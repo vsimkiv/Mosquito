@@ -4,11 +4,14 @@ import com.softserve.mosquito.entities.Specialization;
 import com.softserve.mosquito.repo.api.SpecializationRepo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
@@ -24,9 +27,8 @@ public class SpecializationRepoImpl implements SpecializationRepo {
     @Override
     public Specialization create(Specialization specialization) {
         try{
-            Session session = sessionFactory.getCurrentSession();
-            Long specializationId = (Long) session.save(specialization);
-            specialization.setId(specializationId);
+            Session session = sessionFactory.openSession();
+            session.save(specialization);
 
             return specialization;
         }catch(Exception e){
@@ -38,9 +40,8 @@ public class SpecializationRepoImpl implements SpecializationRepo {
     @Override
     public Specialization read(Long id) {
         try {
-            Session session = sessionFactory.getCurrentSession();
-            //TODO: change id type from Byte to Long
-            Specialization specialization = (Specialization) session.get(Specialization.class, Long.valueOf(id.toString()));
+            Session session = sessionFactory.openSession();
+            Specialization specialization =  session.get(Specialization.class, id);
 
             return specialization;
         }catch (Exception e){
@@ -50,37 +51,39 @@ public class SpecializationRepoImpl implements SpecializationRepo {
     }
 
     @Override
+    @Transactional
     public Specialization update(Specialization specialization) {
-        try {
-            Session session = sessionFactory.getCurrentSession();
+        try{
+            Session session = sessionFactory.openSession();
+
             session.update(specialization);
 
             return specialization;
-        }catch (Exception e){
-            LOGGER.error(e.getMessage());
+        }catch (HibernateException e){
+            LOGGER.error("Status updating was failed" + e.getMessage());
         }
         return null;
     }
 
     @Override
     public void delete(Long id) {
-        try {
-            //TODO: change from delete(Long) to delete(Specialization) and change id type from Byte to Long
-            Specialization specialization = new Specialization();
-            specialization.setId(Long.valueOf(id.toString()));
 
-            Session session = sessionFactory.getCurrentSession();
+            try {
+                Session session = sessionFactory.openSession();
+                session.getTransaction().begin();
+                Specialization specialization = session.get(Specialization.class, id);
+                session.delete(specialization);
+                session.getTransaction().commit();
+            } catch (HibernateException e) {
+                LOGGER.error("Specialization deleting was failed" + e.getMessage());
+            }
 
-            session.delete(specialization);
-        }catch (Exception e){
-            LOGGER.error(e.getMessage());
-        }
     }
 
     @Override
     public List<Specialization> getAll() {
         try {
-            Session session = sessionFactory.getCurrentSession();
+            Session session = sessionFactory.openSession();
             Query query = session.createQuery("From " + Specialization.class.getName());
 
             return query.list();

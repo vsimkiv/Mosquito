@@ -1,6 +1,8 @@
 package com.softserve.mosquito.repo.impl;
 
+import com.softserve.mosquito.entities.Priority;
 import com.softserve.mosquito.entities.Status;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,48 +13,50 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import javax.sql.DataSource;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestRepoConfig.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class StatusRepoImplTest {
-
+@Ignore
+public class PriorityRepoImplTest {
     @Autowired
-    StatusRepoImpl statusRepo;
+    PriorityRepoImpl priorityRepo;
 
     @Autowired
     DataSource dataSource;
 
     @Test
     public void GeneralTest() {
-        //Create Status test:
-        Status st = new Status();
-        st.setTitle("Cancelled");
-        Status st2 = new Status();
-        st2.setTitle("ForYesterday");
-        Status created = statusRepo.create(st);
-        Status created2 = statusRepo.create(st2);
+        //Create priority test:
+        Priority prior = new Priority();
+        prior.setTitle("Low");
+        Priority prior2 = new Priority();
+        prior2.setTitle("Zero");
+        Priority created = priorityRepo.create(prior);
+        Priority created2 = priorityRepo.create(prior2);
 
         Long id = created.getId();
         assertNotNull(id);
 
-        //get status by Id test:
-        Status readed = statusRepo.read(id);
+        //get priority by Id test:
+        Priority readed = priorityRepo.read(id);
         assertNotNull(readed);
 
-        //Update status test
+        //Update pririty test
         String update = "Changed";
         created.setTitle("Changed");
-        Status updated = statusRepo.update(created);
+        Priority updated = priorityRepo.update(created);
         assertEquals(updated.getTitle(), update);
 
 
-        //Delete status tests
-        statusRepo.delete(updated.getId());
-        readed = statusRepo.read(updated.getId());
+        //Delete priority tests
+        priorityRepo.delete(updated.getId());
+        readed = priorityRepo.read(updated.getId());
         assertNull(readed);
 
-        //get all statuses
+        //get all pririties
 
-        assertTrue(!statusRepo.getAll().isEmpty());
+        assertTrue(!priorityRepo.getAll().isEmpty());
     }
+
 }
