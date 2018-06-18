@@ -5,6 +5,7 @@ import com.softserve.mosquito.services.api.TrelloCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,8 +22,8 @@ public class TrelloCardController {
         this.trelloCardService = trelloCardService;
     }
 
-    @GetMapping("/1")
-    public ResponseEntity<List<TaskSimpleDto>> getAllTrelloTasks() {
-        return ResponseEntity.ok().body(trelloCardService.showAllNewTrelloTasks());
+    @GetMapping("/{userId}")
+    public ResponseEntity<List<TaskSimpleDto>> getAllTrelloTasks(@PathVariable("userId") Long id) {
+        return ResponseEntity.ok().body(trelloCardService.showAllNewTrelloTasks(id));
     }
 }

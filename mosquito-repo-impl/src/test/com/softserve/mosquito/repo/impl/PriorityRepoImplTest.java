@@ -45,8 +45,8 @@ public class PriorityRepoImplTest {
         String update = "Changed";
         created.setTitle("Changed");
         Priority updated = priorityRepo.update(created);
-        //assertNotNull(updated);
-        //assertEquals(created.getTitle(), updated.getTitle());
+        assertNotNull(updated);
+        assertEquals(created.getTitle(), updated.getTitle());
 
 
         //Delete priority tests

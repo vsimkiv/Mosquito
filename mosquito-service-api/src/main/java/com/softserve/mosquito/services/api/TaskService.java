@@ -15,17 +15,24 @@ public interface TaskService {
 
     TaskFullDto getById(Long id);
 
-    TaskFullDto getParentTaskDto(Long parentId);
+
+    TaskFullDto getParent(Long parentId);
 
     List<TaskFullDto> getSubTasks(Long id);
 
-    List<TaskFullDto> filterByOwner(Long ownerId);
 
-    List<TaskFullDto> filterByWorker(Long workerId);
+    List<TaskFullDto> getByOwner(Long ownerId);
 
-    List<TaskFullDto> filterByPriority(Long priorityId);
+    List<TaskFullDto> getByWorker(Long workerId);
 
-    List<TaskFullDto> filterByStatus(Long statusId);
+
+    List<TaskFullDto> getAllProjects();
+
+    List<TaskFullDto> getProjectsByOwner(Long ownerId);
+
+
+    List<TaskFullDto> filterByStatus(List<TaskFullDto> taskFullDtoList, Long statusId);
+
 
     boolean isPresent(TaskFullDto taskFullDto);
 

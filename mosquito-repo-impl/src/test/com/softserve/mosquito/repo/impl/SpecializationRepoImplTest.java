@@ -45,8 +45,8 @@ public class SpecializationRepoImplTest {
         //Update specialization test
         created.setTitle("BIG");
         Specialization updated = specializationRepo.update(created);
-        //assertNotNull(updated);
-        //assertEquals(created.getTitle(), updated.getTitle());
+        assertNotNull(updated);
+        assertEquals(created.getTitle(), updated.getTitle());
 
         //Delete specializations tests
         specializationRepo.delete(created.getId());

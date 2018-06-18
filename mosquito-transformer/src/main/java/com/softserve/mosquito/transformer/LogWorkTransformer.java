@@ -29,7 +29,7 @@ public class LogWorkTransformer {
 
     public static List<LogWork> toEntityList(List<LogWorkDto> logWorksDtos) {
         List<LogWork> logWorks = new ArrayList<>();
-        if(logWorksDtos != null) {
+        if (logWorksDtos != null && logWorksDtos.size() > 0) {
             for (LogWorkDto logWorkDto : logWorksDtos) {
                 logWorks.add(toEntity(logWorkDto));
             }
@@ -39,7 +39,7 @@ public class LogWorkTransformer {
 
     public static List<LogWorkDto> toDTOList(List<LogWork> logWorks) {
         List<LogWorkDto> logWorkDtos = new ArrayList<>();
-        if(logWorks != null) {
+        if (logWorks != null && logWorks.size() > 0) {
             for (LogWork logWork : logWorks) {
                 logWorkDtos.add(toDTO(logWork));
             }

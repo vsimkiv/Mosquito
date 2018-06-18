@@ -14,34 +14,38 @@ public class Task implements Serializable {
     private Long id;
     private String name;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "parent_id")
     private Task parentTask;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "owner_id")
     private User owner;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "worker_id")
     private User worker;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "estimation_id")
     private Estimation estimation;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "priority_id")
     private Priority priority;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "status_id")
     private Status status;
 
-    @OneToMany(mappedBy = "task", targetEntity = Comment.class, fetch = FetchType.EAGER)
+    @Column(name = "trello_id")
+    private String trelloId;
+
+
+    @OneToMany(mappedBy = "task", targetEntity = Comment.class, fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "parentTask", targetEntity = Task.class)
+    @OneToMany(mappedBy = "parentTask", targetEntity = Task.class, fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Task> childTasks = new ArrayList<>();
 
     public Task() {
@@ -49,60 +53,6 @@ public class Task implements Serializable {
 
     public Task(Long id) {
         this.id = id;
-    }
-
-    /**
-     * Just short constructor
-     */
-    public Task(Long id, String name) {
-        super();
-        this.id = id;
-        this.name = name;
-    }
-
-    /**
-     * DB Insert constructor
-     */
-    public Task(String name, Long parentId, Long ownerId, Long workerId,
-                Estimation estimation, Priority priority, Status status) {
-        super();
-        /*this.name = name;
-        this.parentId = parentId;
-        this.ownerId = ownerId;
-        this.workerId = workerId;
-        this.estimation = estimation;
-        this.priority = priority;
-        this.status = status;*/
-    }
-
-
-    /**
-     * DB Select constructor
-     */
-    public Task(Long id, Long parentId, Long ownerId, Long workerId, String name, Status status, Priority priority,
-                Estimation estimation) {
-        super();
-        /*this.id = id;
-        this.parentId = parentId;
-        this.ownerId = ownerId;
-        this.workerId = workerId;
-        this.name = name;
-        this.status = status;
-        this.priority = priority;
-        this.estimation = estimation;*/
-    }
-
-    public Task(Long id, String name, Long parentId, Long ownerId, Long workerId,
-                Estimation estimation, Priority priority, Status status, List<Comment> comments) {
-        /*this.id = id;
-        this.name = name;
-        this.parentId = parentId;
-        this.ownerId = ownerId;
-        this.workerId = workerId;
-        this.estimation = estimation;
-        this.priority = priority;
-        this.status = status;
-        this.comments = comments;*/
     }
 
     public Long getId() {
@@ -153,18 +103,6 @@ public class Task implements Serializable {
         this.comments = comments;
     }
 
-    @Override
-    public String toString() {
-        return "Task{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", estimation=" + estimation +
-                ", priority=" + priority +
-                ", status=" + status +
-                ", comments=" + comments +
-                '}';
-    }
-
     public Task getParentTask() {
         return parentTask;
     }
@@ -195,6 +133,14 @@ public class Task implements Serializable {
 
     public void setWorker(User worker) {
         this.worker = worker;
+    }
+
+    public String getTrelloId() {
+        return trelloId;
+    }
+
+    public void setTrelloId(String trelloId) {
+        this.trelloId = trelloId;
     }
 
     public static TaskBuilder builder() {

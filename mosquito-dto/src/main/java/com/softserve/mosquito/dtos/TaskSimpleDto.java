@@ -10,6 +10,7 @@ public class TaskSimpleDto {
     private String estimation;
     private String priority;
     private String status;
+    private String trelloId;
 
     public TaskSimpleDto() {
     }
@@ -23,6 +24,22 @@ public class TaskSimpleDto {
         this.estimation = estimation;
         this.priority = priority;
         this.status = status;
+    }
+
+    public TaskSimpleDto(String name, String parentTask, String owner, String worker, String status, String trelloId) {
+        this.name = name;
+        this.parentTask = parentTask;
+        this.owner = owner;
+        this.worker = worker;
+        this.status = status;
+        this.trelloId = trelloId;
+    }
+    public TaskSimpleDto(String name, String owner, String worker, String status, String trelloId) {
+        this.name = name;
+        this.owner = owner;
+        this.worker = worker;
+        this.status = status;
+        this.trelloId = trelloId;
     }
 
     public Long getId() {
@@ -87,6 +104,14 @@ public class TaskSimpleDto {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getTrelloId() {
+        return trelloId;
+    }
+
+    public void setTrelloId(String trelloId) {
+        this.trelloId = trelloId;
     }
 
     @Override

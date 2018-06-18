@@ -4,6 +4,7 @@ import com.softserve.mosquito.dtos.UserDto;
 import com.softserve.mosquito.dtos.UserLoginDto;
 import com.softserve.mosquito.security.JwtAuthenticationResponse;
 import com.softserve.mosquito.security.JwtTokenProvider;
+import com.softserve.mosquito.security.LoginResponse;
 import com.softserve.mosquito.services.api.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -59,14 +60,18 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity registerUser(@RequestBody UserDto signUpRequest) {
+    public ResponseEntity<?> registerUser(@RequestBody @Valid UserDto signUpRequest) {
         if (userService.getByEmail(signUpRequest.getEmail()) != null)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).
+                    body(new LoginResponse(false, "Email Address already in use!"));
 
-        if (signUpRequest.getPassword().equals(signUpRequest.getConfirmPassword())) {
-            signUpRequest.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
-            userService.save(signUpRequest);
+        if (!signUpRequest.getPassword().equals(signUpRequest.getConfirmPassword())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).
+                    body(new LoginResponse(false, "Email and Confirm Email should be same"));
         }
+
+        signUpRequest.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
+        userService.save(signUpRequest);
 
         return ResponseEntity.ok().build();
     }

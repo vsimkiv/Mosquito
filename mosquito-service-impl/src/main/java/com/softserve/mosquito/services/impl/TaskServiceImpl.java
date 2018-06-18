@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.softserve.mosquito.transformer.TaskTransformer.toBigDTO;
+import static com.softserve.mosquito.transformer.TaskTransformer.toFullDTO;
 import static com.softserve.mosquito.transformer.TaskTransformer.toSimpleDto;
 
 @Service
@@ -35,16 +35,16 @@ public class TaskServiceImpl implements TaskService {
 
         if (isPresent(taskFullDto)) {
             Task existedTask = taskRepo.getByName(taskFullDto.getName());
-            return TaskTransformer.toBigDTO(existedTask);
+            return TaskTransformer.toFullDTO(existedTask);
         }
 
         //TODO messaging exception "Could not convert socket to TLS..."
         /*if (isMessageSent(taskFullDto.getWorkerDto(),
                 "You was assigned for this task" + taskFullDto.getName(),
                 "Mosquito Task Manager")) {*/
-        if (isPresent(taskFullDto)) return TaskTransformer.toBigDTO(taskRepo.getByName(taskFullDto.getName()));
+        if (isPresent(taskFullDto)) return TaskTransformer.toFullDTO(taskRepo.getByName(taskFullDto.getName()));
         Task task = taskRepo.create(TaskTransformer.toEntity(taskFullDto));
-        return toBigDTO(task);
+        return toFullDTO(task);
         /*}
         return null;*/
     }
@@ -55,7 +55,7 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskRepo.update(TaskTransformer.toEntity(taskFullDto));
         if (task == null)
             return null;
-        return toBigDTO(task);
+        return toFullDTO(task);
     }
 
     @Transactional
@@ -68,64 +68,66 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskFullDto getById(Long id) {
         Task task = taskRepo.read(id);
-        TaskFullDto taskFullDto = toBigDTO(task);
+        TaskFullDto taskFullDto = toFullDTO(task);
 
-        taskFullDto.setParentTaskFullDto(getParentTaskDto(taskFullDto.getId()));
+        taskFullDto.setParentTaskFullDto(getParent(taskFullDto.getId()));
         taskFullDto.setChildTaskFullDtoList(getSubTasks(taskFullDto.getId()));
         return taskFullDto;
     }
 
     @Transactional
     @Override
+    public List<TaskFullDto> getSubTasks(Long id) {
+        return TaskTransformer.toDTOList(taskRepo.getSubTasks(id));
+    }
+
+    @Transactional
+    @Override
+    public List<TaskFullDto> getAllProjects() {
+        return TaskTransformer.toDTOList(taskRepo.getAllProjects());
+    }
+
+    @Transactional
+    @Override
+    public List<TaskFullDto> getProjectsByOwner(Long ownerId) {
+        return TaskTransformer.toDTOList(taskRepo.getProjectsByOwner(ownerId));
+    }
+
+    @Transactional
+    @Override
+    public TaskFullDto getParent(Long parentId) {
+        return toFullDTO(taskRepo.read(parentId));
+    }
+
+    @Transactional
+    @Override
+    public List<TaskFullDto> getByOwner(Long ownerId){
+        return TaskTransformer.toDTOList(taskRepo.getByOwner(ownerId));
+    }
+
+    @Transactional
+    @Override
+    public List<TaskFullDto> getByWorker(Long workerId){
+        return TaskTransformer.toDTOList(taskRepo.getByOwner(workerId));
+    }
+
+    @Transactional
+    @Override
+    public List<TaskFullDto> filterByStatus(List<TaskFullDto> taskFullDtoList, Long statusId) {
+        List<TaskFullDto> filteredList = new ArrayList<>();
+        for (TaskFullDto taskDto: taskFullDtoList) {
+            if (taskDto.getStatusDto().getId().equals(statusId)){
+                filteredList.add(taskDto);
+            }
+        }
+        return filteredList;
+    }
+
+    @Transactional
+    @Override
     public TaskSimpleDto getSimpleTaskById(Long id) {
         Task task = taskRepo.read(id);
-        return toSimpleDto(toBigDTO(task));
-    }
-
-    @Transactional
-    @Override
-    public List<TaskFullDto> getSubTasks(Long id) {
-        List<Task> tasks = taskRepo.getSubTasks(id);
-        List<TaskFullDto> taskFullDtos = new ArrayList<>();
-        for (Task task : tasks) {
-            taskFullDtos.add(toBigDTO(task));
-        }
-        return taskFullDtos;
-    }
-
-    @Transactional
-    @Override
-    public TaskFullDto getParentTaskDto(Long parentId) {
-        Task task = taskRepo.read(parentId);
-        return toBigDTO(task);
-    }
-
-    @Transactional
-    @Override
-    public List<TaskFullDto> filterByOwner(Long ownerId) {
-        List<TaskFullDto> taskFullDtoList = new ArrayList<>();
-        return taskFullDtoList;
-    }
-
-    @Transactional
-    @Override
-    public List<TaskFullDto> filterByWorker(Long workerId) {
-        List<TaskFullDto> taskFullDtoList = new ArrayList<>();
-        return taskFullDtoList;
-    }
-
-    @Transactional
-    @Override
-    public List<TaskFullDto> filterByPriority(Long priorityId) {
-        List<TaskFullDto> taskFullDtoList = new ArrayList<>();
-        return taskFullDtoList;
-    }
-
-    @Transactional
-    @Override
-    public List<TaskFullDto> filterByStatus(Long statusId) {
-        List<TaskFullDto> taskFullDtoList = new ArrayList<>();
-        return taskFullDtoList;
+        return toSimpleDto(task);
     }
 
     @Override
@@ -136,16 +138,15 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
-    public boolean isPresent(String name) {
-        return (taskRepo.getByName(name) != null);
+    public boolean isPresent(String trelloId) {
+        return (taskRepo.getByTrelloId(trelloId) != null);
     }
 
     @Override
     @Transactional
     public TaskFullDto getByName(String name) {
-        return TaskTransformer.toBigDTO(taskRepo.getByName(name));
+        return TaskTransformer.toFullDTO(taskRepo.getByName(name));
     }
-
 
     private boolean isMessageSent(UserDto userDto, String message, String subject) {
         return mailSender.sendMessage(userDto, message, subject);
