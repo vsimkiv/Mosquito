@@ -78,12 +78,6 @@ public class UserRepoImplTest {
         List<User> users = userRepo.readAll();
         assertNotNull(users);
         assertEquals(12, users.size());
-        System.out.println(users.iterator().next().getSpecializations());
-
-       /* users = userRepo.readBySpecializationId(1L);
-        assertNotNull(users);
-        assertEquals(6, users.size());
-        assertEquals(users.iterator().next().getSpecializations().iterator().next().getTitle(), "DEV")*/;
 
         User readExisting = userRepo.readByEmail("test_user1@gmail.com");
         assertNotNull(readExisting);
