@@ -29,7 +29,8 @@ public class StatusRepoImpl implements StatusRepo {
     public Status create(Status status) {
 
         try (Session session = sessionFactory.openSession()) {
-            session.save(status);
+            Long statusId = (Long) session.save(status);
+            status.setId(statusId);
         } catch (HibernateException e) {
             LOGGER.error("Error during save status!" + e.getMessage());
         }
