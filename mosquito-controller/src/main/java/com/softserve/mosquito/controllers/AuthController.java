@@ -5,6 +5,7 @@ import com.softserve.mosquito.dtos.UserLoginDto;
 import com.softserve.mosquito.security.JwtAuthenticationResponse;
 import com.softserve.mosquito.security.JwtTokenProvider;
 import com.softserve.mosquito.services.api.UserService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/")
+@Api(description = "Controller for authorization user by using spring security")
 public class AuthController {
 
     private AuthenticationManager authenticationManager;

@@ -27,12 +27,12 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("TITLE")
-                .description("DESCRIPTION")
-                .version("VERSION")
+                .title("Mosquito")
+                .description("Task management tools which we are developing for learning Java languages and practise with it.")
+                .version("Demo 3")
                 .termsOfServiceUrl("http://terms-of-services.url")
-                .license("LICENSE")
-                .licenseUrl("http://url-to-license.com")
+                .license("Our team`s account on GitHub")
+                .licenseUrl("https://github.com/IF-086-Java")
                 .build();
     }
 }
