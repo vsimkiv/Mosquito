@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -27,8 +28,9 @@ public class SpecializationRepoImpl implements SpecializationRepo {
     @Override
     public Specialization create(Specialization specialization) {
         try (Session session = sessionFactory.openSession()) {
-            session.save(specialization);
-        } catch (HibernateException e) {
+            Long specializationId = (Long) session.save(specialization);
+            specialization.setId(specializationId);
+        } catch (Exception e) {
             LOGGER.error("Error during save specialization!" + e.getMessage());
         }
         return specialization;
@@ -40,7 +42,7 @@ public class SpecializationRepoImpl implements SpecializationRepo {
             Session session = sessionFactory.openSession();
             Specialization specialization = session.get(Specialization.class, id);
             return specialization;
-        } catch (HibernateException e) {
+        } catch (Exception e) {
             LOGGER.error("Specialization reading was failed!", e.getMessage());
         }
         return null;
@@ -50,11 +52,11 @@ public class SpecializationRepoImpl implements SpecializationRepo {
     public Specialization update(Specialization specialization) {
         try{
             Session session = sessionFactory.openSession();
-            session.getTransaction().begin();
+            Transaction transaction = session.beginTransaction();
             session.update(specialization);
-            session.getTransaction().commit();
+            transaction.commit();
             return specialization;
-        }catch (HibernateException e){
+        }catch (Exception e){
             LOGGER.error("Specialization updating was failed" + e.getMessage());
         }
         return null;
@@ -69,7 +71,7 @@ public class SpecializationRepoImpl implements SpecializationRepo {
             Specialization specialization = session.get(Specialization.class, id);
             session.delete(specialization);
             session.getTransaction().commit();
-        }catch (HibernateException e){
+        }catch (Exception e){
             LOGGER.error("Specialization deleting was failed" + e.getMessage());
         }
     }
