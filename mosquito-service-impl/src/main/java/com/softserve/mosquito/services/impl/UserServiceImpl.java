@@ -75,7 +75,6 @@ public class UserServiceImpl implements UserService {
             }
         }
         return userDtos;
-        //return UserTransformer.toDTO(userRepo.readBySpecializationId(specializationId));
     }
 
     @Override

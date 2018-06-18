@@ -8,6 +8,6 @@ public interface TrelloCardService {
 
     void getTasksFromTrello();
 
-    List<TaskSimpleDto> showAllNewTrelloTasks();
+    List<TaskSimpleDto> showAllNewTrelloTasks(Long userId);
 
 }

@@ -38,6 +38,10 @@ public class Task implements Serializable {
     @JoinColumn(name = "status_id")
     private Status status;
 
+    @Column(name = "trello_id")
+    private String trelloId;
+
+
     @OneToMany(mappedBy = "task", targetEntity = Comment.class, fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
 
@@ -49,60 +53,6 @@ public class Task implements Serializable {
 
     public Task(Long id) {
         this.id = id;
-    }
-
-    /**
-     * Just short constructor
-     */
-    public Task(Long id, String name) {
-        super();
-        this.id = id;
-        this.name = name;
-    }
-
-    /**
-     * DB Insert constructor
-     */
-    public Task(String name, Long parentId, Long ownerId, Long workerId,
-                Estimation estimation, Priority priority, Status status) {
-        super();
-        /*this.name = name;
-        this.parentId = parentId;
-        this.ownerId = ownerId;
-        this.workerId = workerId;
-        this.estimation = estimation;
-        this.priority = priority;
-        this.status = status;*/
-    }
-
-
-    /**
-     * DB Select constructor
-     */
-    public Task(Long id, Long parentId, Long ownerId, Long workerId, String name, Status status, Priority priority,
-                Estimation estimation) {
-        super();
-        /*this.id = id;
-        this.parentId = parentId;
-        this.ownerId = ownerId;
-        this.workerId = workerId;
-        this.name = name;
-        this.status = status;
-        this.priority = priority;
-        this.estimation = estimation;*/
-    }
-
-    public Task(Long id, String name, Long parentId, Long ownerId, Long workerId,
-                Estimation estimation, Priority priority, Status status, List<Comment> comments) {
-        /*this.id = id;
-        this.name = name;
-        this.parentId = parentId;
-        this.ownerId = ownerId;
-        this.workerId = workerId;
-        this.estimation = estimation;
-        this.priority = priority;
-        this.status = status;
-        this.comments = comments;*/
     }
 
     public Long getId() {
@@ -183,6 +133,14 @@ public class Task implements Serializable {
 
     public void setWorker(User worker) {
         this.worker = worker;
+    }
+
+    public String getTrelloId() {
+        return trelloId;
+    }
+
+    public void setTrelloId(String trelloId) {
+        this.trelloId = trelloId;
     }
 
     public static TaskBuilder builder() {

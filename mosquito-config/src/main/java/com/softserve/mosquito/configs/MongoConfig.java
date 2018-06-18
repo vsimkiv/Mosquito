@@ -18,9 +18,12 @@ import java.util.Arrays;
 @EnableMongoRepositories(basePackages = "com.softserve.mosquito.repo.api")
 @PropertySource({"classpath:mongodb.properties"})
 public class MongoConfig {
+    private Environment env;
 
     @Autowired
-    private Environment env;
+    public MongoConfig(Environment env) {
+        this.env = env;
+    }
 
     @Bean
     public Mongo mongo() throws Exception {

@@ -52,19 +52,18 @@ public class LogWorkRepoImplTest {
         // update logwork
         created.setLogged(50);
         created.setDescription("BadJob");
-
         LogWork updated = logWorkRepo.update(created);
         assertNotNull(updated);
         assertEquals(created.getLogged(), updated.getLogged());
 
 
         //get logWork by user id
-//      List byUserId = logWorkRepo.getByUserId(user.getId());
-//        assertEquals(1, byUserId.size());
+      List byUserId = logWorkRepo.getByUserId(user.getId());
+        assertEquals(1, byUserId.size());
 
         //get logWork by estimation id
-//        List byEstimationId = logWorkRepo.getByEstimationId(estimation.getId());
-//        assertEquals(1L, byEstimationId.size() );
+        List byEstimationId = logWorkRepo.getByEstimationId(estimation.getId());
+        assertEquals(1L, byEstimationId.size() );
 
         //get all logWorks
         assertTrue(!logWorkRepo.readAll().isEmpty());

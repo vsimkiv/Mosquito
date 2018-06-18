@@ -4,9 +4,9 @@ import com.softserve.mosquito.entities.Priority;
 import com.softserve.mosquito.repo.api.PriorityRepo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -27,9 +27,10 @@ public class PriorityRepoImpl implements PriorityRepo {
     @Override
     public Priority create(Priority priority) {
         try (Session session = sessionFactory.openSession()) {
-            session.save(priority);
-        } catch (HibernateException e) {
-            LOGGER.error("Error during save pririty!" + e.getMessage());
+            Long priorityId = (Long) session.save(priority);
+            priority.setId(priorityId);
+        } catch (Exception e) {
+            LOGGER.error("Error during save priority!" + e.getMessage());
         }
         return priority;
     }
@@ -40,7 +41,7 @@ public class PriorityRepoImpl implements PriorityRepo {
             Session session = sessionFactory.openSession();
             Priority priority = session.get(Priority.class, id);
             return priority;
-        } catch (HibernateException e) {
+        } catch (Exception e) {
             LOGGER.error("Priority reading was failed!", e.getMessage());
         }
 
@@ -51,11 +52,11 @@ public class PriorityRepoImpl implements PriorityRepo {
     public Priority update(Priority priority) {
         try{
             Session session = sessionFactory.openSession();
-            session.getTransaction().begin();
+            Transaction transaction = session.beginTransaction();
             session.update(priority);
-            session.getTransaction().commit();
+            transaction.commit();
             return priority;
-        }catch (HibernateException e){
+        }catch (Exception e){
             LOGGER.error("Priority updating was failed" + e.getMessage());
         }
         return null;
@@ -69,7 +70,7 @@ public class PriorityRepoImpl implements PriorityRepo {
             Priority priority = session.get(Priority.class, id);
             session.delete(priority);
             session.getTransaction().commit();
-        }catch (HibernateException e){
+        }catch (Exception e){
             LOGGER.error("Priority deleting was failed" + e.getMessage());
         }
     }

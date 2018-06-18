@@ -30,7 +30,8 @@ public class CommentRepoImpl implements CommentRepo {
         try (Session session = sessionFactory.openSession()) {
             session.save(comment);
         } catch (HibernateException e) {
-            LOGGER.error("Error during save comment!");
+            LOGGER.info("Error during save comment!");
+            LOGGER.error(e.getMessage());
         }
         return comment;
     }
@@ -40,7 +41,8 @@ public class CommentRepoImpl implements CommentRepo {
         try (Session session = sessionFactory.openSession()) {
             return session.get(Comment.class, id);
         } catch (HibernateException e) {
-            LOGGER.error("Reading comment was failed!");
+            LOGGER.info("Reading comment was failed!");
+            LOGGER.error(e.getMessage());
         }
         return null;
     }
@@ -53,7 +55,8 @@ public class CommentRepoImpl implements CommentRepo {
             session.getTransaction().commit();
             return comment;
         } catch (HibernateException e) {
-            LOGGER.error("Updating comment was failed!");
+            LOGGER.info("Updating comment was failed!");
+            LOGGER.error(e.getMessage());
         }
         return null;
     }
@@ -66,7 +69,8 @@ public class CommentRepoImpl implements CommentRepo {
             session.delete(comment);
             session.getTransaction().commit();
         } catch (HibernateException e) {
-            LOGGER.error("Deleting comment was failed!");
+            LOGGER.info("Deleting comment was failed!");
+            LOGGER.error(e.getMessage());
         }
     }
 
