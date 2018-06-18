@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,10 +25,8 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public CommentDto save(CommentDto commentDto) {
         Comment comment = repo.create(CommentTransformer.toEntity(commentDto));
-        if (comment == null)
-            return null;
 
-        return CommentTransformer.toDTO(comment);
+        return comment == null ? null : CommentTransformer.toDTO(comment);
     }
 
     @Override
@@ -37,19 +34,15 @@ public class CommentServiceImpl implements CommentService {
     public CommentDto getById(Long id) {
         Comment comment = repo.read(id);
 
-        if (comment == null)
-            return null;
-        return CommentTransformer.toDTO(comment);
+        return comment == null ? null : CommentTransformer.toDTO(comment);
     }
 
     @Override
     @Transactional
     public CommentDto update(CommentDto commentDto) {
         Comment comment = repo.update(CommentTransformer.toEntity(commentDto));
-        if (comment == null)
-            return null;
 
-        return CommentTransformer.toDTO(comment);
+        return comment == null ? null : CommentTransformer.toDTO(comment);
     }
 
     @Override
@@ -61,12 +54,8 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public List<CommentDto> getByTaskId(Long taskId) {
-        List<CommentDto> commentDtos = new ArrayList<>();
         List<Comment> comments = repo.getByTaskId(taskId);
-        for (Comment comment : comments) {
-            if (comment.getTask().getId().equals(taskId))
-                commentDtos.add(CommentTransformer.toDTO(comment));
-        }
-        return commentDtos;
+
+        return CommentTransformer.toDTOList(comments);
     }
 }
