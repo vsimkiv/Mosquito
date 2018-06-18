@@ -3,18 +3,23 @@ package com.softserve.mosquito.security;
 import io.jsonwebtoken.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import java.util.Date;
 
 @Component
+@PropertySource("classpath:jwt.properties")
 public class JwtTokenProvider {
 
     private static final Logger LOGGER = LogManager.getLogger(JwtAuthenticationEntryPoint.class);
 
-    private String jwtSecret = "JWTMosquitoTMSecretKey";
+    @Value("${auth.jwtSecret}")
+    private String jwtSecret;
 
-    private int jwtExpirationInMs = 3 * 60 * 60 * 1000; // 3 hours
+    @Value("${auth.jwtExpirationInMs}")
+    private int jwtExpirationInMs;
 
     public String generateToken(Authentication authentication) {
 
