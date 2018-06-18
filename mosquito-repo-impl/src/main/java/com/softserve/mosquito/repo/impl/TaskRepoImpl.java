@@ -101,6 +101,19 @@ public class TaskRepoImpl implements TaskRepo {
     }
 
     @Override
+    @Transactional
+    public Task getByTrelloId(String trelloId) {
+        try (Session session = sessionFactory.openSession()) {
+            Query query = session.createQuery("FROM " + Task.class.getName() + " WHERE trello_id = :trelloId ");
+            query.setParameter("trelloId", trelloId);
+            return (Task) query.uniqueResult();
+        } catch (HibernateException e) {
+            LOGGER.error("Error with create task" + e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
     public List<Task> getProjects() {
         try (Session session = sessionFactory.openSession()) {
             Query query = session.createQuery("FROM " + Task.class.getName() + " WHERE parent_id = null ");

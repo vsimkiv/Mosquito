@@ -8,4 +8,5 @@ public interface TaskRepo extends GenericCRUD<Task> {
     List<Task> getSubTasks(Long id);
     List<Task> getProjects();
     Task getByName(String name);
+    Task getByTrelloId(String trelloId);
 }

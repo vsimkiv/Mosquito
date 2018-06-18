@@ -38,6 +38,10 @@ public class Task implements Serializable {
     @JoinColumn(name = "status_id")
     private Status status;
 
+    @Column(name = "trello_id")
+    private String trelloId;
+
+
     @OneToMany(mappedBy = "task", targetEntity = Comment.class, fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
 
@@ -183,6 +187,14 @@ public class Task implements Serializable {
 
     public void setWorker(User worker) {
         this.worker = worker;
+    }
+
+    public String getTrelloId() {
+        return trelloId;
+    }
+
+    public void setTrelloId(String trelloId) {
+        this.trelloId = trelloId;
     }
 
     public static TaskBuilder builder() {

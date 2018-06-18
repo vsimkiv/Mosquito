@@ -146,8 +146,8 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
-    public boolean isPresent(String name) {
-        return (taskRepo.getByName(name) != null);
+    public boolean isPresent(String trelloId) {
+        return (taskRepo.getByTrelloId(trelloId) != null);
     }
 
     @Override
