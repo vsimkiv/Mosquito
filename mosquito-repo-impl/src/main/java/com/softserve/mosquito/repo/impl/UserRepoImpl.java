@@ -29,7 +29,9 @@ public class UserRepoImpl implements UserRepo {
 
     @Override
     public User create(User user) {
-        try (Session session = sessionFactory.openSession()) {
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
             Long id = (Long) session.save(user);
             if (id == null)
                 throw new HibernateException("Did not get id!");
@@ -37,22 +39,30 @@ public class UserRepoImpl implements UserRepo {
         } catch (HibernateException e) {
             LOGGER.error("Error during save user! " + e.getMessage());
             return null;
+        } finally {
+            session.close();
         }
     }
 
     @Override
     public User read(Long id) {
-        try (Session session = sessionFactory.openSession()) {
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
             return session.get(User.class, id);
         } catch (HibernateException e) {
             LOGGER.error("Reading user was failed!" + e.getMessage());
             return null;
+        } finally {
+            session.close();
         }
     }
 
     @Override
     public User update(User user) {
-        try (Session session = sessionFactory.openSession()) {
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
             session.getTransaction().begin();
             session.update(user);
             session.getTransaction().commit();
@@ -60,54 +70,71 @@ public class UserRepoImpl implements UserRepo {
         } catch (HibernateException e) {
             LOGGER.error("Updating user was failed!" + e.getMessage());
             return null;
+        } finally {
+            session.close();
         }
     }
 
     @Override
     public void delete(Long id) {
-        try (Session session = sessionFactory.openSession()) {
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
             session.getTransaction().begin();
             User user = session.get(User.class, id);
             session.delete(user);
             session.getTransaction().commit();
         } catch (HibernateException e) {
             LOGGER.error("Deleting user was failed!" + e.getMessage());
+        } finally {
+            session.close();
         }
     }
 
     @Override
     public List<User> readAll() {
-        try (Session session = sessionFactory.openSession()) {
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
             Query<User> users = session.createQuery("FROM " + User.class.getName());
             return users.list();
         } catch (HibernateException e) {
             LOGGER.error(e.getMessage());
             return null;
+        } finally {
+            session.close();
         }
     }
 
     public User readByEmail(String email) {
-        try (Session session = sessionFactory.openSession()) {
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
             Query query = session.createQuery("FROM " + User.class.getName() + " WHERE email = :email ");
             query.setParameter("email", email);
             return (User) query.uniqueResult();
         } catch (HibernateException e) {
             LOGGER.error("Reading user was failed!" + e.getMessage());
             return null;
+        } finally {
+            session.close();
         }
     }
 
     @Override
     public List<User> readBySpecializationId(Long id) {
-        /*try (Session session = sessionFactory.openSession()) {
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
             Query query = session.createQuery("FROM " + User.class.getName() +
-                    " as u JOIN u.specializations as s WHERE s.id = :id ");
+                    " u JOIN u.specializations s WHERE s.id = :id ");
             query.setParameter("id", id);
             return query.list();
         } catch (HibernateException e) {
             LOGGER.error("Reading users was failed!" + e.getMessage());
             return null;
-        }*/
-        return null;
+        } finally {
+            session.close();
+        }
     }
 }
