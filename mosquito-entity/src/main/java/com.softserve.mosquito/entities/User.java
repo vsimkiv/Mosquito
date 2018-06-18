@@ -31,7 +31,7 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "worker", targetEntity = Task.class, fetch = FetchType.LAZY)
     private List<Task> taskWhereUserIsWorker = new ArrayList<>();
 
-    @OneToMany(mappedBy = "author", targetEntity = Comment.class, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "author", targetEntity = Comment.class, fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "author", targetEntity = LogWork.class, fetch = FetchType.LAZY)

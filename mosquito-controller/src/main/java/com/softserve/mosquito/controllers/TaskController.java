@@ -1,6 +1,5 @@
 package com.softserve.mosquito.controllers;
 
-import com.softserve.mosquito.dtos.CommentDto;
 import com.softserve.mosquito.dtos.TaskFullDto;
 import com.softserve.mosquito.dtos.TaskSimpleDto;
 import com.softserve.mosquito.entities.mongo.Task;

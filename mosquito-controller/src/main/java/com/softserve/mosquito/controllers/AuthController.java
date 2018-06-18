@@ -59,7 +59,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@RequestBody UserDto signUpRequest) {
+    public ResponseEntity registerUser(@RequestBody UserDto signUpRequest) {
         if (userService.getByEmail(signUpRequest.getEmail()) != null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 

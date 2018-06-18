@@ -13,7 +13,7 @@ public class Comment implements Serializable {
     private Long id;
     private String text;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "author_id")
     private User author;
 

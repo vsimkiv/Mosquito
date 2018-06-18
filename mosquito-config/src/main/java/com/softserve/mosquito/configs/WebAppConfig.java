@@ -3,6 +3,7 @@ package com.softserve.mosquito.configs;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -17,6 +18,7 @@ import java.util.Properties;
 @Configuration
 @EnableWebMvc
 @ComponentScan("com.softserve.mosquito")
+@PropertySource("classpath:message.properties")
 public class WebAppConfig extends WebMvcConfigurerAdapter {
 
     @Bean
