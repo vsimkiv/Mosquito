@@ -55,60 +55,6 @@ public class Task implements Serializable {
         this.id = id;
     }
 
-    /**
-     * Just short constructor
-     */
-    public Task(Long id, String name) {
-        super();
-        this.id = id;
-        this.name = name;
-    }
-
-    /**
-     * DB Insert constructor
-     */
-    public Task(String name, Long parentId, Long ownerId, Long workerId,
-                Estimation estimation, Priority priority, Status status) {
-        super();
-        /*this.name = name;
-        this.parentId = parentId;
-        this.ownerId = ownerId;
-        this.workerId = workerId;
-        this.estimation = estimation;
-        this.priority = priority;
-        this.status = status;*/
-    }
-
-
-    /**
-     * DB Select constructor
-     */
-    public Task(Long id, Long parentId, Long ownerId, Long workerId, String name, Status status, Priority priority,
-                Estimation estimation) {
-        super();
-        /*this.id = id;
-        this.parentId = parentId;
-        this.ownerId = ownerId;
-        this.workerId = workerId;
-        this.name = name;
-        this.status = status;
-        this.priority = priority;
-        this.estimation = estimation;*/
-    }
-
-    public Task(Long id, String name, Long parentId, Long ownerId, Long workerId,
-                Estimation estimation, Priority priority, Status status, List<Comment> comments) {
-        /*this.id = id;
-        this.name = name;
-        this.parentId = parentId;
-        this.ownerId = ownerId;
-        this.workerId = workerId;
-        this.estimation = estimation;
-        this.priority = priority;
-        this.status = status;
-        this.comments = comments;*/
-    }
-
     public Long getId() {
         return id;
     }

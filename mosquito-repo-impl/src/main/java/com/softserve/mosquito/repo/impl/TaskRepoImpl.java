@@ -7,7 +7,6 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -87,8 +86,20 @@ public class TaskRepoImpl implements TaskRepo {
         }
     }
 
-    @Override
     @Transactional
+    @Override
+    public List<Task> getProjects() {
+        try (Session session = sessionFactory.openSession()) {
+            Query query = session.createQuery("FROM " + Task.class.getName() + " WHERE parent_id = null ");
+            return query.list();
+        } catch (HibernateException e) {
+            LOGGER.error("Error with create task" + e.getMessage());
+            return null;
+        }
+    }
+
+    @Transactional
+    @Override
     public Task getByName(String name) {
         try (Session session = sessionFactory.openSession()) {
             Query query = session.createQuery("FROM " + Task.class.getName() + " WHERE name = :taskName ");
@@ -113,14 +124,5 @@ public class TaskRepoImpl implements TaskRepo {
         }
     }
 
-    @Override
-    public List<Task> getProjects() {
-        try (Session session = sessionFactory.openSession()) {
-            Query query = session.createQuery("FROM " + Task.class.getName() + " WHERE parent_id = null ");
-            return query.list();
-        } catch (HibernateException e) {
-            LOGGER.error("Error with create task" + e.getMessage());
-            return null;
-        }
-    }
+
 }
