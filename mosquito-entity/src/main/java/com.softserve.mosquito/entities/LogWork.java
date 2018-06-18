@@ -15,14 +15,14 @@ public class LogWork implements Serializable {
 
     private Integer logged;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "author_id", referencedColumnName = "id")
     private User author;
 
     @Column(name = "last_update")
     private LocalDateTime lastUpdate;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "estimation_id", referencedColumnName = "id")
     private Estimation estimation;
 

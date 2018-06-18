@@ -50,7 +50,6 @@ public class LogWorkRepoImpl implements LogWorkRepo {
     }
 
     @Override
-    @Transactional
     public LogWork update(LogWork logWork) {
         try{
             Session session = sessionFactory.openSession();
@@ -85,14 +84,14 @@ public class LogWorkRepoImpl implements LogWorkRepo {
     public List<LogWork> getByUserId(Long userId) {
         Session session = sessionFactory.openSession();
 
-        Query<LogWork> query = sessionFactory.getCurrentSession().createQuery("from " + LogWork.class.getName()+" where author_id = :user ");
+        Query<LogWork> query = sessionFactory.openSession().createQuery("from " + LogWork.class.getName()+" where author_id = :user ");
         query.setParameter("user",userId);
         return query.list();
     }
     public List<LogWork> getByEstimationId(Long estimationId) {
         Session session = sessionFactory.openSession();
 
-        Query<LogWork> query = sessionFactory.getCurrentSession().createQuery("from " + LogWork.class.getName()+" where estimation_id = :est ");
+        Query<LogWork> query = sessionFactory.openSession().createQuery("from " + LogWork.class.getName()+" where estimation_id = :est ");
         query.setParameter("est",estimationId);
         return query.list();
     }
