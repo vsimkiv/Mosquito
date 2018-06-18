@@ -6,7 +6,13 @@ import java.util.List;
 
 public interface TaskRepo extends GenericCRUD<Task> {
     List<Task> getSubTasks(Long id);
-    List<Task> getProjects();
+
+    List<Task> getAllProjects();
+    List<Task> getProjectsByOwner(Long ownerId);
+
+    List<Task> getByOwner(Long ownerId);
+    List<Task> getByWorker(Long workerId);
+
     Task getByName(String name);
     Task getByTrelloId(String trelloId);
 }

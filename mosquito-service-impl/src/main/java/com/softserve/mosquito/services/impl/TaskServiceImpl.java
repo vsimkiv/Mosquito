@@ -95,7 +95,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskFullDto> getProjects() {
-        List<Task> tasks = taskRepo.getProjects();
+        List<Task> tasks = taskRepo.getAllProjects();
         List<TaskFullDto> taskFullDtos = new ArrayList<>();
         for (Task task : tasks) {
             taskFullDtos.add(toBigDTO(task));
