@@ -65,7 +65,7 @@ public class PersistenceConfig {
         Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
         properties.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
-        properties.setProperty("hibernate.globally_quoted_identifiers", env.getProperty("hibernate.globally_quoted_identifiers"));
+        properties.setProperty("hibernate.globally_quoted_identifiers", "true");
         properties.setProperty("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
 
         return properties;
