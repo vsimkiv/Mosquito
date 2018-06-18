@@ -51,14 +51,16 @@ public class LogWorkRepoImpl implements LogWorkRepo {
     }
 
     @Override
+    @Transactional
     public LogWork update(LogWork logWork) {
-        try (Session session = sessionFactory.openSession()) {
+        try{
+            Session session = sessionFactory.openSession();
             session.getTransaction().begin();
             session.update(logWork);
             session.getTransaction().commit();
             return logWork;
-        } catch (HibernateException e) {
-            LOGGER.error("Updating logWork was failed!");
+        }catch (HibernateException e){
+            LOGGER.error("LogWork updating was failed" + e.getMessage());
         }
         return null;
     }
@@ -76,8 +78,8 @@ public class LogWorkRepoImpl implements LogWorkRepo {
     }
 
 
-    private List<LogWork> readAll() {
-        Query<LogWork> query = sessionFactory.getCurrentSession().createQuery("FROM " + LogWork.class.getName());
+    public List<LogWork> readAll() {
+        Query<LogWork> query = sessionFactory.openSession().createQuery("FROM " + LogWork.class.getName());
         return query.list();
     }
 

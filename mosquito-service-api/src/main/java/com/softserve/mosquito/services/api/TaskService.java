@@ -19,6 +19,8 @@ public interface TaskService {
 
     List<TaskFullDto> getSubTasks(Long id);
 
+    List<TaskFullDto> getProjects();
+
     List<TaskFullDto> filterByOwner(Long ownerId);
 
     List<TaskFullDto> filterByWorker(Long workerId);

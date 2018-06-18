@@ -61,12 +61,12 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public List<CommentDto> getByTaskId(Long taskId) {
-        List<CommentDto> dtos = new ArrayList<>();
+        List<CommentDto> commentDtos = new ArrayList<>();
         List<Comment> comments = repo.getByTaskId(taskId);
         for (Comment comment : comments) {
             if (comment.getTask().getId().equals(taskId))
-                dtos.add(CommentTransformer.toDTO(comment));
+                commentDtos.add(CommentTransformer.toDTO(comment));
         }
-        return dtos;
+        return commentDtos;
     }
 }

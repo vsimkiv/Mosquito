@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -31,6 +32,7 @@ public class TaskRepoImpl implements TaskRepo {
             session.save(task);
             return task;
         } catch (HibernateException e) {
+            e.printStackTrace();
             LOGGER.error("Error with create task" + e.getMessage());
             return null;
         }
@@ -63,8 +65,10 @@ public class TaskRepoImpl implements TaskRepo {
     @Override
     public void delete(Long id) {
         try (Session session = sessionFactory.openSession()) {
+            session.getTransaction().begin();
             Task task = session.get(Task.class, id);
             session.delete(task);
+            session.getTransaction().commit();
         } catch (HibernateException e) {
             LOGGER.error("Error with create task" + e.getMessage());
         }
@@ -90,6 +94,17 @@ public class TaskRepoImpl implements TaskRepo {
             Query query = session.createQuery("FROM " + Task.class.getName() + " WHERE name = :taskName ");
             query.setParameter("taskName", name);
             return (Task) query.uniqueResult();
+        } catch (HibernateException e) {
+            LOGGER.error("Error with create task" + e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
+    public List<Task> getProjects() {
+        try (Session session = sessionFactory.openSession()) {
+            Query query = session.createQuery("FROM " + Task.class.getName() + " WHERE parent_id = null ");
+            return query.list();
         } catch (HibernateException e) {
             LOGGER.error("Error with create task" + e.getMessage());
             return null;

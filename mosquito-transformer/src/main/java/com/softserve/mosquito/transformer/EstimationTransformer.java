@@ -16,8 +16,12 @@ public class EstimationTransformer  {
 
 
     public static EstimationDto toDTO(Estimation estimation) {
-        return new EstimationDto(estimation.getId(),estimation.getTimeEstimation(),estimation.getRemaining(),
-               estimation.getTask().getId(),LogWorkTransformer.toDTOList(estimation.getLogWorks()));
+        Long taskId = null;
+        if(estimation.getTask() != null)
+            taskId = estimation.getTask().getId();
+
+        return new EstimationDto(estimation.getId(),estimation.getTimeEstimation(),estimation.getRemaining(), taskId,
+               LogWorkTransformer.toDTOList(estimation.getLogWorks()));
     }
 
 }
