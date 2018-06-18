@@ -3,7 +3,6 @@ package com.softserve.mosquito.transformer;
 import com.softserve.mosquito.dtos.TaskFullDto;
 import com.softserve.mosquito.dtos.TaskSimpleDto;
 import com.softserve.mosquito.entities.Task;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +26,7 @@ public class TaskTransformer {
     }
 
     //parentTask, comments, and childTasks will set on service-impl module
-
-    public static TaskFullDto toBigDTO(Task task) {
+    public static TaskFullDto toFullDTO(Task task) {
         return new TaskFullDto().builder()
                 .id(task.getId())
                 .name(task.getName())
@@ -41,7 +39,7 @@ public class TaskTransformer {
     }
 
 
-    //TODO must be more simple than BigDto
+    //TODO must be simpler than FullDto
     public static TaskFullDto toMediumDTO(Task task) {
         return new TaskFullDto().builder()
                 .id(task.getId())
@@ -52,24 +50,6 @@ public class TaskTransformer {
                 .priorityDto(PriorityTransformer.toDTO(task.getPriority()))
                 .statusDto(StatusTransformer.toDTO(task.getStatus()))
                 .build();
-    }
-
-
-
-    public static List<Task> toEntityList(List<TaskFullDto> taskFullDtoList) {
-        List<Task> tasks = new ArrayList<>();
-        for (TaskFullDto taskFullDto : taskFullDtoList) {
-            tasks.add(toEntity(taskFullDto));
-        }
-        return tasks;
-    }
-
-    public static List<TaskFullDto> toDTOList(List<Task> tasks) {
-        List<TaskFullDto> taskFullDtoList = new ArrayList<>();
-        for (Task task : tasks) {
-            taskFullDtoList.add(toBigDTO(task));
-        }
-        return taskFullDtoList;
     }
 
     public static TaskSimpleDto toSimpleDto(Task task){
@@ -83,5 +63,21 @@ public class TaskTransformer {
         taskSimpleDto.setPriority(task.getPriority().getTitle());
         taskSimpleDto.setStatus(task.getStatus().getTitle());
         return taskSimpleDto;
+    }
+
+    public static List<Task> toEntityList(List<TaskFullDto> taskFullDtoList) {
+        List<Task> tasks = new ArrayList<>();
+        for (TaskFullDto taskFullDto : taskFullDtoList) {
+            tasks.add(toEntity(taskFullDto));
+        }
+        return tasks;
+    }
+
+    public static List<TaskFullDto> toDTOList(List<Task> tasks) {
+        List<TaskFullDto> taskFullDtoList = new ArrayList<>();
+        for (Task task : tasks) {
+            taskFullDtoList.add(toFullDTO(task));
+        }
+        return taskFullDtoList;
     }
 }
