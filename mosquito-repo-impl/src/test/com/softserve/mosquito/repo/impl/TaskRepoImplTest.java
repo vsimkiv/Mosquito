@@ -20,6 +20,8 @@ public class TaskRepoImplTest {
 
     @Autowired
     TaskRepoImpl taskRepo;
+    @Autowired
+    UserRepoImpl userRepo;
 
     @Autowired
     DataSource dataSource;
@@ -64,10 +66,13 @@ public class TaskRepoImplTest {
 
     @Test
     public void specialRead() {
-        Task task = Task.builder().name("Test project").build();
+        User user1 = userRepo.create(new User("email1", "name1", "surname1", "password1"));
+        User user2 = userRepo.create(new User("email1", "name1", "surname1", "password1"));
+        Task task = Task.builder().name("Test project").worker(user1).owner(user1).build();
         task = taskRepo.create(task);
         for (int i = 0; i < 5; i++) {
-            Task subTask = Task.builder().name("Test sub task" + i).parentTask(task).build();
+            Task subTask = Task.builder().name("Test sub task" + i).parentTask(task)
+                    .worker(user2).owner(user2).build();
             taskRepo.create(subTask);
 
             Task project = Task.builder().name("Test project" + (i + 1)).build();
@@ -84,6 +89,18 @@ public class TaskRepoImplTest {
 
         Task read = taskRepo.getByName("Test project");
         assertNotNull(read);
+
+        List<Task> tasks = taskRepo.getByOwner(user2.getId());
+        assertNotNull(tasks);
+        assertEquals(5, tasks.size());
+
+        tasks = taskRepo.getByWorker(user2.getId());
+        assertNotNull(tasks);
+        assertEquals(5, tasks.size());
+
+        tasks = taskRepo.getProjectsByOwner(user1.getId());
+        assertNotNull(tasks);
+        assertEquals(1, tasks.size());
     }
 
 }

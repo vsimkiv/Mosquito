@@ -91,7 +91,8 @@ public class TaskRepoImpl implements TaskRepo {
         Session session = null;
         try {
             session = sessionFactory.openSession();
-            Query query = session.createQuery("FROM " + Task.class.getName() + " WHERE parent_id = :parentId ");
+            Query query = session.createQuery("FROM " + Task.class.getName() +
+                    " t JOIN t.parentTask p WHERE p.id = :parentId ");
             query.setParameter("parentId", id);
             return query.list();
         } catch (HibernateException e) {
@@ -107,8 +108,12 @@ public class TaskRepoImpl implements TaskRepo {
         Session session = null;
         try {
             session = sessionFactory.openSession();
-            Query query = session.createQuery("FROM " + Task.class.getName() + " WHERE parent_id = null ");
-            return query.list();
+            session.getTransaction().begin();
+            Query query = session.createQuery("FROM " + Task.class.getName() +
+                    " WHERE parentTask = null ");
+            List<Task> tasks = query.list();
+            session.getTransaction().commit();
+            return tasks;
         } catch (HibernateException e) {
             LOGGER.error("Problem with getting projects" + Arrays.toString(e.getStackTrace()));
             return new ArrayList<>();
@@ -123,7 +128,8 @@ public class TaskRepoImpl implements TaskRepo {
         try {
             session = sessionFactory.openSession();
             Query query = session.createQuery(
-                    "FROM " + Task.class.getName() + " WHERE parent_id = null AND owner_id = ownerId");
+                    "FROM " + Task.class.getName() +
+                            " t JOIN t.owner o WHERE t.parentTask = null AND o.id = :ownerId");
             query.setParameter("ownerId", ownerId);
             return query.list();
         } catch (HibernateException e) {
@@ -139,7 +145,8 @@ public class TaskRepoImpl implements TaskRepo {
         Session session = null;
         try {
             session = sessionFactory.openSession();
-            Query query = session.createQuery("FROM " + Task.class.getName() + " WHERE parent_id = :ownerId ");
+            Query query = session.createQuery("FROM " + Task.class.getName() +
+                    " t JOIN t.owner o WHERE o.id = :ownerId ");
             query.setParameter("ownerId", ownerId);
             return query.list();
         } catch (HibernateException e) {
@@ -155,7 +162,8 @@ public class TaskRepoImpl implements TaskRepo {
         Session session = null;
         try {
             session = sessionFactory.openSession();
-            Query query = session.createQuery("FROM " + Task.class.getName() + " WHERE parent_id = :workerId ");
+            Query query = session.createQuery("FROM " + Task.class.getName() +
+                    " t JOIN t.worker w WHERE w.id = :workerId ");
             query.setParameter("workerId", workerId);
             return query.list();
         } catch (HibernateException e) {
