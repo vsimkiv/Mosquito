@@ -28,7 +28,6 @@ public class CommentController {
     @ResponseStatus(HttpStatus.OK)
     public CommentDto createComment(@PathVariable("task_id") Long taskId,
                                     @RequestBody CommentDto commentDto) {
-        commentDto.setTaskId(taskId);
         return commentService.save(commentDto);
     }
 
