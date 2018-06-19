@@ -78,8 +78,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void sendPushMessage(Long userId) {
-        template.convertAndSendToUser(String.valueOf(userId), "/queue/reply", "hello!");
+    public void sendPushMessage(String message, Long userId) {
+        template.convertAndSendToUser(String.valueOf(userId), "/queue/reply", message);
     }
 
     @Override

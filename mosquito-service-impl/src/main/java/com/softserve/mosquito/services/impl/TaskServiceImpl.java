@@ -70,7 +70,11 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskRepo.read(id);
         TaskFullDto taskFullDto = toFullDTO(task);
 
-        taskFullDto.setParentTaskFullDto(getParent(taskFullDto.getId()));
+        Task parent = task.getParentTask();
+        if (parent != null) {
+            taskFullDto.setParentTaskFullDto(getParent(parent.getId()));
+        }
+
         taskFullDto.setChildTaskFullDtoList(getSubTasks(taskFullDto.getId()));
         return taskFullDto;
     }
@@ -86,6 +90,7 @@ public class TaskServiceImpl implements TaskService {
     public List<TaskFullDto> getAllProjects() {
         return TaskTransformer.toDTOList(taskRepo.getAllProjects());
     }
+
 
     @Transactional
     @Override

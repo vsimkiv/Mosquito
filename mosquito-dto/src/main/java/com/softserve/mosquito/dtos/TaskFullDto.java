@@ -99,67 +99,67 @@ public class TaskFullDto {
         this.childTaskFullDtoList = childTaskFullDtoList;
     }
 
-    public TaskDtoUsingOtherDtosBuilder builder() {
-        return new TaskDtoUsingOtherDtosBuilder();
+    public TaskFullDtoBuilder builder() {
+        return new TaskFullDtoBuilder();
     }
 
-    public static class TaskDtoUsingOtherDtosBuilder {
+    public static class TaskFullDtoBuilder {
         private TaskFullDto taskFullDto;
 
-        private TaskDtoUsingOtherDtosBuilder() {
+        private TaskFullDtoBuilder() {
             taskFullDto = new TaskFullDto();
         }
 
-        public TaskDtoUsingOtherDtosBuilder id(long id) {
+        public TaskFullDtoBuilder id(long id) {
             taskFullDto.id = id;
             return this;
         }
 
-        public TaskDtoUsingOtherDtosBuilder name(String name) {
+        public TaskFullDtoBuilder name(String name) {
             taskFullDto.name = name;
             return this;
         }
 
-        public TaskDtoUsingOtherDtosBuilder parentTaskDto(TaskFullDto parentTaskFullDto) {
+        public TaskFullDtoBuilder parentTaskDto(TaskFullDto parentTaskFullDto) {
             if (parentTaskFullDto != null) {
                 taskFullDto.parentTaskFullDto = parentTaskFullDto;
             }
             return this;
         }
 
-        public TaskDtoUsingOtherDtosBuilder ownerDto(UserDto ownerDto) {
+        public TaskFullDtoBuilder ownerDto(UserDto ownerDto) {
             taskFullDto.ownerDto = ownerDto;
             return this;
         }
 
 
-        public TaskDtoUsingOtherDtosBuilder workerDto(UserDto workerDto) {
+        public TaskFullDtoBuilder workerDto(UserDto workerDto) {
             taskFullDto.workerDto = workerDto;
             return this;
         }
 
 
-        public TaskDtoUsingOtherDtosBuilder estimationDto(EstimationDto estimationDto) {
+        public TaskFullDtoBuilder estimationDto(EstimationDto estimationDto) {
             taskFullDto.estimationDto = estimationDto;
             return this;
         }
 
-        public TaskDtoUsingOtherDtosBuilder priorityDto(PriorityDto priorityDto) {
+        public TaskFullDtoBuilder priorityDto(PriorityDto priorityDto) {
             taskFullDto.priorityDto = priorityDto;
             return this;
         }
 
-        public TaskDtoUsingOtherDtosBuilder statusDto(StatusDto statusDto) {
+        public TaskFullDtoBuilder statusDto(StatusDto statusDto) {
             taskFullDto.statusDto = statusDto;
             return this;
         }
 
-        public TaskDtoUsingOtherDtosBuilder commentDtoList(List<CommentDto> commentDtoList) {
+        public TaskFullDtoBuilder commentDtoList(List<CommentDto> commentDtoList) {
             taskFullDto.commentDtoList = commentDtoList;
             return this;
         }
 
-        public TaskDtoUsingOtherDtosBuilder childTaskDtoList(List<TaskFullDto> childTaskFullDtoList) {
+        public TaskFullDtoBuilder childTaskDtoList(List<TaskFullDto> childTaskFullDtoList) {
             taskFullDto.childTaskFullDtoList = childTaskFullDtoList;
             return this;
         }

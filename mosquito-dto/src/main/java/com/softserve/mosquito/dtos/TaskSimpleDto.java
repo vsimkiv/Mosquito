@@ -1,5 +1,8 @@
 package com.softserve.mosquito.dtos;
 
+import java.util.List;
+import java.util.Objects;
+
 public class TaskSimpleDto {
 
     private Long id;
@@ -40,6 +43,27 @@ public class TaskSimpleDto {
         this.worker = worker;
         this.status = status;
         this.trelloId = trelloId;
+    }
+
+    public boolean isPresentInCollection( List<TaskSimpleDto> simpleDtos){
+        for (TaskSimpleDto taskSimpleDto : simpleDtos){
+            if (this.equals(taskSimpleDto)) return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TaskSimpleDto that = (TaskSimpleDto) o;
+        return Objects.equals(trelloId, that.trelloId);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(trelloId);
     }
 
     public Long getId() {
