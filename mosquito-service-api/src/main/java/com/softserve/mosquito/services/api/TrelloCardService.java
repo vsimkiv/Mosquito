@@ -6,8 +6,10 @@ import java.util.List;
 
 public interface TrelloCardService {
 
-    void getTasksFromTrello();
+    List<TaskSimpleDto> allNewTrelloTasks(Long userId);
 
-    List<TaskSimpleDto> showAllNewTrelloTasks(Long userId);
+    void createTasksFromTrello(Long userId);
+
+    void createChosenTastsFromTrello(Long userId, List<TaskSimpleDto> taskSimpleDtos);
 
 }

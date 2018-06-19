@@ -34,7 +34,6 @@ public class UserServiceImpl implements UserService {
     public UserDto save(UserDto user) {
         User activateUser = userRepo.create(UserTransformer.toEntity(user));
         Hashids hashids = new Hashids();
-        hashids.encode(activateUser.getId());
         String urlForActivate = "http://localhost:8080/activate/" + hashids.encode(activateUser.getId());
         sendMessageForActivation(user, urlForActivate);
         return user;
@@ -78,8 +77,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void sendPushMessage(Long userId) {
-        template.convertAndSendToUser(String.valueOf(userId), "/queue/reply", "hello!");
+    public void sendPushMessage(String message, Long userId) {
+        template.convertAndSendToUser(String.valueOf(userId), "/queue/reply", message);
     }
 
     @Override

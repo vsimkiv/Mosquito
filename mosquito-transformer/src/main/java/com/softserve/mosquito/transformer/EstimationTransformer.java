@@ -21,7 +21,7 @@ public class EstimationTransformer  {
             taskId = estimation.getTask().getId();
 
         return new EstimationDto(estimation.getId(),estimation.getTimeEstimation(),estimation.getRemaining(), taskId,
-               LogWorkTransformer.toDTOList(estimation.getLogWorks()));
+               /*LogWorkTransformer.toDTOList(estimation.getLogWorks())*/ null);
     }
 
 }

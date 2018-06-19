@@ -82,7 +82,7 @@ public class AuthController {
         signUpRequest.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
         userService.save(signUpRequest);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(signUpRequest);
     }
 
     @GetMapping("/activate/{key}")

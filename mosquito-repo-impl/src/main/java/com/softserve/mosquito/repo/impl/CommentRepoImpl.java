@@ -12,6 +12,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -98,8 +99,9 @@ public class CommentRepoImpl implements CommentRepo {
             return session.createQuery("SELECT T.comments FROM " + Task.class.getName() + " T WHERE T.id = " + taskId + "")
                     .getResultList();
         } catch (HibernateException e) {
+            LOGGER.info("Retrieving comments for task with id " + taskId + " was failed!");
             LOGGER.error(e.getMessage());
-            return null;
+            return Collections.emptyList();
         } finally {
             if (session != null) session.close();
         }

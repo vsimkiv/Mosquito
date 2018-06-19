@@ -56,7 +56,7 @@ public class TaskController {
         return taskService.getById(id);
     }
 
-    @GetMapping(path = "{id}/subtasks")
+    @GetMapping(path = "{id}/sub-tasks")
     @ResponseStatus(HttpStatus.OK)
     public List<TaskFullDto> getSubTasks(@PathVariable("id") Long id) {
         return taskService.getSubTasks(id);
@@ -68,7 +68,7 @@ public class TaskController {
         return taskService.getByOwner(ownerId);
     }
 
-    @GetMapping(path = "workers-tasks/{worker_id}/")
+    @GetMapping(path = "workers-tasks/{worker_id}")
     @ResponseStatus(HttpStatus.OK)
     public List<TaskFullDto> getWorkerTasks(@PathVariable("worker_id") Long workerId) {
         return taskService.getByWorker(workerId);
