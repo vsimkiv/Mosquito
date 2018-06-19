@@ -25,65 +25,129 @@ public class SpecializationRepoImpl implements SpecializationRepo {
 
     @Override
     public Specialization create(Specialization specialization) {
-        try (Session session = sessionFactory.openSession()) {
+        Session session = null;
+        Transaction transaction = null;
+
+        try {
+            session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
+
             Long specializationId = (Long) session.save(specialization);
             specialization.setId(specializationId);
+
+            transaction.commit();
         } catch (Exception e) {
             LOGGER.error("Error during save specialization!" + e.getMessage());
+            if(transaction != null){
+                transaction.rollback();
+            }
+            return null;
+        }finally {
+            if(session != null){
+                session.close();
+            }
         }
+
         return specialization;
     }
 
     @Override
     public Specialization read(Long id) {
+        Session session = null;
+        Transaction transaction = null;
+        Specialization specialization = null;
+
         try {
-            Session session = sessionFactory.openSession();
-            Specialization specialization = session.get(Specialization.class, id);
-            return specialization;
+            session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
+
+            specialization = session.get(Specialization.class, id);
         } catch (Exception e) {
             LOGGER.error("Specialization reading was failed!", e.getMessage());
+            if(transaction != null){
+                transaction.rollback();
+            }
+        }finally {
+            if(session != null){
+                session.close();
+            }
         }
-        return null;
+
+        return specialization;
     }
 
     @Override
     public Specialization update(Specialization specialization) {
+        Session session = null;
+        Transaction transaction = null;
+
         try{
-            Session session = sessionFactory.openSession();
-            Transaction transaction = session.beginTransaction();
+            session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
             session.update(specialization);
             transaction.commit();
-            return specialization;
         }catch (Exception e){
             LOGGER.error("Specialization updating was failed" + e.getMessage());
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            return null;
+        }finally {
+            if(session != null){
+                session.close();
+            }
         }
-        return null;
+
+        return specialization;
     }
 
     @Override
     public void delete(Long id) {
+        Session session = null;
+        Transaction transaction = null;
 
         try{
-            Session session = sessionFactory.openSession();
-            session.getTransaction().begin();
+            session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
             Specialization specialization = session.get(Specialization.class, id);
             session.delete(specialization);
-            session.getTransaction().commit();
+            transaction.commit();
         }catch (Exception e){
             LOGGER.error("Specialization deleting was failed" + e.getMessage());
+            if(transaction != null){
+                transaction.rollback();
+            }
+        }finally {
+            if(session != null){
+                session.close();
+            }
         }
     }
 
     @Override
     public List<Specialization> getAll() {
+        Session session = null;
+        List<Specialization> specializations = null;
+        Transaction transaction = null;
+
         try {
-            Session session = sessionFactory.openSession();
+            session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
             Query query = session.createQuery("From " + Specialization.class.getName());
 
-            return query.list();
+            specializations = query.list();
         }catch (Exception e){
             LOGGER.error(e.getMessage());
+            if(transaction != null){
+                transaction.rollback();
+            }
+            return null;
+        }finally {
+            if(session != null){
+                session.close();
+            }
         }
-        return null;
+
+        return specializations;
     }
 }

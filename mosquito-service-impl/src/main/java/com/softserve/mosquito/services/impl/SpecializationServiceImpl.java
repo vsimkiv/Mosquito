@@ -7,7 +7,6 @@ import com.softserve.mosquito.services.api.SpecializationService;
 import com.softserve.mosquito.transformer.SpecializationTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,7 +21,6 @@ public class SpecializationServiceImpl implements SpecializationService {
         this.specializationRepo = specializationRepo;
     }
 
-    @Transactional
     @Override
     public Set<SpecializationDto> getAll(){
         Set<Specialization> specializations = new HashSet<>(specializationRepo.getAll());
@@ -34,7 +32,6 @@ public class SpecializationServiceImpl implements SpecializationService {
        return SpecializationTransformer.toDTOList(specializations);
     }
 
-    @Transactional
     @Override
     public SpecializationDto getById(Long id){
         Specialization specialization = specializationRepo.read(id);
@@ -44,7 +41,6 @@ public class SpecializationServiceImpl implements SpecializationService {
         return SpecializationTransformer.toDTO(specialization);
     }
 
-    @Transactional
     @Override
     public SpecializationDto save(SpecializationDto specializationDto){
         Specialization createdSpecialization = specializationRepo.create(SpecializationTransformer.toEntity(specializationDto));
@@ -54,7 +50,6 @@ public class SpecializationServiceImpl implements SpecializationService {
         return SpecializationTransformer.toDTO(createdSpecialization);
     }
 
-    @Transactional
     @Override
     public SpecializationDto update(SpecializationDto specializationDto){
         Specialization updatedSpecialization = specializationRepo.update(SpecializationTransformer.toEntity(specializationDto));
@@ -64,7 +59,6 @@ public class SpecializationServiceImpl implements SpecializationService {
         return SpecializationTransformer.toDTO(updatedSpecialization);
     }
 
-    @Transactional
     @Override
     public void delete(Long id){
         specializationRepo.delete(id);

@@ -57,7 +57,6 @@ public class UserRepoImplTest {
         assertNull(notExisting);
     }
 
-
     @Test
     public void specialReadingTest() {
         Specialization dev = specializationRepo.create(new Specialization("DEV"));
