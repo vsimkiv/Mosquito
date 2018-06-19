@@ -63,7 +63,7 @@ public class TaskRepoImplTest {
     }
 
     @Test
-    public void readByNameAndReadSubTasksTest() {
+    public void specialRead() {
         Task task = Task.builder().name("Test project").build();
         task = taskRepo.create(task);
         for (int i = 0; i < 5; i++) {

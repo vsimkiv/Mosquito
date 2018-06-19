@@ -26,83 +26,102 @@ public class TaskRepoImpl implements TaskRepo {
         this.sessionFactory = sessionFactory;
     }
 
-    @Transactional
     @Override
     public Task create(Task task) {
-        try (Session session = sessionFactory.openSession()) {
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
             session.save(task);
             return task;
         } catch (HibernateException e) {
             LOGGER.error("Problem with creating task" + Arrays.toString(e.getStackTrace()));
             return null;
+        } finally {
+            if (session != null) session.close();
         }
     }
 
-    @Transactional
     @Override
     public Task read(Long id) {
-        try (Session session = sessionFactory.openSession()) {
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
             return session.get(Task.class, id);
         } catch (HibernateException e) {
             LOGGER.error("Problem with reading task by id" + Arrays.toString(e.getStackTrace()));
             return null;
+        } finally {
+            if (session != null) session.close();
         }
     }
 
-    @Transactional
     @Override
     public Task update(Task task) {
-        try (Session session = sessionFactory.openSession()) {
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
             session.update(task);
             return task;
         } catch (HibernateException e) {
             LOGGER.error("Problem with updating task" + Arrays.toString(e.getStackTrace()));
             return null;
+        } finally {
+            if (session != null) session.close();
         }
     }
 
-    @Transactional
     @Override
     public void delete(Long id) {
-        try (Session session = sessionFactory.openSession()) {
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
             session.getTransaction().begin();
             Task task = session.get(Task.class, id);
             session.delete(task);
             session.getTransaction().commit();
         } catch (HibernateException e) {
             LOGGER.error("Problem with deleting task" + Arrays.toString(e.getStackTrace()));
+        } finally {
+            if (session != null) session.close();
         }
     }
 
-    @Transactional
     @Override
     public List<Task> getSubTasks(Long id) {
-        try (Session session = sessionFactory.openSession()) {
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
             Query query = session.createQuery("FROM " + Task.class.getName() + " WHERE parent_id = :parentId ");
             query.setParameter("parentId", id);
             return query.list();
         } catch (HibernateException e) {
             LOGGER.error("Problem with getting sub tasks" + Arrays.toString(e.getStackTrace()));
             return new ArrayList<>();
+        } finally {
+            if (session != null) session.close();
         }
     }
 
-    @Transactional
     @Override
     public List<Task> getAllProjects() {
-        try (Session session = sessionFactory.openSession()) {
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
             Query query = session.createQuery("FROM " + Task.class.getName() + " WHERE parent_id = null ");
             return query.list();
         } catch (HibernateException e) {
             LOGGER.error("Problem with getting projects" + Arrays.toString(e.getStackTrace()));
             return new ArrayList<>();
+        } finally {
+            if (session != null) session.close();
         }
     }
 
-    @Transactional
     @Override
     public List<Task> getProjectsByOwner(Long ownerId) {
-        try (Session session = sessionFactory.openSession()) {
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
             Query query = session.createQuery(
                     "FROM " + Task.class.getName() + " WHERE parent_id = null AND owner_id = ownerId");
             query.setParameter("ownerId", ownerId);
@@ -110,30 +129,40 @@ public class TaskRepoImpl implements TaskRepo {
         } catch (HibernateException e) {
             LOGGER.error("Problem with getting projects" + Arrays.toString(e.getStackTrace()));
             return new ArrayList<>();
+        } finally {
+            if (session != null) session.close();
         }
     }
 
     @Override
     public List<Task> getByOwner(Long ownerId) {
-        try (Session session = sessionFactory.openSession()) {
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
             Query query = session.createQuery("FROM " + Task.class.getName() + " WHERE parent_id = :ownerId ");
             query.setParameter("ownerId", ownerId);
             return query.list();
         } catch (HibernateException e) {
             LOGGER.error("Problem with getting tasks by owner" + Arrays.toString(e.getStackTrace()));
             return new ArrayList<>();
+        } finally {
+            if (session != null) session.close();
         }
     }
 
     @Override
     public List<Task> getByWorker(Long workerId) {
-        try (Session session = sessionFactory.openSession()) {
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
             Query query = session.createQuery("FROM " + Task.class.getName() + " WHERE parent_id = :workerId ");
             query.setParameter("workerId", workerId);
             return query.list();
         } catch (HibernateException e) {
             LOGGER.error("Problem with getting tasks by worker" + Arrays.toString(e.getStackTrace()));
             return new ArrayList<>();
+        } finally {
+            if (session != null) session.close();
         }
     }
 
@@ -143,26 +172,34 @@ public class TaskRepoImpl implements TaskRepo {
     @Transactional
     @Override
     public Task getByName(String name) {
-        try (Session session = sessionFactory.openSession()) {
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
             Query query = session.createQuery("FROM " + Task.class.getName() + " WHERE name = :taskName ");
             query.setParameter("taskName", name);
             return (Task) query.uniqueResult();
         } catch (HibernateException e) {
             LOGGER.error(" Problem with getting task by name" + Arrays.toString(e.getStackTrace()));
             return null;
+        } finally {
+            if (session != null) session.close();
         }
     }
 
     @Override
     @Transactional
     public Task getByTrelloId(String trelloId) {
-        try (Session session = sessionFactory.openSession()) {
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
             Query query = session.createQuery("FROM " + Task.class.getName() + " WHERE trello_id = :trelloId ");
             query.setParameter("trelloId", trelloId);
             return (Task) query.uniqueResult();
         } catch (HibernateException e) {
             LOGGER.error("Error with create task" + e.getMessage());
             return null;
+        } finally {
+            if (session != null) session.close();
         }
     }
 }

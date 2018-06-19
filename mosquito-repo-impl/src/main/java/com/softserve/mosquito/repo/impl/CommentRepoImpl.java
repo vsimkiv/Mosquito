@@ -27,29 +27,39 @@ public class CommentRepoImpl implements CommentRepo {
 
     @Override
     public Comment create(Comment comment) {
-        try (Session session = sessionFactory.openSession()) {
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
             session.save(comment);
         } catch (HibernateException e) {
             LOGGER.info("Error during save comment!");
             LOGGER.error(e.getMessage());
+        } finally {
+            if (session != null) session.close();
         }
         return comment;
     }
 
     @Override
     public Comment read(Long id) {
-        try (Session session = sessionFactory.openSession()) {
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
             return session.get(Comment.class, id);
         } catch (HibernateException e) {
             LOGGER.info("Reading comment was failed!");
             LOGGER.error(e.getMessage());
+        } finally {
+            if (session != null) session.close();
         }
         return null;
     }
 
     @Override
     public Comment update(Comment comment) {
-        try (Session session = sessionFactory.openSession()) {
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
             session.getTransaction().begin();
             session.update(comment);
             session.getTransaction().commit();
@@ -57,13 +67,17 @@ public class CommentRepoImpl implements CommentRepo {
         } catch (HibernateException e) {
             LOGGER.info("Updating comment was failed!");
             LOGGER.error(e.getMessage());
+        } finally {
+            if (session != null) session.close();
         }
         return null;
     }
 
     @Override
     public void delete(Long id) {
-        try (Session session = sessionFactory.openSession()) {
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
             session.getTransaction().begin();
             Comment comment = session.get(Comment.class, id);
             session.delete(comment);
@@ -71,13 +85,23 @@ public class CommentRepoImpl implements CommentRepo {
         } catch (HibernateException e) {
             LOGGER.info("Deleting comment was failed!");
             LOGGER.error(e.getMessage());
+        } finally {
+            if (session != null) session.close();
         }
     }
 
     @Override
     public List<Comment> getByTaskId(Long taskId) {
-        return sessionFactory.getCurrentSession()
-                .createQuery("SELECT T.comments FROM " + Task.class.getName() + " T WHERE T.id = " + taskId + "")
-                .getResultList();
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
+            return session.createQuery("SELECT T.comments FROM " + Task.class.getName() + " T WHERE T.id = " + taskId + "")
+                    .getResultList();
+        } catch (HibernateException e) {
+            LOGGER.error(e.getMessage());
+            return null;
+        } finally {
+            if (session != null) session.close();
+        }
     }
 }

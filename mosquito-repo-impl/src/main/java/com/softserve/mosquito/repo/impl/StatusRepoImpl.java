@@ -27,25 +27,32 @@ public class StatusRepoImpl implements StatusRepo {
 
     @Override
     public Status create(Status status) {
-
-        try (Session session = sessionFactory.openSession()) {
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
             Long statusId = (Long) session.save(status);
             status.setId(statusId);
+            return status;
         } catch (HibernateException e) {
             LOGGER.error("Error during save status!" + e.getMessage());
+            return null;
+        } finally {
+            if (session != null) session.close();
         }
-        return status;
+
     }
 
     @Override
     public Status read(Long id) {
-
+        Session session = null;
         try {
-            Session session = sessionFactory.openSession();
+            session = sessionFactory.openSession();
             Status status = session.get(Status.class, id);
             return status;
         } catch (HibernateException e) {
             LOGGER.error("Status reading was failed!", e.getMessage());
+        } finally {
+            if (session != null) session.close();
         }
 
         return null;
@@ -53,37 +60,50 @@ public class StatusRepoImpl implements StatusRepo {
 
     @Override
     public Status update(Status status) {
-        try{
-            Session session = sessionFactory.openSession();
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
             session.getTransaction().begin();
             session.update(status);
             session.getTransaction().commit();
             return status;
-        }catch (HibernateException e){
+        } catch (HibernateException e) {
             LOGGER.error("Status updating was failed" + e.getMessage());
+        } finally {
+            if (session != null) session.close();
         }
         return null;
     }
 
     @Override
     public void delete(Long id) {
-
-        try{
-            Session session = sessionFactory.openSession();
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
             session.getTransaction().begin();
             Status status = session.get(Status.class, id);
             session.delete(status);
             session.getTransaction().commit();
-        }catch (HibernateException e){
+        } catch (HibernateException e) {
             LOGGER.error("Status deleting was failed" + e.getMessage());
+        } finally {
+            if (session != null) session.close();
         }
     }
 
     @Override
     public List<Status> getAll() {
-        Session session = sessionFactory.openSession();
-        Query query = session.createQuery("From " + Status.class.getName());
-        return query.list();
-    }
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
+            Query query = session.createQuery("From " + Status.class.getName());
+            return query.list();
+        } catch (HibernateException e) {
+            LOGGER.error(e.getMessage());
+            return null;
+        } finally {
+            if (session != null) session.close();
+        }
 
+    }
 }

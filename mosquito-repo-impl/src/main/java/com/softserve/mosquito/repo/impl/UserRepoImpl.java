@@ -40,7 +40,7 @@ public class UserRepoImpl implements UserRepo {
             LOGGER.error("Error during save user! " + e.getMessage());
             return null;
         } finally {
-            session.close();
+            if (session != null) session.close();
         }
     }
 
@@ -54,7 +54,7 @@ public class UserRepoImpl implements UserRepo {
             LOGGER.error("Reading user was failed!" + e.getMessage());
             return null;
         } finally {
-            session.close();
+            if (session != null) session.close();
         }
     }
 
@@ -71,7 +71,7 @@ public class UserRepoImpl implements UserRepo {
             LOGGER.error("Updating user was failed!" + e.getMessage());
             return null;
         } finally {
-            session.close();
+            if (session != null) session.close();
         }
     }
 
@@ -87,7 +87,7 @@ public class UserRepoImpl implements UserRepo {
         } catch (HibernateException e) {
             LOGGER.error("Deleting user was failed!" + e.getMessage());
         } finally {
-            session.close();
+            if (session != null) session.close();
         }
     }
 
@@ -102,7 +102,7 @@ public class UserRepoImpl implements UserRepo {
             LOGGER.error(e.getMessage());
             return null;
         } finally {
-            session.close();
+            if (session != null) session.close();
         }
     }
 
@@ -117,7 +117,7 @@ public class UserRepoImpl implements UserRepo {
             LOGGER.error("Reading user was failed!" + e.getMessage());
             return null;
         } finally {
-            session.close();
+            if (session != null) session.close();
         }
     }
 
@@ -134,7 +134,7 @@ public class UserRepoImpl implements UserRepo {
             LOGGER.error("Reading users was failed!" + e.getMessage());
             return null;
         } finally {
-            session.close();
+            if (session != null) session.close();
         }
     }
 }

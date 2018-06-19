@@ -9,6 +9,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 @Repository
 public class EstimationRepoImpl implements EstimationRepo {
 
@@ -22,49 +23,63 @@ public class EstimationRepoImpl implements EstimationRepo {
 
     @Override
     public Estimation create(Estimation estimation) {
-        try (Session session = sessionFactory.openSession()) {
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
             session.save(estimation);
         } catch (HibernateException e) {
             LOGGER.error("Error during save estimation!");
+        } finally {
+            if (session != null) session.close();
         }
         return estimation;
     }
 
     @Override
     public Estimation read(Long id) {
-        try (Session session = sessionFactory.openSession()) {
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
             return session.get(Estimation.class, id);
         } catch (HibernateException e) {
             LOGGER.error("Reading estimation was failed!");
+            return null;
+        } finally {
+            if (session != null) session.close();
         }
-        return null;
     }
 
     @Override
     public Estimation update(Estimation estimation) {
-        try (Session session = sessionFactory.openSession()) {
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
             session.getTransaction().begin();
             session.update(estimation);
             session.getTransaction().commit();
             return estimation;
         } catch (HibernateException e) {
             LOGGER.error("Updating estimation was failed!");
+            return null;
+        } finally {
+            if (session != null) session.close();
         }
-        return null;
     }
 
     @Override
     public void delete(Long id) {
-        try (Session session = sessionFactory.openSession()) {
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
             session.getTransaction().begin();
             Estimation estimation = session.get(Estimation.class, id);
             session.delete(estimation);
             session.getTransaction().commit();
         } catch (HibernateException e) {
             LOGGER.error("Deleting comment was failed!");
+        } finally {
+            if (session != null) session.close();
         }
     }
-
-
-    }
+}
 
