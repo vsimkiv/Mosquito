@@ -73,10 +73,10 @@ public class TaskServiceImpl implements TaskService {
             taskFullDto.setParentTaskFullDto(getParent(parent.getId()));
         }
 
-//        Estimation estimation = task.getEstimation();
-//        if (estimation != null) {
-//            taskFullDto.setEstimationDto(EstimationTransformer.toDTO(estimation));
-//        }
+        Estimation estimation = task.getEstimation();
+        if (estimation != null) {
+            taskFullDto.setEstimationDto(EstimationTransformer.toDTO(estimation));
+        }
 
         taskFullDto.setCommentDtoList(CommentTransformer.toDTOList(task.getComments()));
         taskFullDto.setChildTaskFullDtoList(getSubTasks(taskFullDto.getId()));
@@ -142,7 +142,7 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     @Override
     public TaskFullDto getByTrelloId(String trelloId){
-        return toFullDTO(taskRepo.getByTrelloId(trelloId));
+        return TaskTransformer.toFullDTO(taskRepo.getByTrelloId(trelloId));
     }
 
 
@@ -155,7 +155,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     @Transactional
     public TaskFullDto getByName(String name) {
-        return toFullDTO(taskRepo.getByName(name));
+        return TaskTransformer.toFullDTO(taskRepo.getByName(name));
     }
 
     private boolean isMessageSent(UserDto userDto, String message, String subject) {

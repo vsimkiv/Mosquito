@@ -15,9 +15,11 @@ public class Estimation implements Serializable {
     private Integer timeEstimation;
     @Column(name = "remaining")
     private Integer remaining;
+
     @OneToOne(mappedBy = "estimation", fetch = FetchType.LAZY)
     @JoinColumn(name = "id", referencedColumnName = "estimation_id")
     private Task task;
+
     @OneToMany(mappedBy = "estimation")
     private List<LogWork> logWorks;
 
