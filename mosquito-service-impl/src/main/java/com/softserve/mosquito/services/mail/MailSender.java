@@ -34,7 +34,8 @@ public class MailSender {
             mailSender.send(mimeMessage);
             return true;
         } catch (MessagingException e) {
-            LOGGER.error("Sending message was failed!");
+            LOGGER.info("Sending message was failed!");
+            LOGGER.error(e.getMessage());
         }
         return false;
     }
