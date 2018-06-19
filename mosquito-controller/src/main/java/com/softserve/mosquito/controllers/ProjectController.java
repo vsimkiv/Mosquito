@@ -18,6 +18,24 @@ public class ProjectController {
         this.taskService = taskService;
     }
 
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public TaskFullDto createProject(@RequestBody TaskFullDto taskFullDto) {
+        return taskService.save(taskFullDto);
+    }
+
+    @PutMapping(path = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public TaskFullDto updateProject(@PathVariable("id") Long id, @RequestBody TaskFullDto taskFullDto) {
+        return taskService.update(taskFullDto);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteProject(@PathVariable("id") Long id) {
+        taskService.delete(id);
+    }
+
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<TaskFullDto> getAllProjects(){
