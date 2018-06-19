@@ -25,28 +25,13 @@ public class TaskTransformer {
                 .build();
     }
 
-    //parentTask, comments, and childTasks will set on service-impl module
+    //parentTask, estimation, comments, and childTasks will set on service-impl module
     public static TaskFullDto toFullDTO(Task task) {
         return new TaskFullDto().builder()
                 .id(task.getId())
                 .name(task.getName())
                 .ownerDto(UserTransformer.toDTO(task.getOwner()))
                 .workerDto(UserTransformer.toDTO(task.getOwner()))
-                .estimationDto(EstimationTransformer.toDTO(task.getEstimation()))
-                .priorityDto(PriorityTransformer.toDTO(task.getPriority()))
-                .statusDto(StatusTransformer.toDTO(task.getStatus()))
-                .build();
-    }
-
-
-    //TODO must be simpler than FullDto
-    public static TaskFullDto toMediumDTO(Task task) {
-        return new TaskFullDto().builder()
-                .id(task.getId())
-                .name(task.getName())
-                .ownerDto(UserTransformer.toDTO(task.getOwner()))
-                .workerDto(UserTransformer.toDTO(task.getOwner()))
-                .estimationDto(EstimationTransformer.toDTO(task.getEstimation()))
                 .priorityDto(PriorityTransformer.toDTO(task.getPriority()))
                 .statusDto(StatusTransformer.toDTO(task.getStatus()))
                 .build();
