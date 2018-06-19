@@ -22,5 +22,5 @@ public interface UserService {
 
     void activateUser(String key);
 
-    void sendPushMessage(Long userId);
+    void sendPushMessage(String message, Long userId);
 }
