@@ -37,16 +37,10 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskFullDto save(TaskFullDto taskFullDto) {
 
-        if (isPresent(taskFullDto)) {
-            Task existedTask = taskRepo.getByName(taskFullDto.getName());
-            return TaskTransformer.toFullDTO(existedTask);
-        }
-
         //TODO messaging exception "Could not convert socket to TLS..."
         /*if (isMessageSent(taskFullDto.getWorkerDto(),
                 "You was assigned for this task" + taskFullDto.getName(),
                 "Mosquito Task Manager")) {*/
-        if (isPresent(taskFullDto)) return TaskTransformer.toFullDTO(taskRepo.getByName(taskFullDto.getName()));
         Task task = taskRepo.create(TaskTransformer.toEntity(taskFullDto));
         return toFullDTO(task);
         /*}
@@ -145,11 +139,12 @@ public class TaskServiceImpl implements TaskService {
         return toSimpleDto(task);
     }
 
-    @Override
     @Transactional
-    public boolean isPresent(TaskFullDto taskFullDto) {
-        return taskRepo.getByName(taskFullDto.getName()) != null;
+    @Override
+    public TaskFullDto getByTrelloId(String trelloId){
+        return toFullDTO(taskRepo.getByTrelloId(trelloId));
     }
+
 
     @Override
     @Transactional
@@ -160,7 +155,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     @Transactional
     public TaskFullDto getByName(String name) {
-        return TaskTransformer.toFullDTO(taskRepo.getByName(name));
+        return toFullDTO(taskRepo.getByName(name));
     }
 
     private boolean isMessageSent(UserDto userDto, String message, String subject) {

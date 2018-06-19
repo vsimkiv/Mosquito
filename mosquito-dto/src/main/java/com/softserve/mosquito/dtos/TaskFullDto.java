@@ -15,6 +15,7 @@ public class TaskFullDto {
     private EstimationDto estimationDto;
     private PriorityDto priorityDto;
     private StatusDto statusDto;
+    private String trelloId;
 
     private List<CommentDto> commentDtoList;
     private List<TaskFullDto> childTaskFullDtoList;
@@ -93,6 +94,14 @@ public class TaskFullDto {
 
     public List<TaskFullDto> getChildTaskFullDtoList() {
         return childTaskFullDtoList;
+    }
+
+    public String getTrelloId() {
+        return trelloId;
+    }
+
+    public void setTrelloId(String trelloId) {
+        this.trelloId = trelloId;
     }
 
     public void setChildTaskFullDtoList(List<TaskFullDto> childTaskFullDtoList) {

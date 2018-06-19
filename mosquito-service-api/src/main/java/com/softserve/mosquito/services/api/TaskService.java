@@ -15,30 +15,25 @@ public interface TaskService {
 
     TaskFullDto getById(Long id);
 
-
     TaskFullDto getParent(Long parentId);
 
     List<TaskFullDto> getSubTasks(Long id);
-
 
     List<TaskFullDto> getByOwner(Long ownerId);
 
     List<TaskFullDto> getByWorker(Long workerId);
 
-
     List<TaskFullDto> getAllProjects();
 
     List<TaskFullDto> getProjectsByOwner(Long ownerId);
 
-
     List<TaskFullDto> filterByStatus(List<TaskFullDto> taskFullDtoList, Long statusId);
-
-
-    boolean isPresent(TaskFullDto taskFullDto);
 
     boolean isPresent(String name);
 
     TaskFullDto getByName(String name);
 
     TaskSimpleDto getSimpleTaskById(Long id);
+
+    TaskFullDto getByTrelloId(String trelloId);
 }
