@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
         List<UserDto> userDtos = new ArrayList<>();
         for (User user : users) {
             for (Specialization item : user.getSpecializations()) {
-                if (item.getId() == specializationId)
+                if (item.getId().equals(specializationId))
                     userDtos.add(UserTransformer.toDTO(user));
             }
         }

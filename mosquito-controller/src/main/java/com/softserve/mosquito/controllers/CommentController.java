@@ -2,6 +2,8 @@ package com.softserve.mosquito.controllers;
 
 import com.softserve.mosquito.dtos.CommentDto;
 import com.softserve.mosquito.services.api.CommentService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/comment")
+@Api(value = "Comment controller", description = "Controller for doing CRUD operation with comment")
 public class CommentController {
 
     private CommentService commentService;
@@ -21,6 +24,7 @@ public class CommentController {
     }
 
     @PostMapping(path = "/{task_id}/comments")
+    @ApiOperation(value = "Add new comment for task", response = CommentDto.class)
     @ResponseStatus(HttpStatus.OK)
     public CommentDto createComment(@PathVariable("task_id") Long taskId,
                                     @RequestBody CommentDto commentDto) {
@@ -28,6 +32,8 @@ public class CommentController {
     }
 
     @GetMapping(path = "/{task_id}/comments")
+    @ApiOperation(value = "Get all comments for concrete task", response = CommentDto.class,
+            responseContainer = "List")
     @ResponseStatus(HttpStatus.OK)
     public List<CommentDto> getCommentsByTaskId(@PathVariable("task_id") Long taskId) {
         if (commentService.getByTaskId(taskId).equals(Collections.emptyList()))
@@ -36,6 +42,7 @@ public class CommentController {
     }
 
     @PutMapping(path = "/{comment_id}")
+    @ApiOperation(value = "Update wrote comment", consumes = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public CommentDto updateComment(@PathVariable("comment_id") Long commentId,
                                     @RequestBody CommentDto comment) {
@@ -44,6 +51,7 @@ public class CommentController {
     }
 
     @DeleteMapping(path = "/{commentId}")
+    @ApiOperation(value = "Delete existing comment", response = HttpStatus.class)
     public HttpStatus deleteComments(@PathVariable("commentId") Long commentId) {
         commentService.delete(commentId);
         return HttpStatus.OK;
