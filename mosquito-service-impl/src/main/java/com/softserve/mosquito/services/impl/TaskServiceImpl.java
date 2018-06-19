@@ -3,10 +3,14 @@ package com.softserve.mosquito.services.impl;
 import com.softserve.mosquito.dtos.TaskFullDto;
 import com.softserve.mosquito.dtos.TaskSimpleDto;
 import com.softserve.mosquito.dtos.UserDto;
+import com.softserve.mosquito.entities.Comment;
+import com.softserve.mosquito.entities.Estimation;
 import com.softserve.mosquito.entities.Task;
 import com.softserve.mosquito.repo.api.TaskRepo;
 import com.softserve.mosquito.services.api.TaskService;
 import com.softserve.mosquito.services.mail.MailSender;
+import com.softserve.mosquito.transformer.CommentTransformer;
+import com.softserve.mosquito.transformer.EstimationTransformer;
 import com.softserve.mosquito.transformer.TaskTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -75,6 +79,12 @@ public class TaskServiceImpl implements TaskService {
             taskFullDto.setParentTaskFullDto(getParent(parent.getId()));
         }
 
+//        Estimation estimation = task.getEstimation();
+//        if (estimation != null) {
+//            taskFullDto.setEstimationDto(EstimationTransformer.toDTO(estimation));
+//        }
+
+        taskFullDto.setCommentDtoList(CommentTransformer.toDTOList(task.getComments()));
         taskFullDto.setChildTaskFullDtoList(getSubTasks(taskFullDto.getId()));
         return taskFullDto;
     }
