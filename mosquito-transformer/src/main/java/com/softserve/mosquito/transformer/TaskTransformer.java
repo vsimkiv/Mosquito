@@ -53,17 +53,15 @@ public class TaskTransformer {
     }
 
     public static TaskSimpleDto toSimpleDto(Task task){
-        TaskSimpleDto taskSimpleDto = new TaskSimpleDto();
-        taskSimpleDto.setId(task.getId());
-        taskSimpleDto.setName(task.getName());
-        taskSimpleDto.setParentTask(task.getParentTask() != null ? task.getParentTask().getName() : null);
-        taskSimpleDto.setOwner(task.getOwner().getId().toString());
-        taskSimpleDto.setWorker(task.getOwner().getId().toString());
-        taskSimpleDto.setEstimation(task.getEstimation().getTimeEstimation().toString());
-        taskSimpleDto.setPriority(task.getPriority().getTitle());
-        taskSimpleDto.setStatus(task.getStatus().getTitle());
+
+        TaskSimpleDto taskSimpleDto = new TaskSimpleDto(task.getId(), task.getName(),
+                task.getParentTask() != null ? task.getParentTask().getName() : null, task.getOwner().getId().toString(),
+                task.getOwner().getId().toString(), task.getEstimation().getTimeEstimation().toString(),
+                task.getPriority().getTitle(), task.getStatus().getTitle());
+
         return taskSimpleDto;
     }
+
 
     public static List<Task> toEntityList(List<TaskFullDto> taskFullDtoList) {
         List<Task> tasks = new ArrayList<>();
