@@ -10,7 +10,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <modules>
-        <module>mosquito-config</module>
+        <module>mosquito-config-web</module>
         <module>mosquito-controller</module>
         <module>mosquito-dto</module>
         <module>mosquito-entity</module>
@@ -20,7 +20,6 @@
         <module>mosquito-service-api</module>
         <module>mosquito-service-impl</module>
         <module>mosquito-transformer</module>
-        <module>mosquito-web</module>
     </modules>
 
     <properties>
@@ -38,7 +37,7 @@
 
             <dependency>
                 <groupId>com.softserve.mosquito</groupId>
-                <artifactId>mosquito-config</artifactId>
+                <artifactId>mosquito-config-web</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -79,11 +78,6 @@
             <dependency>
                 <groupId>com.softserve.mosquito</groupId>
                 <artifactId>mosquito-transformer</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.softserve.mosquito</groupId>
-                <artifactId>mosquito-web</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
