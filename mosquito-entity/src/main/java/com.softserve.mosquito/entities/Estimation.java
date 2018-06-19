@@ -1,5 +1,10 @@
 package com.softserve.mosquito.entities;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -20,6 +25,8 @@ public class Estimation implements Serializable {
     @JoinColumn(name = "id", referencedColumnName = "estimation_id")
     private Task task;
 
+    @Fetch(FetchMode.SELECT)
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "estimation")
     private List<LogWork> logWorks;
 
