@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -21,6 +22,12 @@ public class IndexController {
     @Autowired
     public IndexController(UserService userService) {
         this.userService = userService;
+    }
+
+    @GetMapping(path = "/swagger")
+    @ResponseStatus(HttpStatus.OK)
+    public ModelAndView swagger(){
+        return new ModelAndView("swagger-ui.html");
     }
 
     @GetMapping(path = "/")
