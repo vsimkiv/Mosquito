@@ -12,6 +12,7 @@ public class PriorityTransformer {
     }
 
     public static Priority toEntity(PriorityDto priorityDto) {
+        if (priorityDto==null) return null;
         return new Priority(priorityDto.getId(), priorityDto.getTitle());
     }
 
