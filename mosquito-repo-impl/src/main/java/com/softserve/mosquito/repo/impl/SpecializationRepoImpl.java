@@ -109,7 +109,6 @@ public class SpecializationRepoImpl implements SpecializationRepo {
         try{
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
-            session.getTransaction().begin();
             Specialization specialization = session.get(Specialization.class, id);
             session.delete(specialization);
             transaction.commit();
