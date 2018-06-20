@@ -111,7 +111,7 @@ public class TaskRepoImpl implements TaskRepo {
             session.getTransaction().begin();
             Query query = session.createQuery("FROM " + Task.class.getName() +
                     " WHERE parentTask = null ");
-            List<Task> tasks = query.list();
+            List<Task> tasks = query.getResultList();
             session.getTransaction().commit();
             return tasks;
         } catch (HibernateException e) {
