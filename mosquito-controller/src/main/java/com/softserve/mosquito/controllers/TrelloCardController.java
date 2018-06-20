@@ -2,6 +2,7 @@ package com.softserve.mosquito.controllers;
 
 import com.softserve.mosquito.dtos.TaskSimpleDto;
 import com.softserve.mosquito.services.api.TrelloCardService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/trello")
-public class TrelloCardController {
+@Api(value = "Trello controller", description = "Controller for working with trello api")public class TrelloCardController {
 
     private TrelloCardService trelloCardService;
 

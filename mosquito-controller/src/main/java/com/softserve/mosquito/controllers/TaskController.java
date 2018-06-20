@@ -5,6 +5,7 @@ import com.softserve.mosquito.dtos.TaskSimpleDto;
 import com.softserve.mosquito.entities.mongo.Task;
 import com.softserve.mosquito.services.api.TaskService;
 import com.softserve.mosquito.services.api.TasksBoardService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/tasks")
+@Api(value = "Task controller", description = "Controller for doing CRUD operation with task")
 public class TaskController {
 
     private TaskService taskService;

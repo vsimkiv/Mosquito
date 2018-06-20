@@ -2,6 +2,7 @@ package com.softserve.mosquito.controllers;
 
 import com.softserve.mosquito.dtos.StatusDto;
 import com.softserve.mosquito.services.api.StatusService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path="/statuses")
-public class StatusController {
+@Api(value = "status controller", description = "Controller for doing CRUD operation with status")public class StatusController {
     private StatusService statusService;
 
     @Autowired

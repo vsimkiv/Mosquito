@@ -2,6 +2,7 @@ package com.softserve.mosquito.controllers;
 
 import com.softserve.mosquito.dtos.TaskFullDto;
 import com.softserve.mosquito.services.api.TaskService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/projects")
-public class ProjectController {
+@Api(value = "Project controller", description = "Controller for doing CRUD operation with project")public class ProjectController {
     private TaskService taskService;
 
     @Autowired

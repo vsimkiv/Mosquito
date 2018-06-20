@@ -2,6 +2,7 @@ package com.softserve.mosquito.controllers;
 
 import com.softserve.mosquito.dtos.SpecializationDto;
 import com.softserve.mosquito.services.api.SpecializationService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/specializations")
+@Api(value = "Specialization controller", description = "Controller for doing CRUD operation with specialization")
 public class SpecializationController {
     private SpecializationService specializationService;
 

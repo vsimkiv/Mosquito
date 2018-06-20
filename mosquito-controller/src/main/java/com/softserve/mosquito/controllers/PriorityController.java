@@ -2,6 +2,7 @@ package com.softserve.mosquito.controllers;
 
 import com.softserve.mosquito.dtos.PriorityDto;
 import com.softserve.mosquito.services.api.PriorityService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/priorities")
-
+@Api(value = "Priority controller", description = "Controller for doing CRUD operation with task priority")
 public class PriorityController {
     private PriorityService priorityService;
 

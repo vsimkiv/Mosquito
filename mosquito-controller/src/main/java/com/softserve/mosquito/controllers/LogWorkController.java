@@ -2,6 +2,7 @@ package com.softserve.mosquito.controllers;
 
 import com.softserve.mosquito.dtos.LogWorkDto;
 import com.softserve.mosquito.services.api.LogWorkService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/log-work")
-public class LogWorkController {
+@Api(value = "Log work controller", description = "Controller for doing CRUD operation with log work")public class LogWorkController {
 
     private LogWorkService logWorkService;
 
