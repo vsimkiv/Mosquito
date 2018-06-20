@@ -1,5 +1,7 @@
 package com.softserve.mosquito.dtos;
 
+import java.time.LocalDateTime;
+
 /*
  * DTO for creating comments
  */
@@ -8,22 +10,17 @@ public class CommentDto {
     private String text;
     private Long authorId;
     private Long taskId;
+    private LocalDateTime lastUpdate;
 
     public CommentDto() {
     }
 
-    public CommentDto(Long id, String text, Long taskId, Long authorId) {
+    public CommentDto(Long id, String text, Long authorId, Long taskId, LocalDateTime lastUpdate) {
         this.id = id;
         this.text = text;
         this.authorId = authorId;
         this.taskId = taskId;
-
-    }
-
-    public CommentDto(String text, Long taskId, Long authorId) {
-        this.text = text;
-        this.taskId = taskId;
-        this.authorId = authorId;
+        this.lastUpdate = lastUpdate;
     }
 
     public Long getId() {
@@ -58,6 +55,14 @@ public class CommentDto {
         this.authorId = authorId;
     }
 
+    public LocalDateTime getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(LocalDateTime lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
+
     @Override
     public String toString() {
         return "CommentDto{" +
@@ -65,6 +70,7 @@ public class CommentDto {
                 ", text='" + text + '\'' +
                 ", authorId=" + authorId +
                 ", taskId=" + taskId +
+                ", lastUpdate=" + lastUpdate +
                 '}';
     }
 }

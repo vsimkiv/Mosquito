@@ -19,7 +19,8 @@ public class CommentTransformer {
                 commentDto.getId(),
                 commentDto.getText(),
                 new Task(commentDto.getTaskId()),
-                new User(commentDto.getAuthorId()));
+                new User(commentDto.getAuthorId()),
+                commentDto.getLastUpdate());
     }
 
     public static CommentDto toDTO(Comment comment) {
@@ -27,7 +28,8 @@ public class CommentTransformer {
                 comment.getId(),
                 comment.getText(),
                 comment.getTask().getId(),
-                comment.getAuthor().getId());
+                comment.getAuthor().getId(),
+                comment.getLastUpdate());
     }
 
     public static List<CommentDto> toDTOList(List<Comment> comments){
@@ -36,9 +38,10 @@ public class CommentTransformer {
             commentDtos.add(new CommentDto(
                     comment.getId(),
                     comment.getText(),
+                    comment.getAuthor().getId(),
                     comment.getTask().getId(),
-                    comment.getAuthor().getId())
-            );
+                    comment.getLastUpdate()
+            ));
         }
         return commentDtos;
     }
