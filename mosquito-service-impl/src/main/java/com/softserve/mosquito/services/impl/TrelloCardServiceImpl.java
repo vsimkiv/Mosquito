@@ -96,13 +96,14 @@ public class TrelloCardServiceImpl implements TrelloCardService {
     private void createTrelloTasks(UserDto userDto, List<TaskSimpleDto> taskSimpleDtos){
 
         TaskFullDto taskFullDto = new TaskFullDto();
-        taskFullDto.setOwnerDto(trelloInfo.getUserDto());
-        taskFullDto.setWorkerDto(trelloInfo.getUserDto());
+        taskFullDto.setOwnerDto(userDto);
+        taskFullDto.setWorkerDto(userDto);
 
         for (TaskSimpleDto taskSimpleDto : taskSimpleDtos){
             taskFullDto.setName(taskSimpleDto.getName());
             taskFullDto.setTrelloId(taskSimpleDto.getTrelloId());
-            taskFullDto.setParentTaskFullDto(taskSimpleDto.getParentTask().equals(null)? null : taskService.getByTrelloId(taskSimpleDto.getTrelloId()));
+            taskFullDto.setStatusDto(statusService.getByName(taskSimpleDto.getStatus()));
+            taskFullDto.setParentTaskFullDto(taskSimpleDto.getParentTask()==null? null : taskService.getByTrelloId(taskSimpleDto.getTrelloId()));
             taskService.save(taskFullDto);
         }
     }

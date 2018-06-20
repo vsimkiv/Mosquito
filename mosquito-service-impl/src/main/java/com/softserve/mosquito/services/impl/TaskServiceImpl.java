@@ -42,7 +42,7 @@ public class TaskServiceImpl implements TaskService {
                 "You was assigned for this task" + taskFullDto.getName(),
                 "Mosquito Task Manager")) {*/
         Task task = taskRepo.create(TaskTransformer.toEntity(taskFullDto));
-        return toFullDTO(task);
+        return taskFullDto;
         /*}
         return null;*/
     }

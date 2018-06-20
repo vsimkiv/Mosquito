@@ -28,7 +28,7 @@ public class TaskTransformer {
     //parentTask, estimation, comments, and childTasks will set on service-impl module
     public static TaskFullDto toFullDTO(Task task) {
         return new TaskFullDto().builder()
-                .id(task.getId())
+//                .id(task.getId())
                 .name(task.getName())
                 .ownerDto(UserTransformer.toDTO(task.getOwner()))
                 .workerDto(UserTransformer.toDTO(task.getOwner()))

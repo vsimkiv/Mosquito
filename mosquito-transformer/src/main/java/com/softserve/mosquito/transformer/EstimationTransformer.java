@@ -8,6 +8,7 @@ public class EstimationTransformer  {
     private EstimationTransformer() {}
 
     public static Estimation toEntity(EstimationDto estimationDto) {
+        if (estimationDto==null) return null;
         Task task = new Task();
         task.setId(estimationDto.getTaskId());
         return new Estimation(estimationDto.getId(),estimationDto.getTimeEstimation(),estimationDto.getRemaining(),

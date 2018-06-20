@@ -1,5 +1,7 @@
 package com.softserve.mosquito.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -22,6 +24,7 @@ public class LogWork implements Serializable {
     private User author;
 
     @Column(name = "last_update", nullable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd@HH:mm:ss.SSSZ")
     private LocalDateTime lastUpdate;
 
     @PreUpdate
