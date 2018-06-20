@@ -102,6 +102,7 @@ public class TrelloCardServiceImpl implements TrelloCardService {
         for (TaskSimpleDto taskSimpleDto : taskSimpleDtos){
             taskFullDto.setName(taskSimpleDto.getName());
             taskFullDto.setTrelloId(taskSimpleDto.getTrelloId());
+            taskFullDto.setStatusDto(statusService.getByName(taskSimpleDto.getStatus()));
             taskFullDto.setParentTaskFullDto(taskSimpleDto.getParentTask()==null? null : taskService.getByTrelloId(taskSimpleDto.getTrelloId()));
             taskService.save(taskFullDto);
         }
