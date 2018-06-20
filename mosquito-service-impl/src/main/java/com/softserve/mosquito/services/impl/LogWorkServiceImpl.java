@@ -31,8 +31,9 @@ public class LogWorkServiceImpl implements LogWorkService {
 
     @Transactional
     @Override
-    public LogWorkDto getById(Long logWorkId) {
+    public LogWorkDto getById(Long logWorkId, byte timeZone) {
         LogWork logWork = logWorkRepo.read(logWorkId);
+        logWork.setLastUpdate(logWork.getLastUpdate().plusHours(timeZone));
         return LogWorkTransformer.toDTO(logWork);
     }
 

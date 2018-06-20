@@ -26,11 +26,10 @@ public class LogWorkController {
         return logWorkService.save(logWorkDto);
     }
 
-    @GetMapping(path = "/{log-work_id}/log-works")
+    @GetMapping(path = "/{log-work_id}/{time-zone}")
     @ResponseStatus(HttpStatus.OK)
-    public LogWorkDto getLogWorkById(@PathVariable("log-work_id") Long logId) {
-
-        return logWorkService.getById(logId);
+    public LogWorkDto getLogWorkById(@PathVariable("log-work_id") Long logId, @PathVariable("time-zone") byte timeZone) {
+        return logWorkService.getById(logId,timeZone);
     }
 
     @PutMapping(path = "/{log-work_id}")

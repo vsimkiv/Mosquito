@@ -8,7 +8,7 @@ public interface LogWorkService {
 
     LogWorkDto save(LogWorkDto logWork);
 
-    LogWorkDto getById(Long logWorkId);
+    LogWorkDto getById(Long logWorkId,byte timeZone);
 
     LogWorkDto update(LogWorkDto logWork);
 

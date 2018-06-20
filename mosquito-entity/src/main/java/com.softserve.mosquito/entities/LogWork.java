@@ -3,12 +3,14 @@ package com.softserve.mosquito.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 
 @Entity
 @Table(name = "log_works")
 public class LogWork implements Serializable {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String description;
@@ -19,18 +21,24 @@ public class LogWork implements Serializable {
     @JoinColumn(name = "author_id", referencedColumnName = "id")
     private User author;
 
-    @Column(name = "last_update")
+    @Column(name = "last_update", nullable = false)
     private LocalDateTime lastUpdate;
+
+    @PreUpdate
+    protected void onUpdate() {
+        lastUpdate = LocalDateTime.now(ZoneId.ofOffset("UTC", ZoneOffset.ofHours(0)));
+    }
 
     @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "estimation_id", referencedColumnName = "id")
     private Estimation estimation;
 
-    public LogWork() { }
+    public LogWork() {
+    }
 
     public LogWork(Long id, String description, Integer logged, User user,
                    Long estimationId, LocalDateTime lastUpdate) {
-        this.id=id;
+        this.id = id;
         this.description = description;
         this.lastUpdate = lastUpdate;
         this.author = user;
@@ -45,6 +53,7 @@ public class LogWork implements Serializable {
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -52,6 +61,7 @@ public class LogWork implements Serializable {
     public String getDescription() {
         return description;
     }
+
     public void setDescription(String description) {
         this.description = description;
     }
@@ -59,20 +69,32 @@ public class LogWork implements Serializable {
     public Integer getLogged() {
         return logged;
     }
+
     public void setLogged(Integer logged) {
         this.logged = logged;
     }
 
-    public Estimation getEstimation() {   return estimation; }
-    public void setEstimation(Estimation estimation) {   this.estimation = estimation; }
+    public Estimation getEstimation() {
+        return estimation;
+    }
 
-    public User getAuthor() {  return author; }
-    public void setAuthor(User author) { this.author = author;  }
+    public void setEstimation(Estimation estimation) {
+        this.estimation = estimation;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
 
 
     public LocalDateTime getLastUpdate() {
         return lastUpdate;
     }
+
     public void setLastUpdate(LocalDateTime lastUpdate) {
         this.lastUpdate = lastUpdate;
     }

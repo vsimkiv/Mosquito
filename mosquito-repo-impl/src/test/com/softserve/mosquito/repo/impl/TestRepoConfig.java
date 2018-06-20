@@ -42,7 +42,6 @@ public class TestRepoConfig {
         properties.put("hibernate.hbm2ddl.auto", "create-drop");
         properties.put("hibernate.current_session_context_class", "thread");
         properties.put("hibernate.globally_quoted_identifiers", "true");
-        properties.put("hibernate.transaction.factory_class", "org.hibernate.transaction.JDBCTransactionFactory");
         return properties;
     }
 
