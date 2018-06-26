@@ -23,7 +23,7 @@ public class LogWork implements Serializable {
     @JoinColumn(name = "author_id", referencedColumnName = "id")
     private User author;
 
-    @Column(name = "last_update", nullable = false)
+    @Column(name = "last_update")
     @JsonFormat(pattern = "yyyy-MM-dd@HH:mm:ss.SSSZ")
     private LocalDateTime lastUpdate;
 
