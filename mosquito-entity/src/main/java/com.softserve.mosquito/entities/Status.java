@@ -1,7 +1,5 @@
 package com.softserve.mosquito.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,7 +14,6 @@ public final class Status implements Serializable {
     private Long id;
     private String title;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "status", fetch=FetchType.LAZY)
     private List<Task> tasks = new ArrayList<>();
 

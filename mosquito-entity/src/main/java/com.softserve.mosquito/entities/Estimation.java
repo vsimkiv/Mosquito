@@ -34,7 +34,6 @@ public class Estimation implements Serializable {
 
 
     public Estimation(Long id, Integer timeEstimation, Integer remaining, Task task,List<LogWork> logWorks) {
-
         this.timeEstimation = timeEstimation;
         this.id = id;
         this.remaining = remaining;

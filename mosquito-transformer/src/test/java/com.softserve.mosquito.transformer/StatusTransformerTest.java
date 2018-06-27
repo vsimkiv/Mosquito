@@ -2,10 +2,9 @@ package com.softserve.mosquito.transformer;
 
 import com.softserve.mosquito.dtos.StatusDto;
 import com.softserve.mosquito.entities.Status;
-import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 
 public class StatusTransformerTest {
@@ -20,7 +19,6 @@ public class StatusTransformerTest {
         status.setTitle(statusDto.getTitle());
         assertEquals(statusDto.getId(), status.getId());
         assertEquals(statusDto.getTitle(), status.getTitle());
-
     }
 
     @Test

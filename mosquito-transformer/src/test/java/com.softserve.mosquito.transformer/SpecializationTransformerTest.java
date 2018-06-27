@@ -3,13 +3,12 @@ package com.softserve.mosquito.transformer;
 import com.softserve.mosquito.dtos.SpecializationDto;
 import com.softserve.mosquito.entities.Specialization;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class SpecializationTransformerTest {
 

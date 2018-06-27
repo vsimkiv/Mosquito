@@ -22,7 +22,7 @@ import java.util.List;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
-    private final static String HEADER_NAME = "Authorization";
+    private static final String HEADER_NAME = "Authorization";
 
     @Bean
     public Docket api() {

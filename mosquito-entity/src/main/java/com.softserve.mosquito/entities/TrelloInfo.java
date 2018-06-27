@@ -8,7 +8,6 @@ import java.io.Serializable;
 @Table(name = "users_trello")
 public class TrelloInfo implements Serializable {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

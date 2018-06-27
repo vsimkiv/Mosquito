@@ -35,7 +35,6 @@ public class Comment implements Serializable {
         this.lastUpdate = lastUpdate;
     }
 
-
     public Long getId() {
         return id;
     }
