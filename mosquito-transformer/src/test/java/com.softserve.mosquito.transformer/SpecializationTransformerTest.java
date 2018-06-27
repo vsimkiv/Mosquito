@@ -27,7 +27,7 @@ public class SpecializationTransformerTest {
         Set<Specialization> specializations = new HashSet<>();
         Iterator<SpecializationDto> iter = specializationDtoSet.iterator();
         for (SpecializationDto specializationDtoo : specializationDtoSet) {
-            specializations.add(SpecializationTransformer.toEntity(specializationDtoo));
+            specializations.add(SpecializationTransformer.toEntity(specializationDtoo));//Чи можна викликати toEntity
         }
 
     }
