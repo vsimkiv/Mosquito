@@ -15,7 +15,6 @@ public class PriorityTransformerTest {
     @Test
     public void toEntity() {
         PriorityDto priorityDto = new PriorityDto();
-        priorityDto.setId(10L);
         priorityDto.setTitle("ForToday");
         Priority priority = PriorityTransformer.toEntity(priorityDto);
         assertEquals(priorityDto.getId(), priority.getId());
@@ -25,7 +24,6 @@ public class PriorityTransformerTest {
     @Test
     public void toDTO() {
         Priority priority = new Priority();
-        priority.setId(20L);
         priority.setTitle("ForTomorrow");
         PriorityDto priorityDto = PriorityTransformer.toDTO(priority);
         assertEquals(priority.getId(), priorityDto.getId());
@@ -35,10 +33,8 @@ public class PriorityTransformerTest {
     @Test
     public void toEntityList() {
         PriorityDto priorityDto1 = new PriorityDto();
-        priorityDto1.setId(1L);
         priorityDto1.setTitle("TestPriority");
         PriorityDto priorityDto2 = new PriorityDto();
-        priorityDto2.setId(2L);
         priorityDto2.setTitle("TestPriority2");
         List<PriorityDto> priorityDtos = new ArrayList<>();
         priorityDtos.add(priorityDto1);
@@ -51,10 +47,8 @@ public class PriorityTransformerTest {
     @Test
    public void toDTOList() {
         Priority priority1 = new Priority();
-        priority1.setId(40L);
         priority1.setTitle("Test");
         Priority priority2 = new Priority();
-        priority2.setId(50L);
         priority2.setTitle("TestTwo");
         List<Priority> priorities = new ArrayList<>();
         priorities.add(priority1);

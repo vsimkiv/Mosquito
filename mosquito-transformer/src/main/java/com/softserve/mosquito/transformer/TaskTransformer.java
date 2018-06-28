@@ -44,7 +44,7 @@ public class TaskTransformer {
                 task.getName(),
                 task.getParentTask() != null ? task.getParentTask().getName() : null,
                 task.getOwner().getId().toString(),
-                task.getOwner().getId().toString(),
+                task.getWorker().getId().toString(),
                 task.getEstimation().getTimeEstimation().toString(),
                 task.getPriority().getTitle(),
                 task.getStatus().getTitle());

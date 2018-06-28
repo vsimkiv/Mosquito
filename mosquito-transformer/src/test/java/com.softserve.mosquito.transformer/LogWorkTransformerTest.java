@@ -24,7 +24,6 @@ public class LogWorkTransformerTest {
 
         LogWorkDto logWorkDto = new LogWorkDto();
         logWorkDto.setDescription("TestDescription");
-        logWorkDto.setId(10L);
         logWorkDto.setLogged(100);
         SpecializationDto specializationDto1 = new SpecializationDto();
         specializationDto1.setTitle("QC");
@@ -48,7 +47,6 @@ public class LogWorkTransformerTest {
         LogWork logWork = new LogWork();
         logWork.setDescription("Test Logwork");
         logWork.setLogged(100);
-        logWork.setId(1l);
         Estimation estimation = new Estimation();
         estimation.setTimeEstimation(25);
         estimation.setRemaining(25);
@@ -69,7 +67,6 @@ public class LogWorkTransformerTest {
     public void toEntityList() {
         LogWorkDto logWorkDto1 = new LogWorkDto();
         logWorkDto1.setDescription("TestDescription");
-        logWorkDto1.setId(10L);
         logWorkDto1.setLogged(100);
         SpecializationDto specializationDto1 = new SpecializationDto();
         specializationDto1.setTitle("QC");
@@ -96,7 +93,6 @@ public class LogWorkTransformerTest {
         LogWork logWork = new LogWork();
         logWork.setDescription("Test Logwork");
         logWork.setLogged(100);
-        logWork.setId(1l);
         Estimation estimation = new Estimation();
         estimation.setTimeEstimation(25);
         estimation.setRemaining(25);

@@ -18,7 +18,6 @@ public class CommentTransformerTest {
     @Test
     public void toEntity() {
         CommentDto commentDto = new CommentDto();
-        commentDto.setId(1L);
         commentDto.setText("Test Comment");
         EstimationDto estimationDto = new EstimationDto();
         estimationDto.setTimeEstimation(25);
@@ -56,7 +55,6 @@ public class CommentTransformerTest {
     public void toDTO() {
         Comment comment = new Comment();
         comment.setText("Test Comment Text");
-        comment.setId(20L);
         Estimation estimation = new Estimation();
         estimation.setTimeEstimation(25);
         estimation.setRemaining(25);
@@ -81,7 +79,6 @@ public class CommentTransformerTest {
    public void toDTOList() {
         Comment comment1 = new Comment();
         comment1.setText("Test Comment Text");
-        comment1.setId(1L);
         Estimation estimation = new Estimation();
         estimation.setTimeEstimation(25);
         estimation.setRemaining(25);
@@ -100,7 +97,6 @@ public class CommentTransformerTest {
 
         Comment comment2 = new Comment();
         comment2.setText("New Test Comment Text");
-        comment2.setId(2L);
         Estimation estimation1 = new Estimation();
         estimation1.setTimeEstimation(25);
         estimation1.setRemaining(25);

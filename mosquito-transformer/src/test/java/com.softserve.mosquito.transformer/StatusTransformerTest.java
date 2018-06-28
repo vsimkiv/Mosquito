@@ -13,7 +13,6 @@ public class StatusTransformerTest {
     @Test
     public void toEntity() {
         StatusDto statusDto = new StatusDto();
-        statusDto.setId(20L);
         statusDto.setTitle("Cancelled");
 
         Status status = StatusTransformer.toEntity(statusDto);
@@ -31,7 +30,6 @@ public class StatusTransformerTest {
     @Test
     public void toDTO() {
         Status status = new Status();
-        status.setId(10L);
         status.setTitle("LongTerm");
         StatusDto statusDto = StatusTransformer.toDTO(status);
         assertEquals(status.getId(), statusDto.getId());

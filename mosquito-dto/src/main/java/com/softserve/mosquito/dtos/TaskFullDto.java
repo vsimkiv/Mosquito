@@ -108,7 +108,7 @@ public class TaskFullDto {
         this.childTaskFullDtoList = childTaskFullDtoList;
     }
 
-    public TaskFullDtoBuilder builder() {
+    public static TaskFullDtoBuilder builder() {
         return new TaskFullDtoBuilder();
     }
 

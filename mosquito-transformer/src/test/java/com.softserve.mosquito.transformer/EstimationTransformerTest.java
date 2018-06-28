@@ -32,7 +32,6 @@ public class EstimationTransformerTest {
         LogWorkDto logWorkDto = new LogWorkDto();
         logWorkDto.setEstimationId(estimationDto.getId());
         logWorkDto.setLogged(10);
-        logWorkDto.setId(10L);
         logWorkDto.setUserId(userDto.getId());
         logWorkDto.setDescription("Test Description");
         List<LogWorkDto> logWorkDtos = new ArrayList<>();
@@ -61,7 +60,6 @@ public class EstimationTransformerTest {
     @Test
     public void toDTO() {
         Estimation estimation = new Estimation();
-        estimation.setId(15L);
         estimation.setTimeEstimation(200);
         estimation.setRemaining(100);
         User user = new User();
@@ -77,7 +75,6 @@ public class EstimationTransformerTest {
         LogWork logWork = new LogWork();
         logWork.setAuthor(user);
         logWork.setEstimation(estimation);
-        logWork.setId(2L);
         logWork.setLogged(100);
         logWork.setDescription("Test");
         List<LogWork> logWorks = new ArrayList<>();
