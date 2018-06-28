@@ -16,12 +16,18 @@ public class LogWorkTransformer {
 
     public static LogWork toEntity(LogWorkDto logWorkDto) {
         User user = new User();
+        if(logWorkDto==null){
+            return  null;
+        }else
         user.setId(logWorkDto.getUserId());
         return new LogWork(logWorkDto.getId(), logWorkDto.getDescription(), logWorkDto.getLogged(),
                 user, logWorkDto.getEstimationId(), logWorkDto.getLastUpdate());
     }
 
     public static LogWorkDto toDTO(LogWork logWork) {
+        if(logWork==null){
+            return null;
+        }else
         return new LogWorkDto(logWork.getId(), logWork.getDescription(), logWork.getAuthor().getId(),
                 logWork.getLogged(), logWork.getLastUpdate(), logWork.getEstimation().getId());
     }
