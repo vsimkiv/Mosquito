@@ -15,6 +15,9 @@ public class CommentTransformer {
     }
 
     public static Comment toEntity(CommentDto commentDto) {
+        if(commentDto==null){
+            return  null;
+        }else
         return new Comment(
                 commentDto.getId(),
                 commentDto.getText(),
@@ -24,6 +27,9 @@ public class CommentTransformer {
     }
 
     public static CommentDto toDTO(Comment comment) {
+        if(comment==null) {
+            return null;
+        }else
         return new CommentDto(
                 comment.getId(),
                 comment.getText(),

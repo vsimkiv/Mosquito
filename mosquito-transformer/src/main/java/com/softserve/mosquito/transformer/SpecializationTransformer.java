@@ -34,10 +34,16 @@ public class SpecializationTransformer {
     }
 
     public static Specialization toEntity(SpecializationDto specializationDto) {
+        if (specializationDto == null) {
+            return null;
+        }else
         return new Specialization(specializationDto.getId(), specializationDto.getTitle());
     }
 
     public static SpecializationDto toDTO(Specialization specialization) {
+        if (specialization == null) {
+            return null;
+        }else
         return new SpecializationDto(specialization.getId(), specialization.getTitle());
     }
 

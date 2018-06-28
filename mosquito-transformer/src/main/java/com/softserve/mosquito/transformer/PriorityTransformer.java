@@ -17,6 +17,7 @@ public class PriorityTransformer {
     }
 
     public static PriorityDto toDTO(Priority priority) {
+        if (priority==null) return null;
         return new PriorityDto(priority.getId(), priority.getTitle());
     }
 

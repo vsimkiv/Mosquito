@@ -8,52 +8,48 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
-class PriorityTransformerTest {
+public class PriorityTransformerTest {
 
     @Test
-    void toEntity() {
+    public void toEntity() {
         PriorityDto priorityDto = new PriorityDto();
         priorityDto.setId(10L);
         priorityDto.setTitle("ForToday");
-        Priority priority = new Priority();
-        priority.setId(priorityDto.getId());
-        priority.setTitle(priorityDto.getTitle());
+        Priority priority = PriorityTransformer.toEntity(priorityDto);
         assertEquals(priorityDto.getId(), priority.getId());
         assertEquals(priorityDto.getTitle(), priority.getTitle());
     }
 
     @Test
-    void toDTO() {
+    public void toDTO() {
         Priority priority = new Priority();
         priority.setId(20L);
         priority.setTitle("ForTomorrow");
-        PriorityDto priorityDto = new PriorityDto();
-        priorityDto.setId(priority.getId());
-        priorityDto.setTitle(priority.getTitle());
+        PriorityDto priorityDto = PriorityTransformer.toDTO(priority);
         assertEquals(priority.getId(), priorityDto.getId());
         assertEquals(priority.getTitle(), priorityDto.getTitle());
     }
 
     @Test
-    void toEntityList() {
+    public void toEntityList() {
         PriorityDto priorityDto1 = new PriorityDto();
-        priorityDto1.setId(25L);
+        priorityDto1.setId(1L);
         priorityDto1.setTitle("TestPriority");
         PriorityDto priorityDto2 = new PriorityDto();
-        priorityDto2.setId(30L);
+        priorityDto2.setId(2L);
         priorityDto2.setTitle("TestPriority2");
         List<PriorityDto> priorityDtos = new ArrayList<>();
         priorityDtos.add(priorityDto1);
         priorityDtos.add(priorityDto2);
-        List<Priority> priorities = new ArrayList<>();
-        for (PriorityDto priorityDtoo:priorityDtos) {
-            priorities.add(PriorityTransformer.toEntity(priorityDtoo));
-        }
+        List<Priority> priorities = PriorityTransformer.toEntityList(priorityDtos);
+        Priority firstPriority = priorities.stream().findFirst().get();
+        assertEquals(priorityDto1.getId(), firstPriority.getId());
     }
 
     @Test
-    void toDTOList() {
+   public void toDTOList() {
         Priority priority1 = new Priority();
         priority1.setId(40L);
         priority1.setTitle("Test");
@@ -63,9 +59,20 @@ class PriorityTransformerTest {
         List<Priority> priorities = new ArrayList<>();
         priorities.add(priority1);
         priorities.add(priority2);
-        List<PriorityDto> priorityDtos = new ArrayList<>();
-        for (Priority priorityy: priorities) {
-            priorityDtos.add(PriorityTransformer.toDTO(priorityy));
-        }
+        List<PriorityDto> priorityDtos = PriorityTransformer.toDTOList(priorities);
+        PriorityDto firstDto = priorityDtos.stream().findFirst().get();
+        assertEquals(priority1.getTitle(), firstDto.getTitle());
+    }
+    @Test
+    public void toEntity_null() {
+        PriorityDto priorityDto = null;
+        Priority priority = PriorityTransformer.toEntity(priorityDto);
+        assertNull(priority);
+    }
+    @Test
+    public void toDTO_null() {
+        Priority priority = null;
+        PriorityDto priorityDto = PriorityTransformer.toDTO(priority);
+        assertNull(priorityDto);
     }
 }

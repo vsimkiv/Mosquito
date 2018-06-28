@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class SpecializationTransformerTest {
 
@@ -16,37 +17,35 @@ public class SpecializationTransformerTest {
     @Test
     public void toEntityList() {
         SpecializationDto specializationDto = new SpecializationDto();
-        specializationDto.setId(20L);
+        specializationDto.setId(1L);
         specializationDto.setTitle("JuniorJavaDeveloper");
         SpecializationDto specializationDto1 = new SpecializationDto();
-        specializationDto1.setId(35L);
+        specializationDto1.setId(2L);
         specializationDto1.setTitle("MiddleJavaDeveloper");
         Set<SpecializationDto> specializationDtoSet = new HashSet<>();
         specializationDtoSet.add(specializationDto);
         specializationDtoSet.add(specializationDto1);
-        Set<Specialization> specializations = new HashSet<>();
+        Set<Specialization> specializations = SpecializationTransformer.toEntityList(specializationDtoSet);
         Iterator<SpecializationDto> iter = specializationDtoSet.iterator();
-        for (SpecializationDto specializationDtoo : specializationDtoSet) {
-            specializations.add(SpecializationTransformer.toEntity(specializationDtoo));//Чи можна викликати toEntity
-        }
+        Specialization first = specializations.stream().findFirst().get();
+        assertEquals(specializationDto.getTitle(),first.getTitle() );
 
     }
 
     @Test
     public void toDTOList() {
         Specialization specialization1 = new Specialization();
-        specialization1.setId(40L);
+        specialization1.setId(1L);
         specialization1.setTitle("BigBoss");
         Specialization specialization2 = new Specialization();
-        specialization2.setId(50L);
+        specialization2.setId(2L);
         specialization2.setTitle("Clerk");
         Set<Specialization> specializations = new HashSet<>();
         specializations.add(specialization1);
         specializations.add(specialization2);
-        Set<SpecializationDto> specializationDtos = new HashSet<>();
-        for (Specialization specializationn: specializations) {
-            specializationDtos.add(SpecializationTransformer.toDTO(specializationn));
-        }
+        Set<SpecializationDto> specializationDtos = SpecializationTransformer.toDTOList(specializations);
+        SpecializationDto firstDto = specializationDtos.stream().findFirst().get();
+        assertEquals(specialization2.getTitle(), firstDto.getTitle());
     }
 
     @Test
@@ -54,10 +53,7 @@ public class SpecializationTransformerTest {
         SpecializationDto specializationDto = new SpecializationDto();
         specializationDto.setId(10L);
         specializationDto.setTitle("CEO");
-
-        Specialization specialization = new Specialization();
-        specialization.setId(specializationDto.getId());
-        specialization.setTitle(specializationDto.getTitle());
+        Specialization specialization = SpecializationTransformer.toEntity(specializationDto);
         assertEquals(specializationDto.getId(), specialization.getId());
         assertEquals(specializationDto.getTitle(), specialization.getTitle());
     }
@@ -67,10 +63,20 @@ public class SpecializationTransformerTest {
         Specialization specialization = new Specialization();
         specialization.setId(15L);
         specialization.setTitle("Director");
-        SpecializationDto specializationDto = new SpecializationDto();
-        specializationDto.setId(specialization.getId());
-        specializationDto.setTitle(specialization.getTitle());
+        SpecializationDto specializationDto = SpecializationTransformer.toDTO(specialization);
         assertEquals(specialization.getId(), specializationDto.getId());
         assertEquals(specialization.getTitle(), specializationDto.getTitle());
+    }
+    @Test
+    public void toDTO_null() {
+        Specialization specializationn = null;
+        SpecializationDto specializationDto = SpecializationTransformer.toDTO(specializationn);
+        assertNull(specializationDto);
+    }
+    @Test
+    public void toEntity_null() {
+        SpecializationDto specializationDto = null;
+        Specialization specialization = SpecializationTransformer.toEntity(specializationDto);
+        assertNull(specialization);
     }
 }
