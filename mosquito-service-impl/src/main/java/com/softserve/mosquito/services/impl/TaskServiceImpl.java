@@ -32,10 +32,10 @@ public class TaskServiceImpl implements TaskService {
         this.mailSender = mailSender;
     }
 
+    //CRUD methods. Made by VS
     @Transactional
     @Override
     public TaskFullDto save(TaskFullDto taskFullDto) {
-
         //TODO messaging exception "Could not convert socket to TLS..."
         /*if (isMessageSent(taskFullDto.getWorkerDto(),
                 "You was assigned for this task" + taskFullDto.getName(),
@@ -68,21 +68,26 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskRepo.read(id);
         TaskFullDto taskFullDto = toFullDTO(task);
 
+        //set parent
         Task parent = task.getParentTask();
         if (parent != null) {
             taskFullDto.setParentTaskFullDto(getParent(parent.getId()));
         }
 
+        //set estimation
         Estimation estimation = task.getEstimation();
         if (estimation != null) {
             taskFullDto.setEstimationDto(EstimationTransformer.toDTO(estimation));
         }
 
+        //set list of comments
         taskFullDto.setCommentDtoList(CommentTransformer.toDTOList(task.getComments()));
+        //set child tasks
         taskFullDto.setChildTaskFullDtoList(getSubTasks(taskFullDto.getId()));
         return taskFullDto;
     }
 
+    //Additional methods. Made by VS
     @Transactional
     @Override
     public TaskFullDto getParent(Long parentId) {
@@ -97,19 +102,6 @@ public class TaskServiceImpl implements TaskService {
 
     @Transactional
     @Override
-    public List<TaskFullDto> getAllProjects() {
-        return TaskTransformer.toDTOList(taskRepo.getAllProjects());
-    }
-
-    @Transactional
-    @Override
-    public List<TaskFullDto> getProjectsByOwner(Long ownerId) {
-        return TaskTransformer.toDTOList(taskRepo.getProjectsByOwner(ownerId));
-    }
-
-
-    @Transactional
-    @Override
     public List<TaskFullDto> getByOwner(Long ownerId){
         return TaskTransformer.toDTOList(taskRepo.getByOwner(ownerId));
     }
@@ -120,6 +112,20 @@ public class TaskServiceImpl implements TaskService {
         return TaskTransformer.toDTOList(taskRepo.getByOwner(workerId));
     }
 
+    //Methods for project. Made by VS
+    @Transactional
+    @Override
+    public List<TaskFullDto> getAllProjects() {
+        return TaskTransformer.toDTOList(taskRepo.getAllProjects());
+    }
+
+    @Transactional
+    @Override
+    public List<TaskFullDto> getProjectsByOwner(Long ownerId) {
+        return TaskTransformer.toDTOList(taskRepo.getProjectsByOwner(ownerId));
+    }
+
+    //Filter methods. Made by VS
     @Transactional
     @Override
     public List<TaskFullDto> filterByStatus(List<TaskFullDto> taskFullDtoList, Long statusId) {
@@ -132,6 +138,7 @@ public class TaskServiceImpl implements TaskService {
         return filteredList;
     }
 
+    //methods for Trello. Made by Mark
     @Transactional
     @Override
     public TaskSimpleDto getSimpleTaskById(Long id) {
@@ -144,7 +151,6 @@ public class TaskServiceImpl implements TaskService {
     public TaskFullDto getByTrelloId(String trelloId){
         return TaskTransformer.toFullDTO(taskRepo.getByTrelloId(trelloId));
     }
-
 
     @Override
     @Transactional
