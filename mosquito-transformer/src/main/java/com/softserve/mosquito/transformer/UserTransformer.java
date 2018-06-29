@@ -23,16 +23,16 @@ public class UserTransformer {
         }
     }
 
-    public static UserDto toDTO(User user) {
+    public static UserDto toDto(User user) {
         if (user == null)
             return null;
         else
-            return UserDto.newBuilder().id(user.getId()).email(user.getEmail()).password(user.getPassword())
+            return UserDto.builder().id(user.getId()).email(user.getEmail()).password(user.getPassword())
                     .confirmPassword(user.getPassword()).firstName(user.getFirstName()).lastName(user.getLastName())
                     .specializations(SpecializationTransformer.toDTOList(user.getSpecializations())).build();
     }
 
-    public static List<User> toEntity(List<UserDto> userDtos) {
+    public static List<User> toEntityList(List<UserDto> userDtos) {
         if (userDtos == null)
             return null;
         else {
@@ -43,13 +43,13 @@ public class UserTransformer {
         }
     }
 
-    public static List<UserDto> toDTO(List<User> users) {
+    public static List<UserDto> toDtoList(List<User> users) {
         if (users == null)
             return null;
         else {
             List<UserDto> userDtos = new ArrayList<>();
             for (User item : users)
-                userDtos.add(toDTO(item));
+                userDtos.add(toDto(item));
             return userDtos;
         }
     }

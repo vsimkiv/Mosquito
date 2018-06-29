@@ -36,8 +36,8 @@ public class TaskTransformer {
             return TaskFullDto.builder()
                     .id(task.getId())
                     .name(task.getName())
-                    .ownerDto(UserTransformer.toDTO(task.getOwner()))
-                    .workerDto(UserTransformer.toDTO(task.getOwner()))
+                    .ownerDto(UserTransformer.toDto(task.getOwner()))
+                    .workerDto(UserTransformer.toDto(task.getOwner()))
                     .priorityDto(PriorityTransformer.toDTO(task.getPriority()))
                     .statusDto(StatusTransformer.toDTO(task.getStatus()))
                     .build();

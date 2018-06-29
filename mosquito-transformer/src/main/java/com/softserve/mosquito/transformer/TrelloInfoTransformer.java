@@ -24,7 +24,7 @@ public class TrelloInfoTransformer {
         if(trelloInfo==null){
             return null;
         }else
-        return new TrelloInfoDto(trelloInfo.getId(), UserTransformer.toDTO(trelloInfo.getUser()), trelloInfo.getUserTrelloName(),
+        return new TrelloInfoDto(trelloInfo.getId(), UserTransformer.toDto(trelloInfo.getUser()), trelloInfo.getUserTrelloName(),
                 trelloInfo.getUserTrelloKey(), trelloInfo.getUserTrelloToken());
     }
 

@@ -35,7 +35,7 @@ public class UserTransformerTest {
         user.setFirstName("test_name");
         user.setLastName("test_surname");
         user.setConfirmed(true);
-        UserDto userDto = UserTransformer.toDTO(user);
+        UserDto userDto = UserTransformer.toDto(user);
         assertEquals(user.getEmail(), userDto.getEmail());
     }
 
@@ -49,7 +49,7 @@ public class UserTransformerTest {
                 specializations(specializationDtos).build();
         List<UserDto> userDtos = new ArrayList<>();
         userDtos.add(userDto);
-        List<User> usersList = UserTransformer.toEntity(userDtos);
+        List<User> usersList = UserTransformer.toEntityList(userDtos);
         User firstUser = usersList.get(0);
         assertEquals(userDto.getFirstName(), firstUser.getFirstName());
         assertEquals(userDto.getEmail(), firstUser.getEmail());
@@ -65,7 +65,7 @@ public class UserTransformerTest {
         user.setConfirmed(true);
         List<User> users = new ArrayList<>();
         users.add(user);
-        List<UserDto> userDto = UserTransformer.toDTO(users);
+        List<UserDto> userDto = UserTransformer.toDtoList(users);
         UserDto userDto1 = userDto.get(0);
         assertEquals(user.getEmail(), userDto1.getEmail());
 
@@ -73,7 +73,7 @@ public class UserTransformerTest {
     @Test
     public void toDTO_null() {
         User user = null;
-        UserDto userDto = UserTransformer.toDTO(user);
+        UserDto userDto = UserTransformer.toDto(user);
         assertNull(userDto);
     }
     @Test

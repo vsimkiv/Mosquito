@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto update(UserDto user) {
-        return UserTransformer.toDTO(userRepo.update(UserTransformer.toEntity(user)));
+        return UserTransformer.toDto(userRepo.update(UserTransformer.toEntity(user)));
     }
 
     @Override
@@ -51,16 +51,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getAll() {
-        return UserTransformer.toDTO(userRepo.readAll());
+        return UserTransformer.toDtoList(userRepo.readAll());
     }
 
     @Override
     public UserDto getById(Long id) {
-        return UserTransformer.toDTO(userRepo.read(id));
+        return UserTransformer.toDto(userRepo.read(id));
     }
 
     public UserDto getByEmail(String email) {
-        return UserTransformer.toDTO(userRepo.readByEmail(email));
+        return UserTransformer.toDto(userRepo.readByEmail(email));
     }
 
     @Override
@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
         for (User user : users) {
             for (Specialization item : user.getSpecializations()) {
                 if (item.getId().equals(specializationId))
-                    userDtos.add(UserTransformer.toDTO(user));
+                    userDtos.add(UserTransformer.toDto(user));
             }
         }
         return userDtos;
