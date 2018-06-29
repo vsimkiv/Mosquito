@@ -1,6 +1,7 @@
 package com.softserve.mosquito.transformer;
 
 import com.softserve.mosquito.dtos.LogWorkDto;
+import com.softserve.mosquito.entities.Estimation;
 import com.softserve.mosquito.entities.LogWork;
 import com.softserve.mosquito.entities.User;
 
@@ -15,16 +16,18 @@ public class LogWorkTransformer {
 
     public static LogWork toEntity(LogWorkDto logWorkDto) {
         User user = new User();
+        Estimation estimation = new Estimation();
         if (logWorkDto == null) {
             return null;
         } else
             user.setId(logWorkDto.getUserId());
+        estimation.setId(logWorkDto.getEstimationId());
         return new LogWork(
                 logWorkDto.getId(),
                 logWorkDto.getDescription(),
                 logWorkDto.getLogged(),
                 user,
-                logWorkDto.getEstimationId(),
+                estimation,
                 logWorkDto.getLastUpdate());
     }
 

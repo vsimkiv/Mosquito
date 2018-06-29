@@ -29,7 +29,7 @@ public class LogWorkTransformerTest {
         specializationDto1.setTitle("QC");
         Set<SpecializationDto> specializationDtos = new HashSet<>();
         specializationDtos.add(specializationDto1);
-        UserDto userDto = UserDto.newBuilder().email("test_email").password("test_passpword").
+        UserDto userDto = UserDto.builder().email("test_email").password("test_passpword").
                 firstName("test_name").lastName("test_surname").
                 specializations(specializationDtos).build();
         logWorkDto.setUserId(userDto.getId());
@@ -72,7 +72,7 @@ public class LogWorkTransformerTest {
         specializationDto1.setTitle("QC");
         Set<SpecializationDto> specializationDtos = new HashSet<>();
         specializationDtos.add(specializationDto1);
-        UserDto userDto = UserDto.newBuilder().email("test_email").password("test_passpword").
+        UserDto userDto = UserDto.builder().email("test_email").password("test_passpword").
                 firstName("test_name").lastName("test_surname").
                 specializations(specializationDtos).build();
         logWorkDto1.setUserId(userDto.getId());

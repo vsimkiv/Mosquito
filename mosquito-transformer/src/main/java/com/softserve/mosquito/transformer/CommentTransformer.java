@@ -15,32 +15,32 @@ public class CommentTransformer {
     }
 
     public static Comment toEntity(CommentDto commentDto) {
-        if(commentDto==null){
-            return  null;
-        }else
-        return new Comment(
-                commentDto.getId(),
-                commentDto.getText(),
-                new Task(commentDto.getTaskId()),
-                new User(commentDto.getAuthorId()),
-                commentDto.getLastUpdate());
+        if (commentDto == null) {
+            return null;
+        } else
+            return new Comment(
+                    commentDto.getId(),
+                    commentDto.getText(),
+                    User.builder().id(commentDto.getAuthorId()).build(),
+                    Task.builder().id(commentDto.getTaskId()).build(),
+                    commentDto.getLastUpdate());
     }
 
     public static CommentDto toDTO(Comment comment) {
-        if(comment==null) {
+        if (comment == null) {
             return null;
-        }else
-        return new CommentDto(
-                comment.getId(),
-                comment.getText(),
-                comment.getTask().getId(),
-                comment.getAuthor().getId(),
-                comment.getLastUpdate());
+        } else
+            return new CommentDto(
+                    comment.getId(),
+                    comment.getText(),
+                    comment.getTask().getId(),
+                    comment.getAuthor().getId(),
+                    comment.getLastUpdate());
     }
 
-    public static List<CommentDto> toDTOList(List<Comment> comments){
+    public static List<CommentDto> toDTOList(List<Comment> comments) {
         List<CommentDto> commentDtos = new ArrayList<>();
-        for (Comment comment : comments){
+        for (Comment comment : comments) {
             commentDtos.add(new CommentDto(
                     comment.getId(),
                     comment.getText(),

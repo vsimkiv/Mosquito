@@ -16,14 +16,14 @@ public class UserTransformer {
         if (userDto == null)
             return null;
         else {
-            User user = new User(
-                    userDto.getEmail(),
-                    userDto.getPassword(),
-                    userDto.getFirstName(),
-                    userDto.getLastName(),
-                    SpecializationTransformer.toEntityList(userDto.getSpecializations()));
-            user.setId(userDto.getId());
-            return user;
+            return User.builder()
+                    .id(userDto.getId())
+                    .email(userDto.getEmail())
+                    .password(userDto.getPassword())
+                    .firstName(userDto.getFirstName())
+                    .lastName(userDto.getLastName())
+                    .specializations(SpecializationTransformer.toEntityList(userDto.getSpecializations()))
+                    .build();
         }
     }
 

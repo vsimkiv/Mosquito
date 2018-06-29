@@ -29,7 +29,7 @@ public class CommentTransformerTest {
         Set<SpecializationDto> specializationDtos = new HashSet<>();
         specializationDtos.add(specializationDto1);
         specializationDtos.add(specializationDto2);
-        UserDto userDto = UserDto.newBuilder().email("test_email").password("test_passpword").
+        UserDto userDto = UserDto.builder().email("test_email").password("test_passpword").
                 firstName("test_name").lastName("test_surname").
                 specializations(specializationDtos).build();
         PriorityDto priorityDto = new PriorityDto();

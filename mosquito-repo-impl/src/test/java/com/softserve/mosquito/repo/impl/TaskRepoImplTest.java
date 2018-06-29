@@ -66,8 +66,10 @@ public class TaskRepoImplTest {
 
     @Test
     public void specialRead() {
-        User user1 = userRepo.create(new User("email1", "name1", "surname1", "password1"));
-        User user2 = userRepo.create(new User("email1", "name1", "surname1", "password1"));
+        User user1 = userRepo.create(User.builder().email("email1").password("password1")
+                .firstName("name1").lastName("surname1").build());
+        User user2 = userRepo.create(User.builder().email("email2").password("password2")
+                .firstName("name2").lastName("surname2").build());
         Task task = Task.builder().name("Test project").worker(user1).owner(user1).build();
         task = taskRepo.create(task);
         for (int i = 0; i < 5; i++) {

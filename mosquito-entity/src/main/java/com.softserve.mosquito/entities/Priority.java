@@ -1,10 +1,16 @@
 package com.softserve.mosquito.entities;
 
+import lombok.*;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@RequiredArgsConstructor
 @Entity
 @Table(name = "priorities")
 public final class Priority implements Serializable {
@@ -12,57 +18,16 @@ public final class Priority implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
+    @NonNull
     private String title;
 
     @OneToMany(mappedBy = "priority", fetch = FetchType.LAZY)
     private List<Task> tasks = new ArrayList<>();
 
-    public Priority() {
-    }
-
-    public Priority(Long id) {
-        this.id = id;
-    }
-
-    public Priority(String title) {
-        this.title = title;
-    }
 
     public Priority(Long id, String title) {
         this.id = id;
         this.title = title;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    @Override
-    public String toString() {
-        return "Priority{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                '}';
-    }
-
-    public List<Task> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
     }
 }
 
