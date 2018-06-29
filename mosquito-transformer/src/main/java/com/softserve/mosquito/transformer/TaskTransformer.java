@@ -14,6 +14,9 @@ public class TaskTransformer {
 
     //parentTask, comments, and childTasks will set on service-impl module
     public static Task toEntity(TaskFullDto taskFullDto) {
+        if(taskFullDto==null){
+            return  null;
+        }else
         return Task.builder()
                 .id(taskFullDto.getId())
                 .name(taskFullDto.getName())
@@ -27,9 +30,12 @@ public class TaskTransformer {
 
     //parentTask, estimation, comments, and childTasks will set on service-impl module
     public static TaskFullDto toFullDTO(Task task) {
+        if(task==null){
+            return  null;
+        }else
         return new TaskFullDto().builder()
                 //TODO make it available!!!
-//                .id(task.getId())
+                .id(task.getId())
                 .name(task.getName())
                 .ownerDto(UserTransformer.toDTO(task.getOwner()))
                 .workerDto(UserTransformer.toDTO(task.getOwner()))
@@ -39,6 +45,9 @@ public class TaskTransformer {
     }
 
     public static TaskSimpleDto toSimpleDto(Task task) {
+        if(task==null){
+            return  null;
+        }else
         return new TaskSimpleDto(
                 task.getId(),
                 task.getName(),
