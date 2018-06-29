@@ -3,7 +3,6 @@ package com.softserve.mosquito.services.impl;
 import com.softserve.mosquito.dtos.TaskFullDto;
 import com.softserve.mosquito.dtos.TaskSimpleDto;
 import com.softserve.mosquito.dtos.UserDto;
-import com.softserve.mosquito.entities.Comment;
 import com.softserve.mosquito.entities.Estimation;
 import com.softserve.mosquito.entities.Task;
 import com.softserve.mosquito.repo.api.TaskRepo;
@@ -42,9 +41,10 @@ public class TaskServiceImpl implements TaskService {
                 "You was assigned for this task" + taskFullDto.getName(),
                 "Mosquito Task Manager")) {*/
         Task task = taskRepo.create(TaskTransformer.toEntity(taskFullDto));
-        return taskFullDto;
-        /*}
-        return null;*/
+        if (task == null)
+            return null;
+        return toFullDTO(task);
+        //}
     }
 
     @Transactional
@@ -94,7 +94,6 @@ public class TaskServiceImpl implements TaskService {
     public List<TaskFullDto> getAllProjects() {
         return TaskTransformer.toDTOList(taskRepo.getAllProjects());
     }
-
 
     @Transactional
     @Override
