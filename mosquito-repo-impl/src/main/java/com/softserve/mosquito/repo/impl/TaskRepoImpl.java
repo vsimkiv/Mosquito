@@ -91,8 +91,8 @@ public class TaskRepoImpl implements TaskRepo {
         Session session = null;
         try {
             session = sessionFactory.openSession();
-            Query query = session.createQuery("FROM " + Task.class.getName() +
-                    " t JOIN t.parentTask p WHERE p.id = :parentId ");
+            Query<Task> query = session.createQuery("select t FROM " + Task.class.getName() +
+                    " t JOIN t.parentTask p WHERE p.id = :parentId ", Task.class);
             query.setParameter("parentId", id);
             return query.list();
         } catch (HibernateException e) {

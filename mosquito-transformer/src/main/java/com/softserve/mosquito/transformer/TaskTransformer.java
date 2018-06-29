@@ -38,7 +38,7 @@ public class TaskTransformer {
                 .build();
     }
 
-    public static TaskSimpleDto toSimpleDto(Task task){
+    public static TaskSimpleDto toSimpleDto(Task task) {
         return new TaskSimpleDto(
                 task.getId(),
                 task.getName(),
@@ -61,9 +61,10 @@ public class TaskTransformer {
 
     public static List<TaskFullDto> toDTOList(List<Task> tasks) {
         List<TaskFullDto> taskFullDtoList = new ArrayList<>();
-        for (Task task : tasks) {
-            taskFullDtoList.add(toFullDTO(task));
-        }
+        if (tasks != null && !tasks.isEmpty())
+            for (Task task : tasks) {
+                taskFullDtoList.add(toFullDTO(task));
+            }
         return taskFullDtoList;
     }
 }

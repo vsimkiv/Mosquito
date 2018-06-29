@@ -82,6 +82,7 @@ public class TaskRepoImplTest {
         List<Task> subTasks = taskRepo.getSubTasks(1L);
         assertNotNull(subTasks);
         assertEquals(5, subTasks.size());
+        assertTrue(subTasks.iterator().next() instanceof Task);
 
         List<Task> projects = taskRepo.getAllProjects();
         assertNotNull(projects);
