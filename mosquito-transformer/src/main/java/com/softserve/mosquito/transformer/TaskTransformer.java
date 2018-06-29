@@ -14,49 +14,48 @@ public class TaskTransformer {
 
     //parentTask, comments, and childTasks will set on service-impl module
     public static Task toEntity(TaskFullDto taskFullDto) {
-        if(taskFullDto==null){
-            return  null;
-        }else
-        return Task.builder()
-                .id(taskFullDto.getId())
-                .name(taskFullDto.getName())
-                .owner(UserTransformer.toEntity(taskFullDto.getOwnerDto()))
-                .worker(UserTransformer.toEntity(taskFullDto.getWorkerDto()))
-                .estimation(EstimationTransformer.toEntity(taskFullDto.getEstimationDto()))
-                .priority(PriorityTransformer.toEntity(taskFullDto.getPriorityDto()))
-                .status(StatusTransformer.toEntity(taskFullDto.getStatusDto()))
-                .build();
+        if (taskFullDto == null) {
+            return null;
+        } else
+            return Task.builder()
+                    .id(taskFullDto.getId())
+                    .name(taskFullDto.getName())
+                    .owner(UserTransformer.toEntity(taskFullDto.getOwnerDto()))
+                    .worker(UserTransformer.toEntity(taskFullDto.getWorkerDto()))
+                    .estimation(EstimationTransformer.toEntity(taskFullDto.getEstimationDto()))
+                    .priority(PriorityTransformer.toEntity(taskFullDto.getPriorityDto()))
+                    .status(StatusTransformer.toEntity(taskFullDto.getStatusDto()))
+                    .build();
     }
 
     //parentTask, estimation, comments, and childTasks will set on service-impl module
     public static TaskFullDto toFullDTO(Task task) {
-        if(task==null){
-            return  null;
-        }else
-        return new TaskFullDto().builder()
-                //TODO make it available!!!
-                .id(task.getId())
-                .name(task.getName())
-                .ownerDto(UserTransformer.toDTO(task.getOwner()))
-                .workerDto(UserTransformer.toDTO(task.getOwner()))
-                .priorityDto(PriorityTransformer.toDTO(task.getPriority()))
-                .statusDto(StatusTransformer.toDTO(task.getStatus()))
-                .build();
+        if (task == null) {
+            return null;
+        } else
+            return TaskFullDto.builder()
+                    .id(task.getId())
+                    .name(task.getName())
+                    .ownerDto(UserTransformer.toDTO(task.getOwner()))
+                    .workerDto(UserTransformer.toDTO(task.getOwner()))
+                    .priorityDto(PriorityTransformer.toDTO(task.getPriority()))
+                    .statusDto(StatusTransformer.toDTO(task.getStatus()))
+                    .build();
     }
 
     public static TaskSimpleDto toSimpleDto(Task task) {
-        if(task==null){
-            return  null;
-        }else
-        return new TaskSimpleDto(
-                task.getId(),
-                task.getName(),
-                task.getParentTask() != null ? task.getParentTask().getName() : null,
-                task.getOwner().getId().toString(),
-                task.getWorker().getId().toString(),
-                task.getEstimation().getTimeEstimation().toString(),
-                task.getPriority().getTitle(),
-                task.getStatus().getTitle());
+        if (task == null) {
+            return null;
+        } else
+            return new TaskSimpleDto(
+                    task.getId(),
+                    task.getName(),
+                    task.getParentTask() != null ? task.getParentTask().getName() : null,
+                    task.getOwner().getId().toString(),
+                    task.getWorker().getId().toString(),
+                    task.getEstimation().getTimeEstimation().toString(),
+                    task.getPriority().getTitle(),
+                    task.getStatus().getTitle());
     }
 
 
