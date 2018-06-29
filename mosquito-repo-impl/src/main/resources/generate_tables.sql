@@ -74,9 +74,9 @@ CREATE UNIQUE INDEX `title_UNIQUE` ON `sql7234875`.`statuses` (`title` ASC);
 
 
 -- -----------------------------------------------------
--- Table `sql7234875`.`tasks`
+-- Table `sql7234875`.`taskMongos`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sql7234875`.`tasks` (
+CREATE TABLE IF NOT EXISTS `sql7234875`.`taskMongos` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(100) NOT NULL,
   `parent_id` BIGINT(20) NULL DEFAULT NULL,
@@ -113,24 +113,24 @@ CREATE TABLE IF NOT EXISTS `sql7234875`.`tasks` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_tasks_tasks1`
     FOREIGN KEY (`parent_id`)
-    REFERENCES `sql7234875`.`tasks` (`id`)
+    REFERENCES `sql7234875`.`taskMongos` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
 AUTO_INCREMENT = 27
 DEFAULT CHARACTER SET = utf8;
 
-CREATE INDEX `fk_tasks_estimations1_idx` ON `sql7234875`.`tasks` (`estimation_id` ASC);
+CREATE INDEX `fk_tasks_estimations1_idx` ON `sql7234875`.`taskMongos` (`estimation_id` ASC);
 
-CREATE INDEX `fk_tasks_priorities1_idx` ON `sql7234875`.`tasks` (`priority_id` ASC);
+CREATE INDEX `fk_tasks_priorities1_idx` ON `sql7234875`.`taskMongos` (`priority_id` ASC);
 
-CREATE INDEX `fk_tasks_statuses1_idx` ON `sql7234875`.`tasks` (`status_id` ASC);
+CREATE INDEX `fk_tasks_statuses1_idx` ON `sql7234875`.`taskMongos` (`status_id` ASC);
 
-CREATE INDEX `fk_tasks_tasks1_idx` ON `sql7234875`.`tasks` (`parent_id` ASC);
+CREATE INDEX `fk_tasks_tasks1_idx` ON `sql7234875`.`taskMongos` (`parent_id` ASC);
 
-CREATE INDEX `fk_tasks_users1_idx` ON `sql7234875`.`tasks` (`owner_id` ASC);
+CREATE INDEX `fk_tasks_users1_idx` ON `sql7234875`.`taskMongos` (`owner_id` ASC);
 
-CREATE INDEX `fk_tasks_users2_idx` ON `sql7234875`.`tasks` (`worker_id` ASC);
+CREATE INDEX `fk_tasks_users2_idx` ON `sql7234875`.`taskMongos` (`worker_id` ASC);
 
 
 -- -----------------------------------------------------
@@ -150,7 +150,7 @@ CREATE TABLE IF NOT EXISTS `sql7234875`.`comments` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_comments_tasks1`
     FOREIGN KEY (`task_id`)
-    REFERENCES `sql7234875`.`tasks` (`id`)
+    REFERENCES `sql7234875`.`taskMongos` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB

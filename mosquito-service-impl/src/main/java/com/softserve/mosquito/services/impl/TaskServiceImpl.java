@@ -39,7 +39,7 @@ public class TaskServiceImpl implements TaskService {
         //TODO messaging exception "Could not convert socket to TLS..."
         /*if (isMessageSent(taskFullDto.getWorkerDto(),
                 "You was assigned for this task" + taskFullDto.getName(),
-                "Mosquito Task Manager")) {*/
+                "Mosquito TaskMongo Manager")) {*/
         Task task = taskRepo.create(TaskTransformer.toEntity(taskFullDto));
         if (task == null)
             return null;

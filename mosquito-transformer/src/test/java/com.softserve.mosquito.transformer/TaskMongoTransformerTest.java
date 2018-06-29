@@ -12,7 +12,7 @@ import java.util.Set;
 
 import static org.junit.Assert.*;
 
-public class TaskTransformerTest {
+public class TaskMongoTransformerTest {
 
     @Test
     public void toEntity() {
@@ -57,7 +57,7 @@ public class TaskTransformerTest {
         user.setConfirmed(true);
         Priority priority = new Priority("middle");
         Status status = new Status("TODO");
-        Task task = Task.builder().parentTask(null).childTasks(null).name("Test Task").
+        Task task = Task.builder().parentTask(null).childTasks(null).name("Test TaskMongo").
                 comments(comments).estimation(estimation).owner(user).priority(priority).
                 status(status).worker(user).build();
         TaskFullDto taskFullDto = TaskTransformer.toFullDTO(task);
@@ -88,7 +88,7 @@ public class TaskTransformerTest {
         task.setChildTasks(null);
         task.setComments(comments);
         task.setEstimation(estimation);
-        task.setName("Test Task");
+        task.setName("Test TaskMongo");
         task.setOwner(user);
         task.setPriority(priority);
         task.setStatus(status);
@@ -144,7 +144,7 @@ public class TaskTransformerTest {
         user.setConfirmed(true);
         Priority priority = new Priority("middle");
         Status status = new Status("TODO");
-        Task task = Task.builder().parentTask(null).childTasks(null).name("Test Task").
+        Task task = Task.builder().parentTask(null).childTasks(null).name("Test TaskMongo").
                 comments(comments).estimation(estimation).owner(user).priority(priority).
                 status(status).worker(user).build();
         List<Task> tasks = new ArrayList<>();

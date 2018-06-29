@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestRepoConfig.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class TaskRepoImplTest {
+public class TaskMongoRepoImplTest {
 
     @Autowired
     TaskRepoImpl taskRepo;

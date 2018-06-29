@@ -1,9 +1,10 @@
 package com.softserve.mosquito.services.impl;
 
-import com.softserve.mosquito.entities.mongo.Task;
+import com.softserve.mosquito.entities.mongo.TaskMongo;
 import com.softserve.mosquito.entities.mongo.TasksBoard;
 import com.softserve.mosquito.repo.api.TasksBoardRepo;
 import com.softserve.mosquito.services.api.TasksBoardService;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,27 +15,29 @@ import java.util.List;
 public class TasksBoardServiceImpl implements TasksBoardService {
 
     private TasksBoardRepo tasksBoardRepo;
+    private SessionFactory sessionFactory;
 
     @Autowired
-    public TasksBoardServiceImpl(TasksBoardRepo tasksBoardRepo) {
+    public TasksBoardServiceImpl(TasksBoardRepo tasksBoardRepo, SessionFactory sessionFactory) {
         this.tasksBoardRepo = tasksBoardRepo;
+        this.sessionFactory = sessionFactory;
     }
 
     @Override
-    public List<Task> getUserWork(Long userId) {
+    public List<TaskMongo> getUserWork(Long userId) {
         TasksBoard tasksBoard = tasksBoardRepo.findByUserId(userId);
-        return tasksBoard.getTasks();
+        return tasksBoard.getTaskMongos();
     }
 
     @Override
-    public void update(Task task, Long userId) {
+    public void update(TaskMongo taskMongo, Long userId) {
         TasksBoard tasksBoard = tasksBoardRepo.findByUserId(userId);
-        if(tasksBoard != null) {
-            List<Task> tasks = tasksBoard.getTasks();
-            for (Task taskTmp : tasks) {
-                if(taskTmp.getTaskId().equals(task.getTaskId())) {
-                    taskTmp.setTaskName(task.getTaskName());
-                    tasksBoard.setTasks(tasks);
+        if (tasksBoard != null) {
+            List<TaskMongo> taskMongos = tasksBoard.getTaskMongos();
+            for (TaskMongo taskMongoTmp : taskMongos) {
+                if (taskMongoTmp.getTaskId().equals(taskMongo.getTaskId())) {
+                    taskMongoTmp.setTaskName(taskMongo.getTaskName());
+                    tasksBoard.setTaskMongos(taskMongos);
                     break;
                 }
             }
@@ -43,22 +46,21 @@ public class TasksBoardServiceImpl implements TasksBoardService {
     }
 
     @Override
-    public void add(Task task, Long userId) {
+    public void add(TaskMongo taskMongo, Long userId) {
         TasksBoard tasksBoard = tasksBoardRepo.findByUserId(userId);
-        if(tasksBoard != null) {
-            tasksBoard.getTasks().add(task);
-        }
-        else {
-            tasksBoard = new TasksBoard(userId, Arrays.asList(task));
+        if (tasksBoard != null) {
+            tasksBoard.getTaskMongos().add(taskMongo);
+        } else {
+            tasksBoard = new TasksBoard(userId, Arrays.asList(taskMongo));
         }
         tasksBoardRepo.save(tasksBoard);
     }
 
     @Override
-    public void delete(Task task, Long userId) {
+    public void delete(TaskMongo taskMongo, Long userId) {
         TasksBoard tasksBoard = tasksBoardRepo.findByUserId(userId);
-        if(tasksBoard != null) {
-            tasksBoard.getTasks().removeIf(taskTmp -> taskTmp.getTaskId().equals(task.getTaskId()));
+        if (tasksBoard != null) {
+            tasksBoard.getTaskMongos().removeIf(taskMongoTmp -> taskMongoTmp.getTaskId().equals(taskMongo.getTaskId()));
             tasksBoardRepo.save(tasksBoard);
         }
     }

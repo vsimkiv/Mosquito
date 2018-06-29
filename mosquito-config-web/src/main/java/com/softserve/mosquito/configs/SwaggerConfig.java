@@ -39,7 +39,7 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("Mosquito")
-                .description("Task management tools which we are developing for learning Java languages and practise with it.")
+                .description("TaskMongo management tools which we are developing for learning Java languages and practise with it.")
                 .version("Demo 3")
                 .license("Our team`s account on GitHub")
                 .licenseUrl("https://github.com/IF-086-Java")

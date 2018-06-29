@@ -1,18 +1,18 @@
 package com.softserve.mosquito.entities.mongo;
 
-public class Task {
+public class TaskMongo {
 
     private Long taskId;
     private String taskName;
 
-    public Task() {}
+    public TaskMongo() {}
 
-    public Task(Long taskId, String taskName) {
+    public TaskMongo(Long taskId, String taskName) {
         this.taskId = taskId;
         this.taskName = taskName;
     }
 
-    public Task(com.softserve.mosquito.entities.Task task) {
+    public TaskMongo(com.softserve.mosquito.entities.Task task) {
         this.taskId = task.getId();
         this.taskName = task.getName();
     }
