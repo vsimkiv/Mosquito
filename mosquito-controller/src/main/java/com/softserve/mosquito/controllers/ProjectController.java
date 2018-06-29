@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/projects")
+@RequestMapping(path = "/api/projects")
 @Api(value = "Project controller", description = "Controller for doing CRUD operation with project")public class ProjectController {
     private TaskService taskService;
 

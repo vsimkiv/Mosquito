@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/tasks")
+@RequestMapping(path = "/api/tasks")
 @Api(value = "Task controller", description = "Controller for doing CRUD operation with task")
 public class TaskController {
 

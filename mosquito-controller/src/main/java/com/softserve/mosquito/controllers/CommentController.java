@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequestMapping("/comment")
+@RequestMapping("/api/comment")
 @Api(value = "Comment controller", description = "Controller for doing CRUD operation with comment")
 public class CommentController {
 

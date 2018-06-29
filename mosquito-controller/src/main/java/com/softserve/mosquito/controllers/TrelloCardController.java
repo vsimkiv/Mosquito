@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/trello")
+@RequestMapping("/api/trello")
 @Api(value = "Trello controller", description = "Controller for working with trello api")public class TrelloCardController {
 
     private TrelloCardService trelloCardService;

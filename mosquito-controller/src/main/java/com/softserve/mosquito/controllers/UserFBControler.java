@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/social/facebook")
+@RequestMapping("/api/social/facebook")
 @Api(value = "User FB controller", description = "Controller for authorization using facebook")
 public class UserFBControler {
     private static final String MY_APP_ACCESS_TOKEN="178289142884993|v56UAfXm1bqnU3Zro-KbwHAFYqw";

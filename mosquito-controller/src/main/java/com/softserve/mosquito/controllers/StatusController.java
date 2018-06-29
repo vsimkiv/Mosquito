@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path="/statuses")
+@RequestMapping(path="/api/statuses")
 @Api(value = "status controller", description = "Controller for doing CRUD operation with status")public class StatusController {
     private StatusService statusService;
 

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/specializations")
+@RequestMapping("/api/specializations")
 @Api(value = "Specialization controller", description = "Controller for doing CRUD operation with specialization")
 public class SpecializationController {
     private SpecializationService specializationService;

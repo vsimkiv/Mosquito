@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/log-work")
+@RequestMapping("/api/log-work")
 @Api(value = "Log work controller", description = "Controller for doing CRUD operation with log work")public class LogWorkController {
 
     private LogWorkService logWorkService;

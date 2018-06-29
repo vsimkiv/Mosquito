@@ -23,12 +23,13 @@ import java.util.List;
 @EnableSwagger2
 public class SwaggerConfig {
     private static final String HEADER_NAME = "Authorization";
+    private static final String SECURE_URL = "/api/**";
 
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.any())
+                .apis(RequestHandlerSelectors.basePackage("com.softserve.mosquito.controllers"))
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiInfo())
@@ -53,7 +54,7 @@ public class SwaggerConfig {
     private SecurityContext securityContext() {
         return SecurityContext.builder()
                 .securityReferences(defaultAuth())
-                .forPaths(PathSelectors.any())
+                .forPaths(PathSelectors.ant(SECURE_URL))
                 .build();
     }
 
@@ -61,7 +62,7 @@ public class SwaggerConfig {
         AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
-        return Lists.newArrayList(new SecurityReference("token", authorizationScopes));
+        return Lists.newArrayList(new SecurityReference(HEADER_NAME, authorizationScopes));
     }
 
     @Bean
