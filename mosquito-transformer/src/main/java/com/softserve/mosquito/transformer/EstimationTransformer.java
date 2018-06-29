@@ -5,7 +5,10 @@ import com.softserve.mosquito.entities.Estimation;
 import com.softserve.mosquito.entities.Task;
 
 public class EstimationTransformer  {
-    private EstimationTransformer() {}
+
+    private EstimationTransformer() {
+        throw new IllegalStateException("Utility class");
+    }
 
     public static Estimation toEntity(EstimationDto estimationDto) {
         if (estimationDto==null) return null;

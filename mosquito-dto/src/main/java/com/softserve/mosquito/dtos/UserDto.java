@@ -24,6 +24,7 @@ public class UserDto {
     private String lastName;
 
     @Size(min = 8, message = "user.password.pattern")
+    @Setter
     private String password;
 
     @NotBlank

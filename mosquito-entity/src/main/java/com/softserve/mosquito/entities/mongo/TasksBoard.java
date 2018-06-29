@@ -12,13 +12,13 @@ public class TasksBoard {
     @Id
     private String id;
     private Long userId;
-    private List<Task> tasks = new ArrayList<>();
+    private List<TaskMongo> taskMongos = new ArrayList<>();
 
     public TasksBoard() { }
 
-    public TasksBoard(Long userId, List<Task> tasks) {
+    public TasksBoard(Long userId, List<TaskMongo> taskMongos) {
         this.userId = userId;
-        this.tasks = tasks;
+        this.taskMongos = taskMongos;
     }
 
     public String getId() {
@@ -37,11 +37,11 @@ public class TasksBoard {
         this.userId = userId;
     }
 
-    public List<Task> getTasks() {
-        return tasks;
+    public List<TaskMongo> getTaskMongos() {
+        return taskMongos;
     }
 
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
+    public void setTaskMongos(List<TaskMongo> taskMongos) {
+        this.taskMongos = taskMongos;
     }
 }

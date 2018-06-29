@@ -27,7 +27,7 @@ public class TaskTransformerTest {
         specializationDto1.setTitle("QC");
         Set<SpecializationDto> specializationDtos = new HashSet<>();
         specializationDtos.add(specializationDto1);
-        UserDto userDto = UserDto.newBuilder().email("test_email").password("test_passpword").
+        UserDto userDto = UserDto.builder().email("test_email").password("test_passpword").
                 firstName("test_name").lastName("test_surname").
                 specializations(specializationDtos).build();
         TaskFullDto taskFullDto = TaskFullDto.builder().ownerDto(userDto).parentTaskDto(null).
@@ -112,7 +112,7 @@ public class TaskTransformerTest {
         specializationDto1.setTitle("QC");
         Set<SpecializationDto> specializationDtos = new HashSet<>();
         specializationDtos.add(specializationDto1);
-        UserDto userDto = UserDto.newBuilder().email("test_email").password("test_passpword").
+        UserDto userDto = UserDto.builder().email("test_email").password("test_passpword").
                 firstName("test_name").lastName("test_surname").
                 specializations(specializationDtos).build();
         TaskFullDto taskFullDto = TaskFullDto.builder().ownerDto(userDto).parentTaskDto(null).

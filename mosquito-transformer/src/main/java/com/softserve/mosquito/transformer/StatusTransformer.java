@@ -6,6 +6,7 @@ import com.softserve.mosquito.entities.Status;
 public class StatusTransformer {
 
     private StatusTransformer() {
+        throw new IllegalStateException("Utility class");
     }
 
     public static Status toEntity(StatusDto statusDto) {

@@ -62,7 +62,7 @@ public class AuthController {
         response.setHeader("Authorization", "Bearer " + jwt);
 
         UserDto authenticatedUser = userService.getByEmail(loginRequest.getEmail());
-        return ResponseEntity.ok(UserDto.newBuilder().id(authenticatedUser.getId())
+        return ResponseEntity.ok(UserDto.builder().id(authenticatedUser.getId())
                 .firstName(authenticatedUser.getFirstName())
                 .lastName(authenticatedUser.getLastName()).build());
     }

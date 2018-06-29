@@ -16,8 +16,12 @@ public class UserTransformer {
         if (userDto == null)
             return null;
         else {
-            User user = new User(userDto.getEmail(), userDto.getPassword(), userDto.getFirstName(),
-                    userDto.getLastName(), SpecializationTransformer.toEntityList(userDto.getSpecializations()));
+            User user = new User(
+                    userDto.getEmail(),
+                    userDto.getPassword(),
+                    userDto.getFirstName(),
+                    userDto.getLastName(),
+                    SpecializationTransformer.toEntityList(userDto.getSpecializations()));
             user.setId(userDto.getId());
             return user;
         }
@@ -27,14 +31,20 @@ public class UserTransformer {
         if (user == null)
             return null;
         else
-            return UserDto.builder().id(user.getId()).email(user.getEmail()).password(user.getPassword())
-                    .confirmPassword(user.getPassword()).firstName(user.getFirstName()).lastName(user.getLastName())
-                    .specializations(SpecializationTransformer.toDTOList(user.getSpecializations())).build();
+            return UserDto.builder()
+                    .id(user.getId())
+                    .email(user.getEmail())
+                    .password(user.getPassword())
+                    .confirmPassword(user.getPassword())
+                    .firstName(user.getFirstName())
+                    .lastName(user.getLastName())
+                    .specializations(SpecializationTransformer.toDTOList(user.getSpecializations()))
+                    .build();
     }
 
     public static List<User> toEntityList(List<UserDto> userDtos) {
         if (userDtos == null)
-            return null;
+            return new ArrayList<>();
         else {
             List<User> users = new ArrayList<>();
             for (UserDto item : userDtos)
@@ -45,7 +55,7 @@ public class UserTransformer {
 
     public static List<UserDto> toDtoList(List<User> users) {
         if (users == null)
-            return null;
+            return new ArrayList<>();
         else {
             List<UserDto> userDtos = new ArrayList<>();
             for (User item : users)

@@ -2,7 +2,7 @@ package com.softserve.mosquito.controllers;
 
 import com.softserve.mosquito.dtos.TaskFullDto;
 import com.softserve.mosquito.dtos.TaskSimpleDto;
-import com.softserve.mosquito.entities.mongo.Task;
+import com.softserve.mosquito.entities.mongo.TaskMongo;
 import com.softserve.mosquito.services.api.TaskService;
 import com.softserve.mosquito.services.api.TasksBoardService;
 import io.swagger.annotations.Api;
@@ -78,14 +78,7 @@ public class TaskController {
 
     @GetMapping(path = "/tasks-board")
     @ResponseStatus(HttpStatus.OK)
-    public List<Task> mongoTest(@RequestParam(name = "worker_id") Long workerId) {
-        /*tasksBoardService.add(new Task(100L, "task1"), 1L);
-        tasksBoardService.add(new Task(101L, "task2"), 1L);
-        tasksBoardService.add(new Task(102L, "task3"), 1L);
-
-        tasksBoardService.add(new Task(103L, "task4"), 2L);
-        */
-
+    public List<TaskMongo> mongoTest(@RequestParam(name = "worker_id") Long workerId) {
         return tasksBoardService.getUserWork(workerId);
     }
 }

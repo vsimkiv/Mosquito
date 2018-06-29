@@ -1,6 +1,5 @@
 package com.softserve.mosquito.transformer;
 
-
 import com.softserve.mosquito.dtos.LogWorkDto;
 import com.softserve.mosquito.entities.LogWork;
 import com.softserve.mosquito.entities.User;
@@ -18,19 +17,28 @@ public class LogWorkTransformer {
         User user = new User();
         if (logWorkDto == null) {
             return null;
-        } else {
+        } else
             user.setId(logWorkDto.getUserId());
-            return new LogWork(logWorkDto.getId(), logWorkDto.getDescription(), logWorkDto.getLogged(),
-                    user, logWorkDto.getEstimationId(), logWorkDto.getLastUpdate());
-        }
+        return new LogWork(
+                logWorkDto.getId(),
+                logWorkDto.getDescription(),
+                logWorkDto.getLogged(),
+                user,
+                logWorkDto.getEstimationId(),
+                logWorkDto.getLastUpdate());
     }
 
     public static LogWorkDto toDTO(LogWork logWork) {
         if (logWork == null) {
             return null;
         } else
-            return new LogWorkDto(logWork.getId(), logWork.getDescription(), logWork.getAuthor().getId(),
-                    logWork.getLogged(), logWork.getLastUpdate(), logWork.getEstimation().getId());
+            return new LogWorkDto(
+                    logWork.getId(),
+                    logWork.getDescription(),
+                    logWork.getAuthor().getId(),
+                    logWork.getLogged(),
+                    logWork.getLastUpdate(),
+                    logWork.getEstimation().getId());
     }
 
 
@@ -53,6 +61,5 @@ public class LogWorkTransformer {
         }
         return logWorkDtos;
     }
-
 }
 
