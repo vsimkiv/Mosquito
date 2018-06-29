@@ -85,6 +85,12 @@ public class TaskServiceImpl implements TaskService {
 
     @Transactional
     @Override
+    public TaskFullDto getParent(Long parentId) {
+        return toFullDTO(taskRepo.read(parentId));
+    }
+
+    @Transactional
+    @Override
     public List<TaskFullDto> getSubTasks(Long id) {
         return TaskTransformer.toDTOList(taskRepo.getSubTasks(id));
     }
@@ -101,11 +107,6 @@ public class TaskServiceImpl implements TaskService {
         return TaskTransformer.toDTOList(taskRepo.getProjectsByOwner(ownerId));
     }
 
-    @Transactional
-    @Override
-    public TaskFullDto getParent(Long parentId) {
-        return toFullDTO(taskRepo.read(parentId));
-    }
 
     @Transactional
     @Override

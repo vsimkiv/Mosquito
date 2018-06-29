@@ -10,9 +10,10 @@ import java.util.List;
 public class TaskTransformer {
 
     private TaskTransformer() {
+        throw new IllegalStateException("Utility class");
     }
 
-    //parentTask, comments, and childTasks will set on service-impl module
+    //parentTask, estimation, comments, and childTasks will set on service-impl module
     public static Task toEntity(TaskFullDto taskFullDto) {
         if (taskFullDto == null) {
             return null;

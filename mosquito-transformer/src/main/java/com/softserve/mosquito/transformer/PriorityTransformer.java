@@ -9,6 +9,7 @@ import java.util.List;
 public class PriorityTransformer {
 
     private PriorityTransformer() {
+        throw new IllegalStateException("Utility class");
     }
 
     public static Priority toEntity(PriorityDto priorityDto) {
