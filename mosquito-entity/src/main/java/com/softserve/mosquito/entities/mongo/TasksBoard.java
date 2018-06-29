@@ -17,5 +17,5 @@ public class TasksBoard {
     @Id
     private String id;
     @NonNull private Long userId;
-    @NonNull private List<TaskMongo> taskMongos = new ArrayList<>();
+    @NonNull private List<TaskMongo> taskMongos;
 }
