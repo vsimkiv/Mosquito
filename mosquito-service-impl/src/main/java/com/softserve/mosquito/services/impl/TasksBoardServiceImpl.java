@@ -4,7 +4,6 @@ import com.softserve.mosquito.entities.mongo.TaskMongo;
 import com.softserve.mosquito.entities.mongo.TasksBoard;
 import com.softserve.mosquito.repo.api.TasksBoardRepo;
 import com.softserve.mosquito.services.api.TasksBoardService;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,12 +14,10 @@ import java.util.List;
 public class TasksBoardServiceImpl implements TasksBoardService {
 
     private TasksBoardRepo tasksBoardRepo;
-    private SessionFactory sessionFactory;
 
     @Autowired
-    public TasksBoardServiceImpl(TasksBoardRepo tasksBoardRepo, SessionFactory sessionFactory) {
+    public TasksBoardServiceImpl(TasksBoardRepo tasksBoardRepo) {
         this.tasksBoardRepo = tasksBoardRepo;
-        this.sessionFactory = sessionFactory;
     }
 
     @Override

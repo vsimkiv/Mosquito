@@ -56,6 +56,7 @@
             <artifactId>jjwt</artifactId>
             <version>0.9.0</version>
         </dependency>
+    <!--facebook-->
         <dependency>
             <groupId>com.restfb</groupId>
             <artifactId>restfb</artifactId>

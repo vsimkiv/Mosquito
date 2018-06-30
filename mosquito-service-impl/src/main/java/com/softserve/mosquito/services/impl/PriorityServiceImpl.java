@@ -8,7 +8,7 @@ import com.softserve.mosquito.transformer.PriorityTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -26,7 +26,7 @@ public class PriorityServiceImpl implements PriorityService {
         List<Priority> priorities = priorityRepo.getAll();
 
         if(priorities == null || priorities.isEmpty()){
-            return null;
+            return Collections.emptyList();
         }
 
         return PriorityTransformer.toDTOList(priorities);

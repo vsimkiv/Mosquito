@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -83,7 +84,7 @@ public class StatusServiceImpl implements StatusService {
     public List<StatusDto> getAll(){
         List<Status> statuses = statusRepo.getAll();
         if(statuses == null || statuses.isEmpty()){
-            return null;
+            return Collections.emptyList();
         }
         List<StatusDto> statusDtos = new ArrayList<>();
 

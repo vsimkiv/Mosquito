@@ -1,13 +1,15 @@
 package com.softserve.mosquito.dtos;
 
-import lombok.Builder;
-import lombok.Singular;
-
-import java.util.List;
+import lombok.*;
 
 @Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class TaskMiddleDto {
-    @Builder.Default private Long id;
+    @Builder.Default
+    private Long id;
     private String name;
 
     private Long parentId;
@@ -18,8 +20,5 @@ public class TaskMiddleDto {
     private Long estimationId;
     private Long priorityId;
     private Long statusId;
-    private Long trelloId;
-
-    @Singular("comments") private List<Long> commentIdList;
-    @Singular("subtasks") private List<Long> subtasksIdList;
+    private String trelloId;
 }
