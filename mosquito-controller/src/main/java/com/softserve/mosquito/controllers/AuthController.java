@@ -64,7 +64,8 @@ public class AuthController {
         UserDto authenticatedUser = userService.getByEmail(loginRequest.getEmail());
         return ResponseEntity.ok(UserDto.builder().id(authenticatedUser.getId())
                 .firstName(authenticatedUser.getFirstName())
-                .lastName(authenticatedUser.getLastName()).build());
+                .lastName(authenticatedUser.getLastName())
+                .build());
     }
 
 
