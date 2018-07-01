@@ -53,4 +53,5 @@ public class Task implements Serializable {
 
     @OneToMany(mappedBy = "parentTask", targetEntity = Task.class, fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Task> childTasks = new ArrayList<>();
+
 }

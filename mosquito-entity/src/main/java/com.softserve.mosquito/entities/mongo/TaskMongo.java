@@ -1,18 +1,18 @@
 package com.softserve.mosquito.entities.mongo;
 
-import com.softserve.mosquito.entities.Task;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class TaskMongo {
     private Long taskId;
     private String taskName;
 
-    public TaskMongo(Task task) {
-        this.taskId = task.getId();
-        this.taskName = task.getName();
+    public TaskMongo(Long taskId, String taskName) {
+        this.taskId = taskId;
+        this.taskName = taskName;
     }
 }

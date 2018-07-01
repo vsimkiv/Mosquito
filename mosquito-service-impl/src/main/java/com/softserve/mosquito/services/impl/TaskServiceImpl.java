@@ -5,8 +5,10 @@ import com.softserve.mosquito.dtos.TaskSimpleDto;
 import com.softserve.mosquito.dtos.UserDto;
 import com.softserve.mosquito.entities.Estimation;
 import com.softserve.mosquito.entities.Task;
+import com.softserve.mosquito.entities.mongo.TaskMongo;
 import com.softserve.mosquito.repo.api.TaskRepo;
 import com.softserve.mosquito.services.api.TaskService;
+import com.softserve.mosquito.services.api.TasksBoardService;
 import com.softserve.mosquito.services.mail.MailSender;
 import com.softserve.mosquito.transformer.CommentTransformer;
 import com.softserve.mosquito.transformer.EstimationTransformer;
@@ -24,11 +26,13 @@ import static com.softserve.mosquito.transformer.TaskTransformer.toSimpleDto;
 @Service
 public class TaskServiceImpl implements TaskService {
     private TaskRepo taskRepo;
+    private TasksBoardService tasksBoardService;
     private MailSender mailSender;
 
     @Autowired
-    public TaskServiceImpl(TaskRepo taskRepo, MailSender mailSender) {
+    public TaskServiceImpl(TaskRepo taskRepo, TasksBoardService tasksBoardService, MailSender mailSender) {
         this.taskRepo = taskRepo;
+        this.tasksBoardService = tasksBoardService;
         this.mailSender = mailSender;
     }
 
@@ -36,15 +40,10 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     @Override
     public TaskFullDto save(TaskFullDto taskFullDto) {
-        //TODO messaging exception "Could not convert socket to TLS..."
-        /*if (isMessageSent(taskFullDto.getWorkerDto(),
-                "You was assigned for this task" + taskFullDto.getName(),
-                "Mosquito Task Manager")) {*/
         Task task = taskRepo.create(TaskTransformer.toEntity(taskFullDto));
-        if (task == null)
-            return null;
-        return toFullDTO(task);
-        //}
+        System.out.println(task.toString());
+        tasksBoardService.add(new TaskMongo(task.getId(), task.getName()), task.getWorker().getId());
+        return task == null ? null : toFullDTO(task);
     }
 
     @Transactional
@@ -102,13 +101,13 @@ public class TaskServiceImpl implements TaskService {
 
     @Transactional
     @Override
-    public List<TaskFullDto> getByOwner(Long ownerId){
+    public List<TaskFullDto> getByOwner(Long ownerId) {
         return TaskTransformer.toDTOList(taskRepo.getByOwner(ownerId));
     }
 
     @Transactional
     @Override
-    public List<TaskFullDto> getByWorker(Long workerId){
+    public List<TaskFullDto> getByWorker(Long workerId) {
         return TaskTransformer.toDTOList(taskRepo.getByOwner(workerId));
     }
 
@@ -130,8 +129,8 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<TaskFullDto> filterByStatus(List<TaskFullDto> taskFullDtoList, Long statusId) {
         List<TaskFullDto> filteredList = new ArrayList<>();
-        for (TaskFullDto taskDto: taskFullDtoList) {
-            if (taskDto.getStatusDto().getId().equals(statusId)){
+        for (TaskFullDto taskDto : taskFullDtoList) {
+            if (taskDto.getStatusDto().getId().equals(statusId)) {
                 filteredList.add(taskDto);
             }
         }
@@ -148,7 +147,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Transactional
     @Override
-    public TaskFullDto getByTrelloId(String trelloId){
+    public TaskFullDto getByTrelloId(String trelloId) {
         return TaskTransformer.toFullDTO(taskRepo.getByTrelloId(trelloId));
     }
 

@@ -72,13 +72,8 @@ public class TaskController {
 
     @GetMapping(path = "workers-tasks/{worker_id}")
     @ResponseStatus(HttpStatus.OK)
-    public List<TaskFullDto> getWorkerTasks(@PathVariable("worker_id") Long workerId) {
-        return taskService.getByWorker(workerId);
-    }
-
-    @GetMapping(path = "/tasks-board")
-    @ResponseStatus(HttpStatus.OK)
-    public List<TaskMongo> mongoTest(@RequestParam(name = "worker_id") Long workerId) {
+    public List<TaskMongo> getWorkerTasks(@PathVariable("worker_id") Long workerId) {
         return tasksBoardService.getUserWork(workerId);
     }
+
 }
