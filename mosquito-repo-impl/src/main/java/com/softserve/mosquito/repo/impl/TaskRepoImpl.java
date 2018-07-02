@@ -109,8 +109,8 @@ public class TaskRepoImpl implements TaskRepo {
         try {
             session = sessionFactory.openSession();
             session.getTransaction().begin();
-            Query query = session.createQuery("FROM " + Task.class.getName() +
-                    " WHERE parentTask = null ");
+            Query<Task> query = session.createQuery("FROM " + Task.class.getName() +
+                    " WHERE parentTask = null ", Task.class);
             List<Task> tasks = query.getResultList();
             session.getTransaction().commit();
             return tasks;
@@ -127,9 +127,9 @@ public class TaskRepoImpl implements TaskRepo {
         Session session = null;
         try {
             session = sessionFactory.openSession();
-            Query query = session.createQuery(
-                    "FROM " + Task.class.getName() +
-                            " t JOIN t.owner o WHERE t.parentTask = null AND o.id = :ownerId");
+            Query<Task> query = session.createQuery(
+                    "FROM " + Task.class.getName() + " t JOIN t.owner o " +
+                            "WHERE t.parentTask = null AND o.id = :ownerId", Task.class);
             query.setParameter("ownerId", ownerId);
             return query.list();
         } catch (HibernateException e) {
@@ -145,8 +145,8 @@ public class TaskRepoImpl implements TaskRepo {
         Session session = null;
         try {
             session = sessionFactory.openSession();
-            Query query = session.createQuery("FROM " + Task.class.getName() +
-                    " t JOIN t.owner o WHERE o.id = :ownerId ");
+            Query<Task> query = session.createQuery("FROM " + Task.class.getName() +
+                    " t JOIN t.owner o WHERE o.id = :ownerId ", Task.class);
             query.setParameter("ownerId", ownerId);
             return query.list();
         } catch (HibernateException e) {
@@ -162,8 +162,8 @@ public class TaskRepoImpl implements TaskRepo {
         Session session = null;
         try {
             session = sessionFactory.openSession();
-            Query query = session.createQuery("FROM " + Task.class.getName() +
-                    " t JOIN t.worker w WHERE w.id = :workerId ");
+            Query<Task> query = session.createQuery("FROM " + Task.class.getName() +
+                    " t JOIN t.worker w WHERE w.id = :workerId ", Task.class);
             query.setParameter("workerId", workerId);
             return query.list();
         } catch (HibernateException e) {
@@ -183,7 +183,8 @@ public class TaskRepoImpl implements TaskRepo {
         Session session = null;
         try {
             session = sessionFactory.openSession();
-            Query query = session.createQuery("FROM " + Task.class.getName() + " WHERE name = :taskName ");
+            Query<Task> query = session.createQuery("FROM " + Task.class.getName() +
+                    " WHERE name = :taskName ", Task.class);
             query.setParameter("taskName", name);
             return (Task) query.uniqueResult();
         } catch (HibernateException e) {
@@ -200,9 +201,10 @@ public class TaskRepoImpl implements TaskRepo {
         Session session = null;
         try {
             session = sessionFactory.openSession();
-            Query query = session.createQuery("FROM " + Task.class.getName() + " WHERE trello_id = :trelloId ");
+            Query<Task> query = session.createQuery("FROM " + Task.class.getName() +
+                    " WHERE trello_id = :trelloId ", Task.class);
             query.setParameter("trelloId", trelloId);
-            return (Task) query.uniqueResult();
+            return query.uniqueResult();
         } catch (HibernateException e) {
             LOGGER.error("Error with create task" + e.getMessage());
             return null;
