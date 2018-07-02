@@ -15,8 +15,13 @@ public class TasksBoard {
 
     @Id
     private String id;
+
     @NonNull
     private Long userId;
+
+    @NonNull
+    private Long ownerId;
+
     @NonNull
     private List<TaskMongo> taskMongos;
 }
