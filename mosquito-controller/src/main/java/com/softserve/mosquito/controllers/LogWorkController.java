@@ -20,11 +20,12 @@ import java.util.List;
         this.logWorkService = logWorkService;
     }
 
-    @PostMapping(path = "/{task_id}/log-works")
+    @PostMapping(path = "/{task_id}/log-works/{remaining}")
     @ResponseStatus(HttpStatus.OK)
     public LogWorkDto createLogWork(@PathVariable("task_id") Long taskId,
+                                    @PathVariable("remaining") int remaining,
                                            @RequestBody LogWorkDto logWorkDto) {
-        return logWorkService.save(logWorkDto);
+        return logWorkService.save(logWorkDto, remaining);
     }
 
     @GetMapping(path = "/{log-work_id}/{time-zone}")
@@ -33,12 +34,13 @@ import java.util.List;
         return logWorkService.getById(logId,timeZone);
     }
 
-    @PutMapping(path = "/{log-work_id}")
+    @PutMapping(path = "/{log-work_id}/{remaining}")
     @ResponseStatus(HttpStatus.OK)
     public LogWorkDto updateLogWork(@PathVariable("log-work_id") Long logId,
+                                    @PathVariable("remaining") int remaining,
                                           @RequestBody LogWorkDto logWorkDto) {
         logWorkDto.setId(logId);
-        return logWorkService.update(logWorkDto);
+        return logWorkService.update(logWorkDto, remaining);
     }
 
     @DeleteMapping(path = "/{log-workId}")

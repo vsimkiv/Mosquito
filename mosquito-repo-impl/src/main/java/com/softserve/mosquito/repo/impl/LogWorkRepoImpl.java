@@ -1,7 +1,6 @@
 package com.softserve.mosquito.repo.impl;
 
 
-
 import com.softserve.mosquito.entities.LogWork;
 import com.softserve.mosquito.repo.api.LogWorkRepo;
 import org.apache.logging.log4j.LogManager;
