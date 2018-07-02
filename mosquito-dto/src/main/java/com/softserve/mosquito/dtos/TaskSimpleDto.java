@@ -1,8 +1,14 @@
 package com.softserve.mosquito.dtos;
 
+import lombok.*;
+
 import java.util.List;
 import java.util.Objects;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class TaskSimpleDto {
 
     private Long id;
@@ -13,10 +19,7 @@ public class TaskSimpleDto {
     private String estimation;
     private String priority;
     private String status;
-    private String trelloId;
-
-    public TaskSimpleDto() {
-    }
+    @EqualsAndHashCode.Include private String trelloId;
 
     public TaskSimpleDto(Long id, String name, String parentTask, String owner, String worker, String estimation, String priority, String status) {
         this.id = id;
@@ -50,105 +53,5 @@ public class TaskSimpleDto {
             if (this.equals(taskSimpleDto)) return true;
         }
         return false;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        TaskSimpleDto that = (TaskSimpleDto) o;
-        return Objects.equals(trelloId, that.trelloId);
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(trelloId);
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getParentTask() {
-        return parentTask;
-    }
-
-    public void setParentTask(String parentTask) {
-        this.parentTask = parentTask;
-    }
-
-    public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
-
-    public String getWorker() {
-        return worker;
-    }
-
-    public void setWorker(String worker) {
-        this.worker = worker;
-    }
-
-    public String getEstimation() {
-        return estimation;
-    }
-
-    public void setEstimation(String estimation) {
-        this.estimation = estimation;
-    }
-
-    public String getPriority() {
-        return priority;
-    }
-
-    public void setPriority(String priority) {
-        this.priority = priority;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getTrelloId() {
-        return trelloId;
-    }
-
-    public void setTrelloId(String trelloId) {
-        this.trelloId = trelloId;
-    }
-
-    @Override
-    public String toString() {
-        return "TaskSimpleDto{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", parentTask='" + parentTask + '\'' +
-                ", owner='" + owner + '\'' +
-                ", worker='" + worker + '\'' +
-                ", estimation='" + estimation + '\'' +
-                ", priority='" + priority + '\'' +
-                ", status='" + status + '\'' +
-                '}';
     }
 }
