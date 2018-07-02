@@ -1,16 +1,15 @@
 package com.softserve.mosquito.dtos;
 
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.Singular;
+import lombok.*;
 
 import java.util.List;
 
 @Builder
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class TaskFullDto {
     private Long id;
     private String name;

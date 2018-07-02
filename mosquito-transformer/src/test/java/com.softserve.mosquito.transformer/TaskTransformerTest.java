@@ -30,7 +30,7 @@ public class TaskTransformerTest {
         UserDto userDto = UserDto.builder().email("test_email").password("test_passpword").
                 firstName("test_name").lastName("test_surname").
                 specializations(specializationDtos).build();
-        TaskFullDto taskFullDto = TaskFullDto.builder().ownerDto(userDto).parentTaskDto(null).
+        TaskFullDto taskFullDto = TaskFullDto.builder().ownerDto(userDto).parentTaskFullDto(null).
                 workerDto(userDto).estimationDto(estimationDto).priorityDto(priorityDto).statusDto(statusDto).build();
         Task task = TaskTransformer.toEntity(taskFullDto);
         assertEquals(taskFullDto.getName(), task.getName());
@@ -115,7 +115,7 @@ public class TaskTransformerTest {
         UserDto userDto = UserDto.builder().email("test_email").password("test_passpword").
                 firstName("test_name").lastName("test_surname").
                 specializations(specializationDtos).build();
-        TaskFullDto taskFullDto = TaskFullDto.builder().ownerDto(userDto).parentTaskDto(null).
+        TaskFullDto taskFullDto = TaskFullDto.builder().ownerDto(userDto).parentTaskFullDto(null).
                 workerDto(userDto).estimationDto(estimationDto).priorityDto(priorityDto).statusDto(statusDto).build();
         List<TaskFullDto> taskFullDtos = new ArrayList<>();
         taskFullDtos.add(taskFullDto);
