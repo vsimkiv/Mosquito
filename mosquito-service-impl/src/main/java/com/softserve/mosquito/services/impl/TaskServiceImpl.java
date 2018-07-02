@@ -42,7 +42,8 @@ public class TaskServiceImpl implements TaskService {
     public TaskFullDto save(TaskFullDto taskFullDto) {
         Task task = taskRepo.create(TaskTransformer.toEntity(taskFullDto));
         System.out.println(task.toString());
-        tasksBoardService.add(new TaskMongo(task.getId(), task.getName()), task.getWorker().getId());
+        tasksBoardService.add(new TaskMongo(task.getId(), task.getName()), task.getOwner().getId(),
+                task.getWorker().getId());
         return task == null ? null : toFullDTO(task);
     }
 

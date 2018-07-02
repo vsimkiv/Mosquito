@@ -72,7 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/*", "/docApi/**", "/resources/**", "/v2/api-docs", "/webjars/**", "/swagger-resources/**").permitAll()
-                .antMatchers("/signin", "/signup")
+                .antMatchers("/signin", "/signup","/activate/*")
                 .permitAll()
                 .anyRequest()
                 .authenticated();

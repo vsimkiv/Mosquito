@@ -66,8 +66,8 @@ public class TaskController {
 
     @GetMapping(path = "/owners-tasks/{owner_id}")
     @ResponseStatus(HttpStatus.OK)
-    public List<TaskFullDto> getOwnerTasks(@PathVariable("owner_id") Long ownerId) {
-        return taskService.getByOwner(ownerId);
+    public List<TaskMongo> getOwnerTasks(@PathVariable("owner_id") Long ownerId) {
+        return tasksBoardService.getUserTask(ownerId);
     }
 
     @GetMapping(path = "workers-tasks/{worker_id}")

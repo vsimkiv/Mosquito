@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TasksBoardRepo extends MongoRepository<TasksBoard, String> {
     TasksBoard findByUserId(Long userId);
+
+    TasksBoard findByOwnerId(Long ownerId);
 }
