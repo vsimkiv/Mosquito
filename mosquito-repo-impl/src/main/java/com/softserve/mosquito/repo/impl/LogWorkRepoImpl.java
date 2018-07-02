@@ -1,6 +1,7 @@
 package com.softserve.mosquito.repo.impl;
 
 
+
 import com.softserve.mosquito.entities.LogWork;
 import com.softserve.mosquito.repo.api.LogWorkRepo;
 import org.apache.logging.log4j.LogManager;
@@ -124,9 +125,8 @@ public class LogWorkRepoImpl implements LogWorkRepo {
         Session session = null;
         try {
             session = sessionFactory.openSession();
-            Query<LogWork> query = session.createQuery("from " + LogWork.class.getName() +
-                    " l JOIN l.estimation e where e.id = :est ");
-            query.setParameter("est", estimationId);
+            Query<LogWork> query = sessionFactory.openSession().createQuery("from " + LogWork.class.getName()+" where estimation_id = :est ");
+            query.setParameter("est",estimationId);
             return query.list();
         } catch (HibernateException e) {
             LOGGER.error(e.getMessage());
