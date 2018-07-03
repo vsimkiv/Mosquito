@@ -17,9 +17,10 @@ public class UserTransformerTest {
     @Test
    public void toEntity() {
         SpecializationDto specializationDto1 = new SpecializationDto();
+        specializationDto1.setId(2L);
         specializationDto1.setTitle("QC");
         Set<SpecializationDto> specializationDtos = new HashSet<>();
-        UserDto userDto = UserDto.builder().email("test_email@gmail.com").firstName("TestName").
+        UserDto userDto = UserDto.builder().email("test_email@gmail.com").firstName("TestName").id(2L).
                 lastName("TestLastName").password("TestPas12345").confirmPassword("TestPas12345").
                 specializations(specializationDtos).build();
         User user = UserTransformer.toEntity(userDto);
@@ -30,6 +31,7 @@ public class UserTransformerTest {
     @Test
     public void toDTO() {
         User user = new User();
+        user.setId(1L);
         user.setEmail("test_email");
         user.setPassword("test_password");
         user.setFirstName("test_name");
@@ -42,9 +44,10 @@ public class UserTransformerTest {
     @Test
    public void toEntityList() {
         SpecializationDto specializationDto = new SpecializationDto();
+        specializationDto.setId(5L);
         specializationDto.setTitle("QC");
         Set<SpecializationDto> specializationDtos = new HashSet<>();
-        UserDto userDto = UserDto.builder().email("test_email@gmail.com").firstName("TestName").
+        UserDto userDto = UserDto.builder().email("test_email@gmail.com").firstName("TestName").id(2L).
                 lastName("TestLastName").password("TestPas12345").confirmPassword("TestPas12345").
                 specializations(specializationDtos).build();
         List<UserDto> userDtos = new ArrayList<>();
@@ -58,6 +61,7 @@ public class UserTransformerTest {
     @Test
     public void toDTOList() {
         User user = new User();
+        user.setId(4L);
         user.setEmail("test_email");
         user.setPassword("test_password");
         user.setFirstName("test_name");

@@ -20,13 +20,15 @@ public class TrelloInfoTransformerTest {
     @Test
     public void toEntity() {
         SpecializationDto specializationDto1 = new SpecializationDto();
+        specializationDto1.setId(2L);
         specializationDto1.setTitle("QC");
         Set<SpecializationDto> specializationDtos = new HashSet<>();
         specializationDtos.add(specializationDto1);
-        UserDto userDto = UserDto.builder().email("test_email").password("test_passpword").
+        UserDto userDto = UserDto.builder().email("test_email").password("test_passpword").id(3L).
                 firstName("test_name").lastName("test_surname").
                 specializations(specializationDtos).build();
         TrelloInfoDto trelloInfoDto = new TrelloInfoDto();
+        trelloInfoDto.setId(2L);
         trelloInfoDto.setUserDto(userDto);
         trelloInfoDto.setUserTrelloKey("TrelloKey123456789");
         trelloInfoDto.setUserTrelloToken("TrelloToken123456789");
@@ -38,10 +40,12 @@ public class TrelloInfoTransformerTest {
     @Test
     public void toDto() {
         TrelloInfo trelloInfo = new TrelloInfo();
+        trelloInfo.setId(1L);
         trelloInfo.setUserTrelloToken("TrelloToken123456789");
         trelloInfo.setUserTrelloKey("TrelloKey123456789");
         trelloInfo.setUserTrelloName("TreloloNameTest");
         User user = new User();
+        user.setId(5L);
         user.setEmail("test_email");
         user.setPassword("test_password");
         user.setFirstName("test_name");
@@ -56,10 +60,12 @@ public class TrelloInfoTransformerTest {
     @Test
     public void toDtoList() {
         TrelloInfo trelloInfo = new TrelloInfo();
+        trelloInfo.setId(4L);
         trelloInfo.setUserTrelloToken("TrelloToken123456789");
         trelloInfo.setUserTrelloKey("TrelloKey123456789");
         trelloInfo.setUserTrelloName("TreloloNameTest");
         User user = new User();
+        user.setId(3L);
         user.setEmail("test_email");
         user.setPassword("test_password");
         user.setFirstName("test_name");

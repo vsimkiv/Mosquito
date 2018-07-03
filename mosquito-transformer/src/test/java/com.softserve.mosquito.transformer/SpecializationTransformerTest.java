@@ -17,8 +17,10 @@ public class SpecializationTransformerTest {
     @Test
     public void toEntityList() {
         SpecializationDto specializationDto = new SpecializationDto();
+        specializationDto.setId(1L);
         specializationDto.setTitle("JuniorJavaDeveloper");
         SpecializationDto specializationDto1 = new SpecializationDto();
+        specializationDto1.setId(2L);
         specializationDto1.setTitle("MiddleJavaDeveloper");
         Set<SpecializationDto> specializationDtoSet = new HashSet<>();
         specializationDtoSet.add(specializationDto);
@@ -33,8 +35,10 @@ public class SpecializationTransformerTest {
     @Test
     public void toDTOList() {
         Specialization specialization1 = new Specialization();
+        specialization1.setId(5L);
         specialization1.setTitle("BigBoss");
         Specialization specialization2 = new Specialization();
+        specialization2.setId(6L);
         specialization2.setTitle("Clerk");
         Set<Specialization> specializations = new HashSet<>();
         specializations.add(specialization1);
@@ -47,6 +51,7 @@ public class SpecializationTransformerTest {
     @Test
     public void toEntity() {
         SpecializationDto specializationDto = new SpecializationDto();
+        specializationDto.setId(6L);
         specializationDto.setTitle("CEO");
         Specialization specialization = SpecializationTransformer.toEntity(specializationDto);
         assertEquals(specializationDto.getId(), specialization.getId());
@@ -56,6 +61,7 @@ public class SpecializationTransformerTest {
     @Test
     public void toDTO() {
         Specialization specialization = new Specialization();
+        specialization.setId(2L);
         specialization.setTitle("Director");
         SpecializationDto specializationDto = SpecializationTransformer.toDTO(specialization);
         assertEquals(specialization.getId(), specializationDto.getId());
