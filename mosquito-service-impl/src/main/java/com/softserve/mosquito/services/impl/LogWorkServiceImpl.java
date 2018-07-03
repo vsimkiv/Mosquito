@@ -47,11 +47,11 @@ public class LogWorkServiceImpl implements LogWorkService {
     @Transactional
     @Override
     public LogWorkDto update(LogWorkDto logWorkDto, int remaining) {
-        LogWork logWork = LogWorkTransformer.toEntity(logWorkDto);
+        LogWork logWork = logWorkRepo.update( LogWorkTransformer.toEntity(logWorkDto));
         Estimation estimation = estimationRepo.read(logWork.getEstimation().getId());
         estimation.setRemaining(remaining);
         estimationRepo.update(estimation);
-        logWorkRepo.update(logWork);
+
         return LogWorkTransformer.toDTO(logWork);
     }
 
