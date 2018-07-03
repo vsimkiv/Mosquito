@@ -68,7 +68,6 @@ public class AuthController {
                 .build());
     }
 
-
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody @Valid UserDto signUpRequest) {
         if (userService.getByEmail(signUpRequest.getEmail()) != null)
@@ -83,7 +82,7 @@ public class AuthController {
         signUpRequest.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
         userService.save(signUpRequest);
 
-        return ResponseEntity.ok().body(signUpRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(signUpRequest);
     }
 
     @GetMapping("/activate/{key}")

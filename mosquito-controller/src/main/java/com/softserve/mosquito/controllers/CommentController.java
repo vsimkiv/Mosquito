@@ -25,7 +25,7 @@ public class CommentController {
 
     @PostMapping(path = "comments")
     @ApiOperation(value = "Add new comment for task", response = CommentDto.class)
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     public CommentDto createComment(@PathVariable("task_id") Long taskId,
                                     @RequestBody CommentDto commentDto) {
         return commentService.save(commentDto);

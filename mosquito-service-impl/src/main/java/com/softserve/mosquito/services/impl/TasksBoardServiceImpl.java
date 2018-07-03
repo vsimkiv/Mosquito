@@ -4,7 +4,6 @@ import com.softserve.mosquito.entities.mongo.TaskMongo;
 import com.softserve.mosquito.entities.mongo.TasksBoard;
 import com.softserve.mosquito.repo.api.TasksBoardRepo;
 import com.softserve.mosquito.services.api.TasksBoardService;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +16,7 @@ public class TasksBoardServiceImpl implements TasksBoardService {
     private TasksBoardRepo tasksBoardRepo;
 
     @Autowired
-    public TasksBoardServiceImpl(TasksBoardRepo tasksBoardRepo, SessionFactory sessionFactory) {
+    public TasksBoardServiceImpl(TasksBoardRepo tasksBoardRepo) {
         this.tasksBoardRepo = tasksBoardRepo;
     }
 
@@ -61,12 +60,4 @@ public class TasksBoardServiceImpl implements TasksBoardService {
         tasksBoardRepo.save(tasksBoard);
     }
 
-    @Override
-    public void delete(TaskMongo taskMongo, Long userId) {
-        TasksBoard tasksBoard = tasksBoardRepo.findByUserId(userId);
-        if (tasksBoard != null) {
-            tasksBoard.getTaskMongos().removeIf(taskMongoTmp -> taskMongoTmp.getTaskId().equals(taskMongo.getTaskId()));
-            tasksBoardRepo.save(tasksBoard);
-        }
-    }
 }

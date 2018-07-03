@@ -53,4 +53,11 @@ public class User implements Serializable {
     @JoinTable(name = "users_has_specializations", joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "specialization_id")})
     private Set<Specialization> specializations = new HashSet<>();
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                '}';
+    }
 }

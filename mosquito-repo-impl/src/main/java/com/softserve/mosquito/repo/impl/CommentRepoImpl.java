@@ -32,6 +32,7 @@ public class CommentRepoImpl implements CommentRepo {
         try {
             session = sessionFactory.openSession();
             session.save(comment);
+            LOGGER.info("Comment created successfully " + comment + " for user: " + comment.getAuthor().getId());
         } catch (HibernateException e) {
             LOGGER.info("Error during save comment!");
             LOGGER.error(e.getMessage());
@@ -64,6 +65,7 @@ public class CommentRepoImpl implements CommentRepo {
             session.getTransaction().begin();
             session.update(comment);
             session.getTransaction().commit();
+            LOGGER.info("Comment updated successfully " + comment + " for user: " + comment.getAuthor().getId());
             return comment;
         } catch (HibernateException e) {
             LOGGER.info("Updating comment was failed!");
@@ -83,6 +85,7 @@ public class CommentRepoImpl implements CommentRepo {
             Comment comment = session.get(Comment.class, id);
             session.delete(comment);
             session.getTransaction().commit();
+            LOGGER.info("Comment deleted successfully " + comment + " for user: " + comment.getAuthor().getId());
         } catch (HibernateException e) {
             LOGGER.info("Deleting comment was failed!");
             LOGGER.error(e.getMessage());
@@ -96,7 +99,7 @@ public class CommentRepoImpl implements CommentRepo {
         Session session = null;
         try {
             session = sessionFactory.openSession();
-            return session.createQuery("SELECT T.comments FROM " + Task.class.getName() + " T WHERE T.id = " + taskId + "")
+            return session.createQuery("SELECT T.comments FROM " + Task.class.getName() + " T WHERE T.id = " + taskId + "", Comment.class)
                     .getResultList();
         } catch (HibernateException e) {
             LOGGER.info("Retrieving comments for task with id " + taskId + " was failed!");

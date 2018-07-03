@@ -35,4 +35,15 @@ public class Estimation implements Serializable {
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "estimation")
     private List<LogWork> logWorks;
+
+    @Override
+    public String toString() {
+        return "Estimation{" +
+                "id=" + id +
+                ", timeEstimation=" + timeEstimation +
+                ", remaining=" + remaining +
+                ", task=" + task +
+                ", logWorks=" + logWorks +
+                '}';
+    }
 }

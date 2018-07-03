@@ -24,4 +24,15 @@ public class TasksBoard {
 
     @NonNull
     private List<TaskMongo> taskMongos;
+
+
+    @Override
+    public String toString() {
+        return "TasksBoard{" +
+                "id='" + id + '\'' +
+                ", userId=" + userId +
+                ", ownerId=" + ownerId +
+                ", taskMongos=" + taskMongos +
+                '}';
+    }
 }

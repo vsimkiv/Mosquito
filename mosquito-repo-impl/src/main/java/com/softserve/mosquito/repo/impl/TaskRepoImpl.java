@@ -1,6 +1,7 @@
 package com.softserve.mosquito.repo.impl;
 
 import com.softserve.mosquito.entities.Task;
+import com.softserve.mosquito.entities.mongo.TaskMongo;
 import com.softserve.mosquito.repo.api.TaskRepo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,6 +10,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
@@ -20,10 +23,13 @@ import java.util.List;
 public class TaskRepoImpl implements TaskRepo {
     private static final Logger LOGGER = LogManager.getLogger(TaskRepoImpl.class);
     private SessionFactory sessionFactory;
+    private MongoOperations mongoOperations;
+
 
     @Autowired
-    public TaskRepoImpl(SessionFactory sessionFactory) {
+    public TaskRepoImpl(SessionFactory sessionFactory, MongoOperations mongoOperations) {
         this.sessionFactory = sessionFactory;
+        this.mongoOperations = mongoOperations;
     }
 
     @Override
@@ -60,7 +66,9 @@ public class TaskRepoImpl implements TaskRepo {
         Session session = null;
         try {
             session = sessionFactory.openSession();
+            session.getTransaction().begin();
             session.update(task);
+            session.getTransaction().commit();
             return task;
         } catch (HibernateException e) {
             LOGGER.error("Problem with updating task" + Arrays.toString(e.getStackTrace()));
@@ -78,6 +86,9 @@ public class TaskRepoImpl implements TaskRepo {
             session.getTransaction().begin();
             Task task = session.get(Task.class, id);
             session.delete(task);
+            org.springframework.data.mongodb.core.query.Query query = new org.springframework.data.mongodb.core.query.Query(
+                    Criteria.where("taskMongos").is(new TaskMongo(task.getId(), task.getName())));
+            mongoOperations.remove(query, "TasksBoard");
             session.getTransaction().commit();
         } catch (HibernateException e) {
             LOGGER.error("Problem with deleting task" + Arrays.toString(e.getStackTrace()));

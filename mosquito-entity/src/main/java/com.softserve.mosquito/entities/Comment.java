@@ -29,4 +29,15 @@ public class Comment implements Serializable {
 
     @Column(name = "last_update")
     private LocalDateTime lastUpdate;
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                ", author=" + author +
+                ", task=" + task +
+                ", lastUpdate=" + lastUpdate +
+                '}';
+    }
 }

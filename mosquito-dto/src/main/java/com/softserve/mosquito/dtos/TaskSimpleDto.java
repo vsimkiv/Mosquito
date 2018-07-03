@@ -1,9 +1,11 @@
 package com.softserve.mosquito.dtos;
 
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
-import java.util.Objects;
 
 @Getter
 @Setter
@@ -19,7 +21,8 @@ public class TaskSimpleDto {
     private String estimation;
     private String priority;
     private String status;
-    @EqualsAndHashCode.Include private String trelloId;
+    @EqualsAndHashCode.Include
+    private String trelloId;
 
     public TaskSimpleDto(Long id, String name, String parentTask, String owner, String worker, String estimation, String priority, String status) {
         this.id = id;
@@ -40,6 +43,7 @@ public class TaskSimpleDto {
         this.status = status;
         this.trelloId = trelloId;
     }
+
     public TaskSimpleDto(String name, String owner, String worker, String status, String trelloId) {
         this.name = name;
         this.owner = owner;
@@ -48,8 +52,8 @@ public class TaskSimpleDto {
         this.trelloId = trelloId;
     }
 
-    public boolean isPresentInCollection( List<TaskSimpleDto> simpleDtos){
-        for (TaskSimpleDto taskSimpleDto : simpleDtos){
+    public boolean isPresentInCollection(List<TaskSimpleDto> simpleDtos) {
+        for (TaskSimpleDto taskSimpleDto : simpleDtos) {
             if (this.equals(taskSimpleDto)) return true;
         }
         return false;

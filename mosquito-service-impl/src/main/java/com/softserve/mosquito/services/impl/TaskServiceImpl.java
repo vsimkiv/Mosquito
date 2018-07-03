@@ -41,7 +41,6 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskFullDto save(TaskFullDto taskFullDto) {
         Task task = taskRepo.create(TaskTransformer.toEntity(taskFullDto));
-        System.out.println(task.toString());
         tasksBoardService.add(new TaskMongo(task.getId(), task.getName()), task.getOwner().getId(),
                 task.getWorker().getId());
         return task == null ? null : toFullDTO(task);
@@ -51,6 +50,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskFullDto update(TaskFullDto taskFullDto) {
         Task task = taskRepo.update(TaskTransformer.toEntity(taskFullDto));
+        tasksBoardService.update(new TaskMongo(task.getId(), task.getName()), task.getWorker().getId());
         if (task == null)
             return null;
         return toFullDTO(task);

@@ -39,4 +39,16 @@ public class LogWork implements Serializable {
     protected void onUpdate() {
         lastUpdate = LocalDateTime.now(ZoneId.ofOffset("UTC", ZoneOffset.ofHours(0)));
     }
+
+    @Override
+    public String toString() {
+        return "LogWork{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", logged=" + logged +
+                ", author=" + author +
+                ", estimation=" + estimation +
+                ", lastUpdate=" + lastUpdate +
+                '}';
+    }
 }
