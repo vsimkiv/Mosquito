@@ -84,7 +84,7 @@ public class CommentTransformerTest {
         comment.setTask(task);
         CommentDto commentDto = CommentTransformer.toDTO(comment);
         assertEquals(comment.getId(), commentDto.getId());
-        //assertEquals(comment.getAuthor().getId(), commentDto.getAuthorId());
+        assertEquals(comment.getAuthor().getId(), commentDto.getAuthorId());
     }
 
     @Test

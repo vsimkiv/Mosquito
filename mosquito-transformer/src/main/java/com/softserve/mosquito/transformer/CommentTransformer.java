@@ -33,8 +33,8 @@ public class CommentTransformer {
             return new CommentDto(
                     comment.getId(),
                     comment.getText(),
-                    comment.getTask().getId(),
                     comment.getAuthor().getId(),
+                    comment.getTask().getId(),
                     comment.getLastUpdate());
     }
 
