@@ -1,4 +1,4 @@
-package com.softserve.mosquito.controllers;
+package com.softserve.mosquito.configs;
 
 import com.softserve.mosquito.dtos.StatusDto;
 import com.softserve.mosquito.services.api.StatusService;
@@ -40,8 +40,11 @@ import java.util.List;
     }
 
     @DeleteMapping(path= "/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteStatus(@PathVariable("id") Long id) {
+        if(statusService.getById(id) == null){
+            throw  new StatusNotFoundException("Status with id " + id + " not found");
+        }
         statusService.delete(id);
     }
 

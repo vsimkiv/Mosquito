@@ -1,4 +1,4 @@
-package com.softserve.mosquito.controllers;
+package com.softserve.mosquito.configs;
 
 import com.softserve.mosquito.dtos.TaskFullDto;
 import com.softserve.mosquito.dtos.TaskSimpleDto;
