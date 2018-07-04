@@ -109,7 +109,7 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     @Override
     public List<TaskFullDto> getByWorker(Long workerId) {
-        return TaskTransformer.toDTOList(taskRepo.getByOwner(workerId));
+        return TaskTransformer.toDTOList(taskRepo.getByWorker(workerId));
     }
 
     //Methods for project. Made by VS
