@@ -28,10 +28,10 @@ import java.util.List;
         return logWorkService.save(logWorkDto, remaining);
     }
 
-    @GetMapping(path = "/{log-work_id}/{time-zone}")
+    @GetMapping(path = "/{log-work_id}")
     @ResponseStatus(HttpStatus.OK)
-    public LogWorkDto getLogWorkById(@PathVariable("log-work_id") Long logId, @PathVariable("time-zone") byte timeZone) {
-        return logWorkService.getById(logId,timeZone);
+    public LogWorkDto getLogWorkById(@PathVariable("log-work_id") Long logId) {
+        return logWorkService.getById(logId);
     }
 
     @PutMapping(path = "/{log-work_id}/{remaining}")

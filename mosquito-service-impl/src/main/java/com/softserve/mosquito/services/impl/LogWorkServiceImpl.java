@@ -38,16 +38,14 @@ public class LogWorkServiceImpl implements LogWorkService {
 
     @Transactional
     @Override
-    public LogWorkDto getById(Long logWorkId, byte timeZone) {
-        LogWork logWork = logWorkRepo.read(logWorkId);
-        logWork.setLastUpdate(logWork.getLastUpdate().plusHours(timeZone));
-        return LogWorkTransformer.toDTO(logWork);
+    public LogWorkDto getById(Long logWorkId) {
+        return LogWorkTransformer.toDTO(logWorkRepo.read(logWorkId));
     }
 
     @Transactional
     @Override
     public LogWorkDto update(LogWorkDto logWorkDto, int remaining) {
-        LogWork logWork = logWorkRepo.update( LogWorkTransformer.toEntity(logWorkDto));
+        LogWork logWork = logWorkRepo.update(LogWorkTransformer.toEntity(logWorkDto));
         Estimation estimation = estimationRepo.read(logWork.getEstimation().getId());
         estimation.setRemaining(remaining);
         estimationRepo.update(estimation);

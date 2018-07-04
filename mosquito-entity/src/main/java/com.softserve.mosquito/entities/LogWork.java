@@ -37,11 +37,6 @@ public class LogWork implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd@HH:mm:ss.SSSZ")
     private LocalDateTime lastUpdate;
 
-    @PreUpdate
-    protected void onUpdate() {
-        lastUpdate = LocalDateTime.now(ZoneId.ofOffset("UTC", ZoneOffset.ofHours(0)));
-    }
-
     @Override
     public String toString() {
         return "LogWork{" +
