@@ -2,14 +2,12 @@ package com.softserve.mosquito.services.impl;
 
 import com.softserve.mosquito.dtos.TaskFullDto;
 import com.softserve.mosquito.dtos.TaskSimpleDto;
-import com.softserve.mosquito.dtos.UserDto;
 import com.softserve.mosquito.entities.Estimation;
 import com.softserve.mosquito.entities.Task;
 import com.softserve.mosquito.entities.mongo.TaskMongo;
 import com.softserve.mosquito.repo.api.TaskRepo;
 import com.softserve.mosquito.services.api.TaskService;
 import com.softserve.mosquito.services.api.TasksBoardService;
-import com.softserve.mosquito.services.mail.MailSender;
 import com.softserve.mosquito.transformer.CommentTransformer;
 import com.softserve.mosquito.transformer.EstimationTransformer;
 import com.softserve.mosquito.transformer.TaskTransformer;
@@ -27,13 +25,11 @@ import static com.softserve.mosquito.transformer.TaskTransformer.toSimpleDto;
 public class TaskServiceImpl implements TaskService {
     private TaskRepo taskRepo;
     private TasksBoardService tasksBoardService;
-    private MailSender mailSender;
 
     @Autowired
-    public TaskServiceImpl(TaskRepo taskRepo, TasksBoardService tasksBoardService, MailSender mailSender) {
+    public TaskServiceImpl(TaskRepo taskRepo, TasksBoardService tasksBoardService) {
         this.taskRepo = taskRepo;
         this.tasksBoardService = tasksBoardService;
-        this.mailSender = mailSender;
     }
 
     //CRUD methods. Made by VS
@@ -164,7 +160,4 @@ public class TaskServiceImpl implements TaskService {
         return TaskTransformer.toFullDTO(taskRepo.getByName(name));
     }
 
-    private boolean isMessageSent(UserDto userDto, String message, String subject) {
-        return mailSender.sendMessage(userDto, message, subject);
-    }
 }
