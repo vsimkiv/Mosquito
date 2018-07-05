@@ -164,9 +164,9 @@ public class TaskRepoImpl implements TaskRepo {
         try {
             session = sessionFactory.openSession();
             Query<Task> query = session.createQuery("FROM " + Task.class.getName() +
-                    " t JOIN t.owner o WHERE o.id = :ownerId ", Task.class);
+                    " t WHERE t.owner.id= :ownerId ",Task.class);
             query.setParameter("ownerId", ownerId);
-            return query.list();
+            return query.getResultList();
         } catch (HibernateException e) {
             LOGGER.error("Problem with getting tasks by owner" + Arrays.toString(e.getStackTrace()));
             return new ArrayList<>();
