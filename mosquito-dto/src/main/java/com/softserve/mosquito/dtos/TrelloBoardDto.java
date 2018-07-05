@@ -12,6 +12,8 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TrelloBoardDto {
+
     private String name;
     private String id;
+
 }

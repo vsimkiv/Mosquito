@@ -21,7 +21,6 @@ public class TaskSimpleDto {
     private String estimation;
     private String priority;
     private String status;
-    @EqualsAndHashCode.Include
     private String trelloId;
 
     public TaskSimpleDto(Long id, String name, String parentTask, String owner, String worker, String estimation, String priority, String status) {
