@@ -6,6 +6,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,10 +17,12 @@ import java.util.List;
 public class UserController {
 
     private UserService userService;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping
@@ -47,6 +50,10 @@ public class UserController {
     @PutMapping("/{userId}")
     @ApiOperation(value = "Update user in system", response = UserDto.class)
     public ResponseEntity<UserDto> updateUser(@PathVariable("userId") long id, @RequestBody UserDto userDto) {
+        if(!userDto.getPassword().equals(userDto.getConfirmPassword())){
+            return ResponseEntity.badRequest().build();
+        }
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
         userDto.setId(id);
         userDto = userService.update(userDto);
         if (userDto == null) {
