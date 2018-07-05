@@ -39,7 +39,6 @@ public class TrelloCardServiceImpl implements TrelloCardService {
         createTrelloTasks(userDto, allNewTrelloTasks(userId));
     }
 
-
     @Override
     @Transactional
     public void createChosenTastsFromTrello(Long userId, List<TaskSimpleDto> taskSimpleDtos){

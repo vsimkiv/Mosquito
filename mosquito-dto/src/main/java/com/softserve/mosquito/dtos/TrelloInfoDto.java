@@ -10,9 +10,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TrelloInfoDto {
+
     private Long id;
     private UserDto userDto;
     private String userTrelloName;
     private String userTrelloKey;
     private String userTrelloToken;
+
 }
