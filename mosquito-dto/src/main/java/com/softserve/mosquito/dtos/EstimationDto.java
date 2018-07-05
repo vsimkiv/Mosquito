@@ -16,5 +16,4 @@ public class EstimationDto {
     private Integer timeEstimation;
     private Integer remaining;
     private Long taskId;
-    private List<LogWorkDto> logWorks;
 }

@@ -4,7 +4,7 @@ import org.springframework.security.web.context.AbstractSecurityWebApplicationIn
 
 public class SecurityWebApplicationInitializer
         // TODO: Uncomment. Disable security for easy testing.
-        extends AbstractSecurityWebApplicationInitializer
+       // extends AbstractSecurityWebApplicationInitializer
 {
 
 }
