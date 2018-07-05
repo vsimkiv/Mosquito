@@ -99,7 +99,7 @@ public class CommentRepoImpl implements CommentRepo {
         Session session = null;
         try {
             session = sessionFactory.openSession();
-            return session.createQuery("SELECT T.comments FROM " + Task.class.getName() + " T WHERE T.id = " + taskId + "", Comment.class)
+            return session.createQuery("SELECT T.comments FROM " + Task.class.getName() + " T WHERE T.id = " + taskId + "")
                     .getResultList();
         } catch (HibernateException e) {
             LOGGER.info("Retrieving comments for task with id " + taskId + " was failed!");
