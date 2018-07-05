@@ -27,9 +27,9 @@ public class LogWorkServiceImpl implements LogWorkService {
 
     @Transactional
     @Override
-    public LogWorkDto save(LogWorkDto logWorkDto, int remaining) {
+    public LogWorkDto save(Long estId, LogWorkDto logWorkDto, int remaining) {
         LogWork logWork = LogWorkTransformer.toEntity(logWorkDto);
-        Estimation estimation = estimationRepo.read(logWork.getEstimation().getId());
+        Estimation estimation = estimationRepo.read(estId);
         estimation.setRemaining(remaining);
         estimationRepo.update(estimation);
         logWorkRepo.create(logWork);

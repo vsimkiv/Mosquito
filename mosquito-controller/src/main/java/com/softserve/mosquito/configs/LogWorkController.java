@@ -1,8 +1,10 @@
 package com.softserve.mosquito.configs;
 
 import com.softserve.mosquito.dtos.LogWorkDto;
+import com.softserve.mosquito.services.api.EstimationService;
 import com.softserve.mosquito.services.api.LogWorkService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +13,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/log-work")
-@Api(value = "Log work controller", description = "Controller for doing CRUD operation with log work")public class LogWorkController {
+@Api(value = "Log work controller", description = "Controller for doing CRUD operation with log work")
+public class LogWorkController {
 
     private LogWorkService logWorkService;
 
@@ -20,12 +23,14 @@ import java.util.List;
         this.logWorkService = logWorkService;
     }
 
-    @PostMapping(path = "/{task_id}/log-works/{remaining}")
-    @ResponseStatus(HttpStatus.OK)
-    public LogWorkDto createLogWork(@PathVariable("task_id") Long taskId,
+    @PostMapping(path = "/{est_id}/log-works/{remaining}")
+    @ApiOperation(value = "Add new log work for task", response = LogWorkDto.class)
+    @ResponseStatus(HttpStatus.CREATED)
+    public LogWorkDto createLogWork(@PathVariable("est_id") Long estId,
                                     @PathVariable("remaining") int remaining,
                                            @RequestBody LogWorkDto logWorkDto) {
-        return logWorkService.save(logWorkDto, remaining);
+
+        return logWorkService.save(estId, logWorkDto, remaining);
     }
 
     @GetMapping(path = "/{log-work_id}")
