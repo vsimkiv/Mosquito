@@ -41,7 +41,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto update(UserDto user) {
-        if(getByEmail(user.getEmail()) != null){
+        UserDto oldUser = getById(user.getId());
+        if(!oldUser.getEmail().equals(user.getEmail()) && getByEmail(user.getEmail()) != null){
             return null;
         }
         return UserTransformer.toDto(userRepo.update(UserTransformer.toEntity(user)));

@@ -1,11 +1,13 @@
 package com.softserve.mosquito.configs;
 
 import com.softserve.mosquito.dtos.UserDto;
+import com.softserve.mosquito.security.UserPrincipal;
 import com.softserve.mosquito.services.api.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,7 +51,14 @@ public class UserController {
 
     @PutMapping("/{userId}")
     @ApiOperation(value = "Update user in system", response = UserDto.class)
-    public ResponseEntity<UserDto> updateUser(@PathVariable("userId") long id, @RequestBody UserDto userDto) {
+    public ResponseEntity<UserDto> updateUser(@PathVariable("userId") long id, @RequestBody UserDto userDto,
+                                              @AuthenticationPrincipal UserPrincipal user) {
+        // check if received userId in dto is the same as token's id
+        UserDto validUser  = userService.getById(user.getId());
+        if(!validUser.getId().equals(id)){
+            return ResponseEntity.badRequest().build();
+        }
+
         if(!userDto.getPassword().equals(userDto.getConfirmPassword())){
             return ResponseEntity.badRequest().build();
         }
