@@ -16,4 +16,8 @@ public class EstimationDto {
     private Integer timeEstimation;
     private Integer remaining;
     private Long taskId;
+
+    public EstimationDto(Integer timeEstimation) {
+        this.timeEstimation = timeEstimation;
+    }
 }

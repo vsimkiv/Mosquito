@@ -1,5 +1,6 @@
 package com.softserve.mosquito.services.api;
 
+import com.softserve.mosquito.dtos.TaskCreateDto;
 import com.softserve.mosquito.dtos.TaskFullDto;
 import com.softserve.mosquito.dtos.TaskSimpleDto;
 
@@ -8,6 +9,8 @@ import java.util.List;
 public interface TaskService {
 
     TaskFullDto save(TaskFullDto taskFullDto);
+
+    TaskCreateDto save(TaskCreateDto taskCreateDto );
 
     TaskFullDto update(TaskFullDto taskFullDto);
 
@@ -20,6 +23,8 @@ public interface TaskService {
     List<TaskFullDto> getSubTasks(Long id);
 
     List<TaskFullDto> getByOwner(Long ownerId);
+
+    List<TaskCreateDto> getByOwnerId(Long ownerId);
 
     List<TaskFullDto> getByWorker(Long workerId);
 

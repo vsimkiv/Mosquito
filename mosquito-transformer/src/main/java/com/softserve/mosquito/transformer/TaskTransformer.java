@@ -2,6 +2,7 @@ package com.softserve.mosquito.transformer;
 
 import com.softserve.mosquito.dtos.TaskFullDto;
 import com.softserve.mosquito.dtos.TaskSimpleDto;
+import com.softserve.mosquito.dtos.TaskCreateDto;
 import com.softserve.mosquito.entities.Task;
 
 import java.util.ArrayList;
@@ -27,6 +28,21 @@ public class TaskTransformer {
                     .priority(PriorityTransformer.toEntity(taskFullDto.getPriorityDto()))
                     .status(StatusTransformer.toEntity(taskFullDto.getStatusDto()))
                     .build();
+    }
+
+    public static TaskCreateDto toTaskCreateDto(Task task){
+        if (task == null) return null;
+        TaskCreateDto taskCreateDto = new TaskCreateDto();
+        taskCreateDto.setId(task.getId());
+        taskCreateDto.setName(task.getName());
+        taskCreateDto.setOwner(task.getOwner().getId());
+        taskCreateDto.setWorker(task.getWorker().getId());
+        taskCreateDto.setEstimation(task.getEstimation().getTimeEstimation());
+        taskCreateDto.setParent(task.getParentTask().getId());
+        taskCreateDto.setStatus(task.getStatus().getId());
+        taskCreateDto.setPriority(task.getPriority().getId());
+        taskCreateDto.setTrelloId(task.getTrelloId());
+        return taskCreateDto;
     }
 
     //parentTask, estimation, comments, and childTasks will set on service-impl module
@@ -60,6 +76,7 @@ public class TaskTransformer {
     }
 
 
+
     public static List<Task> toEntityList(List<TaskFullDto> taskFullDtoList) {
         List<Task> tasks = new ArrayList<>();
         for (TaskFullDto taskFullDto : taskFullDtoList) {
@@ -68,6 +85,15 @@ public class TaskTransformer {
         return tasks;
     }
 
+    public static List<TaskCreateDto> toTaskCreateDtoList(List<Task> tasks){
+        List<TaskCreateDto> taskCreateDtos = new ArrayList<>();
+        if (tasks != null && !tasks.isEmpty())
+            for (Task task : tasks) {
+                taskCreateDtos.add(toTaskCreateDto(task));
+            }
+        return taskCreateDtos;
+
+    }
     public static List<TaskFullDto> toDTOList(List<Task> tasks) {
         List<TaskFullDto> taskFullDtoList = new ArrayList<>();
         if (tasks != null && !tasks.isEmpty())

@@ -1,16 +1,14 @@
 package com.softserve.mosquito.services.impl;
 
-import com.softserve.mosquito.dtos.TaskFullDto;
-import com.softserve.mosquito.dtos.TaskSimpleDto;
+
+import com.softserve.mosquito.dtos.*;
 import com.softserve.mosquito.entities.Estimation;
 import com.softserve.mosquito.entities.Task;
 import com.softserve.mosquito.entities.mongo.TaskMongo;
 import com.softserve.mosquito.repo.api.TaskRepo;
-import com.softserve.mosquito.services.api.TaskService;
-import com.softserve.mosquito.services.api.TasksBoardService;
-import com.softserve.mosquito.transformer.CommentTransformer;
-import com.softserve.mosquito.transformer.EstimationTransformer;
-import com.softserve.mosquito.transformer.TaskTransformer;
+import com.softserve.mosquito.services.api.*;
+import com.softserve.mosquito.transformer.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,16 +18,24 @@ import java.util.List;
 
 import static com.softserve.mosquito.transformer.TaskTransformer.toFullDTO;
 import static com.softserve.mosquito.transformer.TaskTransformer.toSimpleDto;
-
+import static com.softserve.mosquito.transformer.TaskTransformer.toTaskCreateDto;
+import static com.softserve.mosquito.transformer.UserTransformer.toEntity;
+import static com.softserve.mosquito.transformer.PriorityTransformer.toEntity;
 @Service
 public class TaskServiceImpl implements TaskService {
     private TaskRepo taskRepo;
     private TasksBoardService tasksBoardService;
+    private UserService userService;
+    private PriorityService priorityService;
+    private StatusService statusService;
 
     @Autowired
-    public TaskServiceImpl(TaskRepo taskRepo, TasksBoardService tasksBoardService) {
+    public TaskServiceImpl(TaskRepo taskRepo, TasksBoardService tasksBoardService, UserService userService, PriorityService priorityService, StatusService statusService) {
         this.taskRepo = taskRepo;
         this.tasksBoardService = tasksBoardService;
+        this.userService = userService;
+        this.priorityService = priorityService;
+        this.statusService = statusService;
     }
 
     //CRUD methods. Made by VS
@@ -40,6 +46,16 @@ public class TaskServiceImpl implements TaskService {
         tasksBoardService.add(new TaskMongo(task.getId(), task.getName()), task.getOwner().getId(),
                 task.getWorker().getId());
         return task == null ? null : toFullDTO(task);
+    }
+
+    @Transactional
+    @Override
+    public TaskCreateDto save(TaskCreateDto taskCreateDto ){
+
+        Task task = taskRepo.create(toTaskEntity(taskCreateDto));
+        tasksBoardService.add(new TaskMongo(task.getId(), task.getName()), task.getOwner().getId(),
+                task.getWorker().getId());
+        return task == null ? null : toTaskCreateDto(task);
     }
 
     @Transactional
@@ -104,6 +120,12 @@ public class TaskServiceImpl implements TaskService {
 
     @Transactional
     @Override
+    public List<TaskCreateDto> getByOwnerId(Long ownerId) {
+        return TaskTransformer.toTaskCreateDtoList(taskRepo.getByOwner(ownerId));
+    }
+
+    @Transactional
+    @Override
     public List<TaskFullDto> getByWorker(Long workerId) {
         return TaskTransformer.toDTOList(taskRepo.getByWorker(workerId));
     }
@@ -160,4 +182,16 @@ public class TaskServiceImpl implements TaskService {
         return TaskTransformer.toFullDTO(taskRepo.getByName(name));
     }
 
+    private Task toTaskEntity(TaskCreateDto taskCreateDto){
+        Task task = new Task();
+        task.setName(taskCreateDto.getName());
+        task.setOwner(toEntity(userService.getById(taskCreateDto.getOwner())));
+        task.setWorker(toEntity(userService.getById(taskCreateDto.getWorker())));
+        task.setPriority(toEntity(priorityService.getById(taskCreateDto.getPriority())));
+        task.setEstimation(EstimationTransformer.toEntity(new EstimationDto(taskCreateDto.getEstimation())));
+        task.setParentTask(taskRepo.read(taskCreateDto.getParent()));
+        task.setStatus(StatusTransformer.toEntity(statusService.getById(taskCreateDto.getStatus())));
+        task.setTrelloId(taskCreateDto.getTrelloId());
+        return task;
+    }
 }
