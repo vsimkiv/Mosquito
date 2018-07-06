@@ -108,8 +108,7 @@ public class LogWorkRepoImpl implements LogWorkRepo {
         Session session = null;
         try {
             session = sessionFactory.openSession();
-            Query<LogWork> query = session.createQuery("from " + LogWork.class.getName() +
-                    " l JOIN l.author a where a.id = :id ");
+            Query<LogWork> query = session.createQuery("from " + LogWork.class.getName()+" where author_id = :id ");
             query.setParameter("id", userId);
             return query.list();
         } catch (HibernateException e) {

@@ -36,6 +36,12 @@ public class Estimation implements Serializable {
     @OneToMany(mappedBy = "estimation")
     private List<LogWork> logWorks;
 
+    public Estimation(Integer timeEstimation, Integer remaining, Task task) {
+        this.timeEstimation = timeEstimation;
+        this.remaining = remaining;
+        this.task = task;
+    }
+
     @Override
     public String toString() {
         return "Estimation{" +

@@ -40,7 +40,6 @@ public class EstimationTransformerTest {
         logWorkDto.setDescription("Test Description");
         List<LogWorkDto> logWorkDtos = new ArrayList<>();
         logWorkDtos.add(logWorkDto);
-        estimationDto.setLogWorks(logWorkDtos);
         PriorityDto priorityDto = new PriorityDto();
         priorityDto.setId(4L);
         priorityDto.setTitle("High");

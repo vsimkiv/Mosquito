@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface LogWorkService {
 
-    LogWorkDto save(LogWorkDto logWork, int remaining);
+    LogWorkDto save(Long estId, LogWorkDto logWork, int remaining);
 
     LogWorkDto getById(Long logWorkId);
 
