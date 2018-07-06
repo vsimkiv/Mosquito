@@ -1,4 +1,4 @@
-package com.softserve.mosquito.configs;
+package com.softserve.mosquito.controllers;
 
 import com.softserve.mosquito.dtos.UserDto;
 import com.softserve.mosquito.dtos.UserLoginDto;

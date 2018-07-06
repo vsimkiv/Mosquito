@@ -1,4 +1,4 @@
-package com.softserve.mosquito.configs;
+package com.softserve.mosquito.controllers;
 
 import com.softserve.mosquito.dtos.TaskFullDto;
 import com.softserve.mosquito.services.api.TaskService;
@@ -11,7 +11,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api/projects")
-@Api(value = "Project controller", description = "Controller for doing CRUD operation with project")public class ProjectController {
+@Api(value = "Project controller", description = "Controller for doing CRUD operation with project")
+public class ProjectController {
     private TaskService taskService;
 
     @Autowired

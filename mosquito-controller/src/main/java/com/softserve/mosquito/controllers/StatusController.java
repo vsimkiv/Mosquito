@@ -1,4 +1,4 @@
-package com.softserve.mosquito.configs;
+package com.softserve.mosquito.controllers;
 
 import com.softserve.mosquito.dtos.StatusDto;
 import com.softserve.mosquito.services.api.StatusService;

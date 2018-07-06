@@ -1,4 +1,4 @@
-package com.softserve.mosquito.configs;
+package com.softserve.mosquito.controllers;
 
 import com.restfb.Parameter;
 import com.restfb.Version;

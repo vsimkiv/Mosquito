@@ -1,7 +1,6 @@
-package com.softserve.mosquito.configs;
+package com.softserve.mosquito.controllers;
 
 import com.softserve.mosquito.dtos.LogWorkDto;
-import com.softserve.mosquito.services.api.EstimationService;
 import com.softserve.mosquito.services.api.LogWorkService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
