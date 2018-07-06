@@ -34,6 +34,15 @@ public class TaskCreateDto {
         this.priority = priority;
     }
 
+    public TaskCreateDto(String name, Long owner, Long worker, Long status, Long parent, String trelloId) {
+        this.name = name;
+        this.owner = owner;
+        this.worker = worker;
+        this.status = status;
+        this.parent = parent;
+        this.trelloId = trelloId;
+    }
+
     public boolean isPresentInCollection(List<TaskCreateDto> taskCreateDtos) {
         for (TaskCreateDto taskCreateDto : taskCreateDtos) {
             if (this.equals(taskCreateDto)) return true;

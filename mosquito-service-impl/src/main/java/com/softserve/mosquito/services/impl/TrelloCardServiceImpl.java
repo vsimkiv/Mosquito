@@ -35,25 +35,50 @@ public class TrelloCardServiceImpl implements TrelloCardService {
     @Override
     @Transactional
     public void createTasksFromTrello(Long userId){
-        UserDto userDto = userService.getById(userId);
-        createTrelloTasks(userDto, allNewTrelloTasks(userId));
+        createTrelloTasks(userId, allNewTrelloTasks(userId));
     }
 
     @Override
     @Transactional
-    public void createChosenTastsFromTrello(Long userId, List<TaskSimpleDto> taskSimpleDtos){
-
-        UserDto userDto = userService.getById(userId);
-        createTrelloTasks(userDto, taskSimpleDtos);
+    public void createChosenTastsFromTrello(Long userId, List<TaskCreateDto> taskCreateDtoList){
+        createTrelloTasks(userId, taskCreateDtoList);
 
     }
 
+//    @Transactional
+//    @Override
+//    public List<TaskSimpleDto> allNewTrelloTasks(Long userId) {
+//
+//        trelloInfo = trelloInfoService.getByUserId(userId);
+//        List<TaskSimpleDto> trelloTasks = new ArrayList<TaskSimpleDto>();
+//
+//        for (TrelloBoardDto trelloBoard : getAllTrelloBoards()) {
+//
+//            for (TrelloListDto trelloList : getTrelloListsByBoard(trelloBoard.getId())) {
+//
+//                if (trelloList.getName().equalsIgnoreCase("todo") ||
+//                        trelloList.getName().equalsIgnoreCase("doing") ||
+//                        trelloList.getName().equalsIgnoreCase("done")) {
+//
+//                    UserDto userDto = trelloInfo.getUserDto();
+//                    TaskSimpleDto taskDto = new TaskSimpleDto(trelloBoard.getName(), userDto.getId().toString(), userDto.getId().toString(),
+//                            "todo", trelloBoard.getId());
+//
+//                    if (!taskService.isPresent(taskDto.getTrelloId()) && !taskDto.isPresentInCollection(trelloTasks)) trelloTasks.add(taskDto);
+//
+//                    trelloTasks.addAll(CollectTaskSimpleDtosFromTrelloCards(getTrelloCardsByList(trelloList.getId()),
+//                            trelloList.getName().toLowerCase(), trelloBoard.getName(), trelloList));
+//                }
+//            }
+//        }
+//        return trelloTasks;
+//    }
+
     @Transactional
     @Override
-    public List<TaskSimpleDto> allNewTrelloTasks(Long userId) {
+    public List<TaskCreateDto> allNewTrelloTasks(Long userId) {
 
-        trelloInfo = trelloInfoService.getByUserId(userId);
-        List<TaskSimpleDto> trelloTasks = new ArrayList<TaskSimpleDto>();
+        List<TaskCreateDto> trelloTasks = new ArrayList<TaskCreateDto>();
 
         for (TrelloBoardDto trelloBoard : getAllTrelloBoards()) {
 
@@ -63,47 +88,68 @@ public class TrelloCardServiceImpl implements TrelloCardService {
                         trelloList.getName().equalsIgnoreCase("doing") ||
                         trelloList.getName().equalsIgnoreCase("done")) {
 
-                    UserDto userDto = trelloInfo.getUserDto();
-                    TaskSimpleDto taskDto = new TaskSimpleDto(trelloBoard.getName(), userDto.getId().toString(), userDto.getId().toString(),
-                            "todo", trelloBoard.getId());
+                    TaskCreateDto taskCreateDto = new TaskCreateDto(trelloBoard.getName(), userId, userId,
+                            statusService.getByName("todo").getId(), null,  trelloBoard.getId());
 
-                    if (!taskService.isPresent(taskDto.getTrelloId()) && !taskDto.isPresentInCollection(trelloTasks)) trelloTasks.add(taskDto);
+                    if (!taskService.isPresent(taskCreateDto.getTrelloId()) && !taskCreateDto.isPresentInCollection(trelloTasks)) trelloTasks.add(taskCreateDto);
 
-                    trelloTasks.addAll(CollectTaskSimpleDtosFromTrelloCards(getTrelloCardsByList(trelloList.getId()),
-                            trelloList.getName().toLowerCase(), trelloBoard.getName(), trelloList));
+                    trelloTasks.addAll(CollectTaskCreateDtosFromTrelloCards(getTrelloCardsByList(trelloList.getId()),
+                            trelloList.getName().toLowerCase(), trelloBoard.getName(), userId));
                 }
             }
         }
         return trelloTasks;
     }
 
-    private List<TaskSimpleDto> CollectTaskSimpleDtosFromTrelloCards(TrelloCardDto[] trelloCards, String status, String projectName, TrelloListDto trelloList) {
+//    private List<TaskSimpleDto> CollectTaskSimpleDtosFromTrelloCards(TrelloCardDto[] trelloCards, String status, String projectName, TrelloListDto trelloList) {
+//
+//        List<TaskSimpleDto> trelloTasks = new ArrayList<TaskSimpleDto>();
+//        UserDto userDto = trelloInfo.getUserDto();
+//
+//        for (TrelloCardDto trelloCard : trelloCards) {
+//
+//            TaskSimpleDto trelloTask = new TaskSimpleDto(trelloCard.getName(), projectName, userDto.getId().toString(), userDto.getId().toString(),
+//                    status, trelloCard.getId());
+//
+//            if (!taskService.isPresent(trelloCard.getId())) trelloTasks.add(trelloTask);
+//        }
+//        return trelloTasks;
+//    }
 
-        List<TaskSimpleDto> trelloTasks = new ArrayList<TaskSimpleDto>();
-        UserDto userDto = trelloInfo.getUserDto();
+    private List<TaskCreateDto> CollectTaskCreateDtosFromTrelloCards(TrelloCardDto[] trelloCards, String status, String projectName, Long userId) {
+
+        List<TaskCreateDto> taskCreateDtos = new ArrayList<TaskCreateDto>();
 
         for (TrelloCardDto trelloCard : trelloCards) {
 
-            TaskSimpleDto trelloTask = new TaskSimpleDto(trelloCard.getName(), projectName, userDto.getId().toString(), userDto.getId().toString(),
-                    status, trelloCard.getId());
+            TaskCreateDto taskCreateDto = new TaskCreateDto(trelloCard.getName() , userId, userId,
+                    statusService.getByName(status).getId(),taskService.getByName(projectName).getId(), trelloCard.getId());
 
-            if (!taskService.isPresent(trelloCard.getId())) trelloTasks.add(trelloTask);
+            if (!taskService.isPresent(trelloCard.getId())) taskCreateDtos.add(taskCreateDto);
         }
-        return trelloTasks;
+        return taskCreateDtos;
     }
 
-    private void createTrelloTasks(UserDto userDto, List<TaskSimpleDto> taskSimpleDtos){
+//    private void createTrelloTasks(UserDto userDto, List<TaskSimpleDto> taskSimpleDtos){
+//
+//        TaskFullDto taskFullDto = new TaskFullDto();
+//        taskFullDto.setOwnerDto(userDto);
+//        taskFullDto.setWorkerDto(userDto);
+//
+//        for (TaskSimpleDto taskSimpleDto : taskSimpleDtos){
+//            taskFullDto.setName(taskSimpleDto.getName());
+//            taskFullDto.setTrelloId(taskSimpleDto.getTrelloId());
+//            taskFullDto.setStatusDto(statusService.getByName(taskSimpleDto.getStatus()));
+//            taskFullDto.setParentTaskFullDto(taskSimpleDto.getParentTask()==null? null : taskService.getByTrelloId(taskSimpleDto.getTrelloId()));
+//            taskService.save(taskFullDto);
+//        }
+//    }
 
-        TaskFullDto taskFullDto = new TaskFullDto();
-        taskFullDto.setOwnerDto(userDto);
-        taskFullDto.setWorkerDto(userDto);
-
-        for (TaskSimpleDto taskSimpleDto : taskSimpleDtos){
-            taskFullDto.setName(taskSimpleDto.getName());
-            taskFullDto.setTrelloId(taskSimpleDto.getTrelloId());
-            taskFullDto.setStatusDto(statusService.getByName(taskSimpleDto.getStatus()));
-            taskFullDto.setParentTaskFullDto(taskSimpleDto.getParentTask()==null? null : taskService.getByTrelloId(taskSimpleDto.getTrelloId()));
-            taskService.save(taskFullDto);
+    private void createTrelloTasks(Long userId, List<TaskCreateDto> taskCreateDtoList){
+        for (TaskCreateDto taskCreateDto : taskCreateDtoList){
+            taskCreateDto.setOwner(userId);
+            taskCreateDto.setWorker(userId);
+            taskService.save(taskCreateDto);
         }
     }
 

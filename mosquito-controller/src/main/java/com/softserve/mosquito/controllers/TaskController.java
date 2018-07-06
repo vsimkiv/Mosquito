@@ -1,7 +1,6 @@
 package com.softserve.mosquito.controllers;
 
-import com.softserve.mosquito.dtos.TaskFullDto;
-import com.softserve.mosquito.dtos.TaskSimpleDto;
+import com.softserve.mosquito.dtos.TaskCreateDto;
 import com.softserve.mosquito.entities.mongo.TaskMongo;
 import com.softserve.mosquito.services.api.TaskService;
 import com.softserve.mosquito.services.api.TasksBoardService;
@@ -28,14 +27,14 @@ public class TaskController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TaskFullDto createTask(@RequestBody TaskFullDto taskFullDto) {
-        return taskService.save(taskFullDto);
+    public TaskCreateDto createTask(@RequestBody TaskCreateDto taskCreateDto) {
+        return taskService.save(taskCreateDto);
     }
 
     @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TaskFullDto updateTask(@PathVariable("id") Long id, @RequestBody TaskFullDto taskFullDto) {
-        return taskService.update(taskFullDto);
+    public TaskCreateDto updateTask(@PathVariable("id") Long id, @RequestBody TaskCreateDto taskCreateDto) {
+        return taskService.update(taskCreateDto);
     }
 
     @DeleteMapping(path = "/{id}")
@@ -46,7 +45,7 @@ public class TaskController {
 
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TaskSimpleDto getTaskById(@PathVariable("id") Long id) {
+    public TaskCreateDto getTaskById(@PathVariable("id") Long id) {
         if (taskService.getSimpleTaskById(id) == null)
             throw new TaskNotFoundException("Task with Id " + id + " not found!");
         return taskService.getSimpleTaskById(id);
@@ -54,13 +53,13 @@ public class TaskController {
 
     @GetMapping(path = "/{id}/info")
     @ResponseStatus(HttpStatus.OK)
-    public TaskFullDto getFullTaskById(@PathVariable("id") Long id) {
+    public TaskCreateDto getFullTaskById(@PathVariable("id") Long id) {
         return taskService.getById(id);
     }
 
     @GetMapping(path = "{id}/sub-tasks")
     @ResponseStatus(HttpStatus.OK)
-    public List<TaskFullDto> getSubTasks(@PathVariable("id") Long id) {
+    public List<TaskCreateDto> getSubTasks(@PathVariable("id") Long id) {
         return taskService.getSubTasks(id);
     }
 

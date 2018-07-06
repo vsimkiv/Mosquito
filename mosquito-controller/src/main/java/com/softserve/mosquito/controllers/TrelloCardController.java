@@ -1,5 +1,6 @@
 package com.softserve.mosquito.controllers;
 
+import com.softserve.mosquito.dtos.TaskCreateDto;
 import com.softserve.mosquito.dtos.TaskSimpleDto;
 import com.softserve.mosquito.services.api.TrelloCardService;
 import io.swagger.annotations.Api;
@@ -22,7 +23,7 @@ import java.util.List;
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<List<TaskSimpleDto>> showAllTrelloTasks(@PathVariable("userId") Long id) {
+    public ResponseEntity<List<TaskCreateDto>> showAllTrelloTasks(@PathVariable("userId") Long id) {
         return ResponseEntity.ok().body(trelloCardService.allNewTrelloTasks(id));
     }
 
@@ -33,10 +34,10 @@ import java.util.List;
 
     @PostMapping("/create/{userId}")
     @ApiOperation(value = "Add new user", response = TaskSimpleDto.class)
-    public ResponseEntity<List<TaskSimpleDto>> createUser(@RequestBody List<TaskSimpleDto> taskSimpleDtos, @PathVariable("userId") Long id) {
+    public ResponseEntity<List<TaskCreateDto>> createTrelloTasks(@RequestBody List<TaskCreateDto> taskCreateDtoList, @PathVariable("userId") Long id) {
 
-        trelloCardService.createChosenTastsFromTrello(id, taskSimpleDtos);
+        trelloCardService.createChosenTastsFromTrello(id, taskCreateDtoList);
 
-        return ResponseEntity.ok().body(taskSimpleDtos);
+        return ResponseEntity.ok().body(taskCreateDtoList);
     }
 }
