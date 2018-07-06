@@ -28,6 +28,9 @@ import java.util.List;
     @GetMapping(path= "/{status_id}")
     @ResponseStatus(HttpStatus.OK)
     public StatusDto getStatusById(@PathVariable("status_id") Long id){
+        if(id == null){
+            throw new NotFoundException("Status with id " + id + " not found");
+        }
         return statusService.getById(id);
     }
 
@@ -35,6 +38,9 @@ import java.util.List;
     @PutMapping(path= "/{status_id}")
     @ResponseStatus(HttpStatus.OK)
     public StatusDto updateStatus(@PathVariable("status_id") Long id, @RequestBody StatusDto statusDto) {
+        if(statusService.getById(id)== null){
+            throw new NotFoundException("Status with id " + id + " not found");
+        }
         statusDto.setId(id);
         return statusService.update(statusDto);
     }

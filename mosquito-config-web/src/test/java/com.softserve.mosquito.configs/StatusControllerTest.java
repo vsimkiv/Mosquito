@@ -6,18 +6,25 @@ import com.softserve.mosquito.entities.Status;
 import com.softserve.mosquito.services.api.StatusService;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,7 +32,12 @@ import java.util.List;
 
 import static net.bytebuddy.matcher.ElementMatchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.mockito.AdditionalMatchers.not;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
+import static org.mockito.hamcrest.MockitoHamcrest.argThat;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -35,20 +47,32 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { WebAppConfig.class })
+@ContextConfiguration(classes = { WebAppConfig.class, StatusControllerTest.Config.class })
 @WebAppConfiguration
 public class StatusControllerTest {
     private static final Long UNKNOWN_ID = Long.MAX_VALUE;
     private MockMvc mockMvc;
 
-    @Mock
+    @Autowired
     private StatusService statusServiceMock;
 
    @InjectMocks
     private  StatusController statusController;
+
    @InjectMocks
    private GlobalExceptionHandler globalExceptionHandler;
 
+   @Autowired
+   private WebApplicationContext webApplicationContext;
+
+   @Configuration
+    public static class Config{
+       @Bean
+       @Primary
+        public StatusService statusService(){
+            return mock(StatusService.class);
+        }
+    }
     public StatusControllerTest() {
     }
 
@@ -56,24 +80,40 @@ public class StatusControllerTest {
     public void setUp() {
 
         MockitoAnnotations.initMocks(this);
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
-        mockMvc = MockMvcBuilders.standaloneSetup(statusController, globalExceptionHandler).build();
     }
     @Test
     public void createStatus_success() throws Exception  {
         StatusDto statusDto = new StatusDto(1L, "TODO");
-        when(statusServiceMock.save(statusDto)).thenReturn(statusDto);
+        when(statusServiceMock.save(eq(statusDto))).thenReturn(statusDto);
         mockMvc.perform(
                 post("/api/statuses")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(statusDto)))
                         .andExpect(status().isCreated());
 
-        verify(statusServiceMock, times(0)).save(statusDto);
-        //verifyNoMoreInteractions(statusServiceMock);
+        verify(statusServiceMock, times(1)).save(any(StatusDto.class));
+        verifyNoMoreInteractions(statusServiceMock);
 
     }
+    @DirtiesContext
+    @Test
+    @Ignore
+    public void test_create_status_fail_409_conflict() throws Exception {
+        StatusDto statusDto = new StatusDto(1L, "TODO");
 
+        when(statusServiceMock.save(statusDto)).thenReturn(null);
+
+        mockMvc.perform(
+                post("/api/statuses")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(statusDto)))
+                .andExpect(status().isConflict());
+
+        verify(statusServiceMock, times(1)).save(statusDto);
+        verifyNoMoreInteractions(statusDto);
+    }
     @Test
     public void getStatusById_success() throws Exception {
         StatusDto statusDto = new StatusDto(3L, "Doing");
@@ -88,13 +128,23 @@ public class StatusControllerTest {
 
         verify(statusServiceMock).getById(anyLong());
         verifyNoMoreInteractions(statusServiceMock);
-
-
     }
+    @DirtiesContext
+    @Test
+    @Ignore
+    public void test_get_by_id_fail_404_not_found() throws Exception {
+        when(statusServiceMock.getById(10L)).thenReturn(null);
 
+        mockMvc.perform(get("/api/statuses/{status_id}", 10L))
+                .andExpect(status().isNotFound());
+
+        verify(statusServiceMock, times(1)).getById(10L);
+        verifyNoMoreInteractions(statusServiceMock);
+    }
     @Test
     public void updateStatus_success()throws Exception {
         StatusDto statusDto = new StatusDto(1L, "TODO");
+        when(statusServiceMock.getById(statusDto.getId())).thenReturn(statusDto);
         when(statusServiceMock.update(statusDto)).thenReturn(statusDto);
 
         mockMvc.perform(
@@ -102,11 +152,24 @@ public class StatusControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(statusDto)))
                 .andExpect(status().isOk());
-        verify(statusServiceMock, times(0)).getById(statusDto.getId());
-        verify(statusServiceMock, times(0)).update(statusDto);
-        //erifyNoMoreInteractions(statusServiceMock);
+        verify(statusServiceMock, times(1)).getById(statusDto.getId());
+        verify(statusServiceMock, times(1)).update(any(StatusDto.class));
+        verifyNoMoreInteractions(statusServiceMock);
     }
+    @DirtiesContext
+    @Test
+    public void test_update_status_fail_404_not_found() throws Exception {
+        StatusDto statusDto = new StatusDto(1L, "TODO");
 
+        mockMvc.perform(
+                put("/api/statuses/{status_id}", statusDto.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(statusDto)))
+                .andExpect(status().isNotFound());
+        verify(statusServiceMock, times(1)).getById(statusDto.getId());
+        verifyNoMoreInteractions(statusServiceMock);
+    }
+    @DirtiesContext
     @Test
     public void deleteStatus_success()throws Exception {
         StatusDto status = new StatusDto(10L, "Doing");
@@ -121,8 +184,22 @@ public class StatusControllerTest {
         verify(statusServiceMock, times(1)).delete(status.getId());
         verifyNoMoreInteractions(statusServiceMock);
     }
+    @Test
+    @DirtiesContext
+    public void test_delete_status_fail_404_not_found() throws Exception {
+        StatusDto status = new StatusDto(10L, "Doing");
 
+        doNothing().when(statusServiceMock).delete(status.getId());
+        mockMvc.perform(
+                delete("/api/statuses/{id}", status.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(status)))
+                .andExpect(status().isNotFound());
+        verify(statusServiceMock, times(1)).getById(status.getId());
+        verifyNoMoreInteractions(statusServiceMock);
+    }
 
+    @DirtiesContext
     @Test
     public void getAllStatuses()throws Exception {
         List<StatusDto> statusDtos = new ArrayList<>(Arrays.asList(
@@ -145,4 +222,6 @@ public class StatusControllerTest {
         verify(statusServiceMock, times(1)).getAll();
         verifyNoMoreInteractions(statusServiceMock);
     }
+
+
 }
