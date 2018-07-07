@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {WebAppConfig.class, StatusControllerTest.Config.class})
+@ContextConfiguration(classes = {WebAppConfig.class})
 @WebAppConfiguration
 public class PriorityControllerTest {
     private static final Long UNKNOWN_ID = Long.MAX_VALUE;
