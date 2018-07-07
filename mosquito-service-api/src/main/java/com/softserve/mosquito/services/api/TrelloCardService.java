@@ -7,12 +7,12 @@ import java.util.List;
 
 public interface TrelloCardService {
 
-    //List<TaskSimpleDto> allNewTrelloTasks(Long userId);
+    //List<TaskSimpleDto> allNewTrelloTasks(Long workerId);
     List<TaskCreateDto> allNewTrelloTasks(Long userId);
 
     void createTasksFromTrello(Long userId);
 
-    //void createChosenTastsFromTrello(Long userId, List<TaskSimpleDto> taskSimpleDtos);
+    //void createChosenTastsFromTrello(Long workerId, List<TaskSimpleDto> taskSimpleDtos);
     void createChosenTastsFromTrello(Long userId, List<TaskCreateDto> taskCreateDtoList);
 
 }

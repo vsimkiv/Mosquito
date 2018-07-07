@@ -28,18 +28,22 @@ public class TaskController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public TaskCreateDto createTask(@RequestBody TaskCreateDto taskCreateDto) {
+        tasksBoardService.add(new TaskMongo(taskCreateDto.getId(), taskCreateDto.getName()),
+                taskCreateDto.getOwner(), taskCreateDto.getWorker());
         return taskService.save(taskCreateDto);
     }
 
     @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public TaskCreateDto updateTask(@PathVariable("id") Long id, @RequestBody TaskCreateDto taskCreateDto) {
+        tasksBoardService.update(new TaskMongo(taskCreateDto.getId(), taskCreateDto.getName()), taskCreateDto.getWorker());
         return taskService.update(taskCreateDto);
     }
 
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTask(@PathVariable("id") Long id) {
+        tasksBoardService.delete(id);
         taskService.delete(id);
     }
 
