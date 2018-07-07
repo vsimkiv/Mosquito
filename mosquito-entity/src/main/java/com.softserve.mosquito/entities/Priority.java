@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Entity
+@EqualsAndHashCode
 @Table(name = "priorities")
 public final class Priority implements Serializable {
 
