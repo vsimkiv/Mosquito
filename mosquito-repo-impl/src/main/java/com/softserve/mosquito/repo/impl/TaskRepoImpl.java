@@ -1,9 +1,6 @@
 package com.softserve.mosquito.repo.impl;
 
-import com.mongodb.BasicDBObject;
 import com.softserve.mosquito.entities.Task;
-import com.softserve.mosquito.entities.mongo.TaskMongo;
-import com.softserve.mosquito.entities.mongo.TasksBoard;
 import com.softserve.mosquito.repo.api.TaskRepo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,9 +9,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
@@ -26,13 +20,10 @@ import java.util.List;
 public class TaskRepoImpl implements TaskRepo {
     private static final Logger LOGGER = LogManager.getLogger(TaskRepoImpl.class);
     private SessionFactory sessionFactory;
-    private MongoOperations mongoOperations;
-
 
     @Autowired
-    public TaskRepoImpl(SessionFactory sessionFactory, MongoOperations mongoOperations) {
+    public TaskRepoImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
-        this.mongoOperations = mongoOperations;
     }
 
     @Override
@@ -89,13 +80,6 @@ public class TaskRepoImpl implements TaskRepo {
             session.getTransaction().begin();
             Task task = session.get(Task.class, id);
             session.delete(task);
-            org.springframework.data.mongodb.core.query.Query query = new org.springframework.data.mongodb.core.query.Query(
-                    Criteria.where("taskMongos").elemMatch(
-                            Criteria.where("taskId").is(task.getId()))
-            );
-            mongoOperations.updateMulti(query,
-                    new Update().pull("taskMongos",new BasicDBObject("taskId",task.getId()))
-                    ,TasksBoard.class);
             session.getTransaction().commit();
         } catch (HibernateException e) {
             LOGGER.error("Problem with deleting task" + Arrays.toString(e.getStackTrace()));
@@ -164,7 +148,7 @@ public class TaskRepoImpl implements TaskRepo {
         try {
             session = sessionFactory.openSession();
             Query<Task> query = session.createQuery("FROM " + Task.class.getName() +
-                    " t WHERE t.owner.id= :ownerId ",Task.class);
+                    " t WHERE t.owner.id= :ownerId ", Task.class);
             query.setParameter("ownerId", ownerId);
             return query.getResultList();
         } catch (HibernateException e) {

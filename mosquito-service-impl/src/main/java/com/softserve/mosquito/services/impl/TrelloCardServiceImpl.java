@@ -47,9 +47,9 @@ public class TrelloCardServiceImpl implements TrelloCardService {
 
 //    @Transactional
 //    @Override
-//    public List<TaskSimpleDto> allNewTrelloTasks(Long userId) {
+//    public List<TaskSimpleDto> allNewTrelloTasks(Long workerId) {
 //
-//        trelloInfo = trelloInfoService.getByUserId(userId);
+//        trelloInfo = trelloInfoService.getByUserId(workerId);
 //        List<TaskSimpleDto> trelloTasks = new ArrayList<TaskSimpleDto>();
 //
 //        for (TrelloBoardDto trelloBoard : getAllTrelloBoards()) {

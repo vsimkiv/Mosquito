@@ -17,7 +17,7 @@ public class TasksBoard {
     private String id;
 
     @NonNull
-    private Long userId;
+    private Long workerId;
 
     @NonNull
     private Long ownerId;
@@ -30,7 +30,7 @@ public class TasksBoard {
     public String toString() {
         return "TasksBoard{" +
                 "id='" + id + '\'' +
-                ", userId=" + userId +
+                ", workerId=" + workerId +
                 ", ownerId=" + ownerId +
                 ", taskMongos=" + taskMongos +
                 '}';

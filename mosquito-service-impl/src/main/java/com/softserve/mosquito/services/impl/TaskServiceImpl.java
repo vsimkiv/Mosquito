@@ -51,8 +51,6 @@ public class TaskServiceImpl implements TaskService {
     public TaskCreateDto save(TaskCreateDto taskCreateDto ){
 
         Task task = taskRepo.create(toTaskEntity(taskCreateDto));
-        tasksBoardService.add(new TaskMongo(task.getId(), task.getName()), task.getOwner().getId(),
-                task.getWorker().getId());
         return task == null ? null : toTaskCreateDto(task);
     }
 
@@ -69,9 +67,7 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     @Override
     public TaskCreateDto update(TaskCreateDto taskCreateDto) {
-
         Task task = taskRepo.update(toTaskEntity(taskCreateDto));
-        tasksBoardService.update(new TaskMongo(task.getId(), task.getName()), task.getWorker().getId());
         if (task == null)
             return null;
         return toTaskCreateDto(task);
