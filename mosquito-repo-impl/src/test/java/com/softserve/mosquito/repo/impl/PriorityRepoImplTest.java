@@ -2,6 +2,7 @@ package com.softserve.mosquito.repo.impl;
 
 import com.softserve.mosquito.entities.Priority;
 import com.softserve.mosquito.entities.Status;
+import com.softserve.mosquito.repo.api.PriorityRepo;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +20,7 @@ import static org.junit.Assert.*;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class PriorityRepoImplTest {
     @Autowired
-    PriorityRepoImpl priorityRepo;
+    PriorityRepo priorityRepo;
 
     @Autowired
     DataSource dataSource;

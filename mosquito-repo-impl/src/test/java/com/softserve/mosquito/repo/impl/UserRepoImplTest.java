@@ -2,11 +2,14 @@ package com.softserve.mosquito.repo.impl;
 
 import com.softserve.mosquito.entities.Specialization;
 import com.softserve.mosquito.entities.User;
+import com.softserve.mosquito.repo.api.SpecializationRepo;
+import com.softserve.mosquito.repo.api.UserRepo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.util.HashSet;
@@ -20,10 +23,10 @@ import static org.junit.Assert.*;
 public class UserRepoImplTest {
 
     @Autowired
-    UserRepoImpl userRepo;
+    UserRepo userRepo;
 
     @Autowired
-    SpecializationRepoImpl specializationRepo;
+    SpecializationRepo specializationRepo;
 
     @Autowired
     DataSource dataSource;

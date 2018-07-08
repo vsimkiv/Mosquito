@@ -4,7 +4,6 @@ import com.softserve.mosquito.entities.User;
 import com.softserve.mosquito.repo.api.UserRepo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -28,113 +27,65 @@ public class UserRepoImpl implements UserRepo {
     }
 
     @Override
+    @Transactional
     public User create(User user) {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
-            Long id = (Long) session.save(user);
-            if (id == null)
-                throw new HibernateException("Did not get id!");
-            return user;
-        } catch (HibernateException e) {
-            LOGGER.error("Error during save user! " + e.getMessage());
+        Session session = sessionFactory.getCurrentSession();
+        Long id = (Long) session.save(user);
+        if (id == null) {
+            LOGGER.error("Error during save user!");
             return null;
-        } finally {
-            if (session != null) session.close();
         }
+        return user;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public User read(Long id) {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
-            return session.get(User.class, id);
-        } catch (HibernateException e) {
-            LOGGER.error("Reading user was failed!" + e.getMessage());
-            return null;
-        } finally {
-            if (session != null) session.close();
-        }
+        Session session = sessionFactory.getCurrentSession();
+        return session.get(User.class, id);
     }
 
     @Override
+    @Transactional
     public User update(User user) {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
-            session.getTransaction().begin();
-            session.update(user);
-            session.getTransaction().commit();
-            return user;
-        } catch (HibernateException e) {
-            LOGGER.error("Updating user was failed!" + e.getMessage());
-            return null;
-        } finally {
-            if (session != null) session.close();
-        }
+        Session session = sessionFactory.getCurrentSession();
+        session.update(user);
+        return user;
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
-            session.getTransaction().begin();
-            User user = session.get(User.class, id);
-            session.delete(user);
-            session.getTransaction().commit();
-        } catch (HibernateException e) {
-            LOGGER.error("Deleting user was failed!" + e.getMessage());
-        } finally {
-            if (session != null) session.close();
-        }
+        Session session = sessionFactory.getCurrentSession();
+        User user = session.get(User.class, id);
+        session.delete(user);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<User> readAll() {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
-            Query<User> users = session.createQuery("FROM " + User.class.getName());
-            return users.list();
-        } catch (HibernateException e) {
-            LOGGER.error(e.getMessage());
-            return null;
-        } finally {
-            if (session != null) session.close();
-        }
-    }
-
-    public User readByEmail(String email) {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
-            Query query = session.createQuery("FROM " + User.class.getName() + " WHERE email = :email ");
-            query.setParameter("email", email);
-            return (User) query.uniqueResult();
-        } catch (HibernateException e) {
-            LOGGER.error("Reading user was failed!" + e.getMessage());
-            return null;
-        } finally {
-            if (session != null) session.close();
-        }
+        Session session = sessionFactory.getCurrentSession();
+        Query<User> users = session.createQuery("FROM " + User.class.getName(), User.class);
+        return users.list();
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public User readByEmail(String email) {
+        Session session = sessionFactory.getCurrentSession();
+        Query<User> query = session.createQuery("FROM " + User.class.getName() +
+                " WHERE email = :email ", User.class);
+        query.setParameter("email", email);
+        return query.uniqueResult();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<User> readBySpecializationId(Long id) {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
-            Query query = session.createQuery("FROM " + User.class.getName() +
-                    " u JOIN u.specializations s WHERE s.id = :id ");
-            query.setParameter("id", id);
-            return query.list();
-        } catch (HibernateException e) {
-            LOGGER.error("Reading users was failed!" + e.getMessage());
-            return null;
-        } finally {
-            if (session != null) session.close();
-        }
+        Session session = sessionFactory.getCurrentSession();
+        Query<User> query = session.createQuery("FROM " + User.class.getName() +
+                " u JOIN u.specializations s WHERE s.id = :id ", User.class);
+        query.setParameter("id", id);
+        return query.list();
     }
 }

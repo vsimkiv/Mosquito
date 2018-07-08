@@ -6,10 +6,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,130 +24,44 @@ public class SpecializationRepoImpl implements SpecializationRepo {
     }
 
     @Override
+    @Transactional
     public Specialization create(Specialization specialization) {
-        Session session = null;
-        Transaction transaction = null;
-
-        try {
-            session = sessionFactory.openSession();
-            transaction = session.beginTransaction();
-
-            Long specializationId = (Long) session.save(specialization);
-            specialization.setId(specializationId);
-
-            transaction.commit();
-        } catch (Exception e) {
-            LOGGER.error("Error during save specialization!" + e.getMessage());
-            if(transaction != null){
-                transaction.rollback();
-            }
-            return null;
-        }finally {
-            if(session != null){
-                session.close();
-            }
-        }
-
+        Session session = sessionFactory.getCurrentSession();
+        Long specializationId = (Long) session.save(specialization);
+        specialization.setId(specializationId);
         return specialization;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Specialization read(Long id) {
-        Session session = null;
-        Transaction transaction = null;
-        Specialization specialization = null;
-
-        try {
-            session = sessionFactory.openSession();
-            transaction = session.beginTransaction();
-
-            specialization = session.get(Specialization.class, id);
-        } catch (Exception e) {
-            LOGGER.error("Specialization reading was failed!", e.getMessage());
-            if(transaction != null){
-                transaction.rollback();
-            }
-        }finally {
-            if(session != null){
-                session.close();
-            }
-        }
-
+        Session session = sessionFactory.getCurrentSession();
+        Specialization specialization = session.get(Specialization.class, id);
         return specialization;
     }
 
     @Override
+    @Transactional
     public Specialization update(Specialization specialization) {
-        Session session = null;
-        Transaction transaction = null;
-
-        try{
-            session = sessionFactory.openSession();
-            transaction = session.beginTransaction();
-            session.update(specialization);
-            transaction.commit();
-        }catch (Exception e){
-            LOGGER.error("Specialization updating was failed" + e.getMessage());
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            return null;
-        }finally {
-            if(session != null){
-                session.close();
-            }
-        }
-
+        Session session = sessionFactory.getCurrentSession();
+        session.update(specialization);
         return specialization;
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
-        Session session = null;
-        Transaction transaction = null;
-
-        try{
-            session = sessionFactory.openSession();
-            transaction = session.beginTransaction();
-            Specialization specialization = session.get(Specialization.class, id);
-            session.delete(specialization);
-            transaction.commit();
-        }catch (Exception e){
-            LOGGER.error("Specialization deleting was failed" + e.getMessage());
-            if(transaction != null){
-                transaction.rollback();
-            }
-        }finally {
-            if(session != null){
-                session.close();
-            }
-        }
+        Session session = sessionFactory.getCurrentSession();
+        Specialization specialization = session.get(Specialization.class, id);
+        session.delete(specialization);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Specialization> getAll() {
-        Session session = null;
-        List<Specialization> specializations = null;
-        Transaction transaction = null;
-
-        try {
-            session = sessionFactory.openSession();
-            transaction = session.beginTransaction();
-            Query query = session.createQuery("From " + Specialization.class.getName());
-
-            specializations = query.list();
-        }catch (Exception e){
-            LOGGER.error(e.getMessage());
-            if(transaction != null){
-                transaction.rollback();
-            }
-            return null;
-        }finally {
-            if(session != null){
-                session.close();
-            }
-        }
-
-        return specializations;
+        Session session = sessionFactory.getCurrentSession();
+        Query<Specialization> query = session.createQuery("From " +
+                Specialization.class.getName(), Specialization.class);
+        return query.list();
     }
 }

@@ -2,6 +2,8 @@ package com.softserve.mosquito.repo.impl;
 
 import com.softserve.mosquito.entities.TrelloInfo;
 import com.softserve.mosquito.entities.User;
+import com.softserve.mosquito.repo.api.TrelloInfoRepo;
+import com.softserve.mosquito.repo.api.UserRepo;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +20,9 @@ import static org.junit.Assert.*;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class TrelloInfoRepoImpTest {
     @Autowired
-    TrelloInfoRepoImp trelloInfoRepoImp;
+    TrelloInfoRepo trelloInfoRepoImp;
+    @Autowired
+    UserRepo userRepo;
 
     @Autowired
     DataSource dataSource;
@@ -36,7 +40,7 @@ public class TrelloInfoRepoImpTest {
         user.setFirstName("test_name");
         user.setLastName("test_surname");
         user.setConfirmed(true);
-        trelloInfo.setUser(user);
+        trelloInfo.setUser(userRepo.create(user));
         TrelloInfo created = trelloInfoRepoImp.create(trelloInfo);
         Long id = created.getId();
         assertNotNull(id);

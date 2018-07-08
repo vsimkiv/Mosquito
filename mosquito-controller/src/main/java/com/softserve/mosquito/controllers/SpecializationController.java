@@ -25,9 +25,6 @@ public class SpecializationController {
     public ResponseEntity<SpecializationDto> createSpecialization(@RequestBody SpecializationDto specializationDto){
         SpecializationDto createdSpecialization = specializationService.save(specializationDto);
 
-        if(createdSpecialization == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSpecialization);
     }
@@ -44,15 +41,14 @@ public class SpecializationController {
     }
 
     @PutMapping("/{specialization_id}")
-    public ResponseEntity<SpecializationDto> updateSpecialization(@PathVariable("specialization_id") Long specialization_id,
+    @ResponseStatus(HttpStatus.OK)
+    public SpecializationDto updateSpecialization(@PathVariable("specialization_id") Long specialization_id,
                                                                   @RequestBody SpecializationDto specializationDto){
-        SpecializationDto specializationForUpdate = new SpecializationDto(specialization_id, specializationDto.getTitle());
-        SpecializationDto updatedSpacialization = specializationService.update(specializationForUpdate);
-
-        if(updatedSpacialization == null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        if(specializationService.getById(specialization_id)== null){
+            throw new NotFoundException("Specialization with id " + specialization_id + " not found");
         }
-        return ResponseEntity.status(HttpStatus.OK).body(updatedSpacialization);
+        specializationDto.setId(specialization_id);
+        return specializationService.update(specializationDto);
     }
 
     @GetMapping
@@ -67,9 +63,12 @@ public class SpecializationController {
     }
 
     @DeleteMapping("/{specialization_id}")
-    public ResponseEntity removeSpecialization(@PathVariable("specialization_id") Long specialization_id){
-        specializationService.delete(specialization_id);
-        return ResponseEntity.status(HttpStatus.OK).build();
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removeSpecialization(@PathVariable("specialization_id") Long specialization_id){
+        if(specializationService.getById(specialization_id) == null){
+            throw  new StatusNotFoundException("Specialization with id " + specialization_id + " not found");
+        }
+         specializationService.delete(specialization_id);
     }
 
 }

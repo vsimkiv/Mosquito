@@ -53,7 +53,7 @@ public class UserController {
     @ApiOperation(value = "Update user in system", response = UserDto.class)
     public ResponseEntity<UserDto> updateUser(@PathVariable("userId") long id, @RequestBody UserDto userDto,
                                               @AuthenticationPrincipal UserPrincipal user) {
-        // check if received userId in dto is the same as token's id
+        // check if received workerId in dto is the same as token's id
         UserDto validUser  = userService.getById(user.getId());
         if(!validUser.getId().equals(id)){
             return ResponseEntity.badRequest().build();

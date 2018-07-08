@@ -13,4 +13,5 @@ public interface TasksBoardService {
 
     void add(TaskMongo taskMongo, Long ownerId, Long userId);
 
+    void delete(Long id);
 }

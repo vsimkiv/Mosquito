@@ -29,12 +29,15 @@ public class TaskController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public TaskDto createTask(@RequestBody TaskCreateDto taskCreateDto) {
+        tasksBoardService.add(new TaskMongo(taskCreateDto.getId(), taskCreateDto.getName()),
+                taskCreateDto.getOwnerId(), taskCreateDto.getWorkerId());
         return taskService.save(taskCreateDto);
     }
 
     @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public TaskDto updateTask(@PathVariable("id") Long id, @RequestBody TaskCreateDto taskCreateDto) {
+        tasksBoardService.update(new TaskMongo(taskCreateDto.getId(), taskCreateDto.getName()), taskCreateDto.getWorkerId());
         return taskService.update(taskCreateDto);
     }
 
@@ -49,7 +52,7 @@ public class TaskController {
     public TaskDto getTaskById(@PathVariable("id") Long id) {
         if (taskService.getSimpleTaskById(id) == null)
             throw new TaskNotFoundException("Task with Id " + id + " not found!");
-        return taskService.getById(id);
+        return taskService.getSimpleTaskById(id);
     }
 
     @GetMapping(path = "/{id}/info")
