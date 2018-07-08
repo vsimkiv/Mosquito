@@ -1,6 +1,7 @@
 package com.softserve.mosquito.controllers;
 
 import com.softserve.mosquito.dtos.TaskCreateDto;
+import com.softserve.mosquito.dtos.TaskDto;
 import com.softserve.mosquito.services.api.TaskService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +23,13 @@ public class ProjectController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TaskCreateDto createProject(@RequestBody TaskCreateDto taskCreateDto) {
+    public TaskDto createProject(@RequestBody TaskCreateDto taskCreateDto) {
         return taskService.save(taskCreateDto);
     }
 
     @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TaskCreateDto updateProject(@PathVariable("id") Long id, @RequestBody TaskCreateDto taskCreateDto) {
+    public TaskDto updateProject(@PathVariable("id") Long id, @RequestBody TaskCreateDto taskCreateDto) {
         return taskService.update(taskCreateDto);
     }
 
@@ -40,19 +41,19 @@ public class ProjectController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<TaskCreateDto> getAllProjects(){
+    public List<TaskDto> getAllProjects(){
         return taskService.getAllProjects();
     }
 
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TaskCreateDto getProjectById(@PathVariable("id") Long id){
+    public TaskDto getProjectById(@PathVariable("id") Long id){
         return taskService.getById(id);
     }
 
     @GetMapping(path = "/owner/{owner_id}")
     @ResponseStatus(HttpStatus.OK)
-    public List<TaskCreateDto> getProjectsByOwner(@PathVariable("owner_id")Long ownerId){
-        return taskService.getByOwner(ownerId);
+    public List<TaskDto> getProjectsByOwner(@PathVariable("owner_id")Long ownerId){
+        return taskService.getProjectsByOwner(ownerId);
     }
 }

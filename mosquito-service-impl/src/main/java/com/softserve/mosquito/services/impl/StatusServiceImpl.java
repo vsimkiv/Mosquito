@@ -22,8 +22,8 @@ public class StatusServiceImpl implements StatusService {
         this.statusRepo = statusRepo;
     }
 
-    @Override
     @Transactional
+    @Override
     public StatusDto save(StatusDto statusDto){
         Status status = statusRepo.create(StatusTransformer.toEntity(statusDto));
 
@@ -34,8 +34,8 @@ public class StatusServiceImpl implements StatusService {
         return StatusTransformer.toDTO(status);
     }
 
-    @Override
     @Transactional
+    @Override
     public StatusDto getById(Long id){
         Status status = statusRepo.read(id);
 
@@ -46,9 +46,8 @@ public class StatusServiceImpl implements StatusService {
         return StatusTransformer.toDTO(status);
     }
 
-
-    @Override
     @Transactional
+    @Override
     public StatusDto update(StatusDto statusDto){
         Status updatedStatus = statusRepo.update(StatusTransformer.toEntity(statusDto));
 
@@ -58,14 +57,15 @@ public class StatusServiceImpl implements StatusService {
 
         return StatusTransformer.toDTO(updatedStatus);
     }
-    @Override
+
     @Transactional
+    @Override
     public void delete(Long id){
         statusRepo.delete(id);
     }
 
-    @Override
     @Transactional
+    @Override
     public StatusDto getByName(String title){
         List<StatusDto> allStatuses = getAll();
 
@@ -79,8 +79,8 @@ public class StatusServiceImpl implements StatusService {
         return null;
     }
 
-    @Override
     @Transactional
+    @Override
     public List<StatusDto> getAll(){
         List<Status> statuses = statusRepo.getAll();
         if(statuses == null || statuses.isEmpty()){

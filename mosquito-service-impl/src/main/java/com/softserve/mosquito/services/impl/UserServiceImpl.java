@@ -12,6 +12,7 @@ import org.hashids.Hashids;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,7 @@ public class UserServiceImpl implements UserService {
         this.mailSender = mailSender;
     }
 
+    @Transactional
     @Override
     public UserDto save(UserDto user) {
         User activateUser = userRepo.create(UserTransformer.toEntity(user));
@@ -39,6 +41,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Transactional
     @Override
     public UserDto update(UserDto user) {
         UserDto oldUser = getById(user.getId());
@@ -48,25 +51,30 @@ public class UserServiceImpl implements UserService {
         return UserTransformer.toDto(userRepo.update(UserTransformer.toEntity(user)));
     }
 
+    @Transactional
     @Override
     public void delete(Long id) {
         userRepo.delete(id);
     }
 
+    @Transactional
     @Override
     public List<UserDto> getAll() {
         return UserTransformer.toDtoList(userRepo.readAll());
     }
 
+    @Transactional
     @Override
     public UserDto getById(Long id) {
         return UserTransformer.toDto(userRepo.read(id));
     }
 
+    @Transactional
     public UserDto getByEmail(String email) {
         return UserTransformer.toDto(userRepo.readByEmail(email));
     }
 
+    @Transactional
     @Override
     public List<UserDto> getBySpecializationId(Long specializationId) {
         List<User> users = userRepo.readAll();
@@ -80,11 +88,13 @@ public class UserServiceImpl implements UserService {
         return userDtos;
     }
 
+    @Transactional
     @Override
     public void sendPushMessage(String message, Long userId) {
         template.convertAndSendToUser(String.valueOf(userId), "/queue/reply", message);
     }
 
+    @Transactional
     @Override
     public void activateUser(String key) {
         long id = new Hashids().decode(key)[0];

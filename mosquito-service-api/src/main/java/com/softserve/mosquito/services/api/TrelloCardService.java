@@ -1,7 +1,7 @@
 package com.softserve.mosquito.services.api;
 
 import com.softserve.mosquito.dtos.TaskCreateDto;
-import com.softserve.mosquito.dtos.TaskSimpleDto;
+
 
 import java.util.List;
 

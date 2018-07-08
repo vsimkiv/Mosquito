@@ -94,7 +94,7 @@ public class LogWorkRepoImpl implements LogWorkRepo {
         Session session = null;
         try {
             session = sessionFactory.openSession();
-            Query<LogWork> query = sessionFactory.openSession().createQuery("FROM " + LogWork.class.getName());
+            Query<LogWork> query = session.createQuery("FROM " + LogWork.class.getName());
             return query.list();
         } catch (HibernateException e) {
             LOGGER.error(e.getMessage());
@@ -123,7 +123,7 @@ public class LogWorkRepoImpl implements LogWorkRepo {
         Session session = null;
         try {
             session = sessionFactory.openSession();
-            Query<LogWork> query = sessionFactory.openSession().createQuery("from " + LogWork.class.getName()+" where estimation_id = :est ");
+            Query<LogWork> query = session.createQuery("from " + LogWork.class.getName()+" where estimation_id = :est ");
             query.setParameter("est",estimationId);
             return query.list();
         } catch (HibernateException e) {

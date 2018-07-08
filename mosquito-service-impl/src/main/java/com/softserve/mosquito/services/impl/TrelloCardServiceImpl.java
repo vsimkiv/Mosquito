@@ -80,7 +80,7 @@ public class TrelloCardServiceImpl implements TrelloCardService {
 
         List<TaskCreateDto> trelloTasks = new ArrayList<TaskCreateDto>();
 
-        for (TrelloBoardDto trelloBoard : getAllTrelloBoards()) {
+        /*for (TrelloBoardDto trelloBoard : getAllTrelloBoards()) {
 
             for (TrelloListDto trelloList : getTrelloListsByBoard(trelloBoard.getId())) {
 
@@ -97,7 +97,7 @@ public class TrelloCardServiceImpl implements TrelloCardService {
                             trelloList.getName().toLowerCase(), trelloBoard.getName(), userId));
                 }
             }
-        }
+        }*/
         return trelloTasks;
     }
 
@@ -120,13 +120,13 @@ public class TrelloCardServiceImpl implements TrelloCardService {
 
         List<TaskCreateDto> taskCreateDtos = new ArrayList<TaskCreateDto>();
 
-        for (TrelloCardDto trelloCard : trelloCards) {
+        /*for (TrelloCardDto trelloCard : trelloCards) {
 
             TaskCreateDto taskCreateDto = new TaskCreateDto(trelloCard.getName() , userId, userId,
                     statusService.getByName(status).getId(),taskService.getByName(projectName).getId(), trelloCard.getId());
 
             if (!taskService.isPresent(trelloCard.getId())) taskCreateDtos.add(taskCreateDto);
-        }
+        }*/
         return taskCreateDtos;
     }
 
@@ -146,11 +146,11 @@ public class TrelloCardServiceImpl implements TrelloCardService {
 //    }
 
     private void createTrelloTasks(Long userId, List<TaskCreateDto> taskCreateDtoList){
-        for (TaskCreateDto taskCreateDto : taskCreateDtoList){
+        /*for (TaskCreateDto taskCreateDto : taskCreateDtoList){
             taskCreateDto.setOwner(userId);
             taskCreateDto.setWorker(userId);
             taskService.save(taskCreateDto);
-        }
+        }*/
     }
 
     private TrelloBoardDto[] getAllTrelloBoards() {

@@ -1,6 +1,7 @@
 package com.softserve.mosquito.controllers;
 
 import com.softserve.mosquito.dtos.TaskCreateDto;
+import com.softserve.mosquito.dtos.TaskDto;
 import com.softserve.mosquito.entities.mongo.TaskMongo;
 import com.softserve.mosquito.services.api.TaskService;
 import com.softserve.mosquito.services.api.TasksBoardService;
@@ -27,13 +28,13 @@ public class TaskController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TaskCreateDto createTask(@RequestBody TaskCreateDto taskCreateDto) {
+    public TaskDto createTask(@RequestBody TaskCreateDto taskCreateDto) {
         return taskService.save(taskCreateDto);
     }
 
     @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TaskCreateDto updateTask(@PathVariable("id") Long id, @RequestBody TaskCreateDto taskCreateDto) {
+    public TaskDto updateTask(@PathVariable("id") Long id, @RequestBody TaskCreateDto taskCreateDto) {
         return taskService.update(taskCreateDto);
     }
 
@@ -45,21 +46,21 @@ public class TaskController {
 
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TaskCreateDto getTaskById(@PathVariable("id") Long id) {
+    public TaskDto getTaskById(@PathVariable("id") Long id) {
         if (taskService.getSimpleTaskById(id) == null)
             throw new TaskNotFoundException("Task with Id " + id + " not found!");
-        return taskService.getSimpleTaskById(id);
+        return taskService.getById(id);
     }
 
     @GetMapping(path = "/{id}/info")
     @ResponseStatus(HttpStatus.OK)
-    public TaskCreateDto getFullTaskById(@PathVariable("id") Long id) {
+    public TaskDto getFullTaskById(@PathVariable("id") Long id) {
         return taskService.getById(id);
     }
 
     @GetMapping(path = "{id}/sub-tasks")
     @ResponseStatus(HttpStatus.OK)
-    public List<TaskCreateDto> getSubTasks(@PathVariable("id") Long id) {
+    public List<TaskDto> getSubTasks(@PathVariable("id") Long id) {
         return taskService.getSubTasks(id);
     }
 

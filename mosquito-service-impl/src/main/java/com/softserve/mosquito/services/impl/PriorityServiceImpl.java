@@ -7,6 +7,7 @@ import com.softserve.mosquito.services.api.PriorityService;
 import com.softserve.mosquito.transformer.PriorityTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
@@ -21,6 +22,7 @@ public class PriorityServiceImpl implements PriorityService {
         this.priorityRepo = priorityRepo;
     }
 
+    @Transactional
     @Override
     public List<PriorityDto> getAll(){
         List<Priority> priorities = priorityRepo.getAll();
@@ -32,6 +34,7 @@ public class PriorityServiceImpl implements PriorityService {
         return PriorityTransformer.toDTOList(priorities);
     }
 
+    @Transactional
     @Override
     public PriorityDto getById(Long id){
 
@@ -44,6 +47,7 @@ public class PriorityServiceImpl implements PriorityService {
         return PriorityTransformer.toDTO(priority);
     }
 
+    @Transactional
     @Override
     public PriorityDto save(PriorityDto priorityDto){
         Priority createdPriority = priorityRepo.create(PriorityTransformer.toEntity(priorityDto));
@@ -55,6 +59,7 @@ public class PriorityServiceImpl implements PriorityService {
         return PriorityTransformer.toDTO(createdPriority);
     }
 
+    @Transactional
     @Override
     public PriorityDto update(PriorityDto priorityDto){
         Priority updatedPriority = priorityRepo.update(PriorityTransformer.toEntity(priorityDto));
@@ -66,6 +71,7 @@ public class PriorityServiceImpl implements PriorityService {
         return PriorityTransformer.toDTO(updatedPriority);
     }
 
+    @Transactional
     @Override
     public void delete(Long id){
         priorityRepo.delete(id);

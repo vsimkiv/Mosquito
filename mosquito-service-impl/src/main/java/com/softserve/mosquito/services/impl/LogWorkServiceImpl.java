@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -20,10 +21,10 @@ public class LogWorkServiceImpl implements LogWorkService {
     private EstimationRepo estimationRepo;
 
     @Autowired
-    public LogWorkServiceImpl(LogWorkRepo logWorkRepo) {
+    public LogWorkServiceImpl(LogWorkRepo logWorkRepo, EstimationRepo estimationRepo) {
         this.logWorkRepo = logWorkRepo;
+        this.estimationRepo = estimationRepo;
     }
-
 
     @Transactional
     @Override
@@ -32,6 +33,7 @@ public class LogWorkServiceImpl implements LogWorkService {
         Estimation estimation = estimationRepo.read(estId);
         estimation.setRemaining(remaining);
         estimationRepo.update(estimation);
+        logWorkDto.setLastUpdate(LocalDateTime.now());
         logWorkRepo.create(logWork);
         return LogWorkTransformer.toDTO(logWork);
     }

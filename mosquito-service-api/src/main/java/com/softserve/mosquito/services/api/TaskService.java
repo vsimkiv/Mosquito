@@ -1,67 +1,39 @@
 package com.softserve.mosquito.services.api;
 
 import com.softserve.mosquito.dtos.TaskCreateDto;
-import com.softserve.mosquito.dtos.TaskFullDto;
-import com.softserve.mosquito.dtos.TaskSimpleDto;
+import com.softserve.mosquito.dtos.TaskDto;
 
 import java.util.List;
 
 public interface TaskService {
 
-    //TaskFullDto save(TaskFullDto taskFullDto);
+    TaskDto save(TaskCreateDto taskCreateDto );
 
-    TaskCreateDto save(TaskCreateDto taskCreateDto );
-
-    //TaskFullDto update(TaskFullDto taskFullDto);
-
-    TaskCreateDto update(TaskCreateDto taskCreateDto);
+    TaskDto update(TaskCreateDto taskCreateDto);
 
     void delete(Long id);
 
-    //TaskFullDto getById(Long id);
+    TaskDto getById(Long id);
 
-    TaskCreateDto getById(Long id);
+    TaskDto getParent(Long parentId);
 
+    List<TaskDto> getSubTasks(Long id);
 
-    //TaskFullDto getParent(Long parentId);
+    List<TaskDto> getByOwner(Long ownerId);
 
-    TaskCreateDto getParent(Long parentId);
+    List<TaskDto> getByWorker(Long workerId);
 
-    //List<TaskFullDto> getSubTasks(Long id);
+    List<TaskDto> getAllProjects();
 
-    List<TaskCreateDto> getSubTasks(Long id);
+    List<TaskDto> getProjectsByOwner(Long ownerId);
 
-    //List<TaskFullDto> getByOwner(Long ownerId);
-
-    List<TaskCreateDto> getByOwner(Long ownerId);
-
-    //List<TaskFullDto> getByWorker(Long workerId);
-
-    List<TaskCreateDto> getByWorker(Long workerId);
-
-    //List<TaskFullDto> getAllProjects();
-
-    List<TaskCreateDto> getAllProjects();
-
-    //List<TaskFullDto> getProjectsByOwner(Long ownerId);
-
-    List<TaskCreateDto> getProjectsByOwner(Long ownerId);
-
-    //List<TaskFullDto> filterByStatus(List<TaskFullDto> taskFullDtoList, Long statusId);
-
-    List<TaskCreateDto> filterByStatus(List<TaskCreateDto> taskCreateDtoList, Long statusId);
+    List<TaskDto> filterByStatus(List<TaskDto> taskDtoList, Long statusId);
 
     boolean isPresent(String name);
 
-    //TaskFullDto getByName(String name);
+    TaskDto getByName(String name);
 
-    TaskCreateDto getByName(String name);
+    TaskDto getSimpleTaskById(Long id);
 
-    //TaskSimpleDto getSimpleTaskById(Long id);
-
-    TaskCreateDto getSimpleTaskById(Long id);
-
-    //TaskFullDto getByTrelloId(String trelloId);
-
-    TaskCreateDto getByTrelloId(String trelloId);
+    TaskDto getByTrelloId(String trelloId);
 }

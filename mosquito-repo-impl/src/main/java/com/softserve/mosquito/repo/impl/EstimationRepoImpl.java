@@ -26,7 +26,8 @@ public class EstimationRepoImpl implements EstimationRepo {
         Session session = null;
         try {
             session = sessionFactory.openSession();
-            session.save(estimation);
+            Long estimationId = (Long)session.save(estimation);
+            estimation.setId(estimationId);
         } catch (HibernateException e) {
             LOGGER.error("Error during save estimation!");
         } finally {
