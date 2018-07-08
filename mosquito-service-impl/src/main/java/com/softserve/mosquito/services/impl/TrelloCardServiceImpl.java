@@ -44,16 +44,13 @@ public class TrelloCardServiceImpl implements TrelloCardService {
                         trelloList.getName().equalsIgnoreCase("done")) {
 
                     TaskCreateDto taskCreateDto = new TaskCreateDto(trelloBoard.getName(), userId, userId,
-                            statusService.getByName("todo")
-                                    .getId(),
-                            null,
-                            trelloBoard.getId());
+                            statusService.getByName("todo").getId(),null, trelloBoard.getId());
 
                     if (!taskService.isPresent(taskCreateDto.getTrelloId()) &&
                             !taskCreateDto.isPresentInCollection(trelloTasks)) trelloTasks.add(taskCreateDto);
 
                     trelloTasks.addAll(collectTaskCreateDtosFromTrelloCards(getTrelloCardsByList(trelloList.getId()),
-                            trelloList.getName().toLowerCase(), trelloBoard.getName(), userId));
+                            trelloList.getName().toLowerCase(), trelloBoard.getId(), userId));
                 }
             }
         }
@@ -76,14 +73,14 @@ public class TrelloCardServiceImpl implements TrelloCardService {
 
     //private methods
     private List<TaskCreateDto> collectTaskCreateDtosFromTrelloCards(
-            TrelloCardDto[] trelloCards, String status, String projectName, Long userId) {
+            TrelloCardDto[] trelloCards, String status, String projectId, Long userId) {
 
         List<TaskCreateDto> taskCreateDtos = new ArrayList<>();
 
         for (TrelloCardDto trelloCard : trelloCards) {
             TaskCreateDto taskCreateDto = new TaskCreateDto(trelloCard.getName(), userId, userId,
                     statusService.getByName(status).getId(),
-                    taskService.getByName(projectName).getId(), trelloCard.getId());
+                    /*taskService.getByTrelloId(projectId).getId()*/ null, trelloCard.getId());
 
             if (!taskService.isPresent(trelloCard.getId())) taskCreateDtos.add(taskCreateDto);
         }
