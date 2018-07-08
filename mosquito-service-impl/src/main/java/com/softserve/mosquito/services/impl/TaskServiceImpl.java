@@ -89,31 +89,31 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     @Override
     public List<TaskDto> getSubTasks(Long id) {
-        return toListTaskDto(taskRepo.getSubTasks(id));
+        return toTaskDtoList(taskRepo.getSubTasks(id));
     }
 
     @Transactional
     @Override
     public List<TaskDto> getByOwner(Long ownerId) {
-        return TaskTransformer.toListTaskDto(taskRepo.getByOwner(ownerId));
+        return TaskTransformer.toTaskDtoList(taskRepo.getByOwner(ownerId));
     }
 
     @Transactional
     @Override
     public List<TaskDto> getByWorker(Long workerId) {
-        return toListTaskDto(taskRepo.getByWorker(workerId));
+        return toTaskDtoList(taskRepo.getByWorker(workerId));
     }
 
     @Transactional
     @Override
     public List<TaskDto> getAllProjects() {
-        return toListTaskDto(taskRepo.getAllProjects());
+        return toTaskDtoList(taskRepo.getAllProjects());
     }
 
     @Transactional
     @Override
     public List<TaskDto> getProjectsByOwner(Long ownerId) {
-        return TaskTransformer.toListTaskDto(taskRepo.getProjectsByOwner(ownerId));
+        return TaskTransformer.toTaskDtoList(taskRepo.getProjectsByOwner(ownerId));
     }
 
     @Transactional

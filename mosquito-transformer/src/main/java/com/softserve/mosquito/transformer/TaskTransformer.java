@@ -15,23 +15,23 @@ public class TaskTransformer {
     public static Task toEntity(TaskCreateDto taskCreateDto) {
         if (taskCreateDto == null) {
             return null;
-        } else{
-            Task task = Task.builder()
+        } else {
+            return Task.builder()
                     .name(taskCreateDto.getName())
                     .owner(User.builder().id(taskCreateDto.getOwnerId()).build())
                     .worker(User.builder().id(taskCreateDto.getWorkerId()).build())
                     .priority(Priority.builder().id(taskCreateDto.getPriorityId()).build())
                     .status(Status.builder().id(1L).build())
-                    .estimation(Estimation.builder().timeEstimation(taskCreateDto.getEstimationTime()).remaining(taskCreateDto.getEstimationTime()).build())
+                    .estimation(Estimation.builder().
+                            timeEstimation(taskCreateDto.getEstimationTime()).
+                            remaining(taskCreateDto.getEstimationTime()).build())
                     .parentTask(Task.builder().id((taskCreateDto.getParentId() == null ? null : taskCreateDto.getParentId())).build())
                     .build();
-            return task;
         }
-
     }
 
 
-    public static TaskDto toTaskDto(Task task){
+    public static TaskDto toTaskDto(Task task) {
         return TaskDto.builder()
                 .id(task.getId())
                 .name(task.getName())
@@ -40,15 +40,15 @@ public class TaskTransformer {
                 .estimation(EstimationTransformer.toDTO(task.getEstimation()))
                 .status(StatusTransformer.toDTO(task.getStatus()))
                 .priority(PriorityTransformer.toDTO(task.getPriority()))
-                .parentId((task.getParentTask()==null ? null : task.getParentTask().getId()))
+                .parentId((task.getParentTask() == null ? null : task.getParentTask().getId()))
                 .build();
 
     }
 
-    public static List<TaskDto> toListTaskDto(List<Task> tasks){
+    public static List<TaskDto> toTaskDtoList(List<Task> tasks) {
         List<TaskDto> taskDtos = new ArrayList<>();
-        if(tasks != null && !tasks.isEmpty()){
-            for(Task task: tasks){
+        if (tasks != null && !tasks.isEmpty()) {
+            for (Task task : tasks) {
                 taskDtos.add(toTaskDto(task));
             }
         }
