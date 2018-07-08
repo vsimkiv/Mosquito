@@ -71,7 +71,7 @@ public class StatusServiceImpl implements StatusService {
 
         if(allStatuses != null && !allStatuses.isEmpty()){
             for(StatusDto status: allStatuses){
-                if(status.getTitle().equals(title)){
+                if(status.getTitle().equalsIgnoreCase(title)){
                     return status;
                 }
             }
