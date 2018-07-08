@@ -23,7 +23,7 @@ import java.util.List;
 
     @GetMapping("/{userId}")
     public ResponseEntity<List<TaskCreateDto>> showAllTrelloTasks(@PathVariable("userId") Long id) {
-        return ResponseEntity.ok().body(trelloCardService.allNewTrelloTasks(id));
+        return ResponseEntity.ok().body(trelloCardService.getAllNewTrelloTasksOnFront(id));
     }
 
     @GetMapping("/create/{userId}")
@@ -35,7 +35,7 @@ import java.util.List;
     @ApiOperation(value = "Add new user", response = TaskCreateDto.class)
     public ResponseEntity<List<TaskCreateDto>> createTrelloTasks(@RequestBody List<TaskCreateDto> taskCreateDtoList, @PathVariable("userId") Long id) {
 
-        trelloCardService.createChosenTastsFromTrello(id, taskCreateDtoList);
+        trelloCardService.createChosenTasksFromTrelloJSON(id, taskCreateDtoList);
 
         return ResponseEntity.ok().body(taskCreateDtoList);
     }

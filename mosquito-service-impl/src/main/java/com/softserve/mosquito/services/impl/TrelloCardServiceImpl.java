@@ -32,45 +32,25 @@ public class TrelloCardServiceImpl implements TrelloCardService {
 
     @Override
     @Transactional
-    public void createTasksFromTrello(Long userId){
-
-        trelloInfo = trelloInfoService.getByUserId(userId);
-        createTrelloTasks(userId, allNewTrelloTasks(userId));
-    }
-
-    @Override
-    @Transactional
-    public void createChosenTastsFromTrello(Long userId, List<TaskCreateDto> taskCreateDtoList){
-        trelloInfo = trelloInfoService.getByUserId(userId);
-        createTrelloTasks(userId, taskCreateDtoList);
-
-    }
-
-    @Transactional
-    @Override
-    public List<TaskCreateDto> allNewTrelloTasks(Long userId) {
-
+    public List<TaskCreateDto> getAllNewTrelloTasksOnFront(Long userId) {
         trelloInfo = trelloInfoService.getByUserId(userId);
 
-        List<TaskCreateDto> trelloTasks = new ArrayList<TaskCreateDto>();
+        List<TaskCreateDto> trelloTasks = new ArrayList<>();
 
         for (TrelloBoardDto trelloBoard : getAllTrelloBoards()) {
-
             for (TrelloListDto trelloList : getTrelloListsByBoard(trelloBoard.getId())) {
-
                 if (trelloList.getName().equalsIgnoreCase("todo") ||
                         trelloList.getName().equalsIgnoreCase("doing") ||
                         trelloList.getName().equalsIgnoreCase("done")) {
 
                     TaskCreateDto taskCreateDto = new TaskCreateDto(trelloBoard.getName(), userId, userId,
-
-
                             statusService.getByName("todo")
                                     .getId(),
                             null,
                             trelloBoard.getId());
 
-                    if (!taskService.isPresent(taskCreateDto.getTrelloId()) && !taskCreateDto.isPresentInCollection(trelloTasks)) trelloTasks.add(taskCreateDto);
+                    if (!taskService.isPresent(taskCreateDto.getTrelloId()) &&
+                            !taskCreateDto.isPresentInCollection(trelloTasks)) trelloTasks.add(taskCreateDto);
 
                     trelloTasks.addAll(collectTaskCreateDtosFromTrelloCards(getTrelloCardsByList(trelloList.getId()),
                             trelloList.getName().toLowerCase(), trelloBoard.getName(), userId));
@@ -80,22 +60,38 @@ public class TrelloCardServiceImpl implements TrelloCardService {
         return trelloTasks;
     }
 
-    private List<TaskCreateDto> collectTaskCreateDtosFromTrelloCards(TrelloCardDto[] trelloCards, String status, String projectName, Long userId) {
+    @Override
+    @Transactional
+    public void createTasksFromTrello(Long userId) {
+        trelloInfo = trelloInfoService.getByUserId(userId);
+        createTrelloTasks(userId, getAllNewTrelloTasksOnFront(userId));
+    }
 
-        List<TaskCreateDto> taskCreateDtos = new ArrayList<TaskCreateDto>();
+    @Override
+    @Transactional
+    public void createChosenTasksFromTrelloJSON(Long userId, List<TaskCreateDto> taskCreateDtoList) {
+        trelloInfo = trelloInfoService.getByUserId(userId);
+        createTrelloTasks(userId, taskCreateDtoList);
+    }
+
+    //private methods
+    private List<TaskCreateDto> collectTaskCreateDtosFromTrelloCards(
+            TrelloCardDto[] trelloCards, String status, String projectName, Long userId) {
+
+        List<TaskCreateDto> taskCreateDtos = new ArrayList<>();
 
         for (TrelloCardDto trelloCard : trelloCards) {
-
-            TaskCreateDto taskCreateDto = new TaskCreateDto(trelloCard.getName() , userId, userId,
-                    statusService.getByName(status).getId(),taskService.getByName(projectName).getId(), trelloCard.getId());
+            TaskCreateDto taskCreateDto = new TaskCreateDto(trelloCard.getName(), userId, userId,
+                    statusService.getByName(status).getId(),
+                    taskService.getByName(projectName).getId(), trelloCard.getId());
 
             if (!taskService.isPresent(trelloCard.getId())) taskCreateDtos.add(taskCreateDto);
         }
         return taskCreateDtos;
     }
 
-    private void createTrelloTasks(Long userId, List<TaskCreateDto> taskCreateDtoList){
-        for (TaskCreateDto taskCreateDto : taskCreateDtoList){
+    private void createTrelloTasks(Long userId, List<TaskCreateDto> taskCreateDtoList) {
+        for (TaskCreateDto taskCreateDto : taskCreateDtoList) {
             taskCreateDto.setOwnerId(userId);
             taskCreateDto.setWorkerId(userId);
             taskService.save(taskCreateDto);
@@ -120,7 +116,7 @@ public class TrelloCardServiceImpl implements TrelloCardService {
     }
 
     private TrelloListDto[] getTrelloListsByBoard(String idBoard) {
-        TrelloListDto[] TrelloLists = null;
+        TrelloListDto[] trelloLists = null;
         String urlGetListOfBoard = String.format("https://trello.com/1/boards/%s/lists?cards=open&card_fields=name&fields=name&key=%s&token=%s",
                 idBoard, trelloInfo.getUserTrelloKey(), trelloInfo.getUserTrelloToken());
         try {
@@ -128,16 +124,16 @@ public class TrelloCardServiceImpl implements TrelloCardService {
             String responseAsString = restTemplate.getForObject(urlGetListOfBoard, String.class);
 
             ObjectMapper mapper = new ObjectMapper();
-            TrelloLists = mapper.readValue(responseAsString, TrelloListDto[].class);
+            trelloLists = mapper.readValue(responseAsString, TrelloListDto[].class);
 
         } catch (Exception e) {
             System.err.println(e);
         }
-        return TrelloLists;
+        return trelloLists;
     }
 
     private TrelloCardDto[] getTrelloCardsByList(String idList) {
-        TrelloCardDto[] TrelloCards = null;
+        TrelloCardDto[] trelloCards = null;
 
         String urlGetCardsByList = String.format("https://trello.com/1/lists/%s/cards?key=%s&token=%s",
                 idList, trelloInfo.getUserTrelloKey(), trelloInfo.getUserTrelloToken());
@@ -146,12 +142,12 @@ public class TrelloCardServiceImpl implements TrelloCardService {
             String responseAsString = restTemplate.getForObject(urlGetCardsByList, String.class);
 
             ObjectMapper mapper = new ObjectMapper();
-            TrelloCards = mapper.readValue(responseAsString, TrelloCardDto[].class);
+            trelloCards = mapper.readValue(responseAsString, TrelloCardDto[].class);
 
         } catch (Exception e) {
             System.err.println(e);
         }
-        return TrelloCards;
+        return trelloCards;
     }
 }
 
