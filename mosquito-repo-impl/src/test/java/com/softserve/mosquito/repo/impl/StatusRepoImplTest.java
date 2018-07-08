@@ -1,6 +1,7 @@
 package com.softserve.mosquito.repo.impl;
 
 import com.softserve.mosquito.entities.Status;
+import com.softserve.mosquito.repo.api.StatusRepo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import static org.junit.Assert.*;
 public class StatusRepoImplTest {
 
     @Autowired
-    StatusRepoImpl statusRepo;
+    StatusRepo statusRepo;
 
     @Autowired
     DataSource dataSource;

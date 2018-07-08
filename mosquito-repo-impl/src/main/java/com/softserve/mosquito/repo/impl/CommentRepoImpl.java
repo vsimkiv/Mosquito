@@ -11,6 +11,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
@@ -27,86 +28,41 @@ public class CommentRepoImpl implements CommentRepo {
     }
 
     @Override
+    @Transactional
     public Comment create(Comment comment) {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
-            session.save(comment);
-            LOGGER.info("Comment created successfully " + comment + " for user: " + comment.getAuthor().getId());
-        } catch (HibernateException e) {
-            LOGGER.info("Error during save comment!");
-            LOGGER.error(e.getMessage());
-        } finally {
-            if (session != null) session.close();
-        }
+        Session session = sessionFactory.getCurrentSession();
+        session.save(comment);
         return comment;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Comment read(Long id) {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
-            return session.get(Comment.class, id);
-        } catch (HibernateException e) {
-            LOGGER.info("Reading comment was failed!");
-            LOGGER.error(e.getMessage());
-        } finally {
-            if (session != null) session.close();
-        }
-        return null;
+        Session session = sessionFactory.getCurrentSession();
+        return session.get(Comment.class, id);
     }
 
     @Override
+    @Transactional
     public Comment update(Comment comment) {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
-            session.getTransaction().begin();
-            session.update(comment);
-            session.getTransaction().commit();
-            LOGGER.info("Comment updated successfully " + comment + " for user: " + comment.getAuthor().getId());
-            return comment;
-        } catch (HibernateException e) {
-            LOGGER.info("Updating comment was failed!");
-            LOGGER.error(e.getMessage());
-        } finally {
-            if (session != null) session.close();
-        }
-        return null;
+        Session session = sessionFactory.getCurrentSession();
+        session.update(comment);
+        return comment;
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
-            session.getTransaction().begin();
-            Comment comment = session.get(Comment.class, id);
-            session.delete(comment);
-            session.getTransaction().commit();
-            LOGGER.info("Comment deleted successfully " + comment + " for user: " + comment.getAuthor().getId());
-        } catch (HibernateException e) {
-            LOGGER.info("Deleting comment was failed!");
-            LOGGER.error(e.getMessage());
-        } finally {
-            if (session != null) session.close();
-        }
+        Session session = sessionFactory.getCurrentSession();
+        Comment comment = session.get(Comment.class, id);
+        session.delete(comment);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Comment> getByTaskId(Long taskId) {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
-            return session.createQuery("SELECT T.comments FROM " + Task.class.getName() + " T WHERE T.id = " + taskId + "")
-                    .getResultList();
-        } catch (HibernateException e) {
-            LOGGER.info("Retrieving comments for task with id " + taskId + " was failed!");
-            LOGGER.error(e.getMessage());
-            return Collections.emptyList();
-        } finally {
-            if (session != null) session.close();
-        }
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery("SELECT T.comments FROM " + Task.class.getName() + " T WHERE T.id = " + taskId + "")
+                .getResultList();
     }
 }

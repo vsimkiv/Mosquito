@@ -1,6 +1,7 @@
 package com.softserve.mosquito.repo.impl;
 
 import com.softserve.mosquito.entities.Estimation;
+import com.softserve.mosquito.repo.api.EstimationRepo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import static org.junit.Assert.*;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class EstimationRepoImplTest {
     @Autowired
-   EstimationRepoImpl estimationRepo;
+    EstimationRepo estimationRepo;
 
     @Autowired
     DataSource dataSource;

@@ -9,6 +9,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class EstimationRepoImpl implements EstimationRepo {
@@ -22,64 +23,34 @@ public class EstimationRepoImpl implements EstimationRepo {
     }
 
     @Override
+    @Transactional
     public Estimation create(Estimation estimation) {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
-            session.save(estimation);
-        } catch (HibernateException e) {
-            LOGGER.error("Error during save estimation!");
-        } finally {
-            if (session != null) session.close();
-        }
+        Session session = sessionFactory.getCurrentSession();
+        session.save(estimation);
         return estimation;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Estimation read(Long id) {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
-            return session.get(Estimation.class, id);
-        } catch (HibernateException e) {
-            LOGGER.error("Reading estimation was failed!");
-            return null;
-        } finally {
-            if (session != null) session.close();
-        }
+        Session session = sessionFactory.getCurrentSession();
+        return session.get(Estimation.class, id);
     }
 
     @Override
+    @Transactional
     public Estimation update(Estimation estimation) {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
-            session.getTransaction().begin();
-            session.update(estimation);
-            session.getTransaction().commit();
-            return estimation;
-        } catch (HibernateException e) {
-            LOGGER.error("Updating estimation was failed!");
-            return null;
-        } finally {
-            if (session != null) session.close();
-        }
+        Session session = sessionFactory.getCurrentSession();
+        session.update(estimation);
+        return estimation;
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
-            session.getTransaction().begin();
-            Estimation estimation = session.get(Estimation.class, id);
-            session.delete(estimation);
-            session.getTransaction().commit();
-        } catch (HibernateException e) {
-            LOGGER.error("Deleting comment was failed!");
-        } finally {
-            if (session != null) session.close();
-        }
+        Session session = sessionFactory.getCurrentSession();
+        Estimation estimation = session.get(Estimation.class, id);
+        session.delete(estimation);
     }
 }
 
