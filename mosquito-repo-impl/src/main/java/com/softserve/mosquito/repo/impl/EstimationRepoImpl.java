@@ -4,7 +4,6 @@ import com.softserve.mosquito.entities.Estimation;
 import com.softserve.mosquito.repo.api.EstimationRepo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
