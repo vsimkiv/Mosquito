@@ -16,7 +16,8 @@ public class TaskTransformer {
         if (taskCreateDto == null) {
             return null;
         } else {
-            return Task.builder()
+            return Task.builder().
+                    id(taskCreateDto.getId())
                     .name(taskCreateDto.getName())
                     .owner(User.builder().id(taskCreateDto.getOwnerId()).build())
                     .worker(User.builder().id(taskCreateDto.getWorkerId()).build())
@@ -32,6 +33,9 @@ public class TaskTransformer {
 
 
     public static TaskDto toTaskDto(Task task) {
+        if(task== null){
+            return null;
+        }
         return TaskDto.builder()
                 .id(task.getId())
                 .name(task.getName())
