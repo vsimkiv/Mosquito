@@ -21,13 +21,11 @@ import static com.softserve.mosquito.transformer.TaskTransformer.*;
 @Service
 public class TaskServiceImpl implements TaskService {
     private TaskRepo taskRepo;
-    private TasksBoardService tasksBoardService;
     private SimpMessagingTemplate template;
 
     @Autowired
-    public TaskServiceImpl(TaskRepo taskRepo, TasksBoardService tasksBoardService, SimpMessagingTemplate template) {
+    public TaskServiceImpl(TaskRepo taskRepo, SimpMessagingTemplate template) {
         this.taskRepo = taskRepo;
-        this.tasksBoardService = tasksBoardService;
         this.template = template;
     }
 

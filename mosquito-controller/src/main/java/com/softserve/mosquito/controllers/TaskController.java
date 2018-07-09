@@ -3,7 +3,6 @@ package com.softserve.mosquito.controllers;
 import com.softserve.mosquito.dtos.TaskCreateDto;
 import com.softserve.mosquito.dtos.TaskDto;
 import com.softserve.mosquito.entities.mongo.TaskMongo;
-import com.softserve.mosquito.entities.mongo.TasksBoard;
 import com.softserve.mosquito.services.api.TaskService;
 import com.softserve.mosquito.services.api.TasksBoardService;
 import io.swagger.annotations.Api;
@@ -47,9 +46,9 @@ public class TaskController {
     }
 
     @DeleteMapping(path = "/{id}")
-//    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity deleteTask(@PathVariable("id") Long id) {
         taskService.delete(id);
+        tasksBoardService.delete(id);
         if (taskService.getById(id) == null)
             return ResponseEntity.noContent().build();
         else
@@ -77,26 +76,18 @@ public class TaskController {
         return taskService.getSubTasks(id);
     }
 
-    @GetMapping(path = "/workers-tasks/{worker_id}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<TaskMongo> getWorkerTasks(@PathVariable("worker_id") Long workerId) {
-        return tasksBoardService.getUserWork(workerId);
-    }
-
     @GetMapping(path = "trello-task/{trello_id}")
     @ResponseStatus(HttpStatus.OK)
-    public boolean isPresetn(@PathVariable("trello_id") String trelloId) {
+    public boolean isPresent(@PathVariable("trello_id") String trelloId) {
         return taskService.isPresent(trelloId);
     }
 
-    @GetMapping(path = "/worker-tasks")
-    public List<TasksBoard> getByStatus(@RequestParam("status_id") Long statusId) {
-        return tasksBoardService.getByStatusId(statusId);
+    @GetMapping(path = "/workers-tasks/{worker_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<TaskMongo> getWorkerTasks(@PathVariable("worker_id") Long workerId,
+                                          @RequestParam(value = "status_id", required = false) Long statusId) {
+        if (statusId != null)
+            return tasksBoardService.getByStatusId(workerId, statusId);
+        return tasksBoardService.getUserWork(workerId);
     }
-
-    @GetMapping(path = "/migrate")
-    public void migrate() {
-        tasksBoardService.migrateDbData();
-    }
-
 }
