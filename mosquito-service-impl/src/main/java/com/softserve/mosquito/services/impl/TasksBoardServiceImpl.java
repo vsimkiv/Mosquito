@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -30,7 +31,7 @@ public class TasksBoardServiceImpl implements TasksBoardService {
     @Override
     public List<TaskMongo> getUserWork(Long userId) {
         TasksBoard tasksBoard = tasksBoardRepo.findByWorkerId(userId);
-        return tasksBoard.getTaskMongos();
+        return tasksBoard == null ? Collections.emptyList() : tasksBoard.getTaskMongos();
     }
 
     @Override

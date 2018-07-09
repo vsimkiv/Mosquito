@@ -3,11 +3,12 @@ package com.softserve.mosquito.entities.mongo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
+import lombok.ToString;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class TaskMongo {
 
     private Long taskId;
@@ -18,11 +19,4 @@ public class TaskMongo {
         this.taskName = taskName;
     }
 
-    @Override
-    public String toString() {
-        return "TaskMongo{" +
-                "taskId=" + taskId +
-                ", taskName='" + taskName + '\'' +
-                '}';
-    }
 }

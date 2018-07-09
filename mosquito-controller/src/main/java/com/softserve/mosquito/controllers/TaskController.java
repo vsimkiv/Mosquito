@@ -73,7 +73,7 @@ public class TaskController {
         return tasksBoardService.getUserTask(ownerId);
     }
 
-    @GetMapping(path = "workers-tasks/{worker_id}")
+    @GetMapping(path = "/workers-tasks/{worker_id}")
     @ResponseStatus(HttpStatus.OK)
     public List<TaskMongo> getWorkerTasks(@PathVariable("worker_id") Long workerId) {
         return tasksBoardService.getUserWork(workerId);

@@ -1,14 +1,18 @@
 package com.softserve.mosquito.services.impl;
 
 
-import com.softserve.mosquito.dtos.*;
+import com.softserve.mosquito.dtos.EstimationDto;
+import com.softserve.mosquito.dtos.TaskCreateDto;
 import com.softserve.mosquito.entities.Estimation;
 import com.softserve.mosquito.entities.Task;
-import com.softserve.mosquito.entities.mongo.TaskMongo;
 import com.softserve.mosquito.repo.api.TaskRepo;
-import com.softserve.mosquito.services.api.*;
-import com.softserve.mosquito.transformer.*;
-
+import com.softserve.mosquito.services.api.PriorityService;
+import com.softserve.mosquito.services.api.StatusService;
+import com.softserve.mosquito.services.api.TaskService;
+import com.softserve.mosquito.services.api.UserService;
+import com.softserve.mosquito.transformer.EstimationTransformer;
+import com.softserve.mosquito.transformer.StatusTransformer;
+import com.softserve.mosquito.transformer.TaskTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,21 +20,21 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.softserve.mosquito.transformer.TaskTransformer.*;
-import static com.softserve.mosquito.transformer.UserTransformer.toEntity;
 import static com.softserve.mosquito.transformer.PriorityTransformer.toEntity;
+import static com.softserve.mosquito.transformer.TaskTransformer.toTaskCreateDto;
+import static com.softserve.mosquito.transformer.TaskTransformer.toTaskCreateDtoList;
+import static com.softserve.mosquito.transformer.UserTransformer.toEntity;
+
 @Service
 public class TaskServiceImpl implements TaskService {
     private TaskRepo taskRepo;
-    private TasksBoardService tasksBoardService;
     private UserService userService;
     private PriorityService priorityService;
     private StatusService statusService;
 
     @Autowired
-    public TaskServiceImpl(TaskRepo taskRepo, TasksBoardService tasksBoardService, UserService userService, PriorityService priorityService, StatusService statusService) {
+    public TaskServiceImpl(TaskRepo taskRepo, UserService userService, PriorityService priorityService, StatusService statusService) {
         this.taskRepo = taskRepo;
-        this.tasksBoardService = tasksBoardService;
         this.userService = userService;
         this.priorityService = priorityService;
         this.statusService = statusService;
@@ -48,7 +52,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Transactional
     @Override
-    public TaskCreateDto save(TaskCreateDto taskCreateDto ){
+    public TaskCreateDto save(TaskCreateDto taskCreateDto) {
 
         Task task = taskRepo.create(toTaskEntity(taskCreateDto));
         return task == null ? null : toTaskCreateDto(task);
@@ -268,7 +272,7 @@ public class TaskServiceImpl implements TaskService {
         return toTaskCreateDto(taskRepo.getByName(name));
     }
 
-    private Task toTaskEntity(TaskCreateDto taskCreateDto){
+    private Task toTaskEntity(TaskCreateDto taskCreateDto) {
         Task task = new Task();
         task.setName(taskCreateDto.getName());
         task.setOwner(toEntity(userService.getById(taskCreateDto.getOwner())));
