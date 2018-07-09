@@ -3,6 +3,7 @@ package com.softserve.mosquito.controllers;
 import com.softserve.mosquito.dtos.TaskCreateDto;
 import com.softserve.mosquito.dtos.TaskDto;
 import com.softserve.mosquito.entities.mongo.TaskMongo;
+import com.softserve.mosquito.entities.mongo.TasksBoard;
 import com.softserve.mosquito.services.api.TaskService;
 import com.softserve.mosquito.services.api.TasksBoardService;
 import io.swagger.annotations.Api;
@@ -70,11 +71,20 @@ public class TaskController {
         return taskService.getSubTasks(id);
     }
 
-
     @GetMapping(path = "/workers-tasks/{worker_id}")
     @ResponseStatus(HttpStatus.OK)
     public List<TaskMongo> getWorkerTasks(@PathVariable("worker_id") Long workerId) {
         return tasksBoardService.getUserWork(workerId);
+    }
+
+    @GetMapping(path = "/worker-tasks")
+    public List<TasksBoard> getByStatus(@RequestParam("status_id") Long statusId){
+        return tasksBoardService.getByStatusId(statusId);
+    }
+
+    @GetMapping(path = "/migrate")
+    public void migrate(){
+        tasksBoardService.migrateDbData();
     }
 
 }

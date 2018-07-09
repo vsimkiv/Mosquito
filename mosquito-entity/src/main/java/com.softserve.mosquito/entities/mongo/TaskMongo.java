@@ -13,12 +13,12 @@ public class TaskMongo {
 
     private Long taskId;
     private String taskName;
-    private Long priorityId;
+    private Long statusId;
 
-    public TaskMongo(Long taskId, String taskName, Long priorityId) {
+    public TaskMongo(Long taskId, String taskName, Long statusId) {
         this.taskId = taskId;
         this.taskName = taskName;
-        this.priorityId = priorityId;
+        this.statusId = statusId;
     }
 
 }
