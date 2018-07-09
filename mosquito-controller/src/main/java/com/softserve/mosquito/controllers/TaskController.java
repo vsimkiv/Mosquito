@@ -30,21 +30,23 @@ public class TaskController {
     @ResponseStatus(HttpStatus.CREATED)
     public TaskDto createTask(@RequestBody TaskCreateDto taskCreateDto) {
         TaskDto dto = taskService.save(taskCreateDto);
-        tasksBoardService.add(new TaskMongo(dto.getId(), dto.getName()),
-                dto.getOwnerId(), dto.getWorkerId());
+        tasksBoardService.add(new TaskMongo(dto.getId(), dto.getName(), dto.getPriority().getId()),
+                dto.getWorkerId());
         return dto;
     }
 
     @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public TaskDto updateTask(@PathVariable("id") Long id, @RequestBody TaskCreateDto taskCreateDto) {
-        tasksBoardService.update(new TaskMongo(taskCreateDto.getId(), taskCreateDto.getName()), taskCreateDto.getWorkerId());
+        tasksBoardService.update(new TaskMongo(taskCreateDto.getId(), taskCreateDto.getName(), taskCreateDto.getPriorityId()),
+                taskCreateDto.getWorkerId());
         return taskService.update(taskCreateDto);
     }
 
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTask(@PathVariable("id") Long id) {
+        tasksBoardService.delete(id);
         taskService.delete(id);
     }
 
@@ -68,11 +70,6 @@ public class TaskController {
         return taskService.getSubTasks(id);
     }
 
-    @GetMapping(path = "/owners-tasks/{owner_id}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<TaskMongo> getOwnerTasks(@PathVariable("owner_id") Long ownerId) {
-        return tasksBoardService.getUserTask(ownerId);
-    }
 
     @GetMapping(path = "/workers-tasks/{worker_id}")
     @ResponseStatus(HttpStatus.OK)

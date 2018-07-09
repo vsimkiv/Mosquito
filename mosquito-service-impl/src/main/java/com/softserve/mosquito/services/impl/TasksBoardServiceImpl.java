@@ -35,12 +35,6 @@ public class TasksBoardServiceImpl implements TasksBoardService {
     }
 
     @Override
-    public List<TaskMongo> getUserTask(Long ownerId) {
-        TasksBoard tasksBoard = tasksBoardRepo.findByOwnerId(ownerId);
-        return tasksBoard.getTaskMongos();
-    }
-
-    @Override
     public void update(TaskMongo taskMongo, Long workerId) {
         Query query = new Query(Criteria.where("taskMongos.taskId").is(taskMongo.getTaskId()));
         mongoOperations.updateFirst(query,
@@ -48,13 +42,13 @@ public class TasksBoardServiceImpl implements TasksBoardService {
     }
 
     @Override
-    public void add(TaskMongo taskMongo, Long ownerId, Long workerId) {
+    public void add(TaskMongo taskMongo, Long workerId) {
         TasksBoard tasksBoard = tasksBoardRepo.findByWorkerId(workerId);
         if (tasksBoard != null) {
             tasksBoard.getTaskMongos().add(taskMongo);
-            tasksBoard.setOwnerId(ownerId);
         } else
-            tasksBoard = new TasksBoard(workerId, ownerId, Arrays.asList(taskMongo));
+            tasksBoard = new TasksBoard(workerId, Arrays.asList(taskMongo));
+
         mongoOperations.save(tasksBoard);
     }
 
@@ -63,7 +57,8 @@ public class TasksBoardServiceImpl implements TasksBoardService {
         Query query = new Query(
                 Criteria.where("taskMongos.taskId").is(id)
         );
-        mongoOperations.updateFirst(query, new Update().pull("taskMongos", new BasicDBObject("taskId", id)), TasksBoard.class);
+        mongoOperations.updateFirst(query, new Update().pull("taskMongos", new BasicDBObject("taskId", id)),
+                TasksBoard.class);
     }
 
 }
