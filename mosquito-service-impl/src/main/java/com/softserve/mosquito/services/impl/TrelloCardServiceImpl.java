@@ -2,6 +2,8 @@ package com.softserve.mosquito.services.impl;
 
 import com.softserve.mosquito.dtos.*;
 import com.softserve.mosquito.services.api.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
 public class TrelloCardServiceImpl implements TrelloCardService {
+
+    private static final Logger LOGGER = LogManager.getLogger(TrelloCardServiceImpl.class);
 
     private TrelloInfoService trelloInfoService;
     private TaskService taskService;
@@ -75,14 +80,14 @@ public class TrelloCardServiceImpl implements TrelloCardService {
     @Transactional
     public void createTasksFromTrello(Long userId) {
         trelloInfo = trelloInfoService.getByUserId(userId);
-        createTrelloTasks(userId, getAllNewTrelloTasksOnFront(userId));
+        createTrelloTasks(getAllNewTrelloTasksOnFront(userId));
     }
 
     @Override
     @Transactional
     public void createChosenTasksFromTrelloJSON(Long userId, List<TaskCreateDto> taskCreateDtoList) {
         trelloInfo = trelloInfoService.getByUserId(userId);
-        createTrelloTasks(userId, taskCreateDtoList);
+        createTrelloTasks(taskCreateDtoList);
     }
 
     //private methods
@@ -98,23 +103,24 @@ public class TrelloCardServiceImpl implements TrelloCardService {
                     .workerId(userId)
                     .statusId(statusService.getByName(status).getId())
                     .parentId(project.getId())
-                    .trelloId(trelloCard.getId()).build();
+                    .trelloId(trelloCard.getId())
+                    .estimationTime(0)
+                    .priorityId(1L).build();
 
             if (!taskService.isPresent(trelloCard.getId())) taskCreateDtos.add(taskCreateDto);
         }
         return taskCreateDtos;
     }
 
-    private void createTrelloTasks(Long userId, List<TaskCreateDto> taskCreateDtoList) {
+    private void createTrelloTasks(List<TaskCreateDto> taskCreateDtoList) {
         for (TaskCreateDto taskCreateDto : taskCreateDtoList) {
-            taskCreateDto.setOwnerId(userId);
-            taskCreateDto.setWorkerId(userId);
             taskService.save(taskCreateDto);
         }
     }
 
     private TrelloBoardDto[] getAllTrelloBoards() {
         TrelloBoardDto[] trelloBoards = null;
+
         String urlGetAllBoards = String.format("https://trello.com/1/members/%s/boards?key=%s&token=%s",
                 trelloInfo.getUserTrelloName(), trelloInfo.getUserTrelloKey(), trelloInfo.getUserTrelloToken());
         try {
@@ -125,13 +131,15 @@ public class TrelloCardServiceImpl implements TrelloCardService {
             trelloBoards = mapper.readValue(responseAsString, TrelloBoardDto[].class);
 
         } catch (Exception e) {
-            System.err.println(e);
+            LOGGER.error("Problem with getAllTrelloBoards method" + Arrays.toString(e.getStackTrace()));
+            return new TrelloBoardDto[0];
         }
         return trelloBoards;
     }
 
     private TrelloListDto[] getTrelloListsByBoard(String idBoard) {
         TrelloListDto[] trelloLists = null;
+
         String urlGetListOfBoard = String.format("https://trello.com/1/boards/%s/lists?cards=open&card_fields=name&fields=name&key=%s&token=%s",
                 idBoard, trelloInfo.getUserTrelloKey(), trelloInfo.getUserTrelloToken());
         try {
@@ -142,7 +150,8 @@ public class TrelloCardServiceImpl implements TrelloCardService {
             trelloLists = mapper.readValue(responseAsString, TrelloListDto[].class);
 
         } catch (Exception e) {
-            System.err.println(e);
+            LOGGER.error("Problem with getTrelloListsByBoard method" + Arrays.toString(e.getStackTrace()));
+            return new TrelloListDto[0];
         }
         return trelloLists;
     }
@@ -160,7 +169,8 @@ public class TrelloCardServiceImpl implements TrelloCardService {
             trelloCards = mapper.readValue(responseAsString, TrelloCardDto[].class);
 
         } catch (Exception e) {
-            System.err.println(e);
+            LOGGER.error("Problem with getTrelloCardsByList method" + Arrays.toString(e.getStackTrace()));
+            return new TrelloCardDto[0];
         }
         return trelloCards;
     }
