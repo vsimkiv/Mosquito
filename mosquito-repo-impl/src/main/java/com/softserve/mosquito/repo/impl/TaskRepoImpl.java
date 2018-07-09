@@ -30,7 +30,7 @@ public class TaskRepoImpl implements TaskRepo {
         Session session = null;
         try {
             session = sessionFactory.openSession();
-            Long taskId = (Long)session.save(task);
+            Long taskId = (Long) session.save(task);
             task.setId(taskId);
             return task;
         } catch (HibernateException e) {
@@ -51,9 +51,17 @@ public class TaskRepoImpl implements TaskRepo {
     @Override
     @Transactional
     public Task update(Task task) {
-        Session session = sessionFactory.getCurrentSession();
-        session.update(task);
-        return task;
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
+            session.update(task);
+            return task;
+        } catch (HibernateException e) {
+            LOGGER.error("Problem with creating task" + Arrays.toString(e.getStackTrace()));
+            return null;
+        } finally {
+            if (session != null) session.close();
+        }
     }
 
     @Override
@@ -61,7 +69,6 @@ public class TaskRepoImpl implements TaskRepo {
     public void delete(Long id) {
         Session session = sessionFactory.getCurrentSession();
         Task task = session.get(Task.class, id);
-        System.out.println(task);
         session.delete(task);
     }
 

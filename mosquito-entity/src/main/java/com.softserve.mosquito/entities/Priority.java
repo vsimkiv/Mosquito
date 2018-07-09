@@ -15,7 +15,7 @@ import java.util.List;
 @Entity
 @EqualsAndHashCode
 @Table(name = "priorities")
-public final class Priority implements Serializable {
+public class Priority implements Serializable {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)

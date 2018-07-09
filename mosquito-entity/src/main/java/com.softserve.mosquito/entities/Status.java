@@ -15,7 +15,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Entity
 @Table(name = "statuses")
-public final class Status implements Serializable {
+public class Status implements Serializable {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
