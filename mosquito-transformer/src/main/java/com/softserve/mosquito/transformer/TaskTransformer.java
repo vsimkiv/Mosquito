@@ -27,6 +27,7 @@ public class TaskTransformer {
                             timeEstimation(taskCreateDto.getEstimationTime()).
                             remaining(taskCreateDto.getEstimationTime()).build())
                     .parentTask(Task.builder().id((taskCreateDto.getParentId() == null ? null : taskCreateDto.getParentId())).build())
+                    .trelloId(taskCreateDto.getTrelloId())
                     .build();
         }
     }

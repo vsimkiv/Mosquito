@@ -22,19 +22,11 @@ import static com.softserve.mosquito.transformer.TaskTransformer.*;
 public class TaskServiceImpl implements TaskService {
     private TaskRepo taskRepo;
     private TasksBoardService tasksBoardService;
-    private UserService userService;
-    private PriorityService priorityService;
-    private StatusService statusService;
-    private EstimationService estimationService;
 
     @Autowired
-    public TaskServiceImpl(TaskRepo taskRepo, TasksBoardService tasksBoardService, UserService userService, PriorityService priorityService, StatusService statusService, EstimationService estimationService) {
+    public TaskServiceImpl(TaskRepo taskRepo, TasksBoardService tasksBoardService) {
         this.taskRepo = taskRepo;
         this.tasksBoardService = tasksBoardService;
-        this.userService = userService;
-        this.priorityService = priorityService;
-        this.statusService = statusService;
-        this.estimationService = estimationService;
     }
 
 
@@ -42,12 +34,6 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskDto save(TaskCreateDto taskCreateDto ){
         Task task = toEntity(taskCreateDto);
-        Estimation estimation = EstimationTransformer.toEntity(estimationService.createEstimation(EstimationDto.builder()
-                .timeEstimation(taskCreateDto.getEstimationTime())
-                .remaining(taskCreateDto.getEstimationTime())
-                .build()));
-        System.out.println("EstimationID: " + estimation.getId() + " time: " + estimation.getTimeEstimation());
-        task.setEstimation(estimation);
         task = taskRepo.create(task);
         /*tasksBoardService.add(new TaskMongo(task.getId(), task.getName()), task.getOwner().getId(),
                 task.getWorker().getId());*/

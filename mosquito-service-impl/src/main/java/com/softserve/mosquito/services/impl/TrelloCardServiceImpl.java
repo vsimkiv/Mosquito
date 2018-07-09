@@ -45,9 +45,14 @@ public class TrelloCardServiceImpl implements TrelloCardService {
 
                     TaskCreateDto taskCreateDto = new TaskCreateDto(trelloBoard.getName(), userId, userId,
                             statusService.getByName("todo").getId(),null, trelloBoard.getId());
+                    taskCreateDto.setEstimationTime(11111);
+                    taskCreateDto.setPriorityId(1L);
 
-                    if (!taskService.isPresent(taskCreateDto.getTrelloId()) &&
-                            !taskCreateDto.isPresentInCollection(trelloTasks)) trelloTasks.add(taskCreateDto);
+                    if (!taskService.isPresent(taskCreateDto.getTrelloId())) {
+                        trelloTasks.add(taskCreateDto);
+                        taskService.save(taskCreateDto);
+                    }
+
 
                     trelloTasks.addAll(collectTaskCreateDtosFromTrelloCards(getTrelloCardsByList(trelloList.getId()),
                             trelloList.getName().toLowerCase(), trelloBoard.getId(), userId));
@@ -80,7 +85,7 @@ public class TrelloCardServiceImpl implements TrelloCardService {
         for (TrelloCardDto trelloCard : trelloCards) {
             TaskCreateDto taskCreateDto = new TaskCreateDto(trelloCard.getName(), userId, userId,
                     statusService.getByName(status).getId(),
-                    /*taskService.getByTrelloId(projectId).getId()*/ null, trelloCard.getId());
+                    taskService.getByTrelloId(projectId).getId() , trelloCard.getId());
 
             if (!taskService.isPresent(trelloCard.getId())) taskCreateDtos.add(taskCreateDto);
         }
