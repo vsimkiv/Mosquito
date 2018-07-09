@@ -61,6 +61,7 @@ public class TaskRepoImpl implements TaskRepo {
     public void delete(Long id) {
         Session session = sessionFactory.getCurrentSession();
         Task task = session.get(Task.class, id);
+        System.out.println(task);
         session.delete(task);
     }
 

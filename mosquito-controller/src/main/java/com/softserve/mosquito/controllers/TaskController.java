@@ -8,6 +8,7 @@ import com.softserve.mosquito.services.api.TasksBoardService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,9 +43,14 @@ public class TaskController {
     }
 
     @DeleteMapping(path = "/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteTask(@PathVariable("id") Long id) {
+
+//    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity deleteTask(@PathVariable("id") Long id) {
         taskService.delete(id);
+        if (taskService.getById(id)==null)
+            return ResponseEntity.noContent().build();
+        else return ResponseEntity.badRequest().build();
+
     }
 
     @GetMapping(path = "/{id}")

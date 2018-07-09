@@ -37,7 +37,7 @@ public class Task implements Serializable {
     @JoinColumn(name = "estimation_id")
     private Estimation estimation;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "priority_id")
     private Priority priority;
 
