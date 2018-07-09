@@ -2,7 +2,6 @@ package com.softserve.mosquito.transformer;
 
 import com.softserve.mosquito.dtos.*;
 import com.softserve.mosquito.entities.*;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -10,187 +9,187 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNull;
 
 public class TaskTransformerTest {
 
-    @Test
-    public void toEntity() {
-        EstimationDto estimationDto = new EstimationDto();
-        estimationDto.setTimeEstimation(100);
-        estimationDto.setId(1L);
-        estimationDto.setRemaining(100);
-        PriorityDto priorityDto = new PriorityDto();
-        priorityDto.setTitle("High");
-        priorityDto.setId(2L);
-        StatusDto statusDto = new StatusDto();
-        statusDto.setId(3L);
-        statusDto.setTitle("Doing");
-        SpecializationDto specializationDto1 = new SpecializationDto();
-        specializationDto1.setId(4L);
-        specializationDto1.setTitle("QC");
-        Set<SpecializationDto> specializationDtos = new HashSet<>();
-        specializationDtos.add(specializationDto1);
-        UserDto userDto = UserDto.builder().email("test_email").password("test_passpword").id(1L).
-                firstName("test_name").lastName("test_surname").
-                specializations(specializationDtos).build();
-        TaskFullDto taskFullDto = TaskFullDto.builder().ownerDto(userDto).parentTaskFullDto(null).id(1L).
-                workerDto(userDto).estimationDto(estimationDto).priorityDto(priorityDto).statusDto(statusDto).build();
-        Task task = TaskTransformer.toEntity(taskFullDto);
-        assertEquals(taskFullDto.getName(), task.getName());
-        assertEquals(taskFullDto.getOwnerDto().getId(), task.getOwner().getId());
-        assertEquals(taskFullDto.getId(), task.getId());
-    }
-
-    @Test
-    public void toFullDTO() {
-        Comment comment = new Comment();
-        comment.setId(1L);
-        comment.setText("Test Comment Text");
-        comment.setId(20L);
-        List<Comment> comments = new ArrayList<>();
-        comments.add(comment);
-        Estimation estimation = new Estimation();
-        estimation.setId(2L);
-        estimation.setTimeEstimation(25);
-        estimation.setRemaining(25);
-        User user = new User();
-        user.setId(2L);
-        user.setEmail("test_email");
-        user.setPassword("test_password");
-        user.setFirstName("test_name");
-        user.setLastName("test_surname");
-        user.setConfirmed(true);
-        Priority priority = new Priority("middle");
-        priority.setId(5L);
-        Status status = new Status("TODO");
-        status.setId(6L);
-        Task task = Task.builder().parentTask(null).childTasks(null).name("Test Task").id(2L).
-                comments(comments).estimation(estimation).owner(user).priority(priority).
-                status(status).worker(user).build();
-        TaskFullDto taskFullDto = TaskTransformer.toFullDTO(task);
-        assertEquals(task.getId(), taskFullDto.getId());
-
-    }
-
-    @Test
-    public void toSimpleDto() {
-        Comment comment = new Comment();
-        comment.setId(5L);
-        comment.setText("Test Comment Text");
-        comment.setId(20L);
-        List<Comment> comments = new ArrayList<>();
-        comments.add(comment);
-        Estimation estimation = new Estimation();
-        estimation.setId(1L);
-        estimation.setTimeEstimation(25);
-        estimation.setRemaining(25);
-        User user = new User();
-        user.setId(3L);
-        user.setEmail("test_email");
-        user.setPassword("test_password");
-        user.setFirstName("test_name");
-        user.setLastName("test_surname");
-        user.setConfirmed(true);
-        Priority priority = new Priority("middle");
-        priority.setId(5L);
-        Status status = new Status("TODO");
-        status.setId(5L);
-        Task task = new Task();
-        task.setId(3L);
-        task.setChildTasks(null);
-        task.setComments(comments);
-        task.setEstimation(estimation);
-        task.setName("Test Task");
-        task.setOwner(user);
-        task.setPriority(priority);
-        task.setStatus(status);
-        task.setWorker(user);
-        TaskSimpleDto taskSimpleDto = TaskTransformer.toSimpleDto(task);
-        assertEquals(task.getId(), taskSimpleDto.getId());
-
-
-    }
-
-    @Test
-    public void toEntityList() {
-        EstimationDto estimationDto = new EstimationDto();
-        estimationDto.setId(1L);
-        estimationDto.setTimeEstimation(100);
-        estimationDto.setRemaining(100);
-        PriorityDto priorityDto = new PriorityDto();
-        priorityDto.setId(2L);
-        priorityDto.setTitle("High");
-        StatusDto statusDto = new StatusDto();
-        statusDto.setId(3L);
-        statusDto.setTitle("Doing");
-        SpecializationDto specializationDto1 = new SpecializationDto();
-        specializationDto1.setId(2L);
-        specializationDto1.setTitle("QC");
-        Set<SpecializationDto> specializationDtos = new HashSet<>();
-        specializationDtos.add(specializationDto1);
-        UserDto userDto = UserDto.builder().email("test_email").password("test_passpword").id(5L).
-                firstName("test_name").lastName("test_surname").
-                specializations(specializationDtos).build();
-        TaskFullDto taskFullDto = TaskFullDto.builder().ownerDto(userDto).parentTaskFullDto(null).id(4L).
-                workerDto(userDto).estimationDto(estimationDto).priorityDto(priorityDto).statusDto(statusDto).build();
-        List<TaskFullDto> taskFullDtos = new ArrayList<>();
-        taskFullDtos.add(taskFullDto);
-        List<Task> tasks = TaskTransformer.toEntityList(taskFullDtos);
-        Task task1 = tasks.get(0);
-        assertEquals(taskFullDto.getId(), task1.getId());
-        assertEquals(taskFullDto.getName(), task1.getName());
-    }
-
-    @Test
-    public void toDTOList() {
-        Comment comment = new Comment();
-        comment.setId(4L);
-        comment.setText("Test Comment Text");
-        comment.setId(20L);
-        List<Comment> comments = new ArrayList<>();
-        comments.add(comment);
-        Estimation estimation = new Estimation();
-        estimation.setId(2L);
-        estimation.setTimeEstimation(25);
-        estimation.setRemaining(25);
-        User user = new User();
-        user.setId(2L);
-        user.setEmail("test_email");
-        user.setPassword("test_password");
-        user.setFirstName("test_name");
-        user.setLastName("test_surname");
-        user.setConfirmed(true);
-        Priority priority = new Priority("middle");
-        priority.setId(2L);
-        Status status = new Status("TODO");
-        status.setId(3L);
-        Task task = Task.builder().parentTask(null).childTasks(null).name("Test Task").id(5L).
-                comments(comments).estimation(estimation).owner(user).priority(priority).
-                status(status).worker(user).build();
-        List<Task> tasks = new ArrayList<>();
-        tasks.add(task);
-        List<TaskFullDto> taskFullDtos = TaskTransformer.toDTOList(tasks);
-        TaskFullDto taskFullDto = taskFullDtos.get(0);
-        assertEquals(task.getId(), taskFullDto.getId());
-        assertEquals(task.getName(),taskFullDto.getName());
-    }
-    @Test
-    public void toEntity_null() {
-        TaskFullDto taskFullDto=null;
-        Task task = TaskTransformer.toEntity(taskFullDto);
-        assertNull(task);
-    }
-    @Test
-    public void toFullDTO_null() {
-        Task task= null;
-        TaskFullDto taskFullDto = TaskTransformer.toFullDTO(task);
-        assertNull(taskFullDto);
-    }
-    @Test
-    public void toSimpleDto_null() {
-        Task task = null;
-        TaskSimpleDto taskSimpleDto = TaskTransformer.toSimpleDto(task);
-        assertNull(taskSimpleDto);
-    }
+//    @Test
+//    public void toEntity() {
+//        EstimationDto estimationDto = new EstimationDto();
+//        estimationDto.setTimeEstimation(100);
+//        estimationDto.setId(1L);
+//        estimationDto.setRemaining(100);
+//        PriorityDto priorityDto = new PriorityDto();
+//        priorityDto.setTitle("High");
+//        priorityDto.setId(2L);
+//        StatusDto statusDto = new StatusDto();
+//        statusDto.setId(3L);
+//        statusDto.setTitle("Doing");
+//        SpecializationDto specializationDto1 = new SpecializationDto();
+//        specializationDto1.setId(4L);
+//        specializationDto1.setTitle("QC");
+//        Set<SpecializationDto> specializationDtos = new HashSet<>();
+//        specializationDtos.add(specializationDto1);
+//        UserDto userDto = UserDto.builder().email("test_email").password("test_passpword").id(1L).
+//                firstName("test_name").lastName("test_surname").
+//                specializations(specializationDtos).build();
+//        TaskFullDto taskFullDto = TaskFullDto.builder().ownerDto(userDto).parentTaskFullDto(null).id(1L).
+//                workerDto(userDto).estimationDto(estimationDto).priorityDto(priorityDto).statusDto(statusDto).build();
+//        Task task = TaskTransformer.toEntity(taskFullDto);
+//        assertEquals(taskFullDto.getName(), task.getName());
+//        assertEquals(taskFullDto.getOwnerDto().getId(), task.getOwner().getId());
+//        assertEquals(taskFullDto.getId(), task.getId());
+//    }
+//
+//    @Test
+//    public void toFullDTO() {
+//        Comment comment = new Comment();
+//        comment.setId(1L);
+//        comment.setText("Test Comment Text");
+//        comment.setId(20L);
+//        List<Comment> comments = new ArrayList<>();
+//        comments.add(comment);
+//        Estimation estimation = new Estimation();
+//        estimation.setId(2L);
+//        estimation.setTimeEstimation(25);
+//        estimation.setRemaining(25);
+//        User user = new User();
+//        user.setId(2L);
+//        user.setEmail("test_email");
+//        user.setPassword("test_password");
+//        user.setFirstName("test_name");
+//        user.setLastName("test_surname");
+//        user.setConfirmed(true);
+//        Priority priority = new Priority("middle");
+//        priority.setId(5L);
+//        Status status = new Status("TODO");
+//        status.setId(6L);
+//        Task task = Task.builder().parentTask(null).childTasks(null).name("Test Task").id(2L).
+//                comments(comments).estimation(estimation).owner(user).priority(priority).
+//                status(status).worker(user).build();
+//        TaskFullDto taskFullDto = TaskTransformer.toFullDTO(task);
+//        assertEquals(task.getId(), taskFullDto.getId());
+//
+//    }
+//
+//    @Test
+//    public void toSimpleDto() {
+//        Comment comment = new Comment();
+//        comment.setId(5L);
+//        comment.setText("Test Comment Text");
+//        comment.setId(20L);
+//        List<Comment> comments = new ArrayList<>();
+//        comments.add(comment);
+//        Estimation estimation = new Estimation();
+//        estimation.setId(1L);
+//        estimation.setTimeEstimation(25);
+//        estimation.setRemaining(25);
+//        User user = new User();
+//        user.setId(3L);
+//        user.setEmail("test_email");
+//        user.setPassword("test_password");
+//        user.setFirstName("test_name");
+//        user.setLastName("test_surname");
+//        user.setConfirmed(true);
+//        Priority priority = new Priority("middle");
+//        priority.setId(5L);
+//        Status status = new Status("TODO");
+//        status.setId(5L);
+//        Task task = new Task();
+//        task.setId(3L);
+//        task.setChildTasks(null);
+//        task.setComments(comments);
+//        task.setEstimation(estimation);
+//        task.setName("Test Task");
+//        task.setOwner(user);
+//        task.setPriority(priority);
+//        task.setStatus(status);
+//        task.setWorker(user);
+//        TaskSimpleDto taskSimpleDto = TaskTransformer.toSimpleDto(task);
+//        assertEquals(task.getId(), taskSimpleDto.getId());
+//
+//
+//    }
+//
+//    @Test
+//    public void toEntityList() {
+//        EstimationDto estimationDto = new EstimationDto();
+//        estimationDto.setId(1L);
+//        estimationDto.setTimeEstimation(100);
+//        estimationDto.setRemaining(100);
+//        PriorityDto priorityDto = new PriorityDto();
+//        priorityDto.setId(2L);
+//        priorityDto.setTitle("High");
+//        StatusDto statusDto = new StatusDto();
+//        statusDto.setId(3L);
+//        statusDto.setTitle("Doing");
+//        SpecializationDto specializationDto1 = new SpecializationDto();
+//        specializationDto1.setId(2L);
+//        specializationDto1.setTitle("QC");
+//        Set<SpecializationDto> specializationDtos = new HashSet<>();
+//        specializationDtos.add(specializationDto1);
+//        UserDto userDto = UserDto.builder().email("test_email").password("test_passpword").id(5L).
+//                firstName("test_name").lastName("test_surname").
+//                specializations(specializationDtos).build();
+//        TaskFullDto taskFullDto = TaskFullDto.builder().ownerDto(userDto).parentTaskFullDto(null).id(4L).
+//                workerDto(userDto).estimationDto(estimationDto).priorityDto(priorityDto).statusDto(statusDto).build();
+//        List<TaskFullDto> taskFullDtos = new ArrayList<>();
+//        taskFullDtos.add(taskFullDto);
+//        List<Task> tasks = TaskTransformer.toEntityList(taskFullDtos);
+//        Task task1 = tasks.get(0);
+//        assertEquals(taskFullDto.getId(), task1.getId());
+//        assertEquals(taskFullDto.getName(), task1.getName());
+//    }
+//
+//    @Test
+//    public void toDTOList() {
+//        Comment comment = new Comment();
+//        comment.setId(4L);
+//        comment.setText("Test Comment Text");
+//        comment.setId(20L);
+//        List<Comment> comments = new ArrayList<>();
+//        comments.add(comment);
+//        Estimation estimation = new Estimation();
+//        estimation.setId(2L);
+//        estimation.setTimeEstimation(25);
+//        estimation.setRemaining(25);
+//        User user = new User();
+//        user.setId(2L);
+//        user.setEmail("test_email");
+//        user.setPassword("test_password");
+//        user.setFirstName("test_name");
+//        user.setLastName("test_surname");
+//        user.setConfirmed(true);
+//        Priority priority = new Priority("middle");
+//        priority.setId(2L);
+//        Status status = new Status("TODO");
+//        status.setId(3L);
+//        Task task = Task.builder().parentTask(null).childTasks(null).name("Test Task").id(5L).
+//                comments(comments).estimation(estimation).owner(user).priority(priority).
+//                status(status).worker(user).build();
+//        List<Task> tasks = new ArrayList<>();
+//        tasks.add(task);
+//        List<TaskFullDto> taskFullDtos = TaskTransformer.toDTOList(tasks);
+//        TaskFullDto taskFullDto = taskFullDtos.get(0);
+//        assertEquals(task.getId(), taskFullDto.getId());
+//        assertEquals(task.getName(),taskFullDto.getName());
+//    }
+//    @Test
+//    public void toEntity_null() {
+//        TaskFullDto taskFullDto=null;
+//        Task task = TaskTransformer.toEntity(taskFullDto);
+//        assertNull(task);
+//    }
+//    @Test
+//    public void toFullDTO_null() {
+//        Task task= null;
+//        TaskFullDto taskFullDto = TaskTransformer.toFullDTO(task);
+//        assertNull(taskFullDto);
+//    }
+//    @Test
+//    public void toSimpleDto_null() {
+//        Task task = null;
+//        TaskSimpleDto taskSimpleDto = TaskTransformer.toSimpleDto(task);
+//        assertNull(taskSimpleDto);
+//    }
 }

@@ -1,7 +1,6 @@
 package com.softserve.mosquito.repo.impl;
 
 import com.softserve.mosquito.entities.*;
-import com.softserve.mosquito.repo.api.EstimationRepo;
 import com.softserve.mosquito.repo.api.StatusRepo;
 import com.softserve.mosquito.repo.api.TaskRepo;
 import com.softserve.mosquito.repo.api.UserRepo;
@@ -45,8 +44,8 @@ public class TaskRepoImplTest {
         user.setLastName("test_surname");
         user.setConfirmed(true);
         user = userRepo.create(user);
-        Priority priority = new Priority("middle");
-        Status status = statusRepo.create(new Status("TODO"));
+        Priority priority = new Priority(1L,"middle");
+        Status status = statusRepo.create(new Status(1L, "TODO"));
         Task task = Task.builder().name("Test task").estimation(estimation)
                 .owner(user).worker(user).priority(priority).status(status).build();
 
@@ -91,7 +90,7 @@ public class TaskRepoImplTest {
         List<Task> subTasks = taskRepo.getSubTasks(1L);
         assertNotNull(subTasks);
         assertEquals(5, subTasks.size());
-        assertTrue(subTasks.iterator().next() instanceof Task);
+        assertNotNull(subTasks.iterator().next());
 
         List<Task> projects = taskRepo.getAllProjects();
         assertNotNull(projects);
@@ -112,5 +111,4 @@ public class TaskRepoImplTest {
         assertNotNull(tasks);
         assertEquals(1, tasks.size());
     }
-
 }

@@ -19,8 +19,8 @@ public class EstimationServiceImpl implements EstimationService {
     }
 
 
-    @Override
     @Transactional
+    @Override
     public EstimationDto createEstimation(EstimationDto estimationDto) {
         Estimation estimation = estimationRepo.create(EstimationTransformer.toEntity(estimationDto));
         if (estimation == null)
@@ -29,9 +29,8 @@ public class EstimationServiceImpl implements EstimationService {
         return EstimationTransformer.toDTO(estimation);
     }
 
-
-    @Override
     @Transactional
+    @Override
     public EstimationDto getEstimationById(Long id) {
         Estimation estimation = estimationRepo.read(id);
         if (estimation == null)
@@ -39,8 +38,8 @@ public class EstimationServiceImpl implements EstimationService {
         return EstimationTransformer.toDTO(estimation);
     }
 
-    @Override
     @Transactional
+    @Override
     public EstimationDto updateEstimationDto(EstimationDto estimationDto) {
         Estimation estimation = estimationRepo.update(EstimationTransformer.toEntity(estimationDto));
         if (estimation == null)
@@ -48,8 +47,8 @@ public class EstimationServiceImpl implements EstimationService {
         return EstimationTransformer.toDTO(estimation);
     }
 
-    @Override
     @Transactional
+    @Override
     public void removeEstimation(Long id) {
         estimationRepo.delete(id);
     }

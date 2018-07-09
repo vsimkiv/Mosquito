@@ -1,6 +1,7 @@
 package com.softserve.mosquito.controllers;
 
 import com.softserve.mosquito.dtos.TaskCreateDto;
+import com.softserve.mosquito.dtos.TaskDto;
 import com.softserve.mosquito.entities.mongo.TaskMongo;
 import com.softserve.mosquito.services.api.TaskService;
 import com.softserve.mosquito.services.api.TasksBoardService;
@@ -27,29 +28,29 @@ public class TaskController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TaskCreateDto createTask(@RequestBody TaskCreateDto taskCreateDto) {
-        tasksBoardService.add(new TaskMongo(taskCreateDto.getId(), taskCreateDto.getName()),
-                taskCreateDto.getOwner(), taskCreateDto.getWorker());
-        return taskService.save(taskCreateDto);
+    public TaskDto createTask(@RequestBody TaskCreateDto taskCreateDto) {
+        TaskDto dto = taskService.save(taskCreateDto);
+        tasksBoardService.add(new TaskMongo(dto.getId(), dto.getName()),
+                dto.getOwnerId(), dto.getWorkerId());
+        return dto;
     }
 
     @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TaskCreateDto updateTask(@PathVariable("id") Long id, @RequestBody TaskCreateDto taskCreateDto) {
-        tasksBoardService.update(new TaskMongo(taskCreateDto.getId(), taskCreateDto.getName()), taskCreateDto.getWorker());
+    public TaskDto updateTask(@PathVariable("id") Long id, @RequestBody TaskCreateDto taskCreateDto) {
+        tasksBoardService.update(new TaskMongo(taskCreateDto.getId(), taskCreateDto.getName()), taskCreateDto.getWorkerId());
         return taskService.update(taskCreateDto);
     }
 
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTask(@PathVariable("id") Long id) {
-        tasksBoardService.delete(id);
         taskService.delete(id);
     }
 
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TaskCreateDto getTaskById(@PathVariable("id") Long id) {
+    public TaskDto getTaskById(@PathVariable("id") Long id) {
         if (taskService.getSimpleTaskById(id) == null)
             throw new TaskNotFoundException("Task with Id " + id + " not found!");
         return taskService.getSimpleTaskById(id);
@@ -57,13 +58,13 @@ public class TaskController {
 
     @GetMapping(path = "/{id}/info")
     @ResponseStatus(HttpStatus.OK)
-    public TaskCreateDto getFullTaskById(@PathVariable("id") Long id) {
+    public TaskDto getFullTaskById(@PathVariable("id") Long id) {
         return taskService.getById(id);
     }
 
     @GetMapping(path = "{id}/sub-tasks")
     @ResponseStatus(HttpStatus.OK)
-    public List<TaskCreateDto> getSubTasks(@PathVariable("id") Long id) {
+    public List<TaskDto> getSubTasks(@PathVariable("id") Long id) {
         return taskService.getSubTasks(id);
     }
 

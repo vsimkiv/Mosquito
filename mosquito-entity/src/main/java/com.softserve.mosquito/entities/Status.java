@@ -8,10 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "statuses")
 public final class Status implements Serializable {
@@ -19,7 +20,6 @@ public final class Status implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
-    @NonNull
     private String title;
 
     @OneToMany(mappedBy = "status", fetch=FetchType.LAZY)

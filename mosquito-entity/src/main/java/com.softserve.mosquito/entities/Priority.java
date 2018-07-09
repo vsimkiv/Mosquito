@@ -7,10 +7,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Entity
 @EqualsAndHashCode
 @Table(name = "priorities")
@@ -19,7 +20,7 @@ public final class Priority implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
-    @NonNull
+
     private String title;
 
     @OneToMany(mappedBy = "priority", fetch = FetchType.LAZY)
