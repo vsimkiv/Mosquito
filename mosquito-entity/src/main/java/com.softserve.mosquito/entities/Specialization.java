@@ -14,7 +14,7 @@ import java.util.Set;
 @EqualsAndHashCode
 @Entity
 @Table(name = "specializations")
-public final class Specialization implements Serializable {
+public class Specialization implements Serializable {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)

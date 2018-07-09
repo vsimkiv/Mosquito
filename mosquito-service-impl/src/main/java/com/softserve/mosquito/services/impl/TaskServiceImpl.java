@@ -1,56 +1,41 @@
 package com.softserve.mosquito.services.impl;
 
 
-import com.softserve.mosquito.dtos.EstimationDto;
 import com.softserve.mosquito.dtos.TaskCreateDto;
 import com.softserve.mosquito.dtos.TaskDto;
-import com.softserve.mosquito.entities.Estimation;
 import com.softserve.mosquito.entities.Task;
 import com.softserve.mosquito.repo.api.TaskRepo;
-import com.softserve.mosquito.services.api.*;
-import com.softserve.mosquito.transformer.EstimationTransformer;
+import com.softserve.mosquito.services.api.TaskService;
+import com.softserve.mosquito.services.api.TasksBoardService;
 import com.softserve.mosquito.transformer.TaskTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.softserve.mosquito.transformer.TaskTransformer.toEntity;
-import static com.softserve.mosquito.transformer.TaskTransformer.toTaskDto;
-import static com.softserve.mosquito.transformer.TaskTransformer.toTaskDtoList;
+import static com.softserve.mosquito.transformer.TaskTransformer.*;
 
 @Service
 public class TaskServiceImpl implements TaskService {
     private TaskRepo taskRepo;
-    private UserService userService;
-    private PriorityService priorityService;
-    private StatusService statusService;
-    private EstimationService estimationService;
+    private TasksBoardService tasksBoardService;
+    private SimpMessagingTemplate template;
 
     @Autowired
-    public TaskServiceImpl(TaskRepo taskRepo, UserService userService, PriorityService priorityService, StatusService statusService, EstimationService estimationService) {
+    public TaskServiceImpl(TaskRepo taskRepo, TasksBoardService tasksBoardService, SimpMessagingTemplate template) {
         this.taskRepo = taskRepo;
-        this.userService = userService;
-        this.priorityService = priorityService;
-        this.statusService = statusService;
-        this.estimationService = estimationService;
+        this.tasksBoardService = tasksBoardService;
+        this.template = template;
     }
 
     @Transactional
     @Override
     public TaskDto save(TaskCreateDto taskCreateDto) {
         Task task = toEntity(taskCreateDto);
-        Estimation estimation = EstimationTransformer.toEntity(estimationService.createEstimation(EstimationDto.builder()
-                .timeEstimation(taskCreateDto.getEstimationTime())
-                .remaining(taskCreateDto.getEstimationTime())
-                .build()));
-        System.out.println("EstimationID: " + estimation.getId() + " time: " + estimation.getTimeEstimation());
-        task.setEstimation(estimation);
         task = taskRepo.create(task);
-        /*tasksBoardService.add(new TaskMongo(task.getId(), task.getName()), task.getOwner().getId(),
-                task.getWorker().getId());*/
         return task == null ? null : toTaskDto(task);
     }
 
@@ -73,9 +58,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskDto getById(Long id) {
         Task task = taskRepo.read(id);
-        TaskDto taskDto = toTaskDto(task);
-
-        return taskDto;
+        return toTaskDto(task);
     }
 
     @Transactional
@@ -151,4 +134,10 @@ public class TaskServiceImpl implements TaskService {
         return toTaskDto(taskRepo.getByName(name));
     }
 
+
+    @Transactional
+    @Override
+    public void sendPushMessage(String message, Long userId) {
+        template.convertAndSendToUser(String.valueOf(userId), "/queue/reply", message);
+    }
 }

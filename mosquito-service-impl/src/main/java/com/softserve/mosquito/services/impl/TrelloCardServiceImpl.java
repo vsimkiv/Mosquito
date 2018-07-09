@@ -2,6 +2,8 @@ package com.softserve.mosquito.services.impl;
 
 import com.softserve.mosquito.dtos.*;
 import com.softserve.mosquito.services.api.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
 public class TrelloCardServiceImpl implements TrelloCardService {
+
+    private static final Logger LOGGER = LogManager.getLogger(TrelloCardServiceImpl.class);
 
     private TrelloInfoService trelloInfoService;
     private TaskService taskService;
@@ -31,26 +36,40 @@ public class TrelloCardServiceImpl implements TrelloCardService {
     }
 
     @Override
-    @Transactional
     public List<TaskCreateDto> getAllNewTrelloTasksOnFront(Long userId) {
-        trelloInfo = trelloInfoService.getByUserId(userId);
 
+        trelloInfo = trelloInfoService.getByUserId(userId);
         List<TaskCreateDto> trelloTasks = new ArrayList<>();
 
         for (TrelloBoardDto trelloBoard : getAllTrelloBoards()) {
             for (TrelloListDto trelloList : getTrelloListsByBoard(trelloBoard.getId())) {
-                if (trelloList.getName().equalsIgnoreCase("todo") ||
-                        trelloList.getName().equalsIgnoreCase("doing") ||
-                        trelloList.getName().equalsIgnoreCase("done")) {
 
-                    TaskCreateDto taskCreateDto = new TaskCreateDto(trelloBoard.getName(), userId, userId,
-                            statusService.getByName("todo").getId(),null, trelloBoard.getId());
+                String listName = trelloList.getName();
+                if (listName.equalsIgnoreCase("todo")
+                        || listName.equalsIgnoreCase("doing")
+                        || listName.equalsIgnoreCase("done")) {
 
-                    if (!taskService.isPresent(taskCreateDto.getTrelloId()) &&
-                            !taskCreateDto.isPresentInCollection(trelloTasks)) trelloTasks.add(taskCreateDto);
+                    TaskCreateDto taskCreateDto = TaskCreateDto.builder()
+                            .name(trelloBoard.getName())
+                            .ownerId(userId)
+                            .workerId(userId)
+                            .statusId(statusService.getByName(listName).getId())
+                            .trelloId(trelloBoard.getId())
+                            .priorityId(1L)
+                            .estimationTime(0).build();
+
+                    TaskDto taskDto;
+
+                        if (!taskService.isPresent(taskCreateDto.getTrelloId())) taskDto = taskService.save(taskCreateDto);
+                         else taskDto = taskService.getByTrelloId(taskCreateDto.getTrelloId());
+
+                    taskCreateDto.setId(taskDto.getId());
+
+                    if (!taskService.isPresent(taskCreateDto.getTrelloId())
+                            && !taskCreateDto.isPresentInCollection(trelloTasks)) trelloTasks.add(taskCreateDto);
 
                     trelloTasks.addAll(collectTaskCreateDtosFromTrelloCards(getTrelloCardsByList(trelloList.getId()),
-                            trelloList.getName().toLowerCase(), trelloBoard.getId(), userId));
+                            trelloList.getName().toLowerCase(), taskCreateDto, userId));
                 }
             }
         }
@@ -61,42 +80,47 @@ public class TrelloCardServiceImpl implements TrelloCardService {
     @Transactional
     public void createTasksFromTrello(Long userId) {
         trelloInfo = trelloInfoService.getByUserId(userId);
-        createTrelloTasks(userId, getAllNewTrelloTasksOnFront(userId));
+        createTrelloTasks(getAllNewTrelloTasksOnFront(userId));
     }
 
     @Override
     @Transactional
     public void createChosenTasksFromTrelloJSON(Long userId, List<TaskCreateDto> taskCreateDtoList) {
         trelloInfo = trelloInfoService.getByUserId(userId);
-        createTrelloTasks(userId, taskCreateDtoList);
+        createTrelloTasks(taskCreateDtoList);
     }
 
     //private methods
     private List<TaskCreateDto> collectTaskCreateDtosFromTrelloCards(
-            TrelloCardDto[] trelloCards, String status, String projectId, Long userId) {
+            TrelloCardDto[] trelloCards, String status, TaskCreateDto project, Long userId) {
 
         List<TaskCreateDto> taskCreateDtos = new ArrayList<>();
 
         for (TrelloCardDto trelloCard : trelloCards) {
-            TaskCreateDto taskCreateDto = new TaskCreateDto(trelloCard.getName(), userId, userId,
-                    statusService.getByName(status).getId(),
-                    /*taskService.getByTrelloId(projectId).getId()*/ null, trelloCard.getId());
+            TaskCreateDto taskCreateDto = TaskCreateDto.builder()
+                    .name(trelloCard.getName())
+                    .ownerId(userId)
+                    .workerId(userId)
+                    .statusId(statusService.getByName(status).getId())
+                    .parentId(project.getId())
+                    .trelloId(trelloCard.getId())
+                    .estimationTime(0)
+                    .priorityId(1L).build();
 
             if (!taskService.isPresent(trelloCard.getId())) taskCreateDtos.add(taskCreateDto);
         }
         return taskCreateDtos;
     }
 
-    private void createTrelloTasks(Long userId, List<TaskCreateDto> taskCreateDtoList) {
+    private void createTrelloTasks(List<TaskCreateDto> taskCreateDtoList) {
         for (TaskCreateDto taskCreateDto : taskCreateDtoList) {
-            taskCreateDto.setOwnerId(userId);
-            taskCreateDto.setWorkerId(userId);
             taskService.save(taskCreateDto);
         }
     }
 
     private TrelloBoardDto[] getAllTrelloBoards() {
         TrelloBoardDto[] trelloBoards = null;
+
         String urlGetAllBoards = String.format("https://trello.com/1/members/%s/boards?key=%s&token=%s",
                 trelloInfo.getUserTrelloName(), trelloInfo.getUserTrelloKey(), trelloInfo.getUserTrelloToken());
         try {
@@ -107,13 +131,15 @@ public class TrelloCardServiceImpl implements TrelloCardService {
             trelloBoards = mapper.readValue(responseAsString, TrelloBoardDto[].class);
 
         } catch (Exception e) {
-            System.err.println(e);
+            LOGGER.error("Problem with getAllTrelloBoards method" + Arrays.toString(e.getStackTrace()));
+            return new TrelloBoardDto[0];
         }
         return trelloBoards;
     }
 
     private TrelloListDto[] getTrelloListsByBoard(String idBoard) {
         TrelloListDto[] trelloLists = null;
+
         String urlGetListOfBoard = String.format("https://trello.com/1/boards/%s/lists?cards=open&card_fields=name&fields=name&key=%s&token=%s",
                 idBoard, trelloInfo.getUserTrelloKey(), trelloInfo.getUserTrelloToken());
         try {
@@ -124,7 +150,8 @@ public class TrelloCardServiceImpl implements TrelloCardService {
             trelloLists = mapper.readValue(responseAsString, TrelloListDto[].class);
 
         } catch (Exception e) {
-            System.err.println(e);
+            LOGGER.error("Problem with getTrelloListsByBoard method" + Arrays.toString(e.getStackTrace()));
+            return new TrelloListDto[0];
         }
         return trelloLists;
     }
@@ -142,7 +169,8 @@ public class TrelloCardServiceImpl implements TrelloCardService {
             trelloCards = mapper.readValue(responseAsString, TrelloCardDto[].class);
 
         } catch (Exception e) {
-            System.err.println(e);
+            LOGGER.error("Problem with getTrelloCardsByList method" + Arrays.toString(e.getStackTrace()));
+            return new TrelloCardDto[0];
         }
         return trelloCards;
     }

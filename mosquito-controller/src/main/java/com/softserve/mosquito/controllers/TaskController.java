@@ -9,6 +9,7 @@ import com.softserve.mosquito.services.api.TasksBoardService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,10 +31,11 @@ public class TaskController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public TaskDto createTask(@RequestBody TaskCreateDto taskCreateDto) {
-        TaskDto dto = taskService.save(taskCreateDto);
-        tasksBoardService.add(new TaskMongo(dto.getId(), dto.getName(), dto.getPriority().getId()),
-                dto.getWorkerId());
-        return dto;
+        TaskDto taskDto = taskService.save(taskCreateDto);
+        tasksBoardService.add(new TaskMongo(taskDto.getId(), taskDto.getName(), taskDto.getStatus().getId()),
+                taskDto.getWorkerId());
+        taskService.sendPushMessage("<h3>You were assigned to the task! <br>Click here for extra information</h3>", taskDto.getWorkerId());
+        return taskDto;
     }
 
     @PutMapping(path = "/{id}")
@@ -45,10 +47,14 @@ public class TaskController {
     }
 
     @DeleteMapping(path = "/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteTask(@PathVariable("id") Long id) {
-        tasksBoardService.delete(id);
+//    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity deleteTask(@PathVariable("id") Long id) {
         taskService.delete(id);
+        if (taskService.getById(id) == null)
+            return ResponseEntity.noContent().build();
+        else
+            return ResponseEntity.badRequest().build();
+
     }
 
     @GetMapping(path = "/{id}")
@@ -77,13 +83,19 @@ public class TaskController {
         return tasksBoardService.getUserWork(workerId);
     }
 
+    @GetMapping(path = "trello-task/{trello_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public boolean isPresetn(@PathVariable("trello_id") String trelloId) {
+        return taskService.isPresent(trelloId);
+    }
+
     @GetMapping(path = "/worker-tasks")
-    public List<TasksBoard> getByStatus(@RequestParam("status_id") Long statusId){
+    public List<TasksBoard> getByStatus(@RequestParam("status_id") Long statusId) {
         return tasksBoardService.getByStatusId(statusId);
     }
 
     @GetMapping(path = "/migrate")
-    public void migrate(){
+    public void migrate() {
         tasksBoardService.migrateDbData();
     }
 

@@ -7,6 +7,7 @@ import org.junit.Test;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.TreeSet;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -35,17 +36,18 @@ public class SpecializationTransformerTest {
     @Test
     public void toDTOList() {
         Specialization specialization1 = new Specialization();
-        specialization1.setId(5L);
+        specialization1.setId(1L);
         specialization1.setTitle("BigBoss");
         Specialization specialization2 = new Specialization();
-        specialization2.setId(6L);
-        specialization2.setTitle("Clerk");
+        specialization2.setId(10L);
+        specialization2.setTitle("Worker");
         Set<Specialization> specializations = new HashSet<>();
-        specializations.add(specialization1);
         specializations.add(specialization2);
+        specializations.add(specialization1);
+
         Set<SpecializationDto> specializationDtos = SpecializationTransformer.toDTOList(specializations);
         SpecializationDto firstDto = specializationDtos.stream().findFirst().get();
-        assertEquals(specialization2.getTitle(), firstDto.getTitle());
+        assertEquals(specialization1.getTitle(), firstDto.getTitle());
     }
 
     @Test
