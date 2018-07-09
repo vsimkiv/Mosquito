@@ -39,6 +39,7 @@ public class LogWorkController {
     }
 
     @PutMapping(path = "/{log-work_id}/{remaining}")
+    @ApiOperation(value = "Update log work", consumes = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public LogWorkDto updateLogWork(@PathVariable("log-work_id") Long logId,
                                     @PathVariable("remaining") int remaining,

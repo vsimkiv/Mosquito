@@ -85,9 +85,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/push-message")
-    @ApiOperation(value = "Get all users with concrete specialization", response = UserDto.class, responseContainer = "List")
     public void sendPushMessage(@PathVariable("userId") long userId) {
         userService.sendPushMessage("hello from mosquito!", userId);
     }
-
 }

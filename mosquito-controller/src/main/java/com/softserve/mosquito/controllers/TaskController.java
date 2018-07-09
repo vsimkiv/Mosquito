@@ -32,7 +32,9 @@ public class TaskController {
     public TaskDto createTask(@RequestBody TaskCreateDto taskCreateDto) {
         tasksBoardService.add(new TaskMongo(taskCreateDto.getId(), taskCreateDto.getName()),
                 taskCreateDto.getOwnerId(), taskCreateDto.getWorkerId());
-        return taskService.save(taskCreateDto);
+        TaskDto taskDto = taskService.save(taskCreateDto);
+        taskService.sendPushMessage("<h3>You were assigned to the task! <br>Click here for extra information</h3>", taskDto.getWorkerId());
+        return taskDto;
     }
 
     @PutMapping(path = "/{id}")

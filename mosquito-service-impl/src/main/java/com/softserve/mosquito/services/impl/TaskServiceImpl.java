@@ -10,6 +10,7 @@ import com.softserve.mosquito.services.api.*;
 import com.softserve.mosquito.transformer.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,11 +23,13 @@ import static com.softserve.mosquito.transformer.TaskTransformer.*;
 public class TaskServiceImpl implements TaskService {
     private TaskRepo taskRepo;
     private TasksBoardService tasksBoardService;
+    private SimpMessagingTemplate template;
 
     @Autowired
-    public TaskServiceImpl(TaskRepo taskRepo, TasksBoardService tasksBoardService) {
+    public TaskServiceImpl(TaskRepo taskRepo, TasksBoardService tasksBoardService, SimpMessagingTemplate template) {
         this.taskRepo = taskRepo;
         this.tasksBoardService = tasksBoardService;
+        this.template = template;
     }
 
 
@@ -139,4 +142,10 @@ public class TaskServiceImpl implements TaskService {
         return toTaskDto(taskRepo.getByName(name));
     }
 
+
+    @Transactional
+    @Override
+    public void sendPushMessage(String message, Long userId) {
+        template.convertAndSendToUser(String.valueOf(userId), "/queue/reply", message);
+    }
 }

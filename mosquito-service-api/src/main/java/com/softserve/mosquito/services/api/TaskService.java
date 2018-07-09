@@ -36,4 +36,6 @@ public interface TaskService {
     TaskDto getSimpleTaskById(Long id);
 
     TaskDto getByTrelloId(String trelloId);
+
+    void sendPushMessage(String message, Long userId);
 }
