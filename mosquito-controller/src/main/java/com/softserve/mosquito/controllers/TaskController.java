@@ -86,5 +86,10 @@ public class TaskController {
     public List<TaskMongo> getWorkerTasks(@PathVariable("worker_id") Long workerId) {
         return tasksBoardService.getUserWork(workerId);
     }
+    @GetMapping(path = "trello-task/{trello_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public boolean isPresetn(@PathVariable("trello_id") String trelloId){
+        return taskService.isPresent(trelloId);
+    }
 
 }

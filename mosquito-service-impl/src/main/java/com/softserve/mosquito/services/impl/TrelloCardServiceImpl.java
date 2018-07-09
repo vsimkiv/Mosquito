@@ -31,7 +31,6 @@ public class TrelloCardServiceImpl implements TrelloCardService {
     }
 
     @Override
-    @Transactional
     public List<TaskCreateDto> getAllNewTrelloTasksOnFront(Long userId) {
         trelloInfo = trelloInfoService.getByUserId(userId);
 
@@ -39,26 +38,30 @@ public class TrelloCardServiceImpl implements TrelloCardService {
 
         for (TrelloBoardDto trelloBoard : getAllTrelloBoards()) {
 
-
-
-
             for (TrelloListDto trelloList : getTrelloListsByBoard(trelloBoard.getId())) {
-                if (trelloList.getName().equalsIgnoreCase("todo") ||
-                        trelloList.getName().equalsIgnoreCase("doing") ||
-                        trelloList.getName().equalsIgnoreCase("done")) {
+
+                String listName = trelloList.getName();
+                if (listName.equalsIgnoreCase("todo") || listName.equalsIgnoreCase("doing") ||
+                        listName.equalsIgnoreCase("done")) {
 
                     TaskCreateDto taskCreateDto = new TaskCreateDto(trelloBoard.getName(), userId, userId,
                             statusService.getByName("todo").getId(),null, trelloBoard.getId());
                     taskCreateDto.setEstimationTime(11111);
                     taskCreateDto.setPriorityId(1L);
 
-                        if (!taskService.isPresent(taskCreateDto.getTrelloId()) && !taskCreateDto.isPresentInCollection(trelloTasks)){
-                        TaskDto taskDto = taskService.save(taskCreateDto);
-                        taskCreateDto.setId(taskDto.getId());
-                        trelloTasks.add(taskCreateDto);
 
-                    }
+                    TaskDto taskDto;
 
+                        if (!taskService.isPresent(taskCreateDto.getTrelloId())){
+                        taskDto = taskService.save(taskCreateDto);
+                        } else {
+                            taskDto = taskService.getByTrelloId(taskCreateDto.getTrelloId());
+                        }
+
+                    taskCreateDto.setId(taskDto.getId());
+
+
+                    if (!taskCreateDto.isPresentInCollection(trelloTasks)) trelloTasks.add(taskCreateDto);
 
                     trelloTasks.addAll(collectTaskCreateDtosFromTrelloCards(getTrelloCardsByList(trelloList.getId()),
                             trelloList.getName().toLowerCase(), taskCreateDto, userId));
