@@ -34,7 +34,7 @@ public class TaskCreateDto {
 
     public boolean isPresentInCollection(List<TaskCreateDto> taskCreateDtos) {
         for (TaskCreateDto taskCreateDto : taskCreateDtos) {
-            if (this.equals(taskCreateDto)) return true;
+            if (this.getTrelloId().equals(taskCreateDto.getTrelloId())) return true;
         }
         return false;
     }
