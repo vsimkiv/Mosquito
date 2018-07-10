@@ -27,8 +27,7 @@ public class TrelloCardServiceImpl implements TrelloCardService {
 
     @Autowired
     public TrelloCardServiceImpl(TrelloInfoService trelloInfoService, TaskService taskService,
-                                 StatusService statusService, UserService userService) {
-
+                                 StatusService statusService) {
         this.trelloInfoService = trelloInfoService;
         this.taskService = taskService;
         this.statusService = statusService;
@@ -60,8 +59,8 @@ public class TrelloCardServiceImpl implements TrelloCardService {
 
                     TaskDto taskDto;
 
-                        if (!taskService.isPresent(taskCreateDto.getTrelloId())) taskDto = taskService.save(taskCreateDto);
-                         else taskDto = taskService.getByTrelloId(taskCreateDto.getTrelloId());
+                    if (!taskService.isPresent(taskCreateDto.getTrelloId())) taskDto = taskService.save(taskCreateDto);
+                    else taskDto = taskService.getByTrelloId(taskCreateDto.getTrelloId());
 
                     taskCreateDto.setId(taskDto.getId());
 
