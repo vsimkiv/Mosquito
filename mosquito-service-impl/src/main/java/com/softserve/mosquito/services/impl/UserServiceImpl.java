@@ -94,6 +94,11 @@ public class UserServiceImpl implements UserService {
         template.convertAndSendToUser(String.valueOf(userId), "/queue/reply", message);
     }
 
+    @Override
+    public boolean isConfirmed(String email) {
+        return userRepo.isConfirmed(email);
+    }
+
     @Transactional
     @Override
     public void activateUser(String key) {

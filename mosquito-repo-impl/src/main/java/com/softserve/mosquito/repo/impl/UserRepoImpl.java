@@ -88,4 +88,12 @@ public class UserRepoImpl implements UserRepo {
         query.setParameter("id", id);
         return query.list();
     }
+
+    @Override
+    public boolean isConfirmed(String email) {
+        Session session = sessionFactory.getCurrentSession();
+        User user = session.createQuery("FROM " + User.class.getName() + " WHERE email = :email",
+                User.class).setParameter("email",email).getSingleResult();
+        return user.isConfirmed();
+    }
 }
