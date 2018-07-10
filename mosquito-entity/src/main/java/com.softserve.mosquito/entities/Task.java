@@ -12,12 +12,15 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 @Entity
 @Table(name = "tasks")
 public class Task implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Exclude
     private Long id;
     private String name;
 
@@ -53,17 +56,4 @@ public class Task implements Serializable {
 
     @OneToMany(mappedBy = "parentTask", targetEntity = Task.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Task> childTasks = new ArrayList<>();
-
-
-    @Override
-    public String toString() {
-        return "Task{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", parentTask=" + parentTask +
-                ", owner=" + owner +
-                ", worker=" + worker +
-                ", childTasks=" + childTasks +
-                '}';
-    }
 }

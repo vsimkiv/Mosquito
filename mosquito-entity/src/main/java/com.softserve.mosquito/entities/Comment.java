@@ -6,16 +6,19 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 @Entity
 @Table(name = "comments")
 public class Comment implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Exclude
     private Long id;
     private String text;
 
@@ -29,15 +32,4 @@ public class Comment implements Serializable {
 
     @Column(name = "last_update")
     private LocalDateTime lastUpdate;
-
-    @Override
-    public String toString() {
-        return "Comment{" +
-                "id=" + id +
-                ", text='" + text + '\'' +
-                ", author=" + author +
-                ", task=" + task +
-                ", lastUpdate=" + lastUpdate +
-                '}';
-    }
 }

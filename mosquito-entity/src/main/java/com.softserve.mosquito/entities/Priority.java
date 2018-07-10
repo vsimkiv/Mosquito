@@ -14,11 +14,13 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @EqualsAndHashCode
+@ToString
 @Table(name = "priorities")
 public class Priority implements Serializable {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @EqualsAndHashCode.Exclude
     private Long id;
 
     private String title;

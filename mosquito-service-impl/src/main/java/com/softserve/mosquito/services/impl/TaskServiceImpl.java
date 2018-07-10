@@ -1,14 +1,13 @@
 package com.softserve.mosquito.services.impl;
 
 
-import com.softserve.mosquito.dtos.*;
-import com.softserve.mosquito.entities.Estimation;
+import com.softserve.mosquito.dtos.TaskCreateDto;
+import com.softserve.mosquito.dtos.TaskDto;
 import com.softserve.mosquito.entities.Task;
-import com.softserve.mosquito.entities.mongo.TaskMongo;
 import com.softserve.mosquito.repo.api.TaskRepo;
-import com.softserve.mosquito.services.api.*;
-import com.softserve.mosquito.transformer.*;
-
+import com.softserve.mosquito.services.api.TaskService;
+import com.softserve.mosquito.services.api.TasksBoardService;
+import com.softserve.mosquito.transformer.TaskTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -22,33 +21,26 @@ import static com.softserve.mosquito.transformer.TaskTransformer.*;
 @Service
 public class TaskServiceImpl implements TaskService {
     private TaskRepo taskRepo;
-    private TasksBoardService tasksBoardService;
     private SimpMessagingTemplate template;
 
     @Autowired
-    public TaskServiceImpl(TaskRepo taskRepo, TasksBoardService tasksBoardService, SimpMessagingTemplate template) {
+    public TaskServiceImpl(TaskRepo taskRepo, SimpMessagingTemplate template) {
         this.taskRepo = taskRepo;
-        this.tasksBoardService = tasksBoardService;
         this.template = template;
     }
 
-
     @Transactional
     @Override
-    public TaskDto save(TaskCreateDto taskCreateDto ){
+    public TaskDto save(TaskCreateDto taskCreateDto) {
         Task task = toEntity(taskCreateDto);
         task = taskRepo.create(task);
-        /*tasksBoardService.add(new TaskMongo(task.getId(), task.getName()), task.getOwner().getId(),
-                task.getWorker().getId());*/
         return task == null ? null : toTaskDto(task);
     }
 
     @Transactional
     @Override
     public TaskDto update(TaskCreateDto taskCreateDto) {
-
         Task task = taskRepo.update(toEntity(taskCreateDto));
-        tasksBoardService.update(new TaskMongo(task.getId(), task.getName()), task.getWorker().getId());
         if (task == null)
             return null;
         return toTaskDto(task);
@@ -64,9 +56,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskDto getById(Long id) {
         Task task = taskRepo.read(id);
-        TaskDto taskDto = toTaskDto(task);
-
-        return taskDto;
+        return toTaskDto(task);
     }
 
     @Transactional

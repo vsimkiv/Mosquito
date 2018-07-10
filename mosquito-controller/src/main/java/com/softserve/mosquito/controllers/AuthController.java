@@ -56,6 +56,9 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
+        if (!userService.isConfirmed(loginRequest.getEmail()))
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt = tokenProvider.generateToken(authentication);

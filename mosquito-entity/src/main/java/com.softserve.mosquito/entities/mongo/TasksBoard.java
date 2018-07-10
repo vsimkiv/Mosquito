@@ -20,9 +20,6 @@ public class TasksBoard {
     private Long workerId;
 
     @NonNull
-    private Long ownerId;
-
-    @NonNull
     private List<TaskMongo> taskMongos;
 
 
@@ -31,7 +28,6 @@ public class TasksBoard {
         return "TasksBoard{" +
                 "id='" + id + '\'' +
                 ", workerId=" + workerId +
-                ", ownerId=" + ownerId +
                 ", taskMongos=" + taskMongos +
                 '}';
     }

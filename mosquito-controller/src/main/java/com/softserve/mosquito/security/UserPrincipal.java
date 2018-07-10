@@ -16,7 +16,7 @@ public class UserPrincipal implements UserDetails {
     @JsonIgnore
     private String password;
 
-    public UserPrincipal(Long id, String username, String password){
+    public UserPrincipal(Long id, String username, String password) {
         this.id = id;
         this.username = username;
         this.password = password;

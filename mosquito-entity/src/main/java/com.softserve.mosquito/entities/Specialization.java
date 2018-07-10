@@ -12,14 +12,16 @@ import java.util.Set;
 @NoArgsConstructor
 @RequiredArgsConstructor
 @EqualsAndHashCode
+@ToString
 @Entity
 @Table(name = "specializations")
 public class Specialization implements Serializable {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
+    @EqualsAndHashCode.Exclude
     private Long id;
+
     @EqualsAndHashCode.Include
     @NonNull
     private String title;

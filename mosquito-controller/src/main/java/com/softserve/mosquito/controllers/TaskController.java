@@ -30,9 +30,9 @@ public class TaskController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public TaskDto createTask(@RequestBody TaskCreateDto taskCreateDto) {
-        tasksBoardService.add(new TaskMongo(taskCreateDto.getId(), taskCreateDto.getName()),
-                taskCreateDto.getOwnerId(), taskCreateDto.getWorkerId());
         TaskDto taskDto = taskService.save(taskCreateDto);
+        tasksBoardService.add(new TaskMongo(taskDto.getId(), taskDto.getName(), taskDto.getStatus().getId()),
+                taskDto.getWorkerId());
         taskService.sendPushMessage("<h3>You were assigned to the task! <br>Click here for extra information</h3>", taskDto.getWorkerId());
         return taskDto;
     }
@@ -40,18 +40,19 @@ public class TaskController {
     @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public TaskDto updateTask(@PathVariable("id") Long id, @RequestBody TaskCreateDto taskCreateDto) {
-        tasksBoardService.update(new TaskMongo(taskCreateDto.getId(), taskCreateDto.getName()), taskCreateDto.getWorkerId());
+        tasksBoardService.update(new TaskMongo(taskCreateDto.getId(), taskCreateDto.getName(), taskCreateDto.getPriorityId()),
+                taskCreateDto.getWorkerId());
         return taskService.update(taskCreateDto);
     }
 
     @DeleteMapping(path = "/{id}")
-
-//    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity deleteTask(@PathVariable("id") Long id) {
         taskService.delete(id);
-        if (taskService.getById(id)==null)
+        tasksBoardService.delete(id);
+        if (taskService.getById(id) == null)
             return ResponseEntity.noContent().build();
-        else return ResponseEntity.badRequest().build();
+        else
+            return ResponseEntity.badRequest().build();
 
     }
 
@@ -75,21 +76,19 @@ public class TaskController {
         return taskService.getSubTasks(id);
     }
 
-    @GetMapping(path = "/owners-tasks/{owner_id}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<TaskMongo> getOwnerTasks(@PathVariable("owner_id") Long ownerId) {
-        return tasksBoardService.getUserTask(ownerId);
-    }
-
-    @GetMapping(path = "workers-tasks/{worker_id}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<TaskMongo> getWorkerTasks(@PathVariable("worker_id") Long workerId) {
-        return tasksBoardService.getUserWork(workerId);
-    }
     @GetMapping(path = "trello-task/{trello_id}")
     @ResponseStatus(HttpStatus.OK)
-    public boolean isPresetn(@PathVariable("trello_id") String trelloId){
+    public boolean isPresent(@PathVariable("trello_id") String trelloId) {
         return taskService.isPresent(trelloId);
+    }
+
+    @GetMapping(path = "/workers-tasks/{worker_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<TaskMongo> getWorkerTasks(@PathVariable("worker_id") Long workerId,
+                                          @RequestParam(value = "status_id", required = false) Long statusId) {
+        if (statusId != null)
+            return tasksBoardService.getByStatusId(workerId, statusId);
+        return tasksBoardService.getUserWork(workerId);
     }
 
 }

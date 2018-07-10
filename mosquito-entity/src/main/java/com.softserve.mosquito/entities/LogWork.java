@@ -1,26 +1,23 @@
 package com.softserve.mosquito.entities;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
 
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 @Entity
+@EqualsAndHashCode
+@ToString
 @Table(name = "log_works")
 public class LogWork implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Exclude
     private Long id;
     private String description;
     private Integer logged;
@@ -34,18 +31,5 @@ public class LogWork implements Serializable {
     private Estimation estimation;
 
     @Column(name = "last_update")
-    @JsonFormat(pattern = "yyyy-MM-dd@HH:mm:ss.SSSZ")
     private LocalDateTime lastUpdate;
-
-    @Override
-    public String toString() {
-        return "LogWork{" +
-                "id=" + id +
-                ", description='" + description + '\'' +
-                ", logged=" + logged +
-                ", author=" + author +
-                ", estimation=" + estimation +
-                ", lastUpdate=" + lastUpdate +
-                '}';
-    }
 }

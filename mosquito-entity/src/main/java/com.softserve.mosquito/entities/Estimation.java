@@ -11,19 +11,24 @@ import java.io.Serializable;
 import java.util.List;
 
 @Builder
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 @Entity
 @Table(name = "estimations")
 public class Estimation implements Serializable {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @EqualsAndHashCode.Exclude
     private Long id;
+
     @Column(name = "estimation")
     private Integer timeEstimation;
+
     @Column(name = "remaining")
     private Integer remaining;
 
@@ -41,16 +46,5 @@ public class Estimation implements Serializable {
         this.timeEstimation = timeEstimation;
         this.remaining = remaining;
         this.task = task;
-    }
-
-    @Override
-    public String toString() {
-        return "Estimation{" +
-                "id=" + id +
-                ", timeEstimation=" + timeEstimation +
-                ", remaining=" + remaining +
-                ", task=" + task +
-                ", logWorks=" + logWorks +
-                '}';
     }
 }

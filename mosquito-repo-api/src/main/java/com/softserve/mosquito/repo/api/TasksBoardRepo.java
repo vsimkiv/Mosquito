@@ -9,5 +9,4 @@ public interface TasksBoardRepo extends MongoRepository<TasksBoard, String> {
 
     TasksBoard findByWorkerId(Long workerId);
 
-    TasksBoard findByOwnerId(Long ownerId);
 }

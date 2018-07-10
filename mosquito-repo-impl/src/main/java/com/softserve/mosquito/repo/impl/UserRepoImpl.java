@@ -4,6 +4,7 @@ import com.softserve.mosquito.entities.User;
 import com.softserve.mosquito.repo.api.UserRepo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Repository
@@ -48,9 +50,19 @@ public class UserRepoImpl implements UserRepo {
     @Override
     @Transactional
     public User update(User user) {
-        Session session = sessionFactory.getCurrentSession();
-        session.update(user);
-        return user;
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            session.update(user);
+            session.getTransaction().commit();
+            return user;
+        } catch (HibernateException e) {
+            LOGGER.error("Problem with upadating user" + Arrays.toString(e.getStackTrace()));
+            return null;
+        } finally {
+            if (session != null) session.close();
+        }
     }
 
     @Override
@@ -87,5 +99,13 @@ public class UserRepoImpl implements UserRepo {
                 " u JOIN u.specializations s WHERE s.id = :id ", User.class);
         query.setParameter("id", id);
         return query.list();
+    }
+
+    @Override
+    public boolean isConfirmed(String email) {
+        Session session = sessionFactory.getCurrentSession();
+        User user = session.createQuery("FROM " + User.class.getName() + " WHERE email = :email",
+                User.class).setParameter("email",email).getSingleResult();
+        return user.isConfirmed();
     }
 }
