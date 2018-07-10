@@ -12,11 +12,14 @@ import java.io.Serializable;
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Entity
+@EqualsAndHashCode
+@ToString
 @Table(name = "users_trello")
 public class TrelloInfo implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Exclude
     private Long id;
 
     @OneToOne
