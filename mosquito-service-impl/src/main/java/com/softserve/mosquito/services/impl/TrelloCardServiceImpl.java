@@ -175,4 +175,3 @@ public class TrelloCardServiceImpl implements TrelloCardService {
         return trelloCards;
     }
 }
-
