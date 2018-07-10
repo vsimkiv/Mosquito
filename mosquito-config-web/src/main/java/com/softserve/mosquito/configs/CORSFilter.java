@@ -19,11 +19,11 @@ public class CORSFilter extends CorsFilter {
             throws ServletException, IOException {
         res.setHeader("Access-Control-Allow-Origin", "*");
         res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-        res.setHeader("Access-Control-Max-Age", "36000");
+        res.setHeader("Access-Control-Max-Age", "3600");
         res.setHeader("Access-Control-Allow-Headers",
                 "Access-Control-Allow-Origin,Content-Type,X-Requested-With,accept,Origin," +
                         "Access-Control-Request-Method,Access-Control-Request-Headers,Authorization");
-
+        res.addHeader("Access-Control-Expose-Headers", "Authorization, Access-Control-Allow-Origin");
         if ("OPTIONS".equalsIgnoreCase(req.getMethod())) {
             res.setStatus(HttpServletResponse.SC_OK);
         } else {
