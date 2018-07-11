@@ -109,13 +109,6 @@ public class TaskServiceImpl implements TaskService {
 
     @Transactional
     @Override
-    public TaskDto getSimpleTaskById(Long id) {
-        Task task = taskRepo.read(id);
-        return toTaskDto(task);
-    }
-
-    @Transactional
-    @Override
     public TaskDto getByTrelloId(String trelloId) {
         return toTaskDto(taskRepo.getByTrelloId(trelloId));
     }
