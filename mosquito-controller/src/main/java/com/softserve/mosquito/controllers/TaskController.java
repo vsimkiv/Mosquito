@@ -84,10 +84,4 @@ public class TaskController {
             return tasksBoardService.getByStatusId(workerId, statusId);
         return tasksBoardService.getUserWork(workerId);
     }
-
-    @GetMapping(path = "/migrate")
-    public void migrate(){
-        tasksBoardService.migrate();
-    }
-
 }

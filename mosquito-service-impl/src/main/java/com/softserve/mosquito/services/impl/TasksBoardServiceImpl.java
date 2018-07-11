@@ -1,12 +1,10 @@
 package com.softserve.mosquito.services.impl;
 
 import com.mongodb.BasicDBObject;
-import com.softserve.mosquito.entities.Task;
 import com.softserve.mosquito.entities.mongo.TaskMongo;
 import com.softserve.mosquito.entities.mongo.TasksBoard;
 import com.softserve.mosquito.repo.api.TasksBoardRepo;
 import com.softserve.mosquito.services.api.TasksBoardService;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -73,16 +71,6 @@ public class TasksBoardServiceImpl implements TasksBoardService {
 
         return tasksBoard == null ? Collections.emptyList() :
                 tasksBoard.getTaskMongos().stream().filter(taskMongo -> taskMongo.getStatusId().equals(statusId))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public void migrate() {
-        Session session = sessionFactory.openSession();
-        List<Task> tasks = session.createQuery("FROM " + Task.class.getName(),Task.class).getResultList();
-        for (Task task : tasks){
-            add(new TaskMongo(task.getId(),task.getName(),task.getStatus().getId()),
-                    task.getWorker().getId());
-        }
+                        .collect(Collectors.toList());
     }
 }
