@@ -39,6 +39,11 @@ class CommentNotFoundException extends NotFoundException {
 class StatusNotFoundException extends NotFoundException{
     public StatusNotFoundException(String message){super(message);}
 }
+
+class TrelloInfoNotFoundException extends NotFoundException{
+    public TrelloInfoNotFoundException(String message){super(message);}
+}
 class NotFoundException extends RuntimeException{
     public NotFoundException(String message){super(message);}
 }
+
