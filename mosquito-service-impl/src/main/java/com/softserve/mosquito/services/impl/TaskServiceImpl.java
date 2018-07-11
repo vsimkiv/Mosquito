@@ -6,8 +6,13 @@ import com.softserve.mosquito.dtos.TaskDto;
 import com.softserve.mosquito.entities.Task;
 import com.softserve.mosquito.repo.api.TaskRepo;
 import com.softserve.mosquito.services.api.TaskService;
-import com.softserve.mosquito.services.api.TasksBoardService;
-import com.softserve.mosquito.transformer.TaskTransformer;
+
+import com.softserve.mosquito.services.api.UserService;
+import com.softserve.mosquito.transformer.EstimationTransformer;
+import com.softserve.mosquito.transformer.PriorityTransformer;
+import com.softserve.mosquito.transformer.StatusTransformer;
+import com.softserve.mosquito.transformer.UserTransformer;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -22,11 +27,13 @@ import static com.softserve.mosquito.transformer.TaskTransformer.*;
 public class TaskServiceImpl implements TaskService {
     private TaskRepo taskRepo;
     private SimpMessagingTemplate template;
+    private UserService userService;
 
     @Autowired
-    public TaskServiceImpl(TaskRepo taskRepo, SimpMessagingTemplate template) {
+    public TaskServiceImpl(TaskRepo taskRepo, SimpMessagingTemplate template, UserService userService) {
         this.taskRepo = taskRepo;
         this.template = template;
+        this.userService = userService;
     }
 
     @Transactional
@@ -40,10 +47,10 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     @Override
     public TaskDto update(TaskDto taskDto) {
-        Task task = taskRepo.update(toEntity(taskDto));
+        Task task = taskRepo.update(toUpdateEntity(taskDto));
         if (task == null)
             return null;
-        return toTaskDto(task);
+        return toTaskDto(taskRepo.read(task.getId()));
     }
 
     @Transactional
@@ -74,7 +81,7 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     @Override
     public List<TaskDto> getByOwner(Long ownerId) {
-        return TaskTransformer.toTaskDtoList(taskRepo.getByOwner(ownerId));
+        return toTaskDtoList(taskRepo.getByOwner(ownerId));
     }
 
     @Transactional
@@ -92,7 +99,7 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     @Override
     public List<TaskDto> getProjectsByOwner(Long ownerId) {
-        return TaskTransformer.toTaskDtoList(taskRepo.getProjectsByOwner(ownerId));
+        return toTaskDtoList(taskRepo.getProjectsByOwner(ownerId));
     }
 
     @Transactional
@@ -130,5 +137,23 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void sendPushMessage(String message, Long userId) {
         template.convertAndSendToUser(String.valueOf(userId), "/queue/reply", message);
+    }
+
+    private Task toUpdateEntity(TaskDto taskDto ) {
+        if (taskDto == null) {
+            return null;
+        } else {
+            return Task.builder().
+                    id(taskDto.getId())
+                    .name(taskDto.getName())
+                    .owner(UserTransformer.toEntity(userService.getById(taskDto.getOwnerId())))
+                    .worker(UserTransformer.toEntity(userService.getById(taskDto.getWorkerId())))
+                    .priority(PriorityTransformer.toEntity(taskDto.getPriority()))
+                    .status(StatusTransformer.toEntity(taskDto.getStatus()))
+                    .estimation(EstimationTransformer.toEntity(taskDto.getEstimation()))
+                    .parentTask(taskDto.getParentId()==null? null : toUpdateEntity(getParent(taskDto.getParentId())))
+                    .trelloId(taskDto.getTrelloId())
+                    .build();
+        }
     }
 }

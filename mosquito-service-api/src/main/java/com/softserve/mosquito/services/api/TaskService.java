@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TaskService {
 
-    TaskDto save(TaskCreateDto taskCreateDto );
+    TaskDto save(TaskCreateDto taskCreateDto);
 
     TaskDto update(TaskDto taskDto);
 

@@ -35,23 +35,23 @@ public class TaskTransformer {
         }
     }
 
-    public static Task toEntity(TaskDto taskDto ) {
-        if (taskDto == null) {
-            return null;
-        } else {
-            return Task.builder().
-                    id(taskDto.getId())
-                    .name(taskDto.getName())
-                    .owner(User.builder().id(taskDto.getOwnerId()).build())
-                    .worker(User.builder().id(taskDto.getWorkerId()).build())
-                    .priority(PriorityTransformer.toEntity(taskDto.getPriority()))
-                    .status(StatusTransformer.toEntity(taskDto.getStatus()))
-                    .estimation(EstimationTransformer.toEntity(taskDto.getEstimation()))
-                    .parentTask(Task.builder().id((taskDto.getParentId() == null ? null : taskDto.getParentId())).build())
-                    .trelloId(taskDto.getTrelloId())
-                    .build();
-        }
-    }
+//    public static Task toEntity(TaskDto taskDto ) {
+//        if (taskDto == null) {
+//            return null;
+//        } else {
+//            return Task.builder().
+//                    id(taskDto.getId())
+//                    .name(taskDto.getName())
+//                    .owner(User.builder().id(taskDto.getOwnerId()).build())
+//                    .worker(User.builder().id(taskDto.getWorkerId()).build())
+//                    .priority(PriorityTransformer.toEntity(taskDto.getPriority()))
+//                    .status(StatusTransformer.toEntity(taskDto.getStatus()))
+//                    .estimation(EstimationTransformer.toEntity(taskDto.getEstimation()))
+//                    .parentTask(taskDto.getParentId()==null? null : Task.builder().id(( taskDto.getParentId())).build())
+//                    .trelloId(taskDto.getTrelloId())
+//                    .build();
+//        }
+//    }
 
 
     public static TaskDto toTaskDto(Task task) {
@@ -67,6 +67,7 @@ public class TaskTransformer {
                 .status(StatusTransformer.toDTO(task.getStatus()))
                 .priority(PriorityTransformer.toDTO(task.getPriority()))
                 .parentId((task.getParentTask() == null ? null : task.getParentTask().getId()))
+                .trelloId(task.getTrelloId())
                 .build();
 
     }
