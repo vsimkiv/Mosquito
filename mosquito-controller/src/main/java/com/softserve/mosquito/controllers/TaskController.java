@@ -39,10 +39,10 @@ public class TaskController {
 
     @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TaskDto updateTask(@PathVariable("id") Long id, @RequestBody TaskCreateDto taskCreateDto) {
-        tasksBoardService.update(new TaskMongo(taskCreateDto.getId(), taskCreateDto.getName(), taskCreateDto.getPriorityId()),
-                taskCreateDto.getWorkerId());
-        return taskService.update(taskCreateDto);
+    public TaskDto updateTask(@PathVariable("id") Long id, @RequestBody TaskDto taskDto) {
+        tasksBoardService.update(new TaskMongo(taskDto.getId(), taskDto.getName(), taskDto.getPriority().getId()),
+                taskDto.getWorkerId());
+        return taskService.update(taskDto);
     }
 
     @DeleteMapping(path = "/{id}")
