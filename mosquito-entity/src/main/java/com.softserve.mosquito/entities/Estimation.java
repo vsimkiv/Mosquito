@@ -22,7 +22,7 @@ import java.util.List;
 public class Estimation implements Serializable {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Exclude
     private Long id;
 
@@ -39,7 +39,7 @@ public class Estimation implements Serializable {
     @Singular
     @Fetch(FetchMode.SELECT)
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(mappedBy = "estimation")
+    @OneToMany(mappedBy = "estimation", cascade = CascadeType.ALL)
     private List<LogWork> logWorks;
 
     public Estimation(Integer timeEstimation, Integer remaining, Task task) {
