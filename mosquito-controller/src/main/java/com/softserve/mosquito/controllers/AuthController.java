@@ -53,11 +53,14 @@ public class AuthController {
                     )
             );
         } catch (AuthenticationException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new LoginResponse(false, "Login or password is not correct."));
         }
 
-        if (!userService.isConfirmed(loginRequest.getEmail()))
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        if (!userService.isConfirmed(loginRequest.getEmail())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new LoginResponse(false, "Please check your email for confirmation."));
+        }
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
