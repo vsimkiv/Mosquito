@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -91,7 +93,9 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void sendPushMessage(String message, Long userId) {
-        template.convertAndSendToUser(String.valueOf(userId), "/queue/reply", message);
+        Map<String,Object> headers = new HashMap<>();
+        headers.put("Content-Type","text/html");
+        template.convertAndSendToUser(String.valueOf(userId), "/queue/reply", message, headers);
     }
 
     @Override

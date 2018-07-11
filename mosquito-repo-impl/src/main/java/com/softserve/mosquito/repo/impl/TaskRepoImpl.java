@@ -51,17 +51,9 @@ public class TaskRepoImpl implements TaskRepo {
     @Override
     @Transactional
     public Task update(Task task) {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
-            session.update(task);
-            return task;
-        } catch (HibernateException e) {
-            LOGGER.error("Problem with creating task" + Arrays.toString(e.getStackTrace()));
-            return null;
-        } finally {
-            if (session != null) session.close();
-        }
+        Session session = sessionFactory.getCurrentSession();
+        session.update(task);
+        return session.get(Task.class, task.getId());
     }
 
     @Override

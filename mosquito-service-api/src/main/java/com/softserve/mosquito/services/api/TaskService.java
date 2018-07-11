@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface TaskService {
 
-    TaskDto save(TaskCreateDto taskCreateDto );
+    TaskDto save(TaskCreateDto taskCreateDto);
 
-    TaskDto update(TaskCreateDto taskCreateDto);
+    TaskDto update(TaskDto taskDto);
 
     void delete(Long id);
 
@@ -32,8 +32,6 @@ public interface TaskService {
     boolean isPresent(String name);
 
     TaskDto getByName(String name);
-
-    TaskDto getSimpleTaskById(Long id);
 
     TaskDto getByTrelloId(String trelloId);
 

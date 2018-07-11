@@ -29,8 +29,8 @@ public class ProjectController {
 
     @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TaskDto updateProject(@PathVariable("id") Long id, @RequestBody TaskCreateDto taskCreateDto) {
-        return taskService.update(taskCreateDto);
+    public TaskDto updateProject(@PathVariable("id") Long id, @RequestBody TaskDto taskDto) {
+        return taskService.update(taskDto);
     }
 
     @DeleteMapping(path = "/{id}")
