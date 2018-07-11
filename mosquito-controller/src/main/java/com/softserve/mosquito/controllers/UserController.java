@@ -67,11 +67,4 @@ public class UserController {
     public ResponseEntity<List<UserDto>> getUsersBySpecializationId(@PathVariable("specializationId") long specializationId) {
         return ResponseEntity.ok().body(userService.getBySpecializationId(specializationId));
     }
-
-    @GetMapping("/{userId}/push-message")
-    @ApiOperation(value = "Get all users with concrete specialization", response = UserDto.class, responseContainer = "List")
-    public void sendPushMessage(@PathVariable("userId") long userId) {
-        userService.sendPushMessage("hello from mosquito!", userId);
-    }
-
 }

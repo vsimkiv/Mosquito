@@ -21,11 +21,9 @@ public class UserServiceImpl implements UserService {
 
     private UserRepo userRepo;
     private MailSender mailSender;
-    private SimpMessagingTemplate template;
 
     @Autowired
-    public UserServiceImpl(SimpMessagingTemplate template, UserRepo userRepo, MailSender mailSender) {
-        this.template = template;
+    public UserServiceImpl(UserRepo userRepo, MailSender mailSender) {
         this.userRepo = userRepo;
         this.mailSender = mailSender;
     }
@@ -74,11 +72,6 @@ public class UserServiceImpl implements UserService {
             }
         }
         return userDtos;
-    }
-
-    @Override
-    public void sendPushMessage(String message, Long userId) {
-        template.convertAndSendToUser(String.valueOf(userId), "/queue/reply", message);
     }
 
     @Override
