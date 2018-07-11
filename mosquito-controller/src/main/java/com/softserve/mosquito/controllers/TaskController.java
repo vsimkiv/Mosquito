@@ -59,14 +59,8 @@ public class TaskController {
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public TaskDto getTaskById(@PathVariable("id") Long id) {
-        if (taskService.getSimpleTaskById(id) == null)
+        if (taskService.getById(id) == null)
             throw new TaskNotFoundException("Task with Id " + id + " not found!");
-        return taskService.getSimpleTaskById(id);
-    }
-
-    @GetMapping(path = "/{id}/info")
-    @ResponseStatus(HttpStatus.OK)
-    public TaskDto getFullTaskById(@PathVariable("id") Long id) {
         return taskService.getById(id);
     }
 
