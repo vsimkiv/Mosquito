@@ -6,6 +6,8 @@ import com.softserve.mosquito.entities.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 public class TaskTransformer {
 
     private TaskTransformer() {
@@ -28,6 +30,24 @@ public class TaskTransformer {
                             remaining(taskCreateDto.getEstimationTime()).build())
                     .parentTask(Task.builder().id((taskCreateDto.getParentId() == null ? null : taskCreateDto.getParentId())).build())
                     .trelloId(taskCreateDto.getTrelloId())
+                    .build();
+        }
+    }
+
+    public static Task toEntity(TaskDto taskDto ) {
+        if (taskDto == null) {
+            return null;
+        } else {
+            return Task.builder().
+                    id(taskDto.getId())
+                    .name(taskDto.getName())
+                    .owner(User.builder().id(taskDto.getOwnerId()).build())
+                    .worker(User.builder().id(taskDto.getWorkerId()).build())
+                    .priority(PriorityTransformer.toEntity(taskDto.getPriority()))
+                    .status(StatusTransformer.toEntity(taskDto.getStatus()))
+                    .estimation(EstimationTransformer.toEntity(taskDto.getEstimation()))
+                    .parentTask(Task.builder().id((taskDto.getParentId() == null ? null : taskDto.getParentId())).build())
+                    .trelloId(taskDto.getTrelloId())
                     .build();
         }
     }

@@ -17,4 +17,5 @@ public class TaskDto {
     private PriorityDto priority;
     private StatusDto status;
     private Long parentId;
+    private String trelloId;
 }
