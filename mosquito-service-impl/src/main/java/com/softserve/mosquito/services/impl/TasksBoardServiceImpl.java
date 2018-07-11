@@ -5,7 +5,6 @@ import com.softserve.mosquito.entities.mongo.TaskMongo;
 import com.softserve.mosquito.entities.mongo.TasksBoard;
 import com.softserve.mosquito.repo.api.TasksBoardRepo;
 import com.softserve.mosquito.services.api.TasksBoardService;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -23,13 +22,11 @@ public class TasksBoardServiceImpl implements TasksBoardService {
 
     private TasksBoardRepo tasksBoardRepo;
     private MongoOperations mongoOperations;
-    private SessionFactory sessionFactory;
 
     @Autowired
-    public TasksBoardServiceImpl(TasksBoardRepo tasksBoardRepo, MongoOperations mongoOperations, SessionFactory sessionFactory) {
+    public TasksBoardServiceImpl(TasksBoardRepo tasksBoardRepo, MongoOperations mongoOperations) {
         this.tasksBoardRepo = tasksBoardRepo;
         this.mongoOperations = mongoOperations;
-        this.sessionFactory = sessionFactory;
     }
 
     @Override
