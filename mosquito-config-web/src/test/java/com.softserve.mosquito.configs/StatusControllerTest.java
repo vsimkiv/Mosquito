@@ -88,24 +88,6 @@ public class StatusControllerTest {
         verifyNoMoreInteractions(statusServiceMock);
     }
 
-    @DirtiesContext
-    @Test
-    @Ignore
-    public void test_create_status_fail_409_conflict() throws Exception {
-        StatusDto statusDto = new StatusDto(1L, "TODO");
-
-        when(statusServiceMock.save(statusDto)).thenReturn(null);
-
-        mockMvc.perform(
-                post("/api/statuses")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(statusDto)))
-                .andExpect(status().isConflict());
-
-        verify(statusServiceMock, times(1)).save(statusDto);
-        verifyNoMoreInteractions(statusDto);
-    }
-
     @Test
     public void getStatusById_success() throws Exception {
         StatusDto statusDto = new StatusDto(3L, "Doing");
@@ -119,19 +101,6 @@ public class StatusControllerTest {
                 .andExpect(jsonPath("$.title", org.hamcrest.Matchers.is("Doing")));
 
         verify(statusServiceMock).getById(anyLong());
-        verifyNoMoreInteractions(statusServiceMock);
-    }
-
-    @DirtiesContext
-    @Test
-    @Ignore
-    public void test_get_by_id_fail_404_not_found() throws Exception {
-        when(statusServiceMock.getById(10L)).thenReturn(null);
-
-        mockMvc.perform(get("/api/statuses/{status_id}", 10L))
-                .andExpect(status().isNotFound());
-
-        verify(statusServiceMock, times(1)).getById(10L);
         verifyNoMoreInteractions(statusServiceMock);
     }
 

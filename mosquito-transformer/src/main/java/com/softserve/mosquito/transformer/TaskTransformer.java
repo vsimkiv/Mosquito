@@ -35,25 +35,6 @@ public class TaskTransformer {
         }
     }
 
-//    public static Task toEntity(TaskDto taskDto ) {
-//        if (taskDto == null) {
-//            return null;
-//        } else {
-//            return Task.builder().
-//                    id(taskDto.getId())
-//                    .name(taskDto.getName())
-//                    .owner(User.builder().id(taskDto.getOwnerId()).build())
-//                    .worker(User.builder().id(taskDto.getWorkerId()).build())
-//                    .priority(PriorityTransformer.toEntity(taskDto.getPriority()))
-//                    .status(StatusTransformer.toEntity(taskDto.getStatus()))
-//                    .estimation(EstimationTransformer.toEntity(taskDto.getEstimation()))
-//                    .parentTask(taskDto.getParentId()==null? null : Task.builder().id(( taskDto.getParentId())).build())
-//                    .trelloId(taskDto.getTrelloId())
-//                    .build();
-//        }
-//    }
-
-
     public static TaskDto toTaskDto(Task task) {
         if(task== null){
             return null;
