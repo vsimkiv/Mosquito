@@ -16,4 +16,6 @@ public interface TasksBoardService {
 
     void delete(Long id);
 
+    void migrate();
+
 }

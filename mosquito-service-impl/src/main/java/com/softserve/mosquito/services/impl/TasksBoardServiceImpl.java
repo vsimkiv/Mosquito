@@ -25,11 +25,13 @@ public class TasksBoardServiceImpl implements TasksBoardService {
 
     private TasksBoardRepo tasksBoardRepo;
     private MongoOperations mongoOperations;
+    private SessionFactory sessionFactory;
 
     @Autowired
-    public TasksBoardServiceImpl(TasksBoardRepo tasksBoardRepo, MongoOperations mongoOperations) {
+    public TasksBoardServiceImpl(TasksBoardRepo tasksBoardRepo, MongoOperations mongoOperations, SessionFactory sessionFactory) {
         this.tasksBoardRepo = tasksBoardRepo;
         this.mongoOperations = mongoOperations;
+        this.sessionFactory = sessionFactory;
     }
 
     @Override
@@ -55,13 +57,13 @@ public class TasksBoardServiceImpl implements TasksBoardService {
         Query query = new Query(
                 Criteria.where("taskMongos.taskId").is(id)
         );
-        mongoOperations.updateFirst(query, new Update().pull("taskMongos", new BasicDBObject("taskId", id)), TasksBoard.class);
+        mongoOperations.updateFirst(query, new Update().pull("taskMongos", new BasicDBObject("taskId", id)),
+                TasksBoard.class);
     }
 
     @Override
     public List<TaskMongo> getUserWork(Long userId) {
         TasksBoard tasksBoard = tasksBoardRepo.findByWorkerId(userId);
-
         return tasksBoard == null ? Collections.emptyList() : tasksBoard.getTaskMongos();
     }
 
@@ -74,4 +76,13 @@ public class TasksBoardServiceImpl implements TasksBoardService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public void migrate() {
+        Session session = sessionFactory.openSession();
+        List<Task> tasks = session.createQuery("FROM " + Task.class.getName(),Task.class).getResultList();
+        for (Task task : tasks){
+            add(new TaskMongo(task.getId(),task.getName(),task.getStatus().getId()),
+                    task.getWorker().getId());
+        }
+    }
 }
