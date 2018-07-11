@@ -53,11 +53,12 @@ public class TaskRepoImpl implements TaskRepo {
     public Task update(Task task) {
         Session session = null;
         try {
+            System.out.println(task);
             session = sessionFactory.openSession();
             session.update(task);
-            return task;
+            return session.get(Task.class,task.getId());
         } catch (HibernateException e) {
-            LOGGER.error("Problem with creating task" + Arrays.toString(e.getStackTrace()));
+            LOGGER.error("Problem with updating task" + Arrays.toString(e.getStackTrace()));
             return null;
         } finally {
             if (session != null) session.close();

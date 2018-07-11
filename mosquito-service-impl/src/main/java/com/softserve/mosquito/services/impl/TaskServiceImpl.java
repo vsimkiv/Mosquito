@@ -39,7 +39,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Transactional
     @Override
-    public TaskDto update(TaskCreateDto taskCreateDto) {
+    public TaskDto update(TaskDto taskCreateDto) {
         Task task = taskRepo.update(toEntity(taskCreateDto));
         if (task == null)
             return null;
