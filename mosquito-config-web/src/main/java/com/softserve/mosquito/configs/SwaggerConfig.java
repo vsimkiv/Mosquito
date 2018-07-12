@@ -40,9 +40,9 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("Mosquito")
-                .description("Task management tools which we are developing for learning and practise Java languages.")
+                .description("Task management tool which is developed for learning and practice Java technologies.")
                 .version("Final demo")
-                .license("Our team`s account on GitHub")
+                .license("IF-086-Java on GitHub")
                 .licenseUrl("https://github.com/IF-086-Java")
                 .build();
     }
