@@ -20,12 +20,8 @@ public class SpecializationTransformerTest {
         SpecializationDto specializationDto = new SpecializationDto();
         specializationDto.setId(1L);
         specializationDto.setTitle("JuniorJavaDeveloper");
-        SpecializationDto specializationDto1 = new SpecializationDto();
-        specializationDto1.setId(2L);
-        specializationDto1.setTitle("MiddleJavaDeveloper");
         Set<SpecializationDto> specializationDtoSet = new HashSet<>();
         specializationDtoSet.add(specializationDto);
-        specializationDtoSet.add(specializationDto1);
         Set<Specialization> specializations = SpecializationTransformer.toEntityList(specializationDtoSet);
         Iterator<SpecializationDto> iter = specializationDtoSet.iterator();
         Specialization first = specializations.stream().findFirst().get();
@@ -38,11 +34,7 @@ public class SpecializationTransformerTest {
         Specialization specialization1 = new Specialization();
         specialization1.setId(1L);
         specialization1.setTitle("BigBoss");
-        Specialization specialization2 = new Specialization();
-        specialization2.setId(10L);
-        specialization2.setTitle("Worker");
         Set<Specialization> specializations = new HashSet<>();
-        specializations.add(specialization2);
         specializations.add(specialization1);
 
         Set<SpecializationDto> specializationDtos = SpecializationTransformer.toDTOList(specializations);
