@@ -90,14 +90,6 @@ public class UserServiceImpl implements UserService {
         return userDtos;
     }
 
-    @Transactional
-    @Override
-    public void sendPushMessage(String message, Long userId) {
-        Map<String,Object> headers = new HashMap<>();
-        headers.put("Content-Type","text/html");
-        template.convertAndSendToUser(String.valueOf(userId), "/queue/reply", message, headers);
-    }
-
     @Override
     public boolean isConfirmed(String email) {
         return userRepo.isConfirmed(email);

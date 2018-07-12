@@ -47,7 +47,7 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     @Override
     public TaskDto update(TaskDto taskDto) {
-        Task task = taskRepo.update(toUpdateEntity(taskDto));
+        Task task = taskRepo.update(updateHelper(taskDto));
         if (task == null)
             return null;
         return toTaskDto(taskRepo.read(task.getId()));
@@ -107,7 +107,7 @@ public class TaskServiceImpl implements TaskService {
     public List<TaskDto> filterByStatus(List<TaskDto> taskDtoList, Long statusId) {
         List<TaskDto> filteredList = new ArrayList<>();
         for (TaskDto taskDto : taskDtoList) {
-            if (taskDto.getStatus().equals(statusId)) {
+            if (taskDto.getStatus().getId().equals(statusId)) {
                 filteredList.add(taskDto);
             }
         }
@@ -139,7 +139,7 @@ public class TaskServiceImpl implements TaskService {
         template.convertAndSendToUser(String.valueOf(userId), "/queue/reply", message);
     }
 
-    private Task toUpdateEntity(TaskDto taskDto ) {
+    private Task updateHelper(TaskDto taskDto) {
         if (taskDto == null) {
             return null;
         } else {
@@ -151,7 +151,7 @@ public class TaskServiceImpl implements TaskService {
                     .priority(PriorityTransformer.toEntity(taskDto.getPriority()))
                     .status(StatusTransformer.toEntity(taskDto.getStatus()))
                     .estimation(EstimationTransformer.toEntity(taskDto.getEstimation()))
-                    .parentTask(taskDto.getParentId()==null? null : toUpdateEntity(getParent(taskDto.getParentId())))
+                    .parentTask(taskDto.getParentId() == null ? null : updateHelper(getParent(taskDto.getParentId())))
                     .trelloId(taskDto.getTrelloId())
                     .build();
         }

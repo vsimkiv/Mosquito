@@ -36,8 +36,7 @@ public class SpecializationRepoImpl implements SpecializationRepo {
     @Transactional(readOnly = true)
     public Specialization read(Long id) {
         Session session = sessionFactory.getCurrentSession();
-        Specialization specialization = session.get(Specialization.class, id);
-        return specialization;
+        return session.get(Specialization.class, id);
     }
 
     @Override

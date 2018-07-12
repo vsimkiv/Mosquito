@@ -18,7 +18,8 @@ import java.util.List;
 @Repository
 public class TaskRepoImpl implements TaskRepo {
 
-    private SessionFactory sessionFactory;private static final Logger LOGGER = LogManager.getLogger(TaskRepoImpl.class);
+    private SessionFactory sessionFactory;
+    private static final Logger LOGGER = LogManager.getLogger(TaskRepoImpl.class);
 
     @Autowired
     public TaskRepoImpl(SessionFactory sessionFactory) {

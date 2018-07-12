@@ -38,8 +38,7 @@ public class StatusRepoImpl implements StatusRepo {
     @Transactional(readOnly = true)
     public Status read(Long id) {
         Session session = sessionFactory.getCurrentSession();
-        Status status = session.get(Status.class, id);
-        return status;
+        return session.get(Status.class, id);
     }
 
     @Override
