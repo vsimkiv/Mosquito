@@ -85,9 +85,4 @@ public class UserController {
                                                                                 long specializationId) {
         return ResponseEntity.ok().body(userService.getBySpecializationId(specializationId));
     }
-
-    @GetMapping("/{userId}/push-message")
-    public void sendPushMessage(@PathVariable("userId") long userId) {
-        userService.sendPushMessage("hello from mosquito!", userId);
-    }
 }

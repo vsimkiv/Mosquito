@@ -23,21 +23,10 @@ public class TaskCreateDto {
     private Long parentId;
     private String trelloId;
 
-
-    public TaskCreateDto(String name, Long ownerId, Long workerId, Long statusId, Long parentId, String trelloId) {
-        this.name = name;
-        this.ownerId = ownerId;
-        this.workerId = workerId;
-        this.statusId = statusId;
-        this.parentId = parentId;
-        this.trelloId = trelloId;
-    }
-
     public boolean isPresentInCollection(List<TaskCreateDto> taskCreateDtos) {
         for (TaskCreateDto taskCreateDto : taskCreateDtos) {
             if (this.getTrelloId().equals(taskCreateDto.getTrelloId())) return true;
         }
         return false;
     }
-
 }
