@@ -27,15 +27,13 @@ import javax.validation.Valid;
 public class AuthController {
 
     private AuthenticationManager authenticationManager;
-
     private UserService userService;
-
     private PasswordEncoder passwordEncoder;
-
     private JwtTokenProvider tokenProvider;
 
     @Autowired
-    public AuthController(AuthenticationManager authenticationManager, UserService userService, PasswordEncoder passwordEncoder, JwtTokenProvider tokenProvider) {
+    public AuthController(AuthenticationManager authenticationManager, UserService userService,
+                          PasswordEncoder passwordEncoder, JwtTokenProvider tokenProvider) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
@@ -43,7 +41,8 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@RequestBody @Valid UserLoginDto loginRequest, HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<?> authenticateUser(@RequestBody @Valid UserLoginDto loginRequest,
+                                              HttpServletRequest request, HttpServletResponse response) {
         Authentication authentication = null;
         try {
             authentication = authenticationManager.authenticate(
@@ -93,9 +92,7 @@ public class AuthController {
 
     @GetMapping("/activate/{key}")
     public ResponseEntity activateAccount(@PathVariable("key") String key) {
-
         userService.activateUser(key);
-
         return ResponseEntity.ok().build();
     }
 }

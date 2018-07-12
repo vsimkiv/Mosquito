@@ -33,7 +33,9 @@ public class TaskController {
         TaskDto taskDto = taskService.save(taskCreateDto);
         tasksBoardService.add(new TaskMongo(taskDto.getId(), taskDto.getName(), taskDto.getStatus().getId()),
                 taskDto.getWorkerId());
-        taskService.sendPushMessage("<h3>You were assigned to the task! <br>Click here for extra information</h3>", taskDto.getWorkerId());
+        taskService.sendPushMessage(
+                "<h3>You were assigned to the task! <br>Click here for extra information</h3>",
+                taskDto.getWorkerId());
         return taskDto;
     }
 

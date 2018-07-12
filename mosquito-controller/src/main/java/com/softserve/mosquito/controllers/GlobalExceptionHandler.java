@@ -24,14 +24,12 @@ public class GlobalExceptionHandler {
 }
 
 class TaskNotFoundException extends NotFoundException {
-
     public TaskNotFoundException(String message) {
         super(message);
     }
 }
 
 class CommentNotFoundException extends NotFoundException {
-
     public CommentNotFoundException(String message) {
         super(message);
     }

@@ -25,7 +25,6 @@ public class SpecializationController {
     public ResponseEntity<SpecializationDto> createSpecialization(@RequestBody SpecializationDto specializationDto){
         SpecializationDto createdSpecialization = specializationService.save(specializationDto);
 
-
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSpecialization);
     }
 
@@ -70,5 +69,4 @@ public class SpecializationController {
         }
          specializationService.delete(specialization_id);
     }
-
 }

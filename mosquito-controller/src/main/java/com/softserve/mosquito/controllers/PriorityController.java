@@ -41,7 +41,8 @@ public class PriorityController {
 
 
     @PutMapping(path = "/{priority_id}")
-    public ResponseEntity<PriorityDto> updatePriority(@PathVariable("priority_id") Long id, @RequestBody PriorityDto priorityDto){
+    public ResponseEntity<PriorityDto> updatePriority(@PathVariable("priority_id") Long id,
+                                                      @RequestBody PriorityDto priorityDto){
         if(priorityService.getById(id)== null){
             throw new NotFoundException("Priority with id " + id + " not found");
         }

@@ -25,9 +25,8 @@ public class LogWorkController {
     @PostMapping(path = "/{est_id}/log-works/{remaining}")
     @ApiOperation(value = "Add new log work for task", response = LogWorkDto.class)
     @ResponseStatus(HttpStatus.CREATED)
-    public LogWorkDto createLogWork(@PathVariable("est_id") Long estId,
-                                    @PathVariable("remaining") int remaining,
-                                           @RequestBody LogWorkDto logWorkDto) {
+    public LogWorkDto createLogWork(@PathVariable("est_id") Long estId, @PathVariable("remaining") int remaining,
+                                    @RequestBody LogWorkDto logWorkDto) {
 
         return logWorkService.save(estId, logWorkDto, remaining);
     }
@@ -41,9 +40,8 @@ public class LogWorkController {
     @PutMapping(path = "/{log-work_id}/{remaining}")
     @ApiOperation(value = "Update log work", consumes = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public LogWorkDto updateLogWork(@PathVariable("log-work_id") Long logId,
-                                    @PathVariable("remaining") int remaining,
-                                          @RequestBody LogWorkDto logWorkDto) {
+    public LogWorkDto updateLogWork(@PathVariable("log-work_id") Long logId, @PathVariable("remaining") int remaining,
+                                    @RequestBody LogWorkDto logWorkDto) {
         logWorkDto.setId(logId);
         return logWorkService.update(logWorkDto, remaining);
     }
@@ -56,13 +54,11 @@ public class LogWorkController {
     @GetMapping(path = "/by-est/{estimation_id}")
     @ResponseStatus(HttpStatus.OK)
     public List<LogWorkDto> getLogWorksByByEstimation(@PathVariable("estimation_id") Long estimationId) {
-
         return logWorkService.getByEstimationId(estimationId);
     }
     @GetMapping(path = "/by-user/{user_id}")
     @ResponseStatus(HttpStatus.OK)
     public List<LogWorkDto> getLogWorksByUserId(@PathVariable("user_id") Long userId) {
-
         return logWorkService.getByUserId(userId);
     }
 }

@@ -79,8 +79,10 @@ public class UserController {
     }
 
     @GetMapping("/specializations/{specializationId}")
-    @ApiOperation(value = "Get all users with concrete specialization", response = UserDto.class, responseContainer = "List")
-    public ResponseEntity<List<UserDto>> getUsersBySpecializationId(@PathVariable("specializationId") long specializationId) {
+    @ApiOperation(value = "Get all users with concrete specialization",
+            response = UserDto.class, responseContainer = "List")
+    public ResponseEntity<List<UserDto>> getUsersBySpecializationId(@PathVariable("specializationId")
+                                                                                long specializationId) {
         return ResponseEntity.ok().body(userService.getBySpecializationId(specializationId));
     }
 
