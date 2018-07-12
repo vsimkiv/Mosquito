@@ -36,7 +36,7 @@ public class Task implements Serializable {
     @JoinColumn(name = "worker_id")
     private User worker;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     @JoinColumn(name = "estimation_id")
     private Estimation estimation;
 
@@ -51,7 +51,7 @@ public class Task implements Serializable {
     @Column(name = "trello_id")
     private String trelloId;
 
-    @OneToMany(mappedBy = "task", targetEntity = Comment.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "task", targetEntity = Comment.class, fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "parentTask", targetEntity = Task.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)

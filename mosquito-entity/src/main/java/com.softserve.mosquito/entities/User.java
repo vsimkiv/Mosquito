@@ -52,7 +52,7 @@ public class User implements Serializable {
     private TrelloInfo trelloInfo;
 
     @Singular
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(name = "users_has_specializations", joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "specialization_id")})
     private Set<Specialization> specializations = new HashSet<>();
