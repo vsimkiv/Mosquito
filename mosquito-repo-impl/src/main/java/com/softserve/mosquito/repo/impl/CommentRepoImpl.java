@@ -17,7 +17,6 @@ import java.util.List;
 @Repository
 public class CommentRepoImpl implements CommentRepo {
 
-    private static final Logger LOGGER = LogManager.getLogger(CommentRepoImpl.class);
     private SessionFactory sessionFactory;
 
     @Autowired

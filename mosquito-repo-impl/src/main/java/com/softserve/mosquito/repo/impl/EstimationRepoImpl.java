@@ -25,7 +25,8 @@ public class EstimationRepoImpl implements EstimationRepo {
     @Transactional
     public Estimation create(Estimation estimation) {
         Session session = sessionFactory.getCurrentSession();
-        session.save(estimation);
+        Long id =  (Long) session.save(estimation);
+        estimation.setId(id);
         return estimation;
     }
 
