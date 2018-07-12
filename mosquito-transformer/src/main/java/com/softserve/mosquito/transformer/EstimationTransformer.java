@@ -2,7 +2,6 @@ package com.softserve.mosquito.transformer;
 
 import com.softserve.mosquito.dtos.EstimationDto;
 import com.softserve.mosquito.entities.Estimation;
-import com.softserve.mosquito.entities.Task;
 
 public class EstimationTransformer  {
 

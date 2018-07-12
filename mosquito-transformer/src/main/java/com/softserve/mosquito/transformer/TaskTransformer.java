@@ -25,11 +25,12 @@ public class TaskTransformer {
                     .worker(User.builder().id(taskCreateDto.getWorkerId()).build())
                     .priority(Priority.builder().id(taskCreateDto.getPriorityId()).build())
                     .status(Status.builder().id(1L).build())
-                    .estimation(Estimation.builder().
-                            timeEstimation(taskCreateDto.getEstimationTime()).
-                            remaining(taskCreateDto.getEstimationTime()).task(Task.builder()
-                            .id(taskCreateDto.getId()).build()).build())
-                    .parentTask(Task.builder().id((taskCreateDto.getParentId() == null ? null : taskCreateDto.getParentId())).build())
+                    .estimation(Estimation.builder()
+                            .timeEstimation(taskCreateDto.getEstimationTime())
+                            .remaining(taskCreateDto.getEstimationTime())
+                            .task(Task.builder().id(taskCreateDto.getId()).build()).build())
+                    .parentTask(Task.builder()
+                            .id((taskCreateDto.getParentId() == null ? null : taskCreateDto.getParentId())).build())
                     .trelloId(taskCreateDto.getTrelloId())
                     .build();
         }
