@@ -1,10 +1,7 @@
 package com.softserve.mosquito.repo.impl;
 
 import com.softserve.mosquito.entities.*;
-import com.softserve.mosquito.repo.api.PriorityRepo;
-import com.softserve.mosquito.repo.api.StatusRepo;
-import com.softserve.mosquito.repo.api.TaskRepo;
-import com.softserve.mosquito.repo.api.UserRepo;
+import com.softserve.mosquito.repo.api.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +27,8 @@ public class TaskRepoImplTest {
     UserRepo userRepo;
     @Autowired
     PriorityRepo priorityRepo;
-
+    @Autowired
+    EstimationRepo estimationRepo;
     @Autowired
     DataSource dataSource;
 
@@ -40,6 +38,7 @@ public class TaskRepoImplTest {
         Estimation estimation = new Estimation();
         estimation.setTimeEstimation(25);
         estimation.setRemaining(25);
+        estimation = estimationRepo.create(estimation);
         User user = new User();
         user.setEmail("test_email");
         user.setPassword("test_password");
