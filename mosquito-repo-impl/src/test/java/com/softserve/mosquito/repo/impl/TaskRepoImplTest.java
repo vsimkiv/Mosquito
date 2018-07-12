@@ -1,6 +1,7 @@
 package com.softserve.mosquito.repo.impl;
 
 import com.softserve.mosquito.entities.*;
+import com.softserve.mosquito.repo.api.PriorityRepo;
 import com.softserve.mosquito.repo.api.StatusRepo;
 import com.softserve.mosquito.repo.api.TaskRepo;
 import com.softserve.mosquito.repo.api.UserRepo;
@@ -27,6 +28,8 @@ public class TaskRepoImplTest {
     StatusRepo statusRepo;
     @Autowired
     UserRepo userRepo;
+    @Autowired
+    PriorityRepo priorityRepo;
 
     @Autowired
     DataSource dataSource;
@@ -44,8 +47,12 @@ public class TaskRepoImplTest {
         user.setLastName("test_surname");
         user.setConfirmed(true);
         user = userRepo.create(user);
-        Priority priority = new Priority(1L,"middle");
-        Status status = statusRepo.create(new Status(1L, "TODO"));
+        Priority priority = new Priority();
+        priority.setTitle("middle");
+        priority = priorityRepo.create(priority);
+        Status status = new Status();
+        status.setTitle("TODO");
+        status = statusRepo.create(status);
         Task task = Task.builder().name("Test task").estimation(estimation)
                 .owner(user).worker(user).priority(priority).status(status).build();
 
