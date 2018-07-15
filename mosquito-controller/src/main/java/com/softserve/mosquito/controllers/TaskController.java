@@ -3,6 +3,7 @@ package com.softserve.mosquito.controllers;
 import com.softserve.mosquito.dtos.TaskCreateDto;
 import com.softserve.mosquito.dtos.TaskDto;
 import com.softserve.mosquito.entities.mongo.TaskMongo;
+import com.softserve.mosquito.exceptions.TaskNotFoundException;
 import com.softserve.mosquito.services.api.TaskService;
 import com.softserve.mosquito.services.api.TasksBoardService;
 import io.swagger.annotations.Api;

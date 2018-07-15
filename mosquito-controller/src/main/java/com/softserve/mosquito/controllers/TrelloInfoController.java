@@ -2,6 +2,7 @@ package com.softserve.mosquito.controllers;
 
 
 import com.softserve.mosquito.dtos.TrelloInfoDto;
+import com.softserve.mosquito.exceptions.TrelloInfoNotFoundException;
 import com.softserve.mosquito.services.api.TrelloInfoService;
 
 import io.swagger.annotations.Api;

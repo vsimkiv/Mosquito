@@ -1,6 +1,7 @@
 package com.softserve.mosquito.controllers;
 
 import com.softserve.mosquito.dtos.CommentDto;
+import com.softserve.mosquito.exceptions.CommentNotFoundException;
 import com.softserve.mosquito.services.api.CommentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

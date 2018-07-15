@@ -1,4 +1,4 @@
-package com.softserve.mosquito.entities;
+package com.softserve.mosquito.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

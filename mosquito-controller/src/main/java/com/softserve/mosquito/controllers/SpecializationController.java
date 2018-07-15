@@ -1,6 +1,8 @@
 package com.softserve.mosquito.controllers;
 
 import com.softserve.mosquito.dtos.SpecializationDto;
+import com.softserve.mosquito.exceptions.NotFoundException;
+import com.softserve.mosquito.exceptions.StatusNotFoundException;
 import com.softserve.mosquito.services.api.SpecializationService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;

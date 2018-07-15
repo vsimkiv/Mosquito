@@ -1,6 +1,8 @@
 package com.softserve.mosquito.controllers;
 
 import com.softserve.mosquito.dtos.StatusDto;
+import com.softserve.mosquito.exceptions.NotFoundException;
+import com.softserve.mosquito.exceptions.StatusNotFoundException;
 import com.softserve.mosquito.services.api.StatusService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;

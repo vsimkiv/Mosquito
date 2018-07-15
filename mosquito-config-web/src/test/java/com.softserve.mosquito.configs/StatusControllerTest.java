@@ -6,7 +6,6 @@ import com.softserve.mosquito.dtos.StatusDto;
 import com.softserve.mosquito.services.api.StatusService;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

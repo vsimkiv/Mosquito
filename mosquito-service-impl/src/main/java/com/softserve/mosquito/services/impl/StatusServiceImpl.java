@@ -17,6 +17,7 @@ import java.util.List;
 public class StatusServiceImpl implements StatusService {
 
     private StatusRepo statusRepo;
+
     @Autowired
     public StatusServiceImpl(StatusRepo statusRepo) {
         this.statusRepo = statusRepo;
