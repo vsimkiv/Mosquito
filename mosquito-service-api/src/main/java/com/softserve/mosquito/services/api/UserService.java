@@ -21,6 +21,3 @@ public interface UserService {
     List<UserDto> getBySpecializationId(Long specializationId);
 
     void activateUser(String key);
-
-    boolean isConfirmed(String email);
-}

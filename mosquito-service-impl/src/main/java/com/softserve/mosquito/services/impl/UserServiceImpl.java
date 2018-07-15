@@ -24,11 +24,9 @@ public class UserServiceImpl implements UserService {
 
     private UserRepo userRepo;
     private MailSender mailSender;
-    private SimpMessagingTemplate template;
 
     @Autowired
-    public UserServiceImpl(SimpMessagingTemplate template, UserRepo userRepo, MailSender mailSender) {
-        this.template = template;
+    public UserServiceImpl(UserRepo userRepo, MailSender mailSender) {
         this.userRepo = userRepo;
         this.mailSender = mailSender;
     }
@@ -91,12 +89,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean isConfirmed(String email) {
-        return userRepo.isConfirmed(email);
-    }
-
     @Transactional
-    @Override
     public void activateUser(String key) {
         long id = new Hashids().decode(key)[0];
         User user = userRepo.read(id);
