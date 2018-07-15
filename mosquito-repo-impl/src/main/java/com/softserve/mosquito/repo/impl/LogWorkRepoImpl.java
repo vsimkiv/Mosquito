@@ -1,6 +1,5 @@
 package com.softserve.mosquito.repo.impl;
 
-
 import com.softserve.mosquito.entities.LogWork;
 import com.softserve.mosquito.repo.api.LogWorkRepo;
 import org.apache.logging.log4j.LogManager;
@@ -11,6 +10,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -33,7 +33,8 @@ public class LogWorkRepoImpl implements LogWorkRepo {
         Session session = null;
         try {
             session = sessionFactory.openSession();
-            session.save(logWork);
+            Long logworkId = (Long)session.save(logWork);
+            logWork.setId(logworkId);
         } catch (HibernateException e) {
             LOGGER.error("Error during save logWork!");
         } finally {
@@ -43,96 +44,53 @@ public class LogWorkRepoImpl implements LogWorkRepo {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public LogWork read(Long id) {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
-            return session.get(LogWork.class, id);
-        } catch (HibernateException e) {
-            LOGGER.error("Reading logWork was failed!");
-        } finally {
-            if (session != null) session.close();
-        }
-        return null;
+        Session session = sessionFactory.getCurrentSession();
+        return session.get(LogWork.class, id);
     }
 
     @Override
+    @Transactional
     public LogWork update(LogWork logWork) {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
-            session.getTransaction().begin();
-            session.update(logWork);
-            session.getTransaction().commit();
-            return logWork;
-        } catch (HibernateException e) {
-            LOGGER.error("LogWork updating was failed" + e.getMessage());
-        } finally {
-            if (session != null) session.close();
-        }
-        return null;
+        Session session = sessionFactory.getCurrentSession();
+        session.update(logWork);
+        return logWork;
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
-            session.getTransaction().begin();
-            LogWork logWork = session.get(LogWork.class, id);
-            session.delete(logWork);
-            session.getTransaction().commit();
-        } catch (HibernateException e) {
-            LOGGER.error("Deleting logWork  was failed!");
-        } finally {
-            if (session != null) session.close();
-        }
+        Session session = sessionFactory.getCurrentSession();
+        LogWork logWork = session.get(LogWork.class, id);
+        session.delete(logWork);
     }
 
-
+    @Override
+    @Transactional(readOnly = true)
     public List<LogWork> readAll() {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
-            Query<LogWork> query = sessionFactory.openSession().createQuery("FROM " + LogWork.class.getName());
-            return query.list();
-        } catch (HibernateException e) {
-            LOGGER.error(e.getMessage());
-            return null;
-        } finally {
-            if (session != null) session.close();
-        }
+        Session session = sessionFactory.getCurrentSession();
+        Query<LogWork> query = session.createQuery("FROM " + LogWork.class.getName(), LogWork.class);
+        return query.list();
     }
 
+    @Override
+    @Transactional(readOnly = true)
     public List<LogWork> getByUserId(Long userId) {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
-            Query<LogWork> query = session.createQuery("from " + LogWork.class.getName() +
-                    " l JOIN l.author a where a.id = :id ");
-            query.setParameter("id", userId);
-            return query.list();
-        } catch (HibernateException e) {
-            LOGGER.error(e.getMessage());
-            return null;
-        } finally {
-            if (session != null) session.close();
-        }
+        Session session = sessionFactory.getCurrentSession();
+        Query<LogWork> query = session.createQuery("from " + LogWork.class.getName() +
+                " l where l.author.id = :id ", LogWork.class);
+        query.setParameter("id", userId);
+        return query.list();
     }
 
+    @Override
+    @Transactional(readOnly = true)
     public List<LogWork> getByEstimationId(Long estimationId) {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
-            Query<LogWork> query = session.createQuery("from " + LogWork.class.getName() +
-                    " l JOIN l.estimation e where e.id = :est ");
-            query.setParameter("est", estimationId);
-            return query.list();
-        } catch (HibernateException e) {
-            LOGGER.error(e.getMessage());
-            return null;
-        } finally {
-            if (session != null) session.close();
-        }
+        Session session = sessionFactory.getCurrentSession();
+        Query<LogWork> query = session.createQuery("from " + LogWork.class.getName() +
+                " l where l.estimation.id = :est ", LogWork.class);
+        query.setParameter("est", estimationId);
+        return query.list();
     }
 }

@@ -1,6 +1,7 @@
 package com.softserve.mosquito.repo.impl;
 
 import com.softserve.mosquito.entities.Specialization;
+import com.softserve.mosquito.repo.api.SpecializationRepo;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +20,7 @@ import static org.junit.Assert.*;
 public class SpecializationRepoImplTest {
 
     @Autowired
-    SpecializationRepoImpl specializationRepo;
+    SpecializationRepo specializationRepo;
 
     @Autowired
     DataSource dataSource;

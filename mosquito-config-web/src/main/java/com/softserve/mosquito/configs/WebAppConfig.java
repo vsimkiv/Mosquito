@@ -45,12 +45,6 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
     }
 
     @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new Interceptor());
-    }
-
-
-    @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**").
                 allowedOrigins("*").
@@ -59,21 +53,27 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
     }
 
     @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+        argumentResolvers.add(new AuthenticationPrincipalArgumentResolver());
+    }
+
+
+    // methods for Swagger
+    @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addRedirectViewController("/docApi/v2/api-docs", "/v2/api-docs");
-        registry.addRedirectViewController("/docApi/swagger-resources/configuration/ui", "/swagger-resources/configuration/ui");
-        registry.addRedirectViewController("/docApi/swagger-resources/configuration/security", "/swagger-resources/configuration/security");
+        registry.addRedirectViewController("/docApi/swagger-resources/configuration/ui",
+                "/swagger-resources/configuration/ui");
+        registry.addRedirectViewController("/docApi/swagger-resources/configuration/security",
+                "/swagger-resources/configuration/security");
         registry.addRedirectViewController("/docApi/swagger-resources", "/swagger-resources");
     }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/docApi/swagger-ui.html**").addResourceLocations("classpath:/META-INF/resources/swagger-ui.html");
-        registry.addResourceHandler("/docApi/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
-    }
-
-    @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        argumentResolvers.add(new AuthenticationPrincipalArgumentResolver());
+        registry.addResourceHandler("/docApi/swagger-ui.html**")
+                .addResourceLocations("classpath:/META-INF/resources/swagger-ui.html");
+        registry.addResourceHandler("/docApi/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 }

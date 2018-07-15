@@ -40,15 +40,15 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("Mosquito")
-                .description("Task management tools which we are developing for learning and practise Java languages.")
-                .version("Demo 3")
-                .license("Our team`s account on GitHub")
+                .description("Task management tool which is developed for learning and practice Java technologies.")
+                .version("Final demo")
+                .license("IF-086-Java on GitHub")
                 .licenseUrl("https://github.com/IF-086-Java")
                 .build();
     }
 
     private ApiKey apiKey() {
-        return new ApiKey("token", HEADER_NAME, "header");
+        return new ApiKey("authorization", HEADER_NAME, "header");
     }
 
     private SecurityContext securityContext() {
@@ -62,7 +62,7 @@ public class SwaggerConfig {
         AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
-        return Lists.newArrayList(new SecurityReference("token", authorizationScopes));
+        return Lists.newArrayList(new SecurityReference("authorization", authorizationScopes));
     }
 
     @Bean
@@ -72,7 +72,7 @@ public class SwaggerConfig {
                 null,
                 null,
                 null,
-                "Bearer ",
+                null,
                 ApiKeyVehicle.HEADER,
                 HEADER_NAME,
                 null);

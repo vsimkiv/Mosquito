@@ -7,18 +7,22 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Entity
+@EqualsAndHashCode
+@ToString
 @Table(name = "priorities")
-public final class Priority implements Serializable {
+public class Priority implements Serializable {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @EqualsAndHashCode.Exclude
     private Long id;
-    @NonNull
+
     private String title;
 
     @OneToMany(mappedBy = "priority", fetch = FetchType.LAZY)

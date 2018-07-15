@@ -11,4 +11,6 @@ public interface UserRepo extends GenericCRUD<User> {
     User readByEmail(String email);
 
     List<User> readBySpecializationId(Long id);
+
+    boolean isConfirmed(String email);
 }

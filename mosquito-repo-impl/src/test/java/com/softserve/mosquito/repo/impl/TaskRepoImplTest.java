@@ -1,6 +1,7 @@
 package com.softserve.mosquito.repo.impl;
 
 import com.softserve.mosquito.entities.*;
+import com.softserve.mosquito.repo.api.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,15 @@ import static org.junit.Assert.*;
 public class TaskRepoImplTest {
 
     @Autowired
-    TaskRepoImpl taskRepo;
+    TaskRepo taskRepo;
     @Autowired
-    UserRepoImpl userRepo;
-
+    StatusRepo statusRepo;
+    @Autowired
+    UserRepo userRepo;
+    @Autowired
+    PriorityRepo priorityRepo;
+    @Autowired
+    EstimationRepo estimationRepo;
     @Autowired
     DataSource dataSource;
 
@@ -32,14 +38,20 @@ public class TaskRepoImplTest {
         Estimation estimation = new Estimation();
         estimation.setTimeEstimation(25);
         estimation.setRemaining(25);
+        estimation = estimationRepo.create(estimation);
         User user = new User();
         user.setEmail("test_email");
         user.setPassword("test_password");
         user.setFirstName("test_name");
         user.setLastName("test_surname");
         user.setConfirmed(true);
-        Priority priority = new Priority("middle");
-        Status status = new Status("TODO");
+        user = userRepo.create(user);
+        Priority priority = new Priority();
+        priority.setTitle("middle");
+        priority = priorityRepo.create(priority);
+        Status status = new Status();
+        status.setTitle("TODO");
+        status = statusRepo.create(status);
         Task task = Task.builder().name("Test task").estimation(estimation)
                 .owner(user).worker(user).priority(priority).status(status).build();
 
@@ -84,7 +96,7 @@ public class TaskRepoImplTest {
         List<Task> subTasks = taskRepo.getSubTasks(1L);
         assertNotNull(subTasks);
         assertEquals(5, subTasks.size());
-        assertTrue(subTasks.iterator().next() instanceof Task);
+        assertNotNull(subTasks.iterator().next());
 
         List<Task> projects = taskRepo.getAllProjects();
         assertNotNull(projects);
@@ -105,5 +117,4 @@ public class TaskRepoImplTest {
         assertNotNull(tasks);
         assertEquals(1, tasks.size());
     }
-
 }

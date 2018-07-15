@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface LogWorkService {
 
-    LogWorkDto save(LogWorkDto logWork);
+    LogWorkDto save(Long estId, LogWorkDto logWork, int remaining);
 
-    LogWorkDto getById(Long logWorkId,byte timeZone);
+    LogWorkDto getById(Long logWorkId);
 
-    LogWorkDto update(LogWorkDto logWork);
+    LogWorkDto update(LogWorkDto logWork, int remaining);
 
     void delete(Long id);
 

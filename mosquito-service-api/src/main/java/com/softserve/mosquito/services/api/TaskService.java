@@ -1,39 +1,39 @@
 package com.softserve.mosquito.services.api;
 
-import com.softserve.mosquito.dtos.TaskFullDto;
-import com.softserve.mosquito.dtos.TaskSimpleDto;
+import com.softserve.mosquito.dtos.TaskCreateDto;
+import com.softserve.mosquito.dtos.TaskDto;
 
 import java.util.List;
 
 public interface TaskService {
 
-    TaskFullDto save(TaskFullDto taskFullDto);
+    TaskDto save(TaskCreateDto taskCreateDto);
 
-    TaskFullDto update(TaskFullDto taskFullDto);
+    TaskDto update(TaskDto taskDto);
 
     void delete(Long id);
 
-    TaskFullDto getById(Long id);
+    TaskDto getById(Long id);
 
-    TaskFullDto getParent(Long parentId);
+    TaskDto getParent(Long parentId);
 
-    List<TaskFullDto> getSubTasks(Long id);
+    List<TaskDto> getSubTasks(Long id);
 
-    List<TaskFullDto> getByOwner(Long ownerId);
+    List<TaskDto> getByOwner(Long ownerId);
 
-    List<TaskFullDto> getByWorker(Long workerId);
+    List<TaskDto> getByWorker(Long workerId);
 
-    List<TaskFullDto> getAllProjects();
+    List<TaskDto> getAllProjects();
 
-    List<TaskFullDto> getProjectsByOwner(Long ownerId);
+    List<TaskDto> getProjectsByOwner(Long ownerId);
 
-    List<TaskFullDto> filterByStatus(List<TaskFullDto> taskFullDtoList, Long statusId);
+    List<TaskDto> filterByStatus(List<TaskDto> taskDtoList, Long statusId);
 
     boolean isPresent(String name);
 
-    TaskFullDto getByName(String name);
+    TaskDto getByName(String name);
 
-    TaskSimpleDto getSimpleTaskById(Long id);
+    TaskDto getByTrelloId(String trelloId);
 
-    TaskFullDto getByTrelloId(String trelloId);
+    void sendPushMessage(String message, Long userId);
 }

@@ -9,8 +9,10 @@ import java.util.Set;
 
 @Builder
 @Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserDto {
-    @Setter
     private Long id;
 
     @Pattern(regexp = "^[_A-Za-z0-9-+]+(.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(.[A-Za-z0-9]+)*(.[A-Za-z]{2,}$)",
@@ -24,7 +26,6 @@ public class UserDto {
     private String lastName;
 
     @Size(min = 8, message = "user.password.pattern")
-    @Setter
     private String password;
 
     @NotBlank

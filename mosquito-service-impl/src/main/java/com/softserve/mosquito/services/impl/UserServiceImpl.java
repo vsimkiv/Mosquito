@@ -12,9 +12,12 @@ import org.hashids.Hashids;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -28,6 +31,7 @@ public class UserServiceImpl implements UserService {
         this.mailSender = mailSender;
     }
 
+    @Transactional
     @Override
     public UserDto save(UserDto user) {
         User activateUser = userRepo.create(UserTransformer.toEntity(user));
@@ -37,30 +41,40 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Transactional
     @Override
     public UserDto update(UserDto user) {
+        UserDto oldUser = getById(user.getId());
+        if(!oldUser.getEmail().equals(user.getEmail()) && getByEmail(user.getEmail()) != null){
+            return null;
+        }
         return UserTransformer.toDto(userRepo.update(UserTransformer.toEntity(user)));
     }
 
+    @Transactional
     @Override
     public void delete(Long id) {
         userRepo.delete(id);
     }
 
+    @Transactional
     @Override
     public List<UserDto> getAll() {
         return UserTransformer.toDtoList(userRepo.readAll());
     }
 
+    @Transactional
     @Override
     public UserDto getById(Long id) {
         return UserTransformer.toDto(userRepo.read(id));
     }
 
+    @Transactional
     public UserDto getByEmail(String email) {
         return UserTransformer.toDto(userRepo.readByEmail(email));
     }
 
+    @Transactional
     @Override
     public List<UserDto> getBySpecializationId(Long specializationId) {
         List<User> users = userRepo.readAll();
@@ -75,6 +89,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void activateUser(String key) {
         long id = new Hashids().decode(key)[0];
         User user = userRepo.read(id);

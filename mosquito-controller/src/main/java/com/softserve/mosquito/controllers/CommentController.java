@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/comment")
+@RequestMapping("/api/tasks/{task_id}/")
 @Api(value = "Comment controller", description = "Controller for doing CRUD operation with comment")
 public class CommentController {
 
@@ -23,15 +23,15 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    @PostMapping(path = "/{task_id}/comments")
+    @PostMapping(path = "comments")
     @ApiOperation(value = "Add new comment for task", response = CommentDto.class)
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     public CommentDto createComment(@PathVariable("task_id") Long taskId,
                                     @RequestBody CommentDto commentDto) {
         return commentService.save(commentDto);
     }
 
-    @GetMapping(path = "/{task_id}/comments")
+    @GetMapping(path = "/comments")
     @ApiOperation(value = "Get all comments for concrete task", response = CommentDto.class,
             responseContainer = "List")
     @ResponseStatus(HttpStatus.OK)

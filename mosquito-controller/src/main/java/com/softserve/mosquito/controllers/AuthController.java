@@ -27,15 +27,13 @@ import javax.validation.Valid;
 public class AuthController {
 
     private AuthenticationManager authenticationManager;
-
     private UserService userService;
-
     private PasswordEncoder passwordEncoder;
-
     private JwtTokenProvider tokenProvider;
 
     @Autowired
-    public AuthController(AuthenticationManager authenticationManager, UserService userService, PasswordEncoder passwordEncoder, JwtTokenProvider tokenProvider) {
+    public AuthController(AuthenticationManager authenticationManager, UserService userService,
+                          PasswordEncoder passwordEncoder, JwtTokenProvider tokenProvider) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
@@ -43,7 +41,8 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@RequestBody @Valid UserLoginDto loginRequest, HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<?> authenticateUser(@RequestBody @Valid UserLoginDto loginRequest,
+                                              HttpServletRequest request, HttpServletResponse response) {
         Authentication authentication = null;
         try {
             authentication = authenticationManager.authenticate(
@@ -53,7 +52,13 @@ public class AuthController {
                     )
             );
         } catch (AuthenticationException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new LoginResponse(false, "Login or password is not correct."));
+        }
+
+        if (!userService.isConfirmed(loginRequest.getEmail())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new LoginResponse(false, "Please check your email for confirmation."));
         }
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -64,9 +69,9 @@ public class AuthController {
         UserDto authenticatedUser = userService.getByEmail(loginRequest.getEmail());
         return ResponseEntity.ok(UserDto.builder().id(authenticatedUser.getId())
                 .firstName(authenticatedUser.getFirstName())
-                .lastName(authenticatedUser.getLastName()).build());
+                .lastName(authenticatedUser.getLastName())
+                .build());
     }
-
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody @Valid UserDto signUpRequest) {
@@ -82,14 +87,12 @@ public class AuthController {
         signUpRequest.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
         userService.save(signUpRequest);
 
-        return ResponseEntity.ok().body(signUpRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(signUpRequest);
     }
 
     @GetMapping("/activate/{key}")
     public ResponseEntity activateAccount(@PathVariable("key") String key) {
-
         userService.activateUser(key);
-
         return ResponseEntity.ok().build();
     }
 }

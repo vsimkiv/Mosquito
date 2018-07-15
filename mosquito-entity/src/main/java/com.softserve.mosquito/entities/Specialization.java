@@ -5,7 +5,6 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Getter
@@ -13,14 +12,16 @@ import java.util.Set;
 @NoArgsConstructor
 @RequiredArgsConstructor
 @EqualsAndHashCode
+@ToString
 @Entity
 @Table(name = "specializations")
-public final class Specialization implements Serializable {
+public class Specialization implements Serializable {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
+    @EqualsAndHashCode.Exclude
     private Long id;
+
     @EqualsAndHashCode.Include
     @NonNull
     private String title;

@@ -10,7 +10,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @RequestMapping("/")
 @ApiIgnore
 public class IndexController {
-   @GetMapping(path = "/swagger")
+   @GetMapping
     public ModelAndView swagger(){
         return new ModelAndView("redirect:/docApi/swagger-ui.html");
     }

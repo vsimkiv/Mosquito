@@ -22,15 +22,11 @@ public class PriorityController {
     }
 
     @PostMapping
-    public ResponseEntity<PriorityDto> createPriority(@RequestBody PriorityDto priorityDto){
-        PriorityDto createdPriorityDto = priorityService.save(priorityDto);
-
-        if(createdPriorityDto == null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body(createdPriorityDto);
+    @ResponseStatus(HttpStatus.CREATED)
+    public PriorityDto createPriority(@RequestBody PriorityDto priorityDto) {
+        return priorityService.save(priorityDto);
     }
+
 
     @GetMapping("/{priority_id}")
     public ResponseEntity<PriorityDto> getPriorityById(@PathVariable("priority_id") Long id){
@@ -45,21 +41,23 @@ public class PriorityController {
 
 
     @PutMapping(path = "/{priority_id}")
-    public ResponseEntity<PriorityDto> updatePriority(@PathVariable("priority_id") Long id, @RequestBody PriorityDto priorityDto){
+    public ResponseEntity<PriorityDto> updatePriority(@PathVariable("priority_id") Long id,
+                                                      @RequestBody PriorityDto priorityDto){
+        if(priorityService.getById(id)== null){
+            throw new NotFoundException("Priority with id " + id + " not found");
+        }
         priorityDto.setId(id);
         PriorityDto updatetedPriotityDto = priorityService.update(priorityDto);
-
-        if(updatetedPriotityDto == null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
         return ResponseEntity.status(HttpStatus.OK).body(updatetedPriotityDto);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<PriorityDto> deletePriority(@PathVariable("id") Long id) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletePriority(@PathVariable("id") Long id) {
+        if(priorityService.getById(id) == null){
+            throw  new StatusNotFoundException("Priority with id " + id + " not found");
+        }
         priorityService.delete(id);
-
-        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @GetMapping

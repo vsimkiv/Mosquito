@@ -1,59 +1,56 @@
 package com.softserve.mosquito.services.impl;
 
-import com.softserve.mosquito.dtos.TaskFullDto;
-import com.softserve.mosquito.dtos.TaskSimpleDto;
-import com.softserve.mosquito.dtos.UserDto;
-import com.softserve.mosquito.entities.Estimation;
+
+import com.softserve.mosquito.dtos.TaskCreateDto;
+import com.softserve.mosquito.dtos.TaskDto;
 import com.softserve.mosquito.entities.Task;
 import com.softserve.mosquito.repo.api.TaskRepo;
 import com.softserve.mosquito.services.api.TaskService;
-import com.softserve.mosquito.services.mail.MailSender;
-import com.softserve.mosquito.transformer.CommentTransformer;
+
+import com.softserve.mosquito.services.api.UserService;
 import com.softserve.mosquito.transformer.EstimationTransformer;
-import com.softserve.mosquito.transformer.TaskTransformer;
+import com.softserve.mosquito.transformer.PriorityTransformer;
+import com.softserve.mosquito.transformer.StatusTransformer;
+import com.softserve.mosquito.transformer.UserTransformer;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.softserve.mosquito.transformer.TaskTransformer.toFullDTO;
-import static com.softserve.mosquito.transformer.TaskTransformer.toSimpleDto;
+import static com.softserve.mosquito.transformer.TaskTransformer.*;
 
 @Service
 public class TaskServiceImpl implements TaskService {
     private TaskRepo taskRepo;
-    private MailSender mailSender;
+    private SimpMessagingTemplate template;
+    private UserService userService;
 
     @Autowired
-    public TaskServiceImpl(TaskRepo taskRepo, MailSender mailSender) {
+    public TaskServiceImpl(TaskRepo taskRepo, SimpMessagingTemplate template, UserService userService) {
         this.taskRepo = taskRepo;
-        this.mailSender = mailSender;
-    }
-
-    //CRUD methods. Made by VS
-    @Transactional
-    @Override
-    public TaskFullDto save(TaskFullDto taskFullDto) {
-        //TODO messaging exception "Could not convert socket to TLS..."
-        /*if (isMessageSent(taskFullDto.getWorkerDto(),
-                "You was assigned for this task" + taskFullDto.getName(),
-                "Mosquito Task Manager")) {*/
-        Task task = taskRepo.create(TaskTransformer.toEntity(taskFullDto));
-        if (task == null)
-            return null;
-        return toFullDTO(task);
-        //}
+        this.template = template;
+        this.userService = userService;
     }
 
     @Transactional
     @Override
-    public TaskFullDto update(TaskFullDto taskFullDto) {
-        Task task = taskRepo.update(TaskTransformer.toEntity(taskFullDto));
+    public TaskDto save(TaskCreateDto taskCreateDto) {
+        Task task = toEntity(taskCreateDto);
+        task = taskRepo.create(task);
+        return task == null ? null : toTaskDto(task);
+    }
+
+    @Transactional
+    @Override
+    public TaskDto update(TaskDto taskDto) {
+        Task task = taskRepo.update(updateHelper(taskDto));
         if (task == null)
             return null;
-        return toFullDTO(task);
+        return toTaskDto(taskRepo.read(task.getId()));
     }
 
     @Transactional
@@ -64,107 +61,99 @@ public class TaskServiceImpl implements TaskService {
 
     @Transactional
     @Override
-    public TaskFullDto getById(Long id) {
+    public TaskDto getById(Long id) {
         Task task = taskRepo.read(id);
-        TaskFullDto taskFullDto = toFullDTO(task);
-
-        //set parent
-        Task parent = task.getParentTask();
-        if (parent != null) {
-            taskFullDto.setParentTaskFullDto(getParent(parent.getId()));
-        }
-
-        //set estimation
-        Estimation estimation = task.getEstimation();
-        if (estimation != null) {
-            taskFullDto.setEstimationDto(EstimationTransformer.toDTO(estimation));
-        }
-
-        //set list of comments
-        taskFullDto.setCommentDtoList(CommentTransformer.toDTOList(task.getComments()));
-        //set child tasks
-        taskFullDto.setChildTaskFullDtoList(getSubTasks(taskFullDto.getId()));
-        return taskFullDto;
-    }
-
-    //Additional methods. Made by VS
-    @Transactional
-    @Override
-    public TaskFullDto getParent(Long parentId) {
-        return toFullDTO(taskRepo.read(parentId));
+        return toTaskDto(task);
     }
 
     @Transactional
     @Override
-    public List<TaskFullDto> getSubTasks(Long id) {
-        return TaskTransformer.toDTOList(taskRepo.getSubTasks(id));
+    public TaskDto getParent(Long parentId) {
+        return toTaskDto(taskRepo.read(parentId));
     }
 
     @Transactional
     @Override
-    public List<TaskFullDto> getByOwner(Long ownerId){
-        return TaskTransformer.toDTOList(taskRepo.getByOwner(ownerId));
+    public List<TaskDto> getSubTasks(Long id) {
+        return toTaskDtoList(taskRepo.getSubTasks(id));
     }
 
     @Transactional
     @Override
-    public List<TaskFullDto> getByWorker(Long workerId){
-        return TaskTransformer.toDTOList(taskRepo.getByOwner(workerId));
-    }
-
-    //Methods for project. Made by VS
-    @Transactional
-    @Override
-    public List<TaskFullDto> getAllProjects() {
-        return TaskTransformer.toDTOList(taskRepo.getAllProjects());
+    public List<TaskDto> getByOwner(Long ownerId) {
+        return toTaskDtoList(taskRepo.getByOwner(ownerId));
     }
 
     @Transactional
     @Override
-    public List<TaskFullDto> getProjectsByOwner(Long ownerId) {
-        return TaskTransformer.toDTOList(taskRepo.getProjectsByOwner(ownerId));
+    public List<TaskDto> getByWorker(Long workerId) {
+        return toTaskDtoList(taskRepo.getByWorker(workerId));
     }
 
-    //Filter methods. Made by VS
     @Transactional
     @Override
-    public List<TaskFullDto> filterByStatus(List<TaskFullDto> taskFullDtoList, Long statusId) {
-        List<TaskFullDto> filteredList = new ArrayList<>();
-        for (TaskFullDto taskDto: taskFullDtoList) {
-            if (taskDto.getStatusDto().getId().equals(statusId)){
+    public List<TaskDto> getAllProjects() {
+        return toTaskDtoList(taskRepo.getAllProjects());
+    }
+
+    @Transactional
+    @Override
+    public List<TaskDto> getProjectsByOwner(Long ownerId) {
+        return toTaskDtoList(taskRepo.getProjectsByOwner(ownerId));
+    }
+
+    @Transactional
+    @Override
+    public List<TaskDto> filterByStatus(List<TaskDto> taskDtoList, Long statusId) {
+        List<TaskDto> filteredList = new ArrayList<>();
+        for (TaskDto taskDto : taskDtoList) {
+            if (taskDto.getStatus().getId().equals(statusId)) {
                 filteredList.add(taskDto);
             }
         }
         return filteredList;
     }
 
-    //methods for Trello. Made by Mark
     @Transactional
     @Override
-    public TaskSimpleDto getSimpleTaskById(Long id) {
-        Task task = taskRepo.read(id);
-        return toSimpleDto(task);
+    public TaskDto getByTrelloId(String trelloId) {
+        return toTaskDto(taskRepo.getByTrelloId(trelloId));
     }
 
     @Transactional
     @Override
-    public TaskFullDto getByTrelloId(String trelloId){
-        return TaskTransformer.toFullDTO(taskRepo.getByTrelloId(trelloId));
-    }
-
-    @Override
-    @Transactional
     public boolean isPresent(String trelloId) {
         return (taskRepo.getByTrelloId(trelloId) != null);
     }
 
-    @Override
     @Transactional
-    public TaskFullDto getByName(String name) {
-        return TaskTransformer.toFullDTO(taskRepo.getByName(name));
+    @Override
+    public TaskDto getByName(String name) {
+        return toTaskDto(taskRepo.getByName(name));
     }
 
-    private boolean isMessageSent(UserDto userDto, String message, String subject) {
-        return mailSender.sendMessage(userDto, message, subject);
+
+    @Transactional
+    @Override
+    public void sendPushMessage(String message, Long userId) {
+        template.convertAndSendToUser(String.valueOf(userId), "/queue/reply", message);
+    }
+
+    private Task updateHelper(TaskDto taskDto) {
+        if (taskDto == null) {
+            return null;
+        } else {
+            return Task.builder().
+                    id(taskDto.getId())
+                    .name(taskDto.getName())
+                    .owner(UserTransformer.toEntity(userService.getById(taskDto.getOwnerId())))
+                    .worker(UserTransformer.toEntity(userService.getById(taskDto.getWorkerId())))
+                    .priority(PriorityTransformer.toEntity(taskDto.getPriority()))
+                    .status(StatusTransformer.toEntity(taskDto.getStatus()))
+                    .estimation(EstimationTransformer.toEntity(taskDto.getEstimation()))
+                    .parentTask(taskDto.getParentId() == null ? null : updateHelper(getParent(taskDto.getParentId())))
+                    .trelloId(taskDto.getTrelloId())
+                    .build();
+        }
     }
 }

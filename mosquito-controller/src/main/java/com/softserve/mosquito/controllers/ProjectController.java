@@ -1,6 +1,7 @@
 package com.softserve.mosquito.controllers;
 
-import com.softserve.mosquito.dtos.TaskFullDto;
+import com.softserve.mosquito.dtos.TaskCreateDto;
+import com.softserve.mosquito.dtos.TaskDto;
 import com.softserve.mosquito.services.api.TaskService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api/projects")
-@Api(value = "Project controller", description = "Controller for doing CRUD operation with project")public class ProjectController {
+@Api(value = "Project controller", description = "Controller for doing CRUD operation with project")
+public class ProjectController {
     private TaskService taskService;
 
     @Autowired
@@ -21,14 +23,14 @@ import java.util.List;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TaskFullDto createProject(@RequestBody TaskFullDto taskFullDto) {
-        return taskService.save(taskFullDto);
+    public TaskDto createProject(@RequestBody TaskCreateDto taskCreateDto) {
+        return taskService.save(taskCreateDto);
     }
 
     @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TaskFullDto updateProject(@PathVariable("id") Long id, @RequestBody TaskFullDto taskFullDto) {
-        return taskService.update(taskFullDto);
+    public TaskDto updateProject(@PathVariable("id") Long id, @RequestBody TaskDto taskDto) {
+        return taskService.update(taskDto);
     }
 
     @DeleteMapping(path = "/{id}")
@@ -39,19 +41,19 @@ import java.util.List;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<TaskFullDto> getAllProjects(){
+    public List<TaskDto> getAllProjects(){
         return taskService.getAllProjects();
     }
 
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TaskFullDto getProjectById(@PathVariable("id") Long id){
+    public TaskDto getProjectById(@PathVariable("id") Long id){
         return taskService.getById(id);
     }
 
     @GetMapping(path = "/owner/{owner_id}")
     @ResponseStatus(HttpStatus.OK)
-    public List<TaskFullDto> getProjectsByOwner(@PathVariable("owner_id")Long ownerId){
-        return taskService.getByOwner(ownerId);
+    public List<TaskDto> getProjectsByOwner(@PathVariable("owner_id")Long ownerId){
+        return taskService.getProjectsByOwner(ownerId);
     }
 }

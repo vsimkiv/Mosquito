@@ -1,15 +1,16 @@
 package com.softserve.mosquito.services.api;
 
-import com.softserve.mosquito.dtos.TaskSimpleDto;
+import com.softserve.mosquito.dtos.TaskCreateDto;
+
 
 import java.util.List;
 
 public interface TrelloCardService {
 
-    List<TaskSimpleDto> allNewTrelloTasks(Long userId);
+    List<TaskCreateDto> getAllNewTrelloTasksOnFront(Long userId);
 
     void createTasksFromTrello(Long userId);
 
-    void createChosenTastsFromTrello(Long userId, List<TaskSimpleDto> taskSimpleDtos);
+    void createChosenTasksFromTrelloJSON(Long userId, List<TaskCreateDto> taskCreateDtoList);
 
 }

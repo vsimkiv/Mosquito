@@ -1,6 +1,7 @@
 package com.softserve.mosquito.repo.impl;
 
 import com.softserve.mosquito.entities.Estimation;
+import com.softserve.mosquito.repo.api.EstimationRepo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +12,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import javax.sql.DataSource;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestRepoConfig.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class EstimationRepoImplTest {
     @Autowired
-   EstimationRepoImpl estimationRepo;
+    EstimationRepo estimationRepo;
 
     @Autowired
     DataSource dataSource;
@@ -42,7 +42,7 @@ public class EstimationRepoImplTest {
         created.setRemaining(200);
         Estimation updated = estimationRepo.update(created);
         assertNotNull(updated);
-        assertEquals(created.getId(),updated.getId());
+        assertEquals(created.getId(), updated.getId());
 
         //Delete estimation:
         estimationRepo.delete(updated.getId());

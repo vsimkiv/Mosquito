@@ -1,6 +1,7 @@
 package com.softserve.mosquito.repo.impl;
 
 import com.softserve.mosquito.entities.Comment;
+import com.softserve.mosquito.repo.api.CommentRepo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ import static org.junit.Assert.*;
 public class CommentRepoImplTest {
 
     @Autowired
-    CommentRepoImpl commentRepo;
+    CommentRepo commentRepo;
 
     @Autowired
     DataSource dataSource;

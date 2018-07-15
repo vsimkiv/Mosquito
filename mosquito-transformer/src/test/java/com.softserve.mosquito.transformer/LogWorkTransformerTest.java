@@ -7,13 +7,13 @@ import com.softserve.mosquito.dtos.UserDto;
 import com.softserve.mosquito.entities.Estimation;
 import com.softserve.mosquito.entities.LogWork;
 import com.softserve.mosquito.entities.User;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
@@ -23,17 +23,20 @@ public class LogWorkTransformerTest {
    public void toEntity() {
 
         LogWorkDto logWorkDto = new LogWorkDto();
+        logWorkDto.setId(10L);
         logWorkDto.setDescription("TestDescription");
         logWorkDto.setLogged(100);
         SpecializationDto specializationDto1 = new SpecializationDto();
+        specializationDto1.setId(1L);
         specializationDto1.setTitle("QC");
         Set<SpecializationDto> specializationDtos = new HashSet<>();
         specializationDtos.add(specializationDto1);
-        UserDto userDto = UserDto.builder().email("test_email").password("test_passpword").
+        UserDto userDto = UserDto.builder().email("test_email").password("test_passpword").id(1L).
                 firstName("test_name").lastName("test_surname").
                 specializations(specializationDtos).build();
         logWorkDto.setUserId(userDto.getId());
         EstimationDto estimationDto = new EstimationDto();
+        estimationDto.setId(5L);
         estimationDto.setTimeEstimation(100);
         estimationDto.setRemaining(100);
         logWorkDto.setEstimationId(estimationDto.getId());
@@ -45,12 +48,15 @@ public class LogWorkTransformerTest {
     @Test
     public void toDTO() {
         LogWork logWork = new LogWork();
+        logWork.setId(5L);
         logWork.setDescription("Test Logwork");
         logWork.setLogged(100);
         Estimation estimation = new Estimation();
+        estimation.setId(4L);
         estimation.setTimeEstimation(25);
         estimation.setRemaining(25);
         User user = new User();
+        user.setId(3L);
         user.setEmail("test_email");
         user.setPassword("test_password");
         user.setFirstName("test_name");
@@ -66,17 +72,20 @@ public class LogWorkTransformerTest {
     @Test
     public void toEntityList() {
         LogWorkDto logWorkDto1 = new LogWorkDto();
+        logWorkDto1.setId(1L);
         logWorkDto1.setDescription("TestDescription");
         logWorkDto1.setLogged(100);
         SpecializationDto specializationDto1 = new SpecializationDto();
+        specializationDto1.setId(5L);
         specializationDto1.setTitle("QC");
         Set<SpecializationDto> specializationDtos = new HashSet<>();
         specializationDtos.add(specializationDto1);
-        UserDto userDto = UserDto.builder().email("test_email").password("test_passpword").
+        UserDto userDto = UserDto.builder().email("test_email").password("test_passpword").id(3L).
                 firstName("test_name").lastName("test_surname").
                 specializations(specializationDtos).build();
         logWorkDto1.setUserId(userDto.getId());
         EstimationDto estimationDto = new EstimationDto();
+        estimationDto.setId(8L);
         estimationDto.setTimeEstimation(100);
         estimationDto.setRemaining(100);
         logWorkDto1.setEstimationId(estimationDto.getId());
@@ -91,12 +100,15 @@ public class LogWorkTransformerTest {
     @Test
     public void toDTOList() {
         LogWork logWork = new LogWork();
+        logWork.setId(3L);
         logWork.setDescription("Test Logwork");
         logWork.setLogged(100);
         Estimation estimation = new Estimation();
+        estimation.setId(5L);
         estimation.setTimeEstimation(25);
         estimation.setRemaining(25);
         User user = new User();
+        user.setId(2L);
         user.setEmail("test_email");
         user.setPassword("test_password");
         user.setFirstName("test_name");

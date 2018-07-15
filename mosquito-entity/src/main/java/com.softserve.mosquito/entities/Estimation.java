@@ -10,19 +10,25 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-@Getter
-@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 @Entity
 @Table(name = "estimations")
 public class Estimation implements Serializable {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Exclude
     private Long id;
+
     @Column(name = "estimation")
     private Integer timeEstimation;
+
     @Column(name = "remaining")
     private Integer remaining;
 
@@ -33,6 +39,12 @@ public class Estimation implements Serializable {
     @Singular
     @Fetch(FetchMode.SELECT)
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(mappedBy = "estimation")
+    @OneToMany(mappedBy = "estimation", cascade = CascadeType.ALL)
     private List<LogWork> logWorks;
+
+    public Estimation(Integer timeEstimation, Integer remaining, Task task) {
+        this.timeEstimation = timeEstimation;
+        this.remaining = remaining;
+        this.task = task;
+    }
 }
