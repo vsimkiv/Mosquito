@@ -15,23 +15,23 @@ import javax.mail.internet.MimeMessage;
 @Component
 public class MailSender {
 
-    private JavaMailSender mailSender;
+    private JavaMailSender javaMailSender;
     private static final Logger LOGGER = LogManager.getLogger(MailSender.class);
 
     @Autowired
-    public MailSender(JavaMailSender mailSender) {
-        this.mailSender = mailSender;
+    public MailSender(JavaMailSender javaMailSender) {
+        this.javaMailSender = javaMailSender;
     }
 
     public boolean sendMessage(UserDto user, String message, String subject) {
 
-        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         try {
 
             mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(user.getEmail()));
             mimeMessage.setSubject(subject);
             mimeMessage.setContent(message, "text/html");
-            mailSender.send(mimeMessage);
+            javaMailSender.send(mimeMessage);
             return true;
         } catch (MessagingException e) {
             LOGGER.info("Sending message was failed!");

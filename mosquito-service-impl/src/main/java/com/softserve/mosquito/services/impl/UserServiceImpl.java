@@ -89,6 +89,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean isConfirmed(String email) {
+        return userRepo.isConfirmed(email);
+    }
+
+    @Override
     @Transactional
     public void activateUser(String key) {
         long id = new Hashids().decode(key)[0];
